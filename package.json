@@ -15,9 +15,7 @@
     "@webcomponents/webcomponentsjs": "^2.2.10",
     "jquery": "^3.4.1",
     "lit-element": "^2.1.0",
-    "select2": "^4.0.7",
-    "chip-input": "^0.2.1",
-    "@github/auto-complete-element": "^1.0.2"
+    "select2": "^4.0.7"
   },
   "scripts": {
     "clean": "rm dist/*",
