@@ -23,41 +23,55 @@ class PersonSelect extends LitElement {
         super.connectedCallback();
 
         this.updateComplete.then(()=>{
-            const foreignContext = {"@context":{"@vocab":"http:\/\/127.0.0.1:8000\/api\/docs.jsonld#","hydra":"http:\/\/www.w3.org\/ns\/hydra\/core#","personId":"Person\/personId","name":"http:\/\/schema.org\/name","firstName":"http:\/\/schema.org\/givenName","lastName":"http:\/\/schema.org\/familyName","email":"http:\/\/schema.org\/email"}};
-            const localContext = {
-                "id": "@id",
-                "text": "http://schema.org/name"
-            };
-            let jsonld = new JSONLD(foreignContext, localContext);
-            console.log(jsonld);
+            const that = this;
 
-            $(this.shadowRoot.querySelector('#person-select')).select2({
-                minimumInputLength: 2,
-                placeholder: 'Select a person',
-                dropdownParent: $(this.shadowRoot.querySelector('#person-select-dropdown')),
-                ajax: {
-                    delay: 250,
-                    url: utils.getAPiUrl("/people"),
-                    contentType: "application/ld+json",
-                    data: function (params) {
-                        return {
-                            search: params.term,
-                            'library-only': 1
-                        };
-                    },
-                    processResults: function (data) {
-                        console.log(data);
+            $.get(utils.getAPiUrl("/people?page=1"))
+            .then(function (data) {
+                console.log("go1");
+                console.log(data);
+                const foreignContextPath = data["@context"];
 
-                        const results = jsonld.transformResult(data);
+                console.log(foreignContextPath);
 
-                        console.log("results");
-                        console.log(results);
+                return $.get(utils.getAPiUrl(foreignContextPath, false));
+            }).then(function (foreignContext) {
+                console.log("go2");
+                console.log(foreignContext);
 
-                        return {
-                            results: results
-                        };
+                const localContext = {
+                    "id": "@id",
+                    "text": "http://schema.org/name"
+                };
+                let jsonld = new JSONLD(foreignContext, localContext);
+
+                $(that.shadowRoot.querySelector('#person-select')).select2({
+                    minimumInputLength: 2,
+                    placeholder: 'Select a person',
+                    dropdownParent: $(that.shadowRoot.querySelector('#person-select-dropdown')),
+                    ajax: {
+                        delay: 250,
+                        url: utils.getAPiUrl("/people"),
+                        contentType: "application/ld+json",
+                        data: function (params) {
+                            return {
+                                search: params.term,
+                                'library-only': 1
+                            };
+                        },
+                        processResults: function (data) {
+                            console.log(data);
+
+                            const results = jsonld.transformResult(data);
+
+                            console.log("results");
+                            console.log(results);
+
+                            return {
+                                results: results
+                            };
+                        }
                     }
-                }
+                });
             });
         })
     }
