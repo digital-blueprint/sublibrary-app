@@ -21,7 +21,6 @@ class PersonSelect extends LitElement {
 
     connectedCallback() {
         super.connectedCallback();
-        const url = 'https://mw-dev.tugraz.at/api/people';
 
         this.updateComplete.then(()=>{
             const foreignContext = {"@context":{"@vocab":"http:\/\/127.0.0.1:8000\/api\/docs.jsonld#","hydra":"http:\/\/www.w3.org\/ns\/hydra\/core#","personId":"Person\/personId","name":"http:\/\/schema.org\/name","firstName":"http:\/\/schema.org\/givenName","lastName":"http:\/\/schema.org\/familyName","email":"http:\/\/schema.org\/email"}};
@@ -38,7 +37,7 @@ class PersonSelect extends LitElement {
                 dropdownParent: $(this.shadowRoot.querySelector('#person-select-dropdown')),
                 ajax: {
                     delay: 250,
-                    url: url,
+                    url: utils.getAPiUrl("/people"),
                     contentType: "application/ld+json",
                     data: function (params) {
                         return {

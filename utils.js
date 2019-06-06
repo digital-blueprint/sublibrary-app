@@ -1,3 +1,4 @@
+const vars = require("./vars");
 
 module.exports = {
     getAssetURL: function (path) {
@@ -8,5 +9,9 @@ module.exports = {
         // newer browsers only
         //var url = import.meta.url;
         return new URL(path, url).href;
+    },
+
+    getAPiUrl: function(path = "", withPrefix = true) {
+        return vars.apiBaseUrl + (withPrefix ? vars.apiUrlPrefix : "") + path;
     }
 };
