@@ -18,7 +18,7 @@ module.exports = {
     /**
      * Parses a link header
      *
-     * the node module parse-link-header didn't work, so https://gist.github.com/niallo/3109252 became handy
+     * The node module parse-link-header didn't work, so https://gist.github.com/niallo/3109252 became handy
      *
      * @param header
      */
