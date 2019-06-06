@@ -25,24 +25,15 @@ class PersonSelect extends LitElement {
         this.updateComplete.then(()=>{
             const that = this;
 
-            $.get(utils.getAPiUrl("/people?page=1"))
-            .then(function (data) {
-                console.log("go1");
-                console.log(data);
-                const foreignContextPath = data["@context"];
+            JSONLD.initialize(utils.getAPiUrl(), function (jsonld) {
+                // find the correct api url for a person
+                const apiUrl = jsonld.getApiUrlForIdentifier("http://schema.org/Person");
 
-                console.log(foreignContextPath);
-
-                return $.get(utils.getAPiUrl(foreignContextPath, false));
-            }).then(function (foreignContext) {
-                console.log("go2");
-                console.log(foreignContext);
-
+                // the mapping we need for Select2
                 const localContext = {
                     "id": "@id",
                     "text": "http://schema.org/name"
                 };
-                let jsonld = new JSONLD(foreignContext, localContext);
 
                 $(that.shadowRoot.querySelector('#person-select')).select2({
                     minimumInputLength: 2,
@@ -50,7 +41,7 @@ class PersonSelect extends LitElement {
                     dropdownParent: $(that.shadowRoot.querySelector('#person-select-dropdown')),
                     ajax: {
                         delay: 250,
-                        url: utils.getAPiUrl("/people"),
+                        url: apiUrl,
                         contentType: "application/ld+json",
                         data: function (params) {
                             return {
@@ -61,7 +52,7 @@ class PersonSelect extends LitElement {
                         processResults: function (data) {
                             console.log(data);
 
-                            const results = jsonld.transformResult(data);
+                            const results = jsonld.transformMembers(data, localContext);
 
                             console.log("results");
                             console.log(results);
