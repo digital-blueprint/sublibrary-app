@@ -3,6 +3,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
 import copy from 'rollup-plugin-copy';
 import {terser} from "rollup-plugin-terser";
+import json from 'rollup-plugin-json';
 
 export default {
     input: 'index.js',
@@ -13,6 +14,7 @@ export default {
     plugins: [
         resolve(),
         commonjs(),
+        json(),
         postcss({
             inject: false,
             minimize: false,
