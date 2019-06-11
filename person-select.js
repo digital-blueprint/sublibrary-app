@@ -14,12 +14,10 @@ class PersonSelect extends LitElement {
     constructor() {
         super();
         this.lang = 'de';
-        this.prop1 = 'Person';
     }
 
     static get properties() {
         return {
-            prop1: { type: String },
             lang: { type: String },
         };
     }
@@ -85,7 +83,6 @@ class PersonSelect extends LitElement {
                     width: 100%;
                 }
             </style>
-            <h1>${this.prop1}</h1>
 
             <!-- https://select2.org-->
             <b>${i18n.t('person-select.headline')}</b>
