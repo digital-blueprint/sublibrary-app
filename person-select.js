@@ -34,6 +34,7 @@ class PersonSelect extends LitElement {
             JSONLD.initialize(utils.getAPiUrl(), function (jsonld) {
                 // find the correct api url for a person
                 const apiUrl = jsonld.getApiUrlForIdentifier("http://schema.org/Person");
+                // const apiUrl = jsonld.getApiUrlForEntityName("Event");
 
                 // the mapping we need for Select2
                 const localContext = {

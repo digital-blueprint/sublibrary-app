@@ -79,11 +79,19 @@ module.exports = class JSONLD {
 
     getEntityForIdentifier(identifier) {
         let entityName = this.getEntityNameForIdentifier(identifier);
+        return this.getEntityForEntityName(entityName);
+    }
+
+    getEntityForEntityName(entityName) {
         return this.entities[entityName];
     }
 
     getApiUrlForIdentifier(identifier) {
         return this.getEntityForIdentifier(identifier)["@entryPoint"];
+    }
+
+    getApiUrlForEntityName(entityName) {
+        return this.getEntityForEntityName(entityName)["@entryPoint"];
     }
 
     getEntityNameForIdentifier(identifier) {
