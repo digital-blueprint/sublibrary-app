@@ -1,5 +1,10 @@
 "use strict";
 
+let instances = {};
+let successFunctions = {};
+let failureFunctions = {};
+let initStarted = {};
+
 module.exports = class JSONLD {
     constructor(baseApiUrl, entities) {
         this.entities = entities;
@@ -15,8 +20,31 @@ module.exports = class JSONLD {
     }
 
     static initialize(apiUrl, successFnc, failureFnc) {
+        // if init api call was already successfully finished execute the success function
+        if (instances[apiUrl] !== undefined) {
+            if (typeof successFnc == 'function') successFnc(instances[apiUrl]);
+
+            return;
+        }
+
+        // init the arrays
+        if (successFunctions[apiUrl] === undefined) successFunctions[apiUrl] = [];
+        if (failureFunctions[apiUrl] === undefined) failureFunctions[apiUrl] = [];
+
+        // add success and failure functions
+        if (typeof successFnc == 'function') successFunctions[apiUrl].push(successFnc);
+        if (typeof failureFnc == 'function') failureFunctions[apiUrl].push(failureFnc);
+
+        // check if api call was already started
+        if (initStarted[apiUrl] !== undefined) {
+            return;
+        }
+
+        initStarted[apiUrl] = true;
+
         const xhr = new XMLHttpRequest();
         xhr.open("GET", apiUrl, true);
+
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const json = JSON.parse(xhr.responseText);
@@ -58,23 +86,34 @@ module.exports = class JSONLD {
                                 entities[entityName] = classData;
                             });
 
-                            // return a initialized JSONLD object
-                            if (typeof successFnc == 'function') successFnc(new JSONLD(baseUrl, entities));
+                            const instance = new JSONLD(baseUrl, entities);
+                            instances[apiUrl] = instance;
+
+                            // return the initialized JSONLD object
+                            for (const fnc of successFunctions[apiUrl]) if (typeof fnc == 'function') fnc(instance);
+                            successFunctions[apiUrl] = [];
                         } else {
-                            if (typeof failureFnc == 'function') failureFnc();
+                            for (const fnc of failureFunctions[apiUrl]) if (typeof fnc == 'function') fnc();
+                            failureFunctions[apiUrl] = [];
                         }
                     };
 
                     docXhr.send();
                 } else {
-                    if (typeof failureFnc == 'function') failureFnc();
+                    for (const fnc of failureFunctions[apiUrl]) if (typeof fnc == 'function') fnc();
+                    failureFunctions[apiUrl] = [];
                 }
             } else {
-                if (typeof failureFnc == 'function') failureFnc();
+                for (const fnc of failureFunctions[apiUrl]) if (typeof fnc == 'function') fnc();
+                failureFunctions[apiUrl] = [];
             }
         };
 
         xhr.send();
+    }
+
+    static getInstance(apiUrl) {
+        return instances[apiUrl];
     }
 
     getEntityForIdentifier(identifier) {

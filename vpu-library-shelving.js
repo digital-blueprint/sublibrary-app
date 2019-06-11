@@ -40,7 +40,12 @@ class LibraryShelving extends LitElement {
             </style>
             <h1>${this.prop1}</h1>
 
-            <vpu-library-person-select lang="${this.lang}"></vpu-library-person-select>
+            <p>
+                <vpu-library-person-select lang="${this.lang}"></vpu-library-person-select>
+            </p>
+            <p>
+                <vpu-library-book-offer-select lang="${this.lang}"></vpu-library-book-offer-select>
+            </p>
         `;
     }
 }

@@ -2,5 +2,9 @@
   "person-select": {
     "headline": "Person",
     "placeholder": "Bitte wählen Sie eine Person aus"
+  },
+  "library-book-offer-select": {
+    "headline": "Bibliothek Buch",
+    "placeholder": "Bitte wählen Sie ein Buch aus"
   }
 }
