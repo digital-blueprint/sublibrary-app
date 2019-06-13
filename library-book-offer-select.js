@@ -30,9 +30,8 @@ class LibraryBookOfferSelect extends LitElement {
             const that = this;
 
             JSONLD.initialize(utils.getAPiUrl(), function (jsonld) {
-                // find the correct api url for a person
-                const apiUrl = jsonld.getApiUrlForIdentifier("http://schema.org/Person");
-                // const apiUrl = jsonld.getApiUrlForEntityName("Event");
+                // find the correct api url for a library book offer
+                const apiUrl = jsonld.getApiUrlForEntityName("LibraryBookOffer");
 
                 // the mapping we need for Select2
                 const localContext = {
@@ -42,7 +41,7 @@ class LibraryBookOfferSelect extends LitElement {
 
                 $(that.shadowRoot.querySelector('#library-book-offer-select')).select2({
                     language: that.lang === "de" ? select2LangDe() : select2LangEn(),
-                    minimumInputLength: 2,
+                    minimumInputLength: 3,
                     placeholder: i18n.t('library-book-offer-select.placeholder'),
                     dropdownParent: $(that.shadowRoot.querySelector('#library-book-offer-select-dropdown')),
                     ajax: {
@@ -51,8 +50,7 @@ class LibraryBookOfferSelect extends LitElement {
                         contentType: "application/ld+json",
                         data: function (params) {
                             return {
-                                search: params.term,
-                                'library-only': 1
+                                barcode: params.term
                             };
                         },
                         processResults: function (data) {

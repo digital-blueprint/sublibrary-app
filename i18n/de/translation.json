@@ -5,6 +5,6 @@
   },
   "library-book-offer-select": {
     "headline": "Bibliothek Buch",
-    "placeholder": "Bitte wählen Sie ein Buch aus"
+    "placeholder": "Bitte geben Sie einen Barcode ein"
   }
 }
