@@ -42,6 +42,7 @@ class LibraryBookOfferSelect extends LitElement {
                 $(that.shadowRoot.querySelector('#library-book-offer-select')).select2({
                     language: that.lang === "de" ? select2LangDe() : select2LangEn(),
                     minimumInputLength: 3,
+                    maximumSelectionLength: 1,
                     placeholder: i18n.t('library-book-offer-select.placeholder'),
                     dropdownParent: $(that.shadowRoot.querySelector('#library-book-offer-select-dropdown')),
                     ajax: {
@@ -84,7 +85,7 @@ class LibraryBookOfferSelect extends LitElement {
 
             <!-- https://select2.org-->
             <b>${i18n.t('library-book-offer-select.headline')}</b>
-            <select id="library-book-offer-select" name="person"></select>
+            <select id="library-book-offer-select" multiple="multiple" name="person"></select>
             <div id="library-book-offer-select-dropdown"></div>
         `;
     }
