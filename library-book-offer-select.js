@@ -71,6 +71,7 @@ class LibraryBookOfferSelect extends LitElement {
                 }).on("select2:select", function(e) {
                     // set value of custom element select
                     $that.attr("value", e.params.data.id);
+                    $that.val(e.params.data.id);
 
                     // fire a change event
                     that.dispatchEvent(new CustomEvent('change', {

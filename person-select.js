@@ -72,6 +72,7 @@ class PersonSelect extends LitElement {
                 }).on("select2:select", function(e) {
                     // set value custom element
                     $that.attr("value", e.params.data.id);
+                    $that.val(e.params.data.id);
 
                     // fire a change event
                     that.dispatchEvent(new CustomEvent('change', {
