@@ -6,5 +6,11 @@
   "library-book-offer-select": {
     "headline": "Library book",
     "placeholder": "Please enter a barcode"
-  }
+  },
+  "location-identifier": {
+    "headline": "Identifier",
+    "placeholder": "Please enter the identifier to place the book",
+    "submit": "Send"
+  },
+  "success-message": "Book location was set."
 }

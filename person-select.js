@@ -4,12 +4,13 @@ import select2 from 'select2';
 import select2LangDe from './i18n/de/select2'
 import select2LangEn from './i18n/en/select2'
 import JSONLD from './jsonld.js';
-import {html, LitElement} from 'lit-element';
+import {html} from 'lit-element';
 import {i18n, dateTimeFormat, numberFormat} from './i18n.js';
+import VPULitElement from "./vpu-lit-element";
 
 select2(window, $);
 
-class PersonSelect extends LitElement {
+class PersonSelect extends VPULitElement {
 
     constructor() {
         super();
@@ -41,11 +42,11 @@ class PersonSelect extends LitElement {
                     "text": "http://schema.org/name"
                 };
 
-                $(that.shadowRoot.querySelector('#person-select')).select2({
+                that.$('#person-select').select2({
                     language: that.lang === "de" ? select2LangDe() : select2LangEn(),
                     minimumInputLength: 2,
                     placeholder: i18n.t('person-select.placeholder'),
-                    dropdownParent: $(that.shadowRoot.querySelector('#person-select-dropdown')),
+                    dropdownParent: that.$('#person-select-dropdown'),
                     ajax: {
                         delay: 250,
                         url: apiUrl,
