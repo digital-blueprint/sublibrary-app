@@ -28,6 +28,7 @@ class PersonSelect extends LitElement {
 
         this.updateComplete.then(()=>{
             const that = this;
+            const $that = $(this);
 
             JSONLD.initialize(utils.getAPiUrl(), function (jsonld) {
                 // find the correct api url for a person
@@ -68,6 +69,17 @@ class PersonSelect extends LitElement {
                             };
                         }
                     }
+                }).on("select2:select", function(e) {
+                    // set value custom element
+                    $that.attr("value", e.params.data.id);
+
+                    // fire a change event
+                    that.dispatchEvent(new CustomEvent('change', {
+                        detail: {
+                            value: e.params.data.id,
+                        },
+                        bubbles: true
+                    }));
                 });
             });
         })
