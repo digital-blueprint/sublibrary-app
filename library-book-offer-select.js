@@ -28,6 +28,7 @@ class LibraryBookOfferSelect extends LitElement {
 
         this.updateComplete.then(()=>{
             const that = this;
+            const $that = $(this);
 
             JSONLD.initialize(utils.getAPiUrl(), function (jsonld) {
                 // find the correct api url for a library book offer
@@ -67,6 +68,17 @@ class LibraryBookOfferSelect extends LitElement {
                             };
                         }
                     }
+                }).on("select2:select", function(e) {
+                    // set value of custom element select
+                    $that.attr("value", e.params.data.id);
+
+                    // fire a change event
+                    that.dispatchEvent(new CustomEvent('change', {
+                        detail: {
+                            value: e.params.data.id,
+                        },
+                        bubbles: true
+                    }));
                 });
             });
         })
