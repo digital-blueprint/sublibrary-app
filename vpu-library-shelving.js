@@ -29,9 +29,8 @@ class LibraryShelving extends VPULitElement {
 
             // show location identifier block if book offer was selected
             $bookOfferSelect.change(function () {
-                // TODO: show current location identifier
-                // TODO: set book offer in data attribute
-                // $locationIdentifierInput.val()
+                const bookOffer = $(this).data("object");
+                $locationIdentifierInput.val(bookOffer.locationIdentifier).trigger("input");
 
                 that.$('#location-identifier-block').show();
             });
@@ -55,16 +54,23 @@ class LibraryShelving extends VPULitElement {
                 console.log(data);
                 console.log(JSON.stringify(data));
 
+                // disable send button to wait until ajax request was finished (or errored)
+                that.$("#send").prop("disabled", true);
+
                 $.ajax({
                     url: apiUrl,
                     type: 'PUT',
                     contentType: 'application/json',
                     data: JSON.stringify(data),
                     success: function(data) {
+                        // TODO: better success handling
                         alert(i18n.t('success-message'));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         error(textStatus);
+                    },
+                    complete: function (jqXHR, textStatus, errorThrown) {
+                        that.$("#send").prop("disabled", false);
                     }
                 });
             });

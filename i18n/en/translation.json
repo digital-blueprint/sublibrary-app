@@ -8,7 +8,7 @@
     "placeholder": "Please enter a barcode"
   },
   "location-identifier": {
-    "headline": "Identifier",
+    "headline": "Identifier for book placement",
     "placeholder": "Please enter the identifier to place the book",
     "submit": "Send"
   },

@@ -8,7 +8,7 @@
     "placeholder": "Bitte geben Sie einen Barcode ein"
   },
   "location-identifier": {
-    "headline": "Identifikator",
+    "headline": "Identifikator zur Aufstellung",
     "placeholder": "Bitte geben Sie den Identifikator um das Buch aufzustellen ein",
     "submit": "Abschicken"
   },

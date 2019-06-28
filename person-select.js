@@ -30,6 +30,7 @@ class PersonSelect extends VPULitElement {
         this.updateComplete.then(()=>{
             const that = this;
             const $that = $(this);
+            let lastResult = {};
 
             JSONLD.initialize(utils.getAPiUrl(), function (jsonld) {
                 // find the correct api url for a person
@@ -59,6 +60,7 @@ class PersonSelect extends VPULitElement {
                         },
                         processResults: function (data) {
                             console.log(data);
+                            lastResult = data;
 
                             const results = jsonld.transformMembers(data, localContext);
 
@@ -72,13 +74,17 @@ class PersonSelect extends VPULitElement {
                     }
                 }).on("select2:select", function(e) {
                     // set value custom element
-                    $that.attr("value", e.params.data.id);
-                    $that.val(e.params.data.id);
+                    const identifier = e.params.data.id;
+                    $that.attr("value", identifier);
+                    $that.val(identifier);
+
+                    const object = utils.findObjectInApiResults(identifier, lastResult);
+                    $that.attr("data-object", JSON.stringify(object));
 
                     // fire a change event
                     that.dispatchEvent(new CustomEvent('change', {
                         detail: {
-                            value: e.params.data.id,
+                            value: identifier,
                         },
                         bubbles: true
                     }));

@@ -56,5 +56,22 @@ module.exports = {
         const protocol = pathArray[0];
         const host = pathArray[2];
         return protocol + '//' + host;
+    },
+
+    /**
+     * Finds an object in a JSON result by identifier
+     *
+     * @param identifier
+     * @param results
+     * @param identifierAttribute
+     */
+    findObjectInApiResults: function(identifier, results, identifierAttribute = "@id") {
+        const members = results["hydra:member"];
+
+        for (const object of members){
+            if (object[identifierAttribute] === identifier) {
+                return object;
+            }
+        }
     }
 };
