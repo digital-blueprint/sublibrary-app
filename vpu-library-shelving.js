@@ -29,6 +29,10 @@ class LibraryShelving extends VPULitElement {
 
             // show location identifier block if book offer was selected
             $bookOfferSelect.change(function () {
+                console.log("change");
+                console.log($bookOfferSelect.val());
+                console.log($bookOfferSelect.attr("value"));
+                console.log($bookOfferSelect.prop("value"));
                 const bookOffer = $(this).data("object");
                 $locationIdentifierInput.val(bookOffer.locationIdentifier).trigger("input");
 
@@ -86,10 +90,13 @@ class LibraryShelving extends VPULitElement {
             <h1>${this.prop1}</h1>
 
             <p>
+                <vpu-auth lang="${this.lang}"></vpu-auth>
+            </p>
+            <p>
                 <vpu-library-person-select lang="${this.lang}"></vpu-library-person-select>
             </p>
             <p>
-                <vpu-library-book-offer-select lang="${this.lang}"></vpu-library-book-offer-select>
+                <vpu-library-book-offer-select lang="${this.lang}" value="123" fipsi="faps"></vpu-library-book-offer-select>
             </p>
             <div id="location-identifier-block">
                 <p>

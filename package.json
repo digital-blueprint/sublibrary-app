@@ -11,6 +11,7 @@
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-terser": "^4.0.4",
     "rollup-plugin-json": "^4.0.0",
+    "rollup-plugin-replace": "^2.2.0",
     "i18next-scanner": "^2.10.2"
   },
   "dependencies": {
@@ -23,7 +24,10 @@
   "scripts": {
     "clean": "rm dist/*",
     "build": "rollup -c",
+    "build-dev": "rollup -c --environment BUILD:development",
+    "build-prod": "rollup -c --environment BUILD:production",
     "i18next": "i18next-scanner",
-    "watch": "rollup -c --watch"
+    "watch": "rollup -c --watch",
+    "watch-dev": "rollup -c --watch --environment BUILD:development"
   }
 }
