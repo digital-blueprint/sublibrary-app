@@ -96,7 +96,7 @@ class LibraryShelving extends VPULitElement {
                 <vpu-library-person-select lang="${this.lang}"></vpu-library-person-select>
             </p>
             <p>
-                <vpu-library-book-offer-select lang="${this.lang}" value="123" fipsi="faps"></vpu-library-book-offer-select>
+                <vpu-library-book-offer-select lang="${this.lang}"></vpu-library-book-offer-select>
             </p>
             <div id="location-identifier-block">
                 <p>
