@@ -52,6 +52,9 @@ class PersonSelect extends VPULitElement {
                         delay: 250,
                         url: apiUrl,
                         contentType: "application/ld+json",
+                        beforeSend: function( jqXHR ) {
+                            jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
+                        },
                         data: function (params) {
                             return {
                                 search: params.term,

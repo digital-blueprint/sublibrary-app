@@ -65,6 +65,9 @@ class LibraryShelving extends VPULitElement {
                     url: apiUrl,
                     type: 'PUT',
                     contentType: 'application/json',
+                    beforeSend: function( jqXHR ) {
+                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
+                    },
                     data: JSON.stringify(data),
                     success: function(data) {
                         // TODO: better success handling

@@ -1,16 +1,33 @@
 import {i18n} from './i18n.js';
 import {html, LitElement} from 'lit-element';
 
+/**
+ * Keycloak auth web component
+ * https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter
+ *
+ * Sets some global variables:
+ *   window.VPUAuthSubject: Keycloak username
+ *   window.VPUAuthToken: Keycloak token to send with your requests
+ *   window.VPUUserFullName: Full name of the user
+ */
 class VPUAuth extends LitElement {
     constructor() {
         super();
         this.lang = 'de';
         this.keyCloakInitCalled = false;
+        this._keycloak = null;
+        this.token = "";
+        this.subject = "";
+        this.name = "";
     }
 
     static get properties() {
         return {
             lang: { type: String },
+            name: { type: String, attribute: false },
+            token: { type: String, attribute: false },
+            subject: { type: String, attribute: false },
+            keycloak: { type: Object, attribute: false },
         };
     }
 
@@ -26,10 +43,7 @@ class VPUAuth extends LitElement {
 
     loadKeyCloak() {
         const that = this;
-
-        window.console.log("loadKeyCloak");
         console.log("loadKeyCloak");
-        console.log(this.keyCloakInitCalled);
 
         if (!this.keyCloakInitCalled) {
             const script = document.createElement('script');
@@ -38,26 +52,26 @@ class VPUAuth extends LitElement {
             script.onload = function () {
                 that.keyCloakInitCalled = true;
 
-                const keycloak = Keycloak({
+                that._keycloak = Keycloak({
                     url: 'https://auth-dev.tugraz.at/auth',
                     realm: 'tugraz',
                     // TODO: make this a property
                     clientId: 'auth-dev-mw-frontend',
                 });
-                keycloak.init({onLoad: 'login-required'}).success(function (authenticated) {
-                    console.log(authenticated ? 'authenticated!' : 'not authenticated!');
+                that._keycloak.init({onLoad: 'login-required'}).success(function (authenticated) {
+                    console.log(authenticated ? 'authenticated' : 'not authenticated!');
+                    console.log(that._keycloak);
 
-                    // TODO: get keycloak instance
-                    console.log(keycloak.idTokenParsed);
-                    console.log(keycloak.idTokenParsed.perferred_username);
+                    that.name = that._keycloak.idTokenParsed.name;
+                    that.token = that._keycloak.token;
+                    that.subject = that._keycloak.subject;
+
+                    window.VPUAuthSubject = that._keycloak.subject;
+                    window.VPUAuthToken = that._keycloak.token;
+                    window.VPUUserFullName = that._keycloak.idTokenParsed.name;
                 }).error(function () {
                     console.log('failed to initialize');
                 });
-
-                // TODO: use this
-                console.log(keycloak);
-                console.log(keycloak.idTokenParsed);
-                console.log(keycloak.idTokenParsed.perferred_username);
             };
 
             // https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_a
@@ -68,11 +82,15 @@ class VPUAuth extends LitElement {
         }
     }
 
+    logout(e) {
+        this._keycloak.logout();
+    }
+
     render() {
-        // TODO: implement logout button
         return html`
             <strong>VPU Auth</strong><br />
-            <button>Logout</button>
+            <p>name: ${this.name}</p>
+            <button @click="${this.logout}">Logout</button>
         `;
     }
 }
