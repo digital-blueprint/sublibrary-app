@@ -14,6 +14,7 @@ class VPUAuth extends LitElement {
     constructor() {
         super();
         this.lang = 'de';
+        this.clientId = "";
         this.keyCloakInitCalled = false;
         this._keycloak = null;
         this.token = "";
@@ -24,6 +25,7 @@ class VPUAuth extends LitElement {
     static get properties() {
         return {
             lang: { type: String },
+            clientId: { type: String, attribute: 'client-id' },
             name: { type: String, attribute: false },
             token: { type: String, attribute: false },
             subject: { type: String, attribute: false },
@@ -55,8 +57,7 @@ class VPUAuth extends LitElement {
                 that._keycloak = Keycloak({
                     url: 'https://auth-dev.tugraz.at/auth',
                     realm: 'tugraz',
-                    // TODO: make this a property
-                    clientId: 'auth-dev-mw-frontend',
+                    clientId: that.clientId,
                 });
                 that._keycloak.init({onLoad: 'login-required'}).success(function (authenticated) {
                     console.log(authenticated ? 'authenticated' : 'not authenticated!');
