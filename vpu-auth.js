@@ -20,6 +20,9 @@ class VPUAuth extends LitElement {
         this.token = "";
         this.subject = "";
         this.name = "";
+
+        // Create the event
+        this.initEvent = new CustomEvent("vpu-auth-init", { "detail": "KeyCloak init event" });
     }
 
     static get properties() {
@@ -70,6 +73,8 @@ class VPUAuth extends LitElement {
                     window.VPUAuthSubject = that._keycloak.subject;
                     window.VPUAuthToken = that._keycloak.token;
                     window.VPUUserFullName = that._keycloak.idTokenParsed.name;
+
+                    document.dispatchEvent(that.initEvent);
                 }).error(function () {
                     console.log('failed to initialize');
                 });
