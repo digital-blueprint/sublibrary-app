@@ -62,22 +62,32 @@ class VPUAuth extends LitElement {
                     realm: 'tugraz',
                     clientId: that.clientId,
                 });
+
                 that._keycloak.init({onLoad: 'login-required'}).success(function (authenticated) {
                     console.log(authenticated ? 'authenticated' : 'not authenticated!');
                     console.log(that._keycloak);
 
-                    that.name = that._keycloak.idTokenParsed.name;
-                    that.token = that._keycloak.token;
-                    that.subject = that._keycloak.subject;
+                    that.updateKeycloakData();
 
-                    window.VPUAuthSubject = that._keycloak.subject;
-                    window.VPUAuthToken = that._keycloak.token;
-                    window.VPUUserFullName = that._keycloak.idTokenParsed.name;
-
+                    // dispatch init event
                     document.dispatchEvent(that.initEvent);
                 }).error(function () {
                     console.log('failed to initialize');
                 });
+
+                // auto-refresh token
+                that._keycloak.onTokenExpired = function() {
+                    that._keycloak.updateToken(5).success(function(refreshed) {
+                        if (refreshed) {
+                            console.log('Token was successfully refreshed');
+                            that.updateKeycloakData();
+                        } else {
+                            console.log('Token is still valid');
+                        }
+                    }).error(function() {
+                        console.log('Failed to refresh the token, or the session has expired');
+                    });
+                }
             };
 
             // https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_a
@@ -90,6 +100,16 @@ class VPUAuth extends LitElement {
 
     logout(e) {
         this._keycloak.logout();
+    }
+
+    updateKeycloakData() {
+        this.name = this._keycloak.idTokenParsed.name;
+        this.token = this._keycloak.token;
+        this.subject = this._keycloak.subject;
+
+        window.VPUAuthSubject = this._keycloak.subject;
+        window.VPUAuthToken = this._keycloak.token;
+        window.VPUUserFullName = this._keycloak.idTokenParsed.name;
     }
 
     render() {
