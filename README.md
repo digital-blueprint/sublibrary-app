@@ -16,6 +16,8 @@ cd dist; php -S localhost:8001
 
 Jump to <http://localhost:8001> and you should get a Single Sign On login page.
 
+Example book barcodes: `+F55555`, `+F123456`, `+F1234567`
+
 
 ## Remote development
 
