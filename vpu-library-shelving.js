@@ -93,7 +93,7 @@ class LibraryShelving extends VPULitElement {
             <h1>${this.prop1}</h1>
 
             <p>
-                <vpu-auth lang="${this.lang}" client-id="auth-dev-mw-frontend"></vpu-auth>
+                <vpu-auth lang="${this.lang}" client-id="${utils.getKeyCloakClientId()}"></vpu-auth>
             </p>
             <p>
                 <vpu-library-person-select lang="${this.lang}"></vpu-library-person-select>

@@ -1,7 +1,7 @@
 const vars = require("./vars");
 
 module.exports = {
-    getAssetURL: function (path) {
+    getAssetURL: (path) => {
         const elm = document.getElementById('vpu-library-shelving-wc-src');
         if (!elm)
             return path;
@@ -22,7 +22,7 @@ module.exports = {
      *
      * @param header
      */
-    parseLinkHeader: function (header) {
+    parseLinkHeader: (header) => {
         if (header.length === 0) {
             throw new Error("input must not be of zero length");
         }
@@ -51,7 +51,7 @@ module.exports = {
      * @param url
      * @returns {string}
      */
-    parseBaseUrl: function (url) {
+    parseBaseUrl: (url) => {
         const pathArray = url.split('/');
         const protocol = pathArray[0];
         const host = pathArray[2];
@@ -65,7 +65,7 @@ module.exports = {
      * @param results
      * @param identifierAttribute
      */
-    findObjectInApiResults: function(identifier, results, identifierAttribute = "@id") {
+    findObjectInApiResults: (identifier, results, identifierAttribute = "@id") => {
         const members = results["hydra:member"];
 
         for (const object of members){
@@ -73,5 +73,7 @@ module.exports = {
                 return object;
             }
         }
-    }
+    },
+
+    getKeyCloakClientId: () => { return vars.keyCloakClientId }
 };

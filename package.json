@@ -23,11 +23,13 @@
   },
   "scripts": {
     "clean": "rm dist/*",
-    "build": "rollup -c",
+    "build": "npm run build-local",
+    "build-local": "rollup -c",
     "build-dev": "rollup -c --environment BUILD:development",
     "build-prod": "rollup -c --environment BUILD:production",
     "i18next": "i18next-scanner",
-    "watch": "rollup -c --watch",
+    "watch": "npm run watch-local",
+    "watch-local": "rollup -c --watch",
     "watch-dev": "rollup -c --watch --environment BUILD:development"
   }
 }
