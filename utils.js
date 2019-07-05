@@ -75,5 +75,11 @@ module.exports = {
         }
     },
 
-    getKeyCloakClientId: () => { return vars.keyCloakClientId }
+    /**
+     * Reads a setting
+     *
+     * @param key
+     * @returns {*}
+     */
+    setting: (key) => vars[key]
 };
