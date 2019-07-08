@@ -5,7 +5,7 @@ import {html, LitElement} from 'lit-element';
  * Keycloak auth web component
  * https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter
  *
- * Sets some global variables:
+ * Fires an event `vpu-auth-init` and sets some global variables:
  *   window.VPUAuthSubject: Keycloak username
  *   window.VPUAuthToken: Keycloak token to send with your requests
  *   window.VPUUserFullName: Full name of the user
