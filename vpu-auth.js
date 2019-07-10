@@ -110,6 +110,8 @@ class VPUAuth extends LitElement {
         window.VPUAuthSubject = this._keycloak.subject;
         window.VPUAuthToken = this._keycloak.token;
         window.VPUUserFullName = this._keycloak.idTokenParsed.name;
+
+        console.log("Bearer " + this.token);
     }
 
     render() {
