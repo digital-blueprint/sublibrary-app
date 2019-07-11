@@ -13,5 +13,5 @@
     "submit": "Abschicken"
   },
   "success-message": "Buch wurde erfolgreich aufgestellt.",
-  "error-permission-message": "Sie müssen Bibliotheksbeauftragter sein um Bücher aufstellen zu können!"
+  "error-permission-message": "Sie müssen Bibliotheksbeauftragte/r sein um Bücher aufstellen zu können!"
 }
