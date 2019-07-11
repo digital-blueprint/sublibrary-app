@@ -166,9 +166,16 @@ class VPUAuth extends LitElement {
 
     render() {
         return html`
-            <strong>VPU Auth</strong><br />
-            <p>name: ${this.name}</p>
-            <button @click="${this.logout}">Logout</button>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+
+            <div class="columns is-vcentered"">
+                <div class="column">
+                    ${this.name}
+                </div>
+                <div class="column">
+                    <button @click="${this.logout}" class="button">Logout</button>
+                </div>
+            </div>
         `;
     }
 }

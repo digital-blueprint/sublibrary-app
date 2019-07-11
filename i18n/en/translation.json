@@ -13,5 +13,7 @@
     "submit": "Send"
   },
   "success-message": "Book location was set.",
-  "error-permission-message": "You need to be a library officer to shelve books!"
+  "error-permission-message": "You need to be a library officer to shelve books!",
+  "title": "Library shelving",
+  "subtitle": "Allows the shelving of books in the library"
 }

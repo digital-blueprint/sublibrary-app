@@ -100,6 +100,7 @@ class PersonSelect extends VPULitElement {
         const select2CSS = utils.getAssetURL('select2/css/select2.min.css');
 
         return html`
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
             <link rel="stylesheet" href="${select2CSS}">
             <style>
                 #person-select {
@@ -108,8 +109,7 @@ class PersonSelect extends VPULitElement {
             </style>
 
             <!-- https://select2.org-->
-            <b>${i18n.t('person-select.headline')}</b>
-            <select id="person-select" name="person"></select>
+            <select id="person-select" name="person" class="select"></select>
             <div id="person-select-dropdown"></div>
         `;
     }

@@ -8,12 +8,10 @@ class LibraryShelving extends VPULitElement {
     constructor() {
         super();
         this.lang = 'de';
-        this.prop1 = 'Person';
     }
 
     static get properties() {
         return {
-            prop1: { type: String },
             lang: { type: String },
         };
     }
@@ -99,31 +97,50 @@ class LibraryShelving extends VPULitElement {
                 #location-identifier-block, #permission-error-block { display: none; }
                 #location-identifier-block input { width: 100%; }
             </style>
-            <h1>${this.prop1}</h1>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
 
-            <p>
-                <vpu-auth lang="${this.lang}" client-id="${utils.setting('keyCloakClientId')}" load-person></vpu-auth>
-            </p>
-            <form>
-                <p>
-                    <vpu-library-person-select lang="${this.lang}"></vpu-library-person-select>
-                </p>
-                <p>
-                    <vpu-library-book-offer-select lang="${this.lang}"></vpu-library-book-offer-select>
-                </p>
-                <div id="location-identifier-block">
-                    <p>
-                        <b>${i18n.t('location-identifier.headline')}</b><br />
-                        <input id="location-identifier" type="text" placeholder="${i18n.t('location-identifier.placeholder')}">
-                    </p>
-                    <p>
-                        <button id="send" disabled="disabled">${i18n.t('location-identifier.submit')}</button>
-                    </p>
+            <header>
+                <div class="container">
+                    <vpu-auth lang="${this.lang}" client-id="${utils.setting('keyCloakClientId')}" load-person></vpu-auth>
                 </div>
-            </form>
-            <div id="permission-error-block">
-                ${i18n.t('error-permission-message')}
-            </div>
+            </header>
+
+            <section class="section">
+                <div class="container">
+                    <h1 class="title">${i18n.t('title')}</h1>
+                    <h2 class="subtitle">${i18n.t('subtitle')}</h2>
+                    <form>
+                        <div class="field">
+                            <label class="label">${i18n.t('person-select.headline')}</label>
+                            <div class="control">
+                                <vpu-library-person-select lang="${this.lang}"></vpu-library-person-select>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
+                            <div class="control">
+                                 <vpu-library-book-offer-select lang="${this.lang}"></vpu-library-book-offer-select>
+                            </div>
+                        </div>
+                        <div id="location-identifier-block">
+                            <div class="field">
+                                <label class="label">${i18n.t('location-identifier.headline')}</label>
+                                <div class="control">
+                                     <input class="input" id="location-identifier" type="text" placeholder="${i18n.t('location-identifier.placeholder')}">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                     <button class="button is-link" id="send" disabled="disabled">${i18n.t('location-identifier.submit')}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="notification is-danger" id="permission-error-block">
+                        ${i18n.t('error-permission-message')}
+                    </div>
+                </div>
+            </section>
         `;
     }
 }

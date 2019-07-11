@@ -99,6 +99,7 @@ class LibraryBookOfferSelect extends VPULitElement {
         const select2CSS = utils.getAssetURL('select2/css/select2.min.css');
 
         return html`
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
             <link rel="stylesheet" href="${select2CSS}">
             <style>
                 #library-book-offer-select {
@@ -107,8 +108,7 @@ class LibraryBookOfferSelect extends VPULitElement {
             </style>
 
             <!-- https://select2.org-->
-            <b>${i18n.t('library-book-offer-select.headline')}</b>
-            <select id="library-book-offer-select" multiple="multiple" name="person"></select>
+            <select id="library-book-offer-select" multiple="multiple" name="person" class="select"></select>
             <div id="library-book-offer-select-dropdown"></div>
         `;
     }
