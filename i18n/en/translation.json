@@ -12,5 +12,6 @@
     "placeholder": "Please enter the identifier to place the book",
     "submit": "Send"
   },
-  "success-message": "Book location was set."
+  "success-message": "Book location was set.",
+  "error-permission-message": "You need to be a library officer to shelve books!"
 }

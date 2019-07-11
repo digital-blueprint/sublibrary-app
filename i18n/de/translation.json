@@ -12,5 +12,6 @@
     "placeholder": "Bitte geben Sie den Identifikator um das Buch aufzustellen ein",
     "submit": "Abschicken"
   },
-  "success-message": "Buch wurde erfolgreich aufgestellt."
+  "success-message": "Buch wurde erfolgreich aufgestellt.",
+  "error-permission-message": "Sie müssen Bibliotheksbeauftragter sein um Bücher aufstellen zu können!"
 }

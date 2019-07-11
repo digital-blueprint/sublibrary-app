@@ -9,6 +9,7 @@ import {html, LitElement} from 'lit-element';
  *   window.VPUAuthSubject: Keycloak username
  *   window.VPUAuthToken: Keycloak token to send with your requests
  *   window.VPUUserFullName: Full name of the user
+ *   window.VPUPersonId: Person identifier of the user
  */
 class VPUAuth extends LitElement {
     constructor() {
@@ -110,6 +111,7 @@ class VPUAuth extends LitElement {
         window.VPUAuthSubject = this._keycloak.subject;
         window.VPUAuthToken = this._keycloak.token;
         window.VPUUserFullName = this._keycloak.idTokenParsed.name;
+        window.VPUPersonId = this._keycloak.idTokenParsed.preferred_username;
 
         console.log("Bearer " + this.token);
     }
