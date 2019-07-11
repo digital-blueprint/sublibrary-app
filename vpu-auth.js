@@ -73,7 +73,7 @@ class VPUAuth extends LitElement {
                     // dispatch init event
                     document.dispatchEvent(that.initEvent);
                 }).error(function () {
-                    console.log('failed to initialize');
+                    console.log('Failed to initialize');
                 });
 
                 // auto-refresh token
