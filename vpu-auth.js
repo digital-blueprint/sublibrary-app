@@ -1,38 +1,50 @@
 import {i18n} from './i18n.js';
 import {html, LitElement} from 'lit-element';
+import JSONLD from "./jsonld";
+import utils from "./utils";
 
 /**
  * Keycloak auth web component
  * https://www.keycloak.org/docs/latest/securing_apps/index.html#_javascript_adapter
  *
- * Fires an event `vpu-auth-init` and sets some global variables:
+ * Dispatches an event `vpu-auth-init` and sets some global variables:
  *   window.VPUAuthSubject: Keycloak username
  *   window.VPUAuthToken: Keycloak token to send with your requests
  *   window.VPUUserFullName: Full name of the user
  *   window.VPUPersonId: Person identifier of the user
+ *   window.VPUPerson: Person json object of the user (optional, enable by setting the `load-person` attribute,
+ *                     which will dispatch a `vpu-auth-person-init` event when loaded)
  */
 class VPUAuth extends LitElement {
     constructor() {
         super();
         this.lang = 'de';
+        this.loadPerson = false;
         this.clientId = "";
         this.keyCloakInitCalled = false;
         this._keycloak = null;
         this.token = "";
         this.subject = "";
         this.name = "";
+        this.personId = "";
 
-        // Create the event
+        // Create the init event
         this.initEvent = new CustomEvent("vpu-auth-init", { "detail": "KeyCloak init event" });
+        this.personInitEvent = new CustomEvent("vpu-auth-person-init", { "detail": "KeyCloak person init event" });
     }
 
+    /**
+     * See: https://lit-element.polymer-project.org/guide/properties#initialize
+     */
     static get properties() {
         return {
             lang: { type: String },
+            loadPerson: { type: Boolean, attribute: 'load-person' },
             clientId: { type: String, attribute: 'client-id' },
             name: { type: String, attribute: false },
             token: { type: String, attribute: false },
             subject: { type: String, attribute: false },
+            personId: { type: String, attribute: false },
             keycloak: { type: Object, attribute: false },
         };
     }
@@ -52,6 +64,7 @@ class VPUAuth extends LitElement {
         console.log("loadKeyCloak");
 
         if (!this.keyCloakInitCalled) {
+            // inject Keycloak javascript file
             const script = document.createElement('script');
             script.type = 'text/javascript';
             script.async = true;
@@ -69,9 +82,29 @@ class VPUAuth extends LitElement {
                     console.log(that._keycloak);
 
                     that.updateKeycloakData();
+                    that.dispatchInitEvent();
 
-                    // dispatch init event
-                    document.dispatchEvent(that.initEvent);
+                    if (that.loadPerson) {
+                        JSONLD.initialize(utils.getAPiUrl(), (jsonld) => {
+                            // find the correct api url for the current person
+                            // we are fetching the logged-in person directly to respect the REST philosophy
+                            // see: https://github.com/api-platform/api-platform/issues/337
+                            const apiUrl = jsonld.getApiUrlForEntityName("Person") + '/' + that.personId;
+
+                            fetch(apiUrl, {
+                                headers: {
+                                    'Content-Type': 'application/ld+json',
+                                    'Authorization': 'Bearer ' + that.token,
+                                },
+                            })
+                            .then(response => response.json())
+                            .then((person) => {
+                                window.VPUPerson = person;
+                                that.dispatchPersonInitEvent();
+                            });
+                        });
+                    }
+
                 }).error(function () {
                     console.log('Failed to initialize');
                 });
@@ -103,15 +136,30 @@ class VPUAuth extends LitElement {
         this._keycloak.logout();
     }
 
+    /**
+     * Dispatches the init event
+     */
+    dispatchInitEvent() {
+        document.dispatchEvent(this.initEvent);
+    }
+
+    /**
+     * Dispatches the person init event
+     */
+    dispatchPersonInitEvent() {
+        document.dispatchEvent(this.personInitEvent);
+    }
+
     updateKeycloakData() {
         this.name = this._keycloak.idTokenParsed.name;
         this.token = this._keycloak.token;
         this.subject = this._keycloak.subject;
+        this.personId = this._keycloak.idTokenParsed.preferred_username;
 
-        window.VPUAuthSubject = this._keycloak.subject;
-        window.VPUAuthToken = this._keycloak.token;
-        window.VPUUserFullName = this._keycloak.idTokenParsed.name;
-        window.VPUPersonId = this._keycloak.idTokenParsed.preferred_username;
+        window.VPUAuthSubject = this.subject;
+        window.VPUAuthToken = this.token;
+        window.VPUUserFullName = this.name;
+        window.VPUPersonId = this.personId;
 
         console.log("Bearer " + this.token);
     }
