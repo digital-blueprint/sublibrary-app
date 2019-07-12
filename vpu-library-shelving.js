@@ -122,6 +122,11 @@ class LibraryShelving extends VPULitElement {
                                  <vpu-library-book-offer-select lang="${this.lang}"></vpu-library-book-offer-select>
                             </div>
                         </div>
+                        <div class="field">
+                            <div class="notification is-info">
+                                Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>
+                            </div>
+                        </div>
                         <div id="location-identifier-block">
                             <div class="field">
                                 <label class="label">${i18n.t('location-identifier.headline')}</label>
