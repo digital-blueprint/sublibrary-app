@@ -27,7 +27,7 @@ class LibraryShelving extends VPULitElement {
 
             // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
             document.addEventListener("vpu-auth-person-init", () => {
-                if (window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') === -1) {
+                if (!Array.isArray(window.VPUPerson.roles) || window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') === -1) {
                     // TODO: implement overlay with error message, we currently cannot hide the form because select2 doesn't seem to initialize properly if the web-component is invisible
                     that.$('#permission-error-block').show();
                     that.$('form').hide();
