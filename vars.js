@@ -19,7 +19,7 @@ switch(process.env.BUILD) {
     default:
         module.exports = {
             apiBaseUrl: 'http://127.0.0.1:8000',
-            apiUrlPrefix: '/api',
+            apiUrlPrefix: '',
             keyCloakClientId: 'auth-dev-mw-frontend-local',
         };
 }
