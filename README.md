@@ -24,3 +24,11 @@ Example book barcodes: `+F55555`, `+F123456`, `+F1234567`
 <https://mw-frontend-dev.tugraz.at/vpu-library-shelving/>
 
 Run `npm run watch-dev` to build the `dist/bundle.js` constantly and upload the `dist` folder to the server.
+
+## Demo system
+
+Build bundle for demo server
+
+```bash
+npm run build-demo
+```
