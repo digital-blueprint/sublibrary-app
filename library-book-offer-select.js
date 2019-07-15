@@ -43,6 +43,7 @@ class LibraryBookOfferSelect extends VPULitElement {
                 };
 
                 that.$('#library-book-offer-select').select2({
+                    width: '100%',
                     language: that.lang === "de" ? select2LangDe() : select2LangEn(),
                     minimumInputLength: 3,
                     maximumSelectionLength: 1,

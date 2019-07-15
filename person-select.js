@@ -44,6 +44,7 @@ class PersonSelect extends VPULitElement {
                 };
 
                 that.$('#person-select').select2({
+                    width: '100%',
                     language: that.lang === "de" ? select2LangDe() : select2LangEn(),
                     minimumInputLength: 2,
                     placeholder: i18n.t('person-select.placeholder'),
