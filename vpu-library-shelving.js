@@ -52,7 +52,8 @@ class LibraryShelving extends VPULitElement {
             });
 
             // update the book offer with location identifier
-            that.$('#send').click(function () {
+            that.$('#send').click((e) => {
+                e.preventDefault();
                 console.log("send");
                 const apiUrl = utils.getAPiUrl($bookOfferSelect.val(), false);
                 console.log(apiUrl);
