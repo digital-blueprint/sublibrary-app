@@ -24,6 +24,7 @@ class LibraryShelving extends VPULitElement {
         this.updateComplete.then(()=>{
             const $bookOfferSelect = that.$('vpu-library-book-offer-select');
             const $locationIdentifierInput = that.$('#location-identifier');
+            const $locationIdentifierBlock = that.$('#location-identifier-block');
 
             // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
             document.addEventListener("vpu-auth-person-init", () => {
@@ -43,7 +44,10 @@ class LibraryShelving extends VPULitElement {
                 const bookOffer = $(this).data("object");
                 $locationIdentifierInput.val(bookOffer.locationIdentifier).trigger("input");
 
-                that.$('#location-identifier-block').show();
+                $locationIdentifierBlock.show();
+            }).on('unselect', function (e) {
+                console.log("unselect");
+                $locationIdentifierBlock.hide();
             });
 
             // enable send button if location identifier was entered
