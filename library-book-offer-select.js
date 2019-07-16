@@ -83,12 +83,18 @@ class LibraryBookOfferSelect extends VPULitElement {
 
                     const object = utils.findObjectInApiResults(identifier, lastResult);
                     $that.attr("data-object", JSON.stringify(object));
+                    $that.data("object", object);
 
                     // fire a change event
                     that.dispatchEvent(new CustomEvent('change', {
                         detail: {
                             value: identifier,
                         },
+                        bubbles: true
+                    }));
+                }).on('select2:unselect', function (e) {
+                    // fire a unselect event
+                    that.dispatchEvent(new CustomEvent('unselect', {
                         bubbles: true
                     }));
                 });
