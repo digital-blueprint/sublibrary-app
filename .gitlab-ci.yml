@@ -1,0 +1,18 @@
+image: debian:buster
+
+variables:
+  GIT_SUBMODULE_STRATEGY: normal
+
+stages:
+  - test
+
+main:
+  allow_failure: true
+  stage: test
+  script:
+    - apt update
+    - apt install -y npm
+    - npm run setup
+    - npm install
+    - npm run build-dev
+    - npm run build
