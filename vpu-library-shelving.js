@@ -106,7 +106,7 @@ class LibraryShelving extends VPULitElement {
 
             <header>
                 <div class="container">
-                    <vpu-auth lang="${this.lang}" client-id="${utils.setting('keyCloakClientId')}" load-person></vpu-auth>
+                    <vpu-auth lang="${this.lang}" client-id="${utils.setting('keyCloakClientId')}" load-person force-login></vpu-auth>
                 </div>
             </header>
 
