@@ -3,7 +3,7 @@ import utils from './utils.js';
 import select2 from 'select2';
 import select2LangDe from './i18n/de/select2'
 import select2LangEn from './i18n/en/select2'
-import JSONLD from './jsonld.js';
+import JSONLD from 'vpu-common/jsonld';
 import {html} from 'lit-element';
 import {i18n, dateTimeFormat, numberFormat} from './i18n.js';
 import VPULitElement from "./vpu-lit-element";

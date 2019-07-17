@@ -5,6 +5,16 @@
 ## Local development
 
 ```bash
+# get the source
+git clone git@gitlab.tugraz.at:VPU/Middleware/LibraryShelvingWC.git
+cd LibraryShelvingWC
+git submodule update --init
+
+# we are creating the symbolic links to our git sub-modules
+# (there was no proper script to do this automatically before a "node install"
+npm run setup
+
+# install dependencies
 npm install
 
 # constantly builds dist/bundle.js 
@@ -27,7 +37,7 @@ Run `npm run watch-dev` to build the `dist/bundle.js` constantly and upload the 
 
 ## Demo system
 
-Build bundle for demo server
+Build bundle for the demo server
 
 ```bash
 npm run build-demo

@@ -16,12 +16,15 @@
   },
   "dependencies": {
     "@webcomponents/webcomponentsjs": "^2.2.10",
+    "i18next": "^17.0.3",
     "jquery": "^3.4.1",
     "lit-element": "^2.1.0",
     "select2": "^4.0.7",
-    "i18next": "^17.0.3"
+    "vpu-auth-wc": "*",
+    "vpu-common": "*"
   },
   "scripts": {
+    "setup": "cd node_modules; ln -sfn ../vendor/common vpu-common; ln -sfn ../vendor/auth vpu-auth",
     "clean": "rm dist/*",
     "build": "npm run build-local",
     "build-local": "rollup -c",
