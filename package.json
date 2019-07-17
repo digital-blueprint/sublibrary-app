@@ -24,7 +24,7 @@
     "vpu-common": "*"
   },
   "scripts": {
-    "setup": "cd node_modules; ln -sfn ../vendor/common vpu-common; ln -sfn ../vendor/auth vpu-auth",
+    "setup": "mkdir -p node_modules && cd node_modules && ln -sfn ../vendor/common vpu-common && ln -sfn ../vendor/auth vpu-auth",
     "clean": "rm dist/*",
     "build": "npm run build-local",
     "build-local": "rollup -c",
