@@ -2,7 +2,7 @@ import $ from 'jquery';
 import utils from './utils.js';
 import {i18n} from './i18n.js';
 import {html} from 'lit-element';
-import VPULitElement from './vpu-lit-element';
+import VPULitElement from 'vpu-common/vpu-lit-element';
 
 class LibraryShelving extends VPULitElement {
     constructor() {
