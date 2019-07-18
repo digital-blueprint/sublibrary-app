@@ -1,7 +1,6 @@
 {
   "person-select": {
-    "headline": "Person (nur für Demo-Zwecke)",
-    "placeholder": "Bitte wählen Sie eine Person aus"
+    "headline": "Person (nur für Demo-Zwecke)"
   },
   "library-book-offer-select": {
     "headline": "Bibliothek Buch",

@@ -1,7 +1,6 @@
 {
   "person-select": {
-    "headline": "Person (only for demonstration)",
-    "placeholder": "Please select a person"
+    "headline": "Person (only for demonstration)"
   },
   "library-book-offer-select": {
     "headline": "Library book",
