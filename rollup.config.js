@@ -28,7 +28,7 @@ export default {
             minimize: false,
             plugins: []
         }),
-         (process.env.BUILD !== 'development') ? terser() : false,
+        (build !== 'local') ? terser() : false,
         copy({
             targets: [
                 'index.html',
