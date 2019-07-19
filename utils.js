@@ -33,18 +33,6 @@ module.exports = {
     },
 
     /**
-     * Converts a string list to a data array for Select2
-     *
-     * @param list
-     * @returns {Array}
-     */
-    stringListToSelect2DataArray: (list) => {
-        let data = [];
-        list.forEach((item) => {data.push({id: item, text: item})});
-        return data;
-    },
-
-    /**
      * Reads a setting
      *
      * @param key
