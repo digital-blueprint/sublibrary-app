@@ -3,6 +3,7 @@ import utils from './utils.js';
 import {i18n} from './i18n.js';
 import {html} from 'lit-element';
 import VPULitElement from 'vpu-common/vpu-lit-element';
+import Suggestions from 'suggestions'
 
 class LibraryShelving extends VPULitElement {
     constructor() {
@@ -24,6 +25,7 @@ class LibraryShelving extends VPULitElement {
         this.updateComplete.then(()=>{
             const $bookOfferSelect = that.$('vpu-library-book-offer-select');
             const $locationIdentifierInput = that.$('#location-identifier');
+            const locationIdentifierInput = that._('#location-identifier');
             const $locationIdentifierBlock = that.$('#location-identifier-block');
 
             // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
@@ -45,6 +47,18 @@ class LibraryShelving extends VPULitElement {
                 $locationIdentifierInput.val(bookOffer.locationIdentifier).trigger("input");
 
                 $locationIdentifierBlock.show();
+
+                const apiUrl = utils.getAPiUrl(bookOffer["@id"] + "/location_identifiers", false);
+
+                // fetch and setup the location identifier suggestions
+                fetch(apiUrl, {
+                    headers: {
+                        'Content-Type': 'application/ld+json',
+                        'Authorization': 'Bearer ' + window.VPUAuthToken,
+                    },
+                })
+                .then(response => response.json())
+                .then((result) => {new Suggestions(locationIdentifierInput, result['hydra:member'])});
             }).on('unselect', function (e) {
                 console.log("unselect");
                 $locationIdentifierBlock.hide();
@@ -97,7 +111,10 @@ class LibraryShelving extends VPULitElement {
     }
 
     render() {
+        const suggestionsCSS = utils.getAssetURL('suggestions/suggestions.css');
+
         return html`
+            <link rel="stylesheet" href="${suggestionsCSS}">
             <style>
                 #location-identifier-block, #permission-error-block { display: none; }
                 #location-identifier-block input { width: 100%; }
@@ -136,7 +153,7 @@ class LibraryShelving extends VPULitElement {
                             <div class="field">
                                 <label class="label">${i18n.t('location-identifier.headline')}</label>
                                 <div class="control">
-                                     <input class="input" id="location-identifier" type="text" placeholder="${i18n.t('location-identifier.placeholder')}">
+                                    <input class="input" id="location-identifier" type="text" placeholder="${i18n.t('location-identifier.placeholder')}">
                                 </div>
                             </div>
                             <div class="field">

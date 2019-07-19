@@ -44,6 +44,12 @@ export default {
             ],
             outputFolder: 'dist/select2'
         }),
+        copy({
+            targets: [
+                'node_modules/suggestions/dist/suggestions.css',
+            ],
+            outputFolder: 'dist/suggestions'
+        }),
         (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: 'dist', host: '127.0.0.1', port: 8001}) : false
     ]
 };
