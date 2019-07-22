@@ -23,6 +23,10 @@ class LibraryBookOfferSelect extends VPULitElement {
         };
     }
 
+    close() {
+        this.$('#library-book-offer-select').select2('close');
+    }
+
     connectedCallback() {
         super.connectedCallback();
         i18n.changeLanguage(this.lang);
@@ -42,7 +46,9 @@ class LibraryBookOfferSelect extends VPULitElement {
                     "text": "http://schema.org/name"
                 };
 
-                that.$('#library-book-offer-select').select2({
+                const $select = that.$('#library-book-offer-select');
+
+                $select.select2({
                     width: '100%',
                     language: that.lang === "de" ? select2LangDe() : select2LangEn(),
                     minimumInputLength: 3,
@@ -97,6 +103,17 @@ class LibraryBookOfferSelect extends VPULitElement {
                     that.dispatchEvent(new CustomEvent('unselect', {
                         bubbles: true
                     }));
+                });
+
+                $select.blur((e) => {
+                    console.log("select blur");
+                });
+
+                // close the selector on blur of the web component
+                $(that).blur(() => {
+                    // the 500ms delay is a workaround to actually get an item selected when clicking on it,
+                    // because the blur gets also fired when clicking in the selector
+                    setTimeout(() => {$select.select2('close')}, 500);
                 });
             });
         })
