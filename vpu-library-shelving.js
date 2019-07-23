@@ -35,6 +35,9 @@ class LibraryShelving extends VPULitElement {
                     that.$('#permission-error-block').show();
                     that.$('form').hide();
                 }
+
+                // hide the cover after the person entity was loaded
+                that.$("#cover").hide();
             });
 
             // show location identifier block if book offer was selected
@@ -118,9 +121,11 @@ class LibraryShelving extends VPULitElement {
             <style>
                 #location-identifier-block, #permission-error-block { display: none; }
                 #location-identifier-block input { width: 100%; }
+                #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #fff; z-index:9999;}
             </style>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
 
+            <div id="cover"></div>
             <header>
                 <div class="container">
                     <vpu-auth lang="${this.lang}" client-id="${utils.setting('keyCloakClientId')}" load-person force-login></vpu-auth>
