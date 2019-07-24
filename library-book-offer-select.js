@@ -6,11 +6,11 @@ import select2LangEn from './i18n/en/select2'
 import JSONLD from 'vpu-common/jsonld';
 import {html} from 'lit-element';
 import {i18n, dateTimeFormat, numberFormat} from './i18n.js';
-import VPULitElement from 'vpu-common/vpu-lit-element';
+import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 
 select2(window, $);
 
-class LibraryBookOfferSelect extends VPULitElement {
+class LibraryBookOfferSelect extends VPULitElementJQuery {
 
     constructor() {
         super();

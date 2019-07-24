@@ -2,10 +2,10 @@ import $ from 'jquery';
 import utils from './utils.js';
 import {i18n} from './i18n.js';
 import {html} from 'lit-element';
-import VPULitElement from 'vpu-common/vpu-lit-element';
+import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import Suggestions from 'suggestions'
 
-class LibraryShelving extends VPULitElement {
+class LibraryShelving extends VPULitElementJQuery {
     constructor() {
         super();
         this.lang = 'de';
