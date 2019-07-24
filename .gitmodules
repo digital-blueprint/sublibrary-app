@@ -7,3 +7,6 @@
 [submodule "vendor/person-select"]
 	path = vendor/person-select
 	url = git@gitlab.tugraz.at:VPU/WebComponents/PersonSelect.git
+[submodule "vendor/notification"]
+	path = vendor/notification
+	url = git@gitlab.tugraz.at:VPU/WebComponents/Notification.git

@@ -26,7 +26,7 @@
     "vpu-person-select": "*"
   },
   "scripts": {
-    "setup": "mkdir -p node_modules && cd node_modules && ln -sfn ../vendor/common vpu-common && ln -sfn ../vendor/auth vpu-auth && ln -sfn ../vendor/person-select vpu-person-select",
+    "setup": "mkdir -p node_modules && cd node_modules && ln -sfn ../vendor/common vpu-common && ln -sfn ../vendor/auth vpu-auth && ln -sfn ../vendor/person-select vpu-person-select && ln -sfn ../vendor/notification vpu-notification",
     "clean": "rm dist/*",
     "build": "npm run build-local",
     "build-local": "rollup -c",

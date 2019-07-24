@@ -2,6 +2,7 @@ import $ from 'jquery';
 import utils from './utils.js';
 import {i18n} from './i18n.js';
 import {html} from 'lit-element';
+import notification from 'vpu-notification/notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import Suggestions from 'suggestions'
 
@@ -99,8 +100,12 @@ class LibraryShelving extends VPULitElementJQuery {
                     },
                     data: JSON.stringify(data),
                     success: function(data) {
-                        // TODO: better success handling
-                        alert(i18n.t('success-message'));
+                        notification.send({
+                            "summary": i18n.t('success-message'),
+                            "body": i18n.t('success-message'),
+                            "type": "info",
+                            "timeout": 5,
+                        });
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         error(textStatus);
@@ -129,6 +134,9 @@ class LibraryShelving extends VPULitElementJQuery {
             <header>
                 <div class="container">
                     <vpu-auth lang="${this.lang}" client-id="${utils.setting('keyCloakClientId')}" load-person force-login></vpu-auth>
+                </div>
+                <div class="container">
+                    <vpu-notification lang="${this.lang}"></vpu-notification>
                 </div>
             </header>
 
