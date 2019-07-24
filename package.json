@@ -23,7 +23,8 @@
     "select2": "^4.0.7",
     "vpu-auth": "*",
     "vpu-common": "*",
-    "vpu-person-select": "*"
+    "vpu-person-select": "*",
+    "vpu-notification": "*"
   },
   "scripts": {
     "setup": "mkdir -p node_modules && cd node_modules && ln -sfn ../vendor/common vpu-common && ln -sfn ../vendor/auth vpu-auth && ln -sfn ../vendor/person-select vpu-person-select && ln -sfn ../vendor/notification vpu-notification",
