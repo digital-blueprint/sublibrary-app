@@ -9,6 +9,7 @@ before_script:
 
 stages:
   - test
+  - deploy
 
 test:
   stage: test
@@ -19,3 +20,31 @@ test:
     - npm install
     - npm run build-dev
     - npm run build
+
+.deploy_defaults: &deploy_defaults
+  stage: deploy
+  script:
+    # Install system dependencies
+    - apt update
+    - apt install -y composer rsync npm
+    # Add ssh key
+    - mkdir -p ~/.ssh
+    - echo "${DEPLOY_KEY}" | tr -d '\r' > ~/.ssh/id_rsa
+    - chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -t rsa "${DEPLOY_HOST}" >> ~/.ssh/known_hosts
+    # Install PHP dependencies
+    - "composer require 'deployer/deployer: ^6.4' 'deployer/recipes: ^6.2'"
+    # Deploy
+    - ./vendor/bin/dep deploy "${DEPLOY_TARGET}"
+    - echo "Deployed to ${DEPLOY_URL}"
+
+deploy_demo:
+  only:
+    refs:
+      - demo
+  variables:
+    DEPLOY_TARGET: demo
+    DEPLOY_HOST: mw01-dev.tugraz.at
+    DEPLOY_KEY: "$DEPLOY_SSH_KEY"
+    DEPLOY_URL: https://frontend-demo.tugraz.at/vpu-library-shelving
+  <<: *deploy_defaults
