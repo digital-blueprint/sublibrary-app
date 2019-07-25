@@ -33,8 +33,6 @@ export default {
             targets: [
                 'index.html',
                 'favicon.ico',
-                'node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js',
-                'node_modules/@webcomponents/webcomponentsjs/bundles',
             ],
             outputFolder: 'dist'
         }),
