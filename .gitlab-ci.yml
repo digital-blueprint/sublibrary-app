@@ -10,8 +10,7 @@ before_script:
 stages:
   - test
 
-main:
-  allow_failure: true
+test:
   stage: test
   script:
     - apt update
