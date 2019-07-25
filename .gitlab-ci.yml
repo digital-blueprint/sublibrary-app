@@ -1,7 +1,11 @@
 image: debian:buster
 
-variables:
-  GIT_SUBMODULE_STRATEGY: normal
+before_script:
+  - apt update
+  - apt install -y git
+  - "sed -i 's|git@gitlab.tugraz.at:VPU|../..|g' .gitmodules"
+  - git submodule sync
+  - git submodule update --init
 
 stages:
   - test
