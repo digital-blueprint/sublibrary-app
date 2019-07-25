@@ -101,9 +101,9 @@ class LibraryShelving extends VPULitElementJQuery {
                     data: JSON.stringify(data),
                     success: function(data) {
                         notification.send({
-                            "summary": i18n.t('success-message'),
-                            "body": i18n.t('success-message'),
-                            "type": "info",
+                            "summary": i18n.t('success-summary'),
+                            "body": i18n.t('success-body'),
+                            "type": "success",
                             "timeout": 5,
                         });
                     },
