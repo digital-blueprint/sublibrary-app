@@ -6,19 +6,32 @@ import {terser} from "rollup-plugin-terser";
 import json from 'rollup-plugin-json';
 import replace from "rollup-plugin-replace";
 import serve from 'rollup-plugin-serve';
+import multiEntry from 'rollup-plugin-multi-entry';
 
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
 console.log("build: " + build);
 
 export default {
-    input: 'index.js',
+    input: (build != 'test') ? 'index.js' : 'test/**/*.js',
     output: {
         file: 'dist/bundle.js',
         format: 'esm'
     },
+    onwarn: function (message, warn) {
+        // ignore chai warnings
+        if (message.code === 'CIRCULAR_DEPENDENCY') {
+            return;
+        }
+        warn(message);
+    },
     plugins: [
+        multiEntry(),
         resolve(),
-        commonjs(),
+        commonjs({
+          namedExports: {
+            'chai': ['expect', 'assert']
+          }
+        }),
         json(),
         replace({
             "process.env.BUILD": '"' + build + '"',
@@ -28,7 +41,7 @@ export default {
             minimize: false,
             plugins: []
         }),
-        (build !== 'local') ? terser() : false,
+        (build !== 'local' && build !== 'test') ? terser() : false,
         copy({
             targets: [
                 'index.html',
