@@ -1,6 +1,6 @@
 import {expect} from 'chai';
 
-import '../vpu-library-shelving';
+import '../src/vpu-library-shelving';
 
 describe('vpu-library-shelving basics', () => {
   let node;
