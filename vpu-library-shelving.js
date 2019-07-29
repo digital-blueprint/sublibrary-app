@@ -144,6 +144,15 @@ class LibraryShelving extends VPULitElementJQuery {
                 <div class="container">
                     <h1 class="title">${i18n.t('title')}</h1>
                     <h2 class="subtitle">${i18n.t('subtitle')}</h2>
+                </div>
+            </div>
+            <section class="section">
+                <div class="container">
+                    <vpu-knowledge-base-web-page-element-view lang="${this.lang}" value="bedienstete/bibliothek/buch-ausleihen"></vpu-knowledge-base-web-page-element-view>
+                </div>
+            </div>
+            <section class="section">
+                <div class="container">
                     <form>
                         <div class="field">
                             <label class="label">${i18n.t('person-select.headline')}</label>
