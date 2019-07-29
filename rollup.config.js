@@ -22,6 +22,10 @@ export default {
         if (message.code === 'CIRCULAR_DEPENDENCY') {
             return;
         }
+        // ignore "suggestions" warning re "use strict"
+        if (message.code === 'MODULE_LEVEL_DIRECTIVE') {
+            return;
+        }
         warn(message);
     },
     plugins: [
