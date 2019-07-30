@@ -2,7 +2,7 @@ import $ from 'jquery';
 import utils from './utils.js';
 import {i18n} from './i18n.js';
 import {html} from 'lit-element';
-import notification from 'vpu-notification/notification';
+import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import Suggestions from 'suggestions'
 
@@ -100,7 +100,7 @@ class LibraryShelving extends VPULitElementJQuery {
                     },
                     data: JSON.stringify(data),
                     success: function(data) {
-                        notification.send({
+                        notify({
                             "summary": i18n.t('success-summary'),
                             "body": i18n.t('success-body'),
                             "type": "success",
