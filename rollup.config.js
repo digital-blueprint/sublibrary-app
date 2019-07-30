@@ -1,3 +1,4 @@
+import path from 'path';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import postcss from 'rollup-plugin-postcss';
@@ -30,7 +31,12 @@ export default {
     },
     plugins: [
         multiEntry(),
-        resolve(),
+        resolve({
+          customResolveOptions: {
+            // ignore node_modules from vendored packages
+            moduleDirectory: path.join(process.cwd(), 'node_modules')
+          }
+        }),
         commonjs({
           namedExports: {
             'chai': ['expect', 'assert']
