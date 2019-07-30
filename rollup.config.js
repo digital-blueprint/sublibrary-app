@@ -48,8 +48,8 @@ export default {
         (build !== 'local' && build !== 'test') ? terser() : false,
         copy({
             targets: [
-                'data/index.html',
-                'data/favicon.ico',
+                'assets/index.html',
+                'assets/favicon.ico',
             ],
             outputFolder: 'dist'
         }),
