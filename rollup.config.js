@@ -56,6 +56,7 @@ export default {
             targets: [
                 'assets/index.html',
                 'assets/favicon.ico',
+                'assets/demo.css',
             ],
             outputFolder: 'dist'
         }),
