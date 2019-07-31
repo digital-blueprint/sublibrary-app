@@ -127,6 +127,7 @@ class LibraryShelving extends VPULitElementJQuery {
                 #location-identifier-block, #permission-error-block { display: none; }
                 #location-identifier-block input { width: 100%; }
                 #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #fff; z-index:9999;}
+                .tile.is-ancestor .tile {margin: 10px;}
             </style>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
 
@@ -145,48 +146,50 @@ class LibraryShelving extends VPULitElementJQuery {
                     <h1 class="title">${i18n.t('title')}</h1>
                     <h2 class="subtitle">${i18n.t('subtitle')}</h2>
                 </div>
-            </div>
+            </section>
             <section class="section">
                 <div class="container">
-                    <vpu-knowledge-base-web-page-element-view lang="${this.lang}" value="bedienstete/bibliothek/buch-ausleihen"></vpu-knowledge-base-web-page-element-view>
-                </div>
-            </div>
-            <section class="section">
-                <div class="container">
-                    <form>
-                        <div class="field">
-                            <label class="label">${i18n.t('person-select.headline')}</label>
-                            <div class="control">
-                                <vpu-library-person-select lang="${this.lang}"></vpu-library-person-select>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
-                            <div class="control">
-                                 <vpu-library-book-offer-select lang="${this.lang}"></vpu-library-book-offer-select>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="notification is-info">
-                                Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>
-                            </div>
-                        </div>
-                        <div id="location-identifier-block">
-                            <div class="field">
-                                <label class="label">${i18n.t('location-identifier.headline')}</label>
-                                <div class="control">
-                                    <input class="input" id="location-identifier" type="text" placeholder="${i18n.t('location-identifier.placeholder')}">
+                    <div class="tile is-ancestor">
+                        <div class="tile">
+                            <form>
+                                <div class="field">
+                                    <label class="label">${i18n.t('person-select.headline')}</label>
+                                    <div class="control">
+                                        <vpu-library-person-select lang="${this.lang}"></vpu-library-person-select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="field">
-                                <div class="control">
-                                     <button class="button is-link" id="send" disabled="disabled">${i18n.t('location-identifier.submit')}</button>
+                                <div class="field">
+                                    <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
+                                    <div class="control">
+                                         <vpu-library-book-offer-select lang="${this.lang}"></vpu-library-book-offer-select>
+                                    </div>
                                 </div>
+                                <div class="field">
+                                    <div class="notification is-info">
+                                        Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>
+                                    </div>
+                                </div>
+                                <div id="location-identifier-block">
+                                    <div class="field">
+                                        <label class="label">${i18n.t('location-identifier.headline')}</label>
+                                        <div class="control">
+                                            <input class="input" id="location-identifier" type="text" placeholder="${i18n.t('location-identifier.placeholder')}">
+                                        </div>
+                                    </div>
+                                    <div class="field">
+                                        <div class="control">
+                                             <button class="button is-link" id="send" disabled="disabled">${i18n.t('location-identifier.submit')}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="notification is-danger" id="permission-error-block">
+                                ${i18n.t('error-permission-message')}
                             </div>
                         </div>
-                    </form>
-                    <div class="notification is-danger" id="permission-error-block">
-                        ${i18n.t('error-permission-message')}
+                        <div class="tile">
+                            <vpu-knowledge-base-web-page-element-view lang="${this.lang}" value="bedienstete/bibliothek/buch-ausleihen"></vpu-knowledge-base-web-page-element-view>
+                        </div>
                     </div>
                 </div>
             </section>
