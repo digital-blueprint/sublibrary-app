@@ -4,9 +4,10 @@ process.env.CHROME_BIN = require('puppeteer').executablePath();
 module.exports = function(config) {
   config.set({
     basePath: 'dist',
-    frameworks: ['mocha'],
+    frameworks: ['mocha', 'chai'],
     files: [
-      './**/*'
+      './bundle.js',
+      {pattern: './**/*', included: false, watched: true, served: true},
     ],
     autoWatch: true,
     browsers: ['ChromeHeadlessNoSandbox'],

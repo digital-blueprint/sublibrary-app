@@ -19,10 +19,6 @@ export default {
         format: 'esm'
     },
     onwarn: function (message, warn) {
-        // ignore chai warnings
-        if (message.code === 'CIRCULAR_DEPENDENCY') {
-            return;
-        }
         // ignore "suggestions" warning re "use strict"
         if (message.code === 'MODULE_LEVEL_DIRECTIVE') {
             return;
@@ -37,11 +33,7 @@ export default {
             moduleDirectory: path.join(process.cwd(), 'node_modules')
           }
         }),
-        commonjs({
-          namedExports: {
-            'chai': ['expect', 'assert']
-          }
-        }),
+        commonjs(),
         json(),
         replace({
             "process.env.BUILD": '"' + build + '"',

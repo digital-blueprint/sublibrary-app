@@ -1,5 +1,3 @@
-import {expect} from 'chai';
-
 import '../src/vpu-library-shelving';
 
 describe('vpu-library-shelving basics', () => {
