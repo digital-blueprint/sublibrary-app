@@ -32,7 +32,6 @@ host('mw@mw01-dev.tugraz.at')
 
 // Demo build task
 task('build-demo', function () {
-    runLocally("npm run setup");
     runLocally("npm install");
     runLocally("npm run build-demo");
 })->onStage('demo');
