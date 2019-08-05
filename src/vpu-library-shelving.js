@@ -188,7 +188,7 @@ class LibraryShelving extends VPULitElementJQuery {
                             </div>
                         </div>
                         <div class="tile">
-                            <vpu-knowledge-base-web-page-element-view entry-point-url="${utils.getAPiUrl()}" lang="${this.lang}" value="bedienstete/bibliothek/buch-ausleihen"></vpu-knowledge-base-web-page-element-view>
+                            <vpu-knowledge-base-web-page-element-view entry-point-url="${utils.getAPiUrl()}" lang="${this.lang}" value="bedienstete/bibliothek/buch-ausleihen" text="${i18n.t('more-information')}"></vpu-knowledge-base-web-page-element-view>
                         </div>
                     </div>
                 </div>
