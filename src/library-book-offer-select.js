@@ -15,6 +15,7 @@ class LibraryBookOfferSelect extends VPULitElementJQuery {
     constructor() {
         super();
         this.lang = 'de';
+        this.jsonld = null;
     }
 
     static get properties() {
@@ -30,84 +31,12 @@ class LibraryBookOfferSelect extends VPULitElementJQuery {
     connectedCallback() {
         super.connectedCallback();
         i18n.changeLanguage(this.lang);
+        const that = this;
 
         this.updateComplete.then(()=>{
-            const that = this;
-            const $that = $(this);
-            let lastResult = {};
-
             JSONLD.initialize(utils.getAPiUrl(), function (jsonld) {
-                // find the correct api url for a library book offer
-                const apiUrl = jsonld.getApiUrlForEntityName("LibraryBookOffer");
-
-                // the mapping we need for Select2
-                const localContext = {
-                    "id": "@id",
-                    "text": "http://schema.org/name"
-                };
-
-                const $select = that.$('#library-book-offer-select');
-
-                $select.select2({
-                    width: '100%',
-                    language: that.lang === "de" ? select2LangDe() : select2LangEn(),
-                    minimumInputLength: 3,
-                    maximumSelectionLength: 1,
-                    placeholder: i18n.t('library-book-offer-select.placeholder'),
-                    dropdownParent: that.$('#library-book-offer-select-dropdown'),
-                    ajax: {
-                        delay: 250,
-                        url: apiUrl,
-                        contentType: "application/ld+json",
-                        beforeSend: function( jqXHR ) {
-                            jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
-                        },
-                        data: function (params) {
-                            return {
-                                barcode: params.term
-                            };
-                        },
-                        processResults: function (data) {
-                            console.log(data);
-                            lastResult = data;
-
-                            const results = jsonld.transformMembers(data, localContext);
-
-                            console.log("results");
-                            console.log(results);
-
-                            return {
-                                results: results
-                            };
-                        }
-                    }
-                }).on("select2:select", function(e) {
-                    // set value of custom element select
-                    const identifier = e.params.data.id;
-                    $that.attr("value", identifier);
-                    $that.val(identifier);
-
-                    const object = utils.findObjectInApiResults(identifier, lastResult);
-                    $that.attr("data-object", JSON.stringify(object));
-                    $that.data("object", object);
-
-                    // fire a change event
-                    that.dispatchEvent(new CustomEvent('change', {
-                        detail: {
-                            value: identifier,
-                        },
-                        bubbles: true
-                    }));
-                }).on('select2:unselect', function (e) {
-                    // fire a unselect event
-                    that.dispatchEvent(new CustomEvent('unselect', {
-                        bubbles: true
-                    }));
-                });
-
-                $select.blur((e) => {
-                    console.log("select blur");
-                });
+                that.jsonld = jsonld;
+                const $select = that.initSelect2();
 
                 // close the selector on blur of the web component
                 $(that).blur(() => {
@@ -117,6 +46,96 @@ class LibraryBookOfferSelect extends VPULitElementJQuery {
                 });
             });
         })
+    }
+
+    /**
+     * Initializes the Select2 selector
+     */
+    initSelect2() {
+        const that = this;
+        const $that = $(this);
+        let lastResult = {};
+
+        // find the correct api url for a library book offer
+        const apiUrl = this.jsonld.getApiUrlForEntityName("LibraryBookOffer");
+
+        // the mapping we need for Select2
+        const localContext = {
+            "id": "@id",
+            "text": "http://schema.org/name"
+        };
+
+        const $select = this.$('#library-book-offer-select');
+
+        $select.select2({
+            width: '100%',
+            language: this.lang === "de" ? select2LangDe() : select2LangEn(),
+            minimumInputLength: 3,
+            maximumSelectionLength: 1,
+            placeholder: i18n.t('library-book-offer-select.placeholder'),
+            dropdownParent: this.$('#library-book-offer-select-dropdown'),
+            ajax: {
+                delay: 250,
+                url: apiUrl,
+                contentType: "application/ld+json",
+                beforeSend: function (jqXHR) {
+                    jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
+                },
+                data: function (params) {
+                    return {
+                        barcode: params.term
+                    };
+                },
+                processResults: function (data) {
+                    lastResult = data;
+                    const results = that.jsonld.transformMembers(data, localContext);
+
+                    return {
+                        results: results
+                    };
+                }
+            }
+        }).on("select2:select", function (e) {
+            // set value of custom element select
+            const identifier = e.params.data.id;
+            $that.attr("value", identifier);
+            $that.val(identifier);
+
+            const object = utils.findObjectInApiResults(identifier, lastResult);
+            $that.attr("data-object", JSON.stringify(object));
+            $that.data("object", object);
+
+            // fire a change event
+            that.dispatchEvent(new CustomEvent('change', {
+                detail: {
+                    value: identifier,
+                },
+                bubbles: true
+            }));
+        }).on('select2:unselect', function (e) {
+            // fire a unselect event
+            that.dispatchEvent(new CustomEvent('unselect', {
+                bubbles: true
+            }));
+        });
+
+        return $select;
+    }
+
+    updated(changedProperties) {
+        changedProperties.forEach((oldValue, propName) => {
+            if (propName === "lang") {
+                i18n.changeLanguage(this.lang);
+
+                const $select = this.$('#library-book-offer-select.select2-hidden-accessible');
+
+                if ($select.length > 0) {
+                    // no other way to set an other language at runtime did work
+                    $select.select2('destroy');
+                    this.initSelect2();
+                }
+            }
+        });
     }
 
     render() {
