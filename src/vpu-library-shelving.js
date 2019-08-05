@@ -118,6 +118,14 @@ class LibraryShelving extends VPULitElementJQuery {
         });
     }
 
+    updated(changedProperties) {
+        changedProperties.forEach((oldValue, propName) => {
+            if (propName === "lang") {
+                i18n.changeLanguage(this.lang);
+            }
+        });
+    }
+
     render() {
         const suggestionsCSS = utils.getAssetURL('suggestions/suggestions.css');
 
