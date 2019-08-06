@@ -20,7 +20,6 @@ class LibraryShelving extends VPULitElementJQuery {
 
     connectedCallback() {
         super.connectedCallback();
-        i18n.changeLanguage(this.lang);
         const that = this;
 
         this.updateComplete.then(()=>{
@@ -118,12 +117,14 @@ class LibraryShelving extends VPULitElementJQuery {
         });
     }
 
-    updated(changedProperties) {
+    update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === "lang") {
                 i18n.changeLanguage(this.lang);
             }
         });
+
+        super.update(changedProperties);
     }
 
     render() {
