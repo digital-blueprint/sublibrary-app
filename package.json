@@ -27,7 +27,8 @@
     "vpu-common": "file:./vendor/common",
     "vpu-person-select": "file:./vendor/person-select",
     "vpu-notification": "file:./vendor/notification",
-    "vpu-knowledge-base-web-page-element-view": "file:./vendor/kb-wpe-view"
+    "vpu-knowledge-base-web-page-element-view": "file:./vendor/kb-wpe-view",
+    "vpu-language-select": "file:./vendor/language-select"
   },
   "dependencies": {
     "i18next": "^17.0.3",

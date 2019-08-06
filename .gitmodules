@@ -13,3 +13,6 @@
 [submodule "vendor/kb-wpe-view"]
 	path = vendor/kb-wpe-view
 	url = git@gitlab.tugraz.at:VPU/WebComponents/KnowledgeBaseWebPageElementView.git
+[submodule "vendor/language-select"]
+	path = vendor/language-select
+	url = git@gitlab.tugraz.at:VPU/WebComponents/LanguageSelect.git

@@ -4,7 +4,8 @@ import {i18n} from './i18n.js';
 import {html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
-import Suggestions from 'suggestions'
+import Suggestions from 'suggestions';
+import 'vpu-language-select';
 
 class LibraryShelving extends VPULitElementJQuery {
     constructor() {
@@ -127,6 +128,10 @@ class LibraryShelving extends VPULitElementJQuery {
         super.update(changedProperties);
     }
 
+    onLanguageChanged(e) {
+        this.lang = e.detail.lang;
+    }
+
     render() {
         const suggestionsCSS = utils.getAssetURL('suggestions/suggestions.css');
 
@@ -144,6 +149,7 @@ class LibraryShelving extends VPULitElementJQuery {
             <header>
                 <div class="container">
                     <vpu-auth lang="${this.lang}" client-id="${utils.setting('keyCloakClientId')}" load-person force-login></vpu-auth>
+                    <vpu-language-select @vpu-language-changed=${this.onLanguageChanged.bind(this)}></vpu-language-select>
                 </div>
                 <div class="container">
                     <vpu-notification lang="${this.lang}"></vpu-notification>
