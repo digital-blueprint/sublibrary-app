@@ -11,11 +11,13 @@ class LibraryShelving extends VPULitElementJQuery {
     constructor() {
         super();
         this.lang = 'de';
+        this.entryPointUrl = utils.getAPiUrl();
     }
 
     static get properties() {
         return {
             lang: { type: String },
+            entryPointUrl: { type: String, attribute: 'entry-point-url' },
         };
     }
 
@@ -52,7 +54,7 @@ class LibraryShelving extends VPULitElementJQuery {
 
                 $locationIdentifierBlock.show();
 
-                const apiUrl = utils.getAPiUrl(bookOffer["@id"] + "/location_identifiers", false);
+                const apiUrl = that.entryPointUrl + bookOffer["@id"] + "/location_identifiers";
 
                 // fetch and setup the location identifier suggestions
                 fetch(apiUrl, {
@@ -77,7 +79,7 @@ class LibraryShelving extends VPULitElementJQuery {
             that.$('#send').click((e) => {
                 e.preventDefault();
                 console.log("send");
-                const apiUrl = utils.getAPiUrl($bookOfferSelect.val(), false);
+                const apiUrl = that.entryPointUrl + $bookOfferSelect.val();
                 console.log(apiUrl);
                 console.log($locationIdentifierInput);
 
@@ -170,13 +172,13 @@ class LibraryShelving extends VPULitElementJQuery {
                                 <div class="field">
                                     <label class="label">${i18n.t('person-select.headline')}</label>
                                     <div class="control">
-                                        <vpu-person-select lang="${this.lang}"></vpu-person-select>
+                                        <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-person-select>
                                     </div>
                                 </div>
                                 <div class="field">
                                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                                     <div class="control">
-                                         <vpu-library-book-offer-select lang="${this.lang}"></vpu-library-book-offer-select>
+                                         <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-library-book-offer-select>
                                     </div>
                                 </div>
                                 <div class="field">
@@ -203,7 +205,7 @@ class LibraryShelving extends VPULitElementJQuery {
                             </div>
                         </div>
                         <div class="tile">
-                            <vpu-knowledge-base-web-page-element-view entry-point-url="${utils.getAPiUrl()}" lang="${this.lang}" value="bedienstete/bibliothek/buch-ausleihen" text="${i18n.t('more-information')}"></vpu-knowledge-base-web-page-element-view>
+                            <vpu-knowledge-base-web-page-element-view entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="bedienstete/bibliothek/buch-ausleihen" text="${i18n.t('more-information')}"></vpu-knowledge-base-web-page-element-view>
                         </div>
                     </div>
                 </div>

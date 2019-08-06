@@ -15,35 +15,34 @@ class LibraryBookOfferSelect extends VPULitElementJQuery {
     constructor() {
         super();
         this.lang = 'de';
+        this.entryPointUrl = utils.getAPiUrl();
         this.jsonld = null;
+        this.$select = null;
     }
 
     static get properties() {
         return {
             lang: { type: String },
+            entryPointUrl: { type: String, attribute: 'entry-point-url' },
         };
     }
 
     close() {
-        this.$('#library-book-offer-select').select2('close');
+        this.$select.select2('close');
     }
 
     connectedCallback() {
         super.connectedCallback();
-        i18n.changeLanguage(this.lang);
         const that = this;
 
         this.updateComplete.then(()=>{
-            JSONLD.initialize(utils.getAPiUrl(), function (jsonld) {
-                that.jsonld = jsonld;
-                const $select = that.initSelect2();
+            that.$select = that.$('#library-book-offer-select');
 
-                // close the selector on blur of the web component
-                $(that).blur(() => {
-                    // the 500ms delay is a workaround to actually get an item selected when clicking on it,
-                    // because the blur gets also fired when clicking in the selector
-                    setTimeout(() => {$select.select2('close')}, 500);
-                });
+            // close the selector on blur of the web component
+            $(that).blur(() => {
+                // the 500ms delay is a workaround to actually get an item selected when clicking on it,
+                // because the blur gets also fired when clicking in the selector
+                setTimeout(() => {that.$select.select2('close')}, 500);
             });
         })
     }
@@ -65,9 +64,11 @@ class LibraryBookOfferSelect extends VPULitElementJQuery {
             "text": "http://schema.org/name"
         };
 
-        const $select = this.$('#library-book-offer-select');
+        if (this.$select.hasClass('select2-hidden-accessible')) {
+            this.$select.select2('destroy');
+        }
 
-        $select.select2({
+        this.$select.select2({
             width: '100%',
             language: this.lang === "de" ? select2LangDe() : select2LangEn(),
             minimumInputLength: 3,
@@ -96,12 +97,17 @@ class LibraryBookOfferSelect extends VPULitElementJQuery {
                 }
             }
         }).on("select2:select", function (e) {
-            // set value of custom element select
             const identifier = e.params.data.id;
+            const object = utils.findObjectInApiResults(identifier, lastResult);
+
+            if (object === undefined) {
+                return;
+            }
+
+            // set value of custom element select
             $that.attr("value", identifier);
             $that.val(identifier);
 
-            const object = utils.findObjectInApiResults(identifier, lastResult);
             $that.attr("data-object", JSON.stringify(object));
             $that.data("object", object);
 
@@ -109,31 +115,35 @@ class LibraryBookOfferSelect extends VPULitElementJQuery {
             that.dispatchEvent(new CustomEvent('change', {
                 detail: {
                     value: identifier,
-                },
-                bubbles: true
+                }
             }));
         }).on('select2:unselect', function (e) {
             // fire a unselect event
-            that.dispatchEvent(new CustomEvent('unselect', {
-                bubbles: true
-            }));
+            that.dispatchEvent(new CustomEvent('unselect'));
         });
 
-        return $select;
+        return this.$select;
     }
 
     updated(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
-            if (propName === "lang") {
-                i18n.changeLanguage(this.lang);
+            switch (propName) {
+                case "lang":
+                    i18n.changeLanguage(this.lang);
 
-                const $select = this.$('#library-book-offer-select.select2-hidden-accessible');
+                    if (this.$select !== null && this.$select.hasClass("select2-hidden-accessible")) {
+                        // no other way to set an other language at runtime did work
+                        this.initSelect2();
+                    }
+                    break;
+                case "entryPointUrl":
+                    const that = this;
 
-                if ($select.length > 0) {
-                    // no other way to set an other language at runtime did work
-                    $select.select2('destroy');
-                    this.initSelect2();
-                }
+                    JSONLD.initialize(this.entryPointUrl, function (jsonld) {
+                        that.jsonld = jsonld;
+                        that.$select = that.initSelect2();
+                    });
+                    break;
             }
         });
     }
