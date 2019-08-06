@@ -170,7 +170,7 @@ class LibraryShelving extends VPULitElementJQuery {
                                 <div class="field">
                                     <label class="label">${i18n.t('person-select.headline')}</label>
                                     <div class="control">
-                                        <vpu-library-person-select lang="${this.lang}"></vpu-library-person-select>
+                                        <vpu-person-select lang="${this.lang}"></vpu-person-select>
                                     </div>
                                 </div>
                                 <div class="field">
