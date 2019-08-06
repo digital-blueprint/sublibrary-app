@@ -6,6 +6,7 @@ import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import Suggestions from 'suggestions';
 import 'vpu-language-select';
+import commonUtils from 'vpu-common/utils';
 
 class LibraryShelving extends VPULitElementJQuery {
     constructor() {
@@ -214,4 +215,4 @@ class LibraryShelving extends VPULitElementJQuery {
     }
 }
 
-customElements.define('vpu-library-shelving', LibraryShelving);
+commonUtils.defineCustomElement('vpu-library-shelving', LibraryShelving);

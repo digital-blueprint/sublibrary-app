@@ -7,6 +7,7 @@ import JSONLD from 'vpu-common/jsonld';
 import {html} from 'lit-element';
 import {i18n, dateTimeFormat, numberFormat} from './i18n.js';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
+import commonUtils from 'vpu-common/utils';
 
 select2(window, $);
 
@@ -167,4 +168,4 @@ class LibraryBookOfferSelect extends VPULitElementJQuery {
     }
 }
 
-customElements.define('vpu-library-book-offer-select', LibraryBookOfferSelect);
+commonUtils.defineCustomElement('vpu-library-book-offer-select', LibraryBookOfferSelect);
