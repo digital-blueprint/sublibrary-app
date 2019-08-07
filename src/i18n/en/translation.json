@@ -11,8 +11,9 @@
     "placeholder": "Please enter the identifier to place the book",
     "submit": "Send"
   },
-  "success-summary": "book lineup successful",
+  "success-summary": "Book lineup successful",
   "success-body": "The book lineup was successful.",
+  "error-summary": "An error occurred",
   "error-permission-message": "You need to be a library officer to shelve books!",
   "title": "Library shelving",
   "subtitle": "Allows the shelving of books in the library",

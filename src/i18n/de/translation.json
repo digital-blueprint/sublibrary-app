@@ -13,6 +13,7 @@
   },
   "success-summary": "Buchaufstellung erfolgreich",
   "success-body": "Das Buch wurde erfolgreich aufgestellt.",
+  "error-summary": "Ein Fehler ist aufgetreten",
   "error-permission-message": "Sie müssen Bibliotheksbeauftragte/r sein um Bücher aufstellen zu können!",
   "title": "Bibliothek Buchaufstellung",
   "subtitle": "Erlaubt das Aufstellen von Büchern in der Bibliothek",

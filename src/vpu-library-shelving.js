@@ -111,7 +111,14 @@ class LibraryShelving extends VPULitElementJQuery {
                         });
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        error(textStatus);
+                        const body = jqXHR.responseJSON !== undefined && jqXHR.responseJSON["hydra:description"] !== undefined ?
+                            jqXHR.responseJSON["hydra:description"] : textStatus;
+
+                        notify({
+                            "summary": i18n.t('error-summary'),
+                            "body": body,
+                            "type": "danger",
+                        });
                     },
                     complete: function (jqXHR, textStatus, errorThrown) {
                         that.$("#send").prop("disabled", false);
