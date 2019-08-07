@@ -23,8 +23,7 @@ host('mw@mw01-dev.tugraz.at')
         'filter-file'  => false,
         'filter-perdir'=> false,
         'flags'        => 'rz',
-        // TODO: install rsync on the server
-        'options'      => ['delete', 'rsync-path=/home/mw/.local/bin/rsync'],
+        'options'      => ['delete'],
         'timeout'      => 60,
     ])
     -> set('rsync_src', __DIR__ . '/dist')
