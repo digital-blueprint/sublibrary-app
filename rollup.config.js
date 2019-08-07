@@ -48,30 +48,11 @@ export default {
         (build !== 'local' && build !== 'test') ? terser() : false,
         copy({
             targets: [
-                'assets/index.html',
-                'assets/favicon.ico',
-                'assets/demo.css',
-                'assets/spinner.js',
+                {src: 'assets/*', dest: 'dist'},
+                {src: 'node_modules/select2/dist/css', dest: 'dist/select2'},
+                {src: 'node_modules/suggestions/dist/suggestions.css', dest: 'dist/suggestions'},
+                {src: 'node_modules/bulma/css/*', dest: 'dist/bulma'},
             ],
-            outputFolder: 'dist'
-        }),
-        copy({
-            targets: [
-                'node_modules/select2/dist/css',
-            ],
-            outputFolder: 'dist/select2'
-        }),
-        copy({
-            targets: [
-                'node_modules/suggestions/dist/suggestions.css',
-            ],
-            outputFolder: 'dist/suggestions'
-        }),
-        copy({
-            targets: [
-                'node_modules/bulma/css/bulma.min.css',
-            ],
-            outputFolder: 'dist/bulma'
         }),
         (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: 'dist', host: '127.0.0.1', port: 8001}) : false
     ]
