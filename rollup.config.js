@@ -67,6 +67,12 @@ export default {
             ],
             outputFolder: 'dist/suggestions'
         }),
+        copy({
+            targets: [
+                'node_modules/bulma/css/bulma.min.css',
+            ],
+            outputFolder: 'dist/bulma'
+        }),
         (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: 'dist', host: '127.0.0.1', port: 8001}) : false
     ]
 };

@@ -144,8 +144,10 @@ class LibraryShelving extends VPULitElementJQuery {
 
     render() {
         const suggestionsCSS = utils.getAssetURL('suggestions/suggestions.css');
+        const bulmaCSS = utils.getAssetURL('bulma/bulma.min.css');
 
         return html`
+            <link rel="stylesheet" href="${bulmaCSS}">
             <link rel="stylesheet" href="${suggestionsCSS}">
             <style>
                 #location-identifier-block, #permission-error-block { display: none; }
@@ -153,7 +155,6 @@ class LibraryShelving extends VPULitElementJQuery {
                 #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #fff; z-index:9999;}
                 .tile.is-ancestor .tile {margin: 10px;}
             </style>
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
 
             <div id="cover"></div>
             <header>
