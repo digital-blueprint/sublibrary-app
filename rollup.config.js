@@ -51,6 +51,7 @@ export default {
                 'assets/index.html',
                 'assets/favicon.ico',
                 'assets/demo.css',
+                'assets/spinner.js',
             ],
             outputFolder: 'dist'
         }),
