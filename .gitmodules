@@ -16,3 +16,6 @@
 [submodule "vendor/language-select"]
 	path = vendor/language-select
 	url = git@gitlab.tugraz.at:VPU/WebComponents/LanguageSelect.git
+[submodule "vendor/library-book-offer-select"]
+	path = vendor/library-book-offer-select
+	url = git@gitlab.tugraz.at:VPU/WebComponents/LibraryBookOfferSelect.git
