@@ -10,7 +10,7 @@ set('allow_anonymous_stats', false);
 // Demo Host
 host('mw@mw01-dev.tugraz.at')
     ->stage('demo')
-    ->set('deploy_path', '/home/mw/demo/deploy/vpu-library-shelving')
+    ->set('deploy_path', '/home/mw/demo/deploy/apps/library')
     -> set('rsync',[
         'exclude'      => [
             '.git',
