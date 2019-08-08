@@ -1,5 +1,5 @@
 {
-  "name": "vpu-library-shelving-wc",
+  "name": "vpu-library",
   "version": "1.0.0",
   "main": "src/index.js",
   "devDependencies": {

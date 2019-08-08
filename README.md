@@ -1,14 +1,16 @@
-## VPU Library Shelving Web Component
+# VPU Library Application
 
-[GitLab Repository](https://gitlab.tugraz.at/VPU/Middleware/LibraryShelvingWC)
+[GitLab Repository](https://gitlab.tugraz.at/VPU/Apps/Library)
 
-## Usage
+## Shelving Web Component
+
+### Usage
 
 ```html
 <vpu-library-shelving></vpu-library-shelving>
 ```
 
-## Attributes
+### Attributes
 
 - `lang` (optional, default: `de`): set to `de` or `en` for German or English
     - example `<vpu-library-shelving lang="de"></vpu-library-shelving>`
@@ -19,8 +21,8 @@
 
 ```bash
 # get the source
-git clone git@gitlab.tugraz.at:VPU/Middleware/LibraryShelvingWC.git
-cd LibraryShelvingWC
+git clone git@gitlab.tugraz.at:VPU/Apps/Library.git
+cd Library
 git submodule update --init
 
 # install dependencies (make sure you have npm version 4+ installed, so symlinks to the git submodules are created automatically)
@@ -40,11 +42,13 @@ Example book barcodes: `+F55555`, `+F123456`, `+F1234567`
 
 ## Remote development
 
-<https://mw-frontend-dev.tugraz.at/vpu-library-shelving/>
+<https://mw-frontend-dev.tugraz.at/apps/library>
 
 Run `npm run watch-dev` to build the `dist/bundle.js` constantly and upload the `dist` folder to the server.
 
 ## Demo system
+
+<https://frontend-demo.tugraz.at/apps/library>
 
 Build bundle for the demo server
 
