@@ -1,7 +1,7 @@
 import vars from './vars.js';
 
 export const getAssetURL = (path) => {
-    const elm = document.getElementById('vpu-library-shelving-wc-src');
+    const elm = document.getElementById('vpu-library-app-src');
     if (!elm)
         return path;
     const url = elm.src;

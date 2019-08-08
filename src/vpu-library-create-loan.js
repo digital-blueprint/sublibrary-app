@@ -8,7 +8,7 @@ import Suggestions from 'suggestions';
 import 'vpu-language-select';
 import commonUtils from 'vpu-common/utils';
 
-class LibraryShelving extends VPULitElementJQuery {
+class LibraryCreateLoan extends VPULitElementJQuery {
     constructor() {
         super();
         this.lang = 'de';
@@ -160,8 +160,8 @@ class LibraryShelving extends VPULitElementJQuery {
 
             <section class="section">
                 <div class="container">
-                    <h1 class="title">${i18n.t('title')}</h1>
-                    <h2 class="subtitle">${i18n.t('subtitle')}</h2>
+                    <h1 class="title">${i18n.t('create-loan.title')}</h1>
+                    <h2 class="subtitle">${i18n.t('create-loan.subtitle')}</h2>
                 </div>
             </section>
             <section class="section">
@@ -169,6 +169,12 @@ class LibraryShelving extends VPULitElementJQuery {
                     <div class="tile is-ancestor">
                         <div class="tile">
                             <form>
+                                <div class="field">
+                                    <label class="label">${i18n.t('person-select.headline')}</label>
+                                    <div class="control">
+                                        <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-person-select>
+                                    </div>
+                                </div>
                                 <div class="field">
                                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                                     <div class="control">
@@ -208,4 +214,4 @@ class LibraryShelving extends VPULitElementJQuery {
     }
 }
 
-commonUtils.defineCustomElement('vpu-library-shelving', LibraryShelving);
+commonUtils.defineCustomElement('vpu-library-create-loan', LibraryCreateLoan);
