@@ -1,14 +1,19 @@
 {
   "person-select": {
-    "headline": "Person (only for demonstration)"
+    "headline": "Person"
   },
   "library-book-offer-select": {
-    "headline": "Library book",
+    "headline": "Book",
     "placeholder": "Please enter a barcode"
   },
   "create-loan": {
     "title": "Loan",
-    "subtitle": "Allows to create loans for books"
+    "subtitle": "Allows to create loans for books",
+    "info-no-existing-loans-summary": "No existing loans",
+    "info-no-existing-loans-body": "No existing loans were found, a new one can be created.",
+    "error-existing-loans-summary": "Existing loan was found!",
+    "error-existing-loans-body": "Existing loans were found, a new one cannot be created!",
+    "submit": "Loan book"
   },
   "menu": {
     "shelving": "Shelving",

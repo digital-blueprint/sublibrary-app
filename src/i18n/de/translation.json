@@ -1,14 +1,19 @@
 {
   "person-select": {
-    "headline": "Person (nur für Demo-Zwecke)"
+    "headline": "Person"
   },
   "library-book-offer-select": {
-    "headline": "Bibliothek Buch",
+    "headline": "Buch",
     "placeholder": "Bitte geben Sie einen Barcode ein"
   },
   "create-loan": {
     "title": "Entlehung",
-    "subtitle": "Erlaubt das Entlehnen von Büchern"
+    "subtitle": "Erlaubt das Entlehnen von Büchern",
+    "info-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
+    "info-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden, das Buch kann entlehnt werden.",
+    "error-existing-loans-summary": "Bestehende Entlehnung!",
+    "error-existing-loans-body": "Es wurden eine bestehende Entlehnunge gefunden, das Buch kann nicht entlehnt werden!",
+    "submit": "Buch entlehnen"
   },
   "menu": {
     "shelving": "Aufstellung",

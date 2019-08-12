@@ -13,6 +13,10 @@ class LibraryCreateLoan extends VPULitElementJQuery {
         super();
         this.lang = 'de';
         this.entryPointUrl = utils.getAPiUrl();
+        this.bookOfferId = "";
+        this.bookOffer = null;
+        this.personId = "";
+        this.person = null;
     }
 
     static get properties() {
@@ -27,10 +31,11 @@ class LibraryCreateLoan extends VPULitElementJQuery {
         const that = this;
 
         this.updateComplete.then(()=>{
+            const $personSelect = that.$('vpu-person-select');
             const $bookOfferSelect = that.$('vpu-library-book-offer-select');
             const $locationIdentifierInput = that.$('#location-identifier');
             const locationIdentifierInput = that._('#location-identifier');
-            const $locationIdentifierBlock = that.$('#location-identifier-block');
+            const $createLoanBlock = that.$('#create-loan-block');
 
             // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
             window.addEventListener("vpu-auth-person-init", () => {
@@ -44,20 +49,18 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                 that.$("#cover").hide();
             });
 
-            // show location identifier block if book offer was selected
+            $personSelect.change(function () {
+                that.person = $(this).data("object");
+                that.personId = that.person["@id"];
+            });
+
+            // show create loan block if book offer was selected
             $bookOfferSelect.change(function () {
-                console.log("change");
-                console.log($bookOfferSelect.val());
-                console.log($bookOfferSelect.attr("value"));
-                console.log($bookOfferSelect.prop("value"));
-                const bookOffer = $(this).data("object");
-                $locationIdentifierInput.val(bookOffer.locationIdentifier).trigger("input");
+                that.bookOffer = $(this).data("object");
+                that.bookOfferId = that.bookOffer["@id"];
+                const apiUrl = that.entryPointUrl + that.bookOfferId + "/loans";
 
-                $locationIdentifierBlock.show();
-
-                const apiUrl = that.entryPointUrl + bookOffer["@id"] + "/location_identifiers";
-
-                // fetch and setup the location identifier suggestions
+                // check if there are already loans on this book offer
                 fetch(apiUrl, {
                     headers: {
                         'Content-Type': 'application/ld+json',
@@ -65,10 +68,25 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                     },
                 })
                 .then(response => response.json())
-                .then((result) => {new Suggestions(locationIdentifierInput, result['hydra:member'])});
+                .then((result) => {
+                    if (result['hydra:totalItems'] === 0) {
+                        notify({
+                            "summary": i18n.t('create-loan.info-no-existing-loans-summary'),
+                            "body": i18n.t('create-loan.info-no-existing-loans-body'),
+                            "type": "info",
+                            "timeout": 5,
+                        });
+                        $createLoanBlock.show();
+                    } else {
+                        notify({
+                            "summary": i18n.t('create-loan.error-existing-loans-summary'),
+                            "body": i18n.t('create-loan.error-existing-loans-body'),
+                            "type": "danger"
+                        });
+                    }
+                });
             }).on('unselect', function (e) {
-                console.log("unselect");
-                $locationIdentifierBlock.hide();
+                $createLoanBlock.hide();
             });
 
             // enable send button if location identifier was entered
@@ -80,12 +98,12 @@ class LibraryCreateLoan extends VPULitElementJQuery {
             that.$('#send').click((e) => {
                 e.preventDefault();
                 console.log("send");
-                const apiUrl = that.entryPointUrl + $bookOfferSelect.val();
+                const apiUrl = that.entryPointUrl + that.bookOfferId + "/loans";
                 console.log(apiUrl);
                 console.log($locationIdentifierInput);
 
                 const data = {
-                    "locationIdentifier": $locationIdentifierInput.val()
+                    "borrower": that.personId
                 };
 
                 console.log(data);
@@ -96,7 +114,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
 
                 $.ajax({
                     url: apiUrl,
-                    type: 'PUT',
+                    type: 'POST',
                     contentType: 'application/json',
                     beforeSend: function( jqXHR ) {
                         jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
@@ -150,8 +168,8 @@ class LibraryCreateLoan extends VPULitElementJQuery {
             <link rel="stylesheet" href="${bulmaCSS}">
             <link rel="stylesheet" href="${suggestionsCSS}">
             <style>
-                #location-identifier-block, #permission-error-block { display: none; }
-                #location-identifier-block input { width: 100%; }
+                #create-loan-block, #permission-error-block { display: none; }
+                #create-loan-block input { width: 100%; }
                 #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #fff; z-index:9999;}
                 .tile.is-ancestor .tile {margin: 10px;}
             </style>
@@ -186,16 +204,16 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                                         Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>
                                     </div>
                                 </div>
-                                <div id="location-identifier-block">
+                                <div id="create-loan-block">
                                     <div class="field">
-                                        <label class="label">${i18n.t('location-identifier.headline')}</label>
+                                        <label class="label">${i18n.t('create-loan.date')}</label>
                                         <div class="control">
-                                            <input class="input" id="location-identifier" type="text" placeholder="${i18n.t('location-identifier.placeholder')}">
+                                            <input class="input" id="location-identifier" type="text">
                                         </div>
                                     </div>
                                     <div class="field">
                                         <div class="control">
-                                             <button class="button is-link" id="send" disabled="disabled">${i18n.t('location-identifier.submit')}</button>
+                                             <button class="button is-link" id="send" disabled="disabled">${i18n.t('create-loan.submit')}</button>
                                         </div>
                                     </div>
                                 </div>
