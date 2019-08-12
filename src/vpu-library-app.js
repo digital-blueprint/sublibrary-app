@@ -56,7 +56,8 @@ class LibraryApp extends VPULitElement {
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
             <style>
-                .hidden {display: none;}
+                /* Select2 doesn't work well with display: none */
+                .hidden {left: -9999px; position: absolute;}
             </style>
 
             <vpu-notification lang="${this.lang}"></vpu-notification>
