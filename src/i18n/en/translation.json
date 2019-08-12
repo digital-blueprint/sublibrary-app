@@ -6,6 +6,14 @@
     "headline": "Library book",
     "placeholder": "Please enter a barcode"
   },
+  "create-loan": {
+    "title": "Loan",
+    "subtitle": "Allows to create loans for books"
+  },
+  "menu": {
+    "shelving": "Shelving",
+    "loan": "Loan"
+  },
   "location-identifier": {
     "headline": "Identifier for book placement",
     "placeholder": "Please enter the identifier to place the book",

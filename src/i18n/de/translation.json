@@ -6,6 +6,14 @@
     "headline": "Bibliothek Buch",
     "placeholder": "Bitte geben Sie einen Barcode ein"
   },
+  "create-loan": {
+    "title": "Entlehung",
+    "subtitle": "Erlaubt das Entlehnen von Büchern"
+  },
+  "menu": {
+    "shelving": "Aufstellung",
+    "loan": "Entlehnung"
+  },
   "location-identifier": {
     "headline": "Identifikator zur Aufstellung",
     "placeholder": "Bitte geben Sie den Identifikator um das Buch aufzustellen ein",

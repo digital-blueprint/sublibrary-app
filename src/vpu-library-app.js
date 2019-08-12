@@ -70,8 +70,8 @@ class LibraryApp extends VPULitElement {
 
             <section class="section">
                 <div class="container">
-                    <a href="#" @click="${() => this.switchComponent('vpu-library-shelving')}">Shelving</a> |
-                    <a href="#" @click="${() => this.switchComponent('vpu-library-create-loan')}">Loan</a>
+                    <a href="#" @click="${() => this.switchComponent('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
+                    <a href="#" @click="${() => this.switchComponent('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a>
                 </div>
             </section>
 
