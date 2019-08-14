@@ -90,7 +90,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                 $createLoanBlock.hide();
             });
 
-            // update the book offer with location identifier
+            // post loan with borrower
             that.$('#send').click((e) => {
                 e.preventDefault();
                 console.log("send");
