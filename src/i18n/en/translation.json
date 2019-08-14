@@ -12,8 +12,10 @@
     "info-no-existing-loans-summary": "No existing loans",
     "info-no-existing-loans-body": "No existing loans were found, a new one can be created.",
     "error-existing-loans-summary": "Existing loan was found!",
-    "error-existing-loans-body": "Existing loans were found, a new one cannot be created!",
-    "submit": "Loan book"
+    "error-existing-loans-body": "Existing loan was found, a new one cannot be created!",
+    "submit": "Loan book",
+    "success-summary": "Book loan creation successful",
+    "success-body": "The book loan creation successful."
   },
   "menu": {
     "shelving": "Shelving",

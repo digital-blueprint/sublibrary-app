@@ -33,8 +33,6 @@ class LibraryCreateLoan extends VPULitElementJQuery {
         this.updateComplete.then(()=>{
             const $personSelect = that.$('vpu-person-select');
             const $bookOfferSelect = that.$('vpu-library-book-offer-select');
-            const $locationIdentifierInput = that.$('#location-identifier');
-            const locationIdentifierInput = that._('#location-identifier');
             const $createLoanBlock = that.$('#create-loan-block');
 
             // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
@@ -52,12 +50,14 @@ class LibraryCreateLoan extends VPULitElementJQuery {
             $personSelect.change(function () {
                 that.person = $(this).data("object");
                 that.personId = that.person["@id"];
+                that.updateSubmitButtonDisabled();
             });
 
             // show create loan block if book offer was selected
             $bookOfferSelect.change(function () {
                 that.bookOffer = $(this).data("object");
                 that.bookOfferId = that.bookOffer["@id"];
+                that.updateSubmitButtonDisabled();
                 const apiUrl = that.entryPointUrl + that.bookOfferId + "/loans";
 
                 // check if there are already loans on this book offer
@@ -78,6 +78,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                         });
                         $createLoanBlock.show();
                     } else {
+                        console.log(result['hydra:member']);
                         notify({
                             "summary": i18n.t('create-loan.error-existing-loans-summary'),
                             "body": i18n.t('create-loan.error-existing-loans-body'),
@@ -89,18 +90,12 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                 $createLoanBlock.hide();
             });
 
-            // enable send button if location identifier was entered
-            $locationIdentifierInput.on("input", function () {
-                that.$("#send").prop("disabled", $(this).val() === "");
-            });
-
             // update the book offer with location identifier
             that.$('#send').click((e) => {
                 e.preventDefault();
                 console.log("send");
                 const apiUrl = that.entryPointUrl + that.bookOfferId + "/loans";
                 console.log(apiUrl);
-                console.log($locationIdentifierInput);
 
                 const data = {
                     "borrower": that.personId
@@ -122,8 +117,8 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                     data: JSON.stringify(data),
                     success: function(data) {
                         notify({
-                            "summary": i18n.t('success-summary'),
-                            "body": i18n.t('success-body'),
+                            "summary": i18n.t('create-loan.success-summary'),
+                            "body": i18n.t('create-loan.success-body'),
                             "type": "success",
                             "timeout": 5,
                         });
@@ -136,14 +131,19 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                             "summary": i18n.t('error-summary'),
                             "body": body,
                             "type": "danger",
+                            "timeout": 10,
                         });
                     },
                     complete: function (jqXHR, textStatus, errorThrown) {
-                        that.$("#send").prop("disabled", false);
+                        that.updateSubmitButtonDisabled();
                     }
                 });
             });
         });
+    }
+
+    updateSubmitButtonDisabled() {
+        this.$("#send").prop("disabled", this.personId === "" || this.bookOfferId === "");
     }
 
     update(changedProperties) {
@@ -201,16 +201,10 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                                 </div>
                                 <div class="field">
                                     <div class="notification is-info">
-                                        Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>
+                                        Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>, <code>+F987654</code>
                                     </div>
                                 </div>
                                 <div id="create-loan-block">
-                                    <div class="field">
-                                        <label class="label">${i18n.t('create-loan.date')}</label>
-                                        <div class="control">
-                                            <input class="input" id="location-identifier" type="text">
-                                        </div>
-                                    </div>
                                     <div class="field">
                                         <div class="control">
                                              <button class="button is-link" id="send" disabled="disabled">${i18n.t('create-loan.submit')}</button>

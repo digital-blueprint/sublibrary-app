@@ -12,8 +12,10 @@
     "info-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
     "info-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden, das Buch kann entlehnt werden.",
     "error-existing-loans-summary": "Bestehende Entlehnung!",
-    "error-existing-loans-body": "Es wurden eine bestehende Entlehnunge gefunden, das Buch kann nicht entlehnt werden!",
-    "submit": "Buch entlehnen"
+    "error-existing-loans-body": "Es wurden eine bestehende Entlehnung gefunden, das Buch kann nicht entlehnt werden!",
+    "submit": "Buch entlehnen",
+    "success-summary": "Buchentlehnung erfolgreich",
+    "success-body": "Das Buch wurde erfolgreich entlehnt."
   },
   "menu": {
     "shelving": "Aufstellung",
