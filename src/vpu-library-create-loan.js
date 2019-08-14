@@ -174,7 +174,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                 .tile.is-ancestor .tile {margin: 10px;}
             </style>
 
-            <div id="cover"></div>
+            <div id="cover"><vpu-spinner></vpu-spinner></div>
 
             <section class="section">
                 <div class="container">

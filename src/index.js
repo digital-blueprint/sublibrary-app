@@ -1,3 +1,4 @@
+import '../assets/spinner.js';
 import 'vpu-auth';
 import 'vpu-notification';
 import 'vpu-knowledge-base-web-page-element-view';
