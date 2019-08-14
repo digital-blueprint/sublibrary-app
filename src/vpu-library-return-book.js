@@ -87,7 +87,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
                 $returnBookBlock.hide();
             });
 
-            // update the book offer with location identifier
+            // update loan status of book loan
             that.$('#send').click((e) => {
                 e.preventDefault();
                 console.log("send");
