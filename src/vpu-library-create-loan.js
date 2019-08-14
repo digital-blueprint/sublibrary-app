@@ -81,7 +81,8 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                         notify({
                             "summary": i18n.t('create-loan.error-existing-loans-summary'),
                             "body": i18n.t('create-loan.error-existing-loans-body'),
-                            "type": "danger"
+                            "type": "danger",
+                            "timeout": 10,
                         });
                     }
                 });
