@@ -4,7 +4,6 @@ import {i18n} from './i18n.js';
 import {html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
-import Suggestions from 'suggestions';
 import 'vpu-language-select';
 import commonUtils from 'vpu-common/utils';
 
