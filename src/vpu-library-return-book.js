@@ -106,7 +106,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
 
                 $.ajax({
                     url: apiUrl,
-                    type: 'POST',
+                    type: 'PUT',
                     contentType: 'application/json',
                     beforeSend: function( jqXHR ) {
                         jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
