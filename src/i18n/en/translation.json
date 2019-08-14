@@ -17,9 +17,21 @@
     "success-summary": "Book loan creation successful",
     "success-body": "The book loan creation successful."
   },
+  "return-book": {
+    "title": "Return",
+    "subtitle": "Allows to return books",
+    "error-no-existing-loans-summary": "No existing loans",
+    "error-no-existing-loans-body": "No existing loans were found!",
+    "info-existing-loans-summary": "Existing loan was found!",
+    "info-existing-loans-body": "Existing loan was found, it can be returned!",
+    "submit": "Return book",
+    "success-summary": "Book returned successfully",
+    "success-body": "The book was returned successfully."
+  },
   "menu": {
     "shelving": "Shelving",
-    "loan": "Loan"
+    "loan": "Loan",
+    "return": "Return"
   },
   "location-identifier": {
     "headline": "Identifier for book placement",

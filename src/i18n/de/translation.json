@@ -17,9 +17,21 @@
     "success-summary": "Buchentlehnung erfolgreich",
     "success-body": "Das Buch wurde erfolgreich entlehnt."
   },
+  "return-book": {
+    "title": "Rückgabe",
+    "subtitle": "Erlaubt die Rückgabe von Büchern",
+    "error-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
+    "error-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden!",
+    "info-existing-loans-summary": "Bestehende Entlehnung!",
+    "info-existing-loans-body": "Es wurden eine bestehende Entlehnung gefunden, das Buch kann zurückgegeben werden!",
+    "submit": "Buch zurückgeben",
+    "success-summary": "Buchentrückgabe erfolgreich",
+    "success-body": "Das Buch wurde erfolgreich zurückgegeben."
+  },
   "menu": {
     "shelving": "Aufstellung",
-    "loan": "Entlehnung"
+    "loan": "Entlehnung",
+    "return": "Rückgabe"
   },
   "location-identifier": {
     "headline": "Identifikator zur Aufstellung",
