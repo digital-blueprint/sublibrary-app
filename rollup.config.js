@@ -14,11 +14,14 @@ const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : '
 console.log("build: " + build);
 
 export default {
-    input: (build != 'test') ? 'src/index.js' : 'test/**/*.js',
+    input: (build != 'test') ? ['src/index.js'] : 'test/**/*.js',
     output: {
-        file: 'dist/' + pkg.name + '.js',
-        format: 'esm'
+      dir: 'dist',
+      entryFileNames: pkg.name + '.js',
+      chunkFileNames: 'shared/[name].[hash].[format].js',
+      format: 'esm'
     },
+    manualChunks: Object.keys(pkg.dependencies).reduce(function (acc, item) { acc[item] = [item]; return acc;}, {}),
     onwarn: function (message, warn) {
         // ignore "suggestions" warning re "use strict"
         if (message.code === 'MODULE_LEVEL_DIRECTIVE') {
@@ -42,6 +45,7 @@ export default {
           limit: 0,
           include: [
             "node_modules/bulma/**/*.css",
+            "node_modules/bulma/**/*.sass",
             "node_modules/suggestions/**/*.css",
             "node_modules/select2/**/*.css",
           ],
