@@ -26,7 +26,8 @@
     "info-existing-loans-body": "Es wurden eine bestehende Entlehnung gefunden, das Buch kann zurückgegeben werden!",
     "submit": "Buch zurückgeben",
     "success-summary": "Buchentrückgabe erfolgreich",
-    "success-body": "Das Buch wurde erfolgreich zurückgegeben."
+    "success-body": "Das Buch wurde erfolgreich zurückgegeben.",
+    "borrower": "Entlehner"
   },
   "menu": {
     "shelving": "Aufstellung",

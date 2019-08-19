@@ -26,7 +26,8 @@
     "info-existing-loans-body": "Existing loan was found, it can be returned!",
     "submit": "Return book",
     "success-summary": "Book returned successfully",
-    "success-body": "The book was returned successfully."
+    "success-body": "The book was returned successfully.",
+    "borrower": "Borrower"
   },
   "menu": {
     "shelving": "Shelving",

@@ -17,12 +17,16 @@ class LibraryReturnBook extends VPULitElementJQuery {
         this.bookOffer = null;
         this.loanId = "";
         this.loan = null;
+        this.borrower = null;
+        this.borrowerName = "";
     }
 
     static get properties() {
         return {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
+            borrower: { type: Object, attribute: false },
+            borrowerName: { type: String, attribute: false },
         };
     }
 
@@ -73,6 +77,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
                         that.loan = result['hydra:member'][0];
                         that.loanId = that.loan["@id"];
                         console.log(that.loan);
+                        that.loadBorrower(that.loan.borrower);
 
                         notify({
                             "summary": i18n.t('return-book.info-existing-loans-summary'),
@@ -94,8 +99,9 @@ class LibraryReturnBook extends VPULitElementJQuery {
                 const apiUrl = that.entryPointUrl + that.loanId;
                 console.log(apiUrl);
 
+                // See: loan_status https://developers.exlibrisgroup.com/wp-content/uploads/alma/xsd/rest_item_loan.xsd
                 const data = {
-                    "loanStatus": "INACTIVE"
+                    "loanStatus": "COMPLETE"
                 };
 
                 console.log(data);
@@ -157,6 +163,25 @@ class LibraryReturnBook extends VPULitElementJQuery {
         this.lang = e.detail.lang;
     }
 
+    loadBorrower(personId) {
+        this.borrower = null;
+        this.borrowerName = "";
+        const apiUrl = this.entryPointUrl + personId;
+
+        // load person
+        fetch(apiUrl, {
+            headers: {
+                'Content-Type': 'application/ld+json',
+                'Authorization': 'Bearer ' + window.VPUAuthToken,
+            },
+        })
+            .then(response => response.json())
+            .then((person) => {
+                this.borrower = person;
+                this.borrowerName = person.name;
+            });
+    }
+
     render() {
         const suggestionsCSS = utils.getAssetURL('suggestions/suggestions.css');
         const bulmaCSS = utils.getAssetURL('bulma/bulma.min.css');
@@ -196,6 +221,12 @@ class LibraryReturnBook extends VPULitElementJQuery {
                                     </div>
                                 </div>
                                 <div id="return-book-block">
+                                    <div class="field">
+                                        <label class="label">${i18n.t('return-book.borrower')}</label>
+                                        <div class="control">
+                                            ${this.borrowerName}
+                                        </div>
+                                    </div>
                                     <div class="field">
                                         <div class="control">
                                              <button class="button is-link" id="send" disabled="disabled">${i18n.t('return-book.submit')}</button>
