@@ -1,21 +1,22 @@
 import path from 'path';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
-import postcss from 'rollup-plugin-postcss';
 import copy from 'rollup-plugin-copy';
 import {terser} from "rollup-plugin-terser";
 import json from 'rollup-plugin-json';
 import replace from "rollup-plugin-replace";
 import serve from 'rollup-plugin-serve';
 import multiEntry from 'rollup-plugin-multi-entry';
+import url from "rollup-plugin-url";
 
+const pkg = require('./package.json');
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
 console.log("build: " + build);
 
 export default {
     input: (build != 'test') ? 'src/index.js' : 'test/**/*.js',
     output: {
-        file: 'dist/bundle.js',
+        file: 'dist/' + pkg.name + '.js',
         format: 'esm'
     },
     onwarn: function (message, warn) {
@@ -26,7 +27,7 @@ export default {
         warn(message);
     },
     plugins: [
-        multiEntry(),
+        (build == 'test') ? multiEntry() : false,
         resolve({
           customResolveOptions: {
             // ignore node_modules from vendored packages
@@ -37,21 +38,24 @@ export default {
             include: 'node_modules/**'
         }),
         json(),
+        url({
+          limit: 0,
+          include: [
+            "node_modules/bulma/**/*.css",
+            "node_modules/suggestions/**/*.css",
+            "node_modules/select2/**/*.css",
+          ],
+          emitFiles: true,
+          fileName: 'shared/[name].[hash][extname]'
+        }),
         replace({
             "process.env.BUILD": '"' + build + '"',
-        }),
-        postcss({
-            inject: false,
-            minimize: false,
-            plugins: []
         }),
         (build !== 'local' && build !== 'test') ? terser() : false,
         copy({
             targets: [
-                {src: 'assets/*', dest: 'dist'},
-                {src: 'node_modules/select2/dist/css', dest: 'dist/select2'},
-                {src: 'node_modules/suggestions/dist/suggestions.css', dest: 'dist/suggestions'},
-                {src: 'node_modules/bulma/css/*', dest: 'dist/bulma'},
+                {src: 'assets/index.html', dest: 'dist'},
+                {src: 'assets/*', dest: 'dist/local/' + pkg.name},
             ],
         }),
         (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: 'dist', host: '127.0.0.1', port: 8001}) : false

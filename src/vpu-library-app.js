@@ -5,6 +5,8 @@ import {send as notify} from 'vpu-notification';
 import VPULitElement from 'vpu-common/vpu-lit-element';
 import 'vpu-language-select';
 import commonUtils from 'vpu-common/utils';
+import bulmaCSSPath from 'bulma/css/bulma.min.css';
+
 
 class LibraryApp extends VPULitElement {
     constructor() {
@@ -51,7 +53,7 @@ class LibraryApp extends VPULitElement {
     }
 
     render() {
-        const bulmaCSS = utils.getAssetURL('bulma/bulma.min.css');
+        const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">

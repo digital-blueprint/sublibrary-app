@@ -7,6 +7,8 @@ import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import Suggestions from 'suggestions';
 import 'vpu-language-select';
 import commonUtils from 'vpu-common/utils';
+import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
+import bulmaCSSPath from 'bulma/css/bulma.min.css';
 
 class LibraryReturnBook extends VPULitElementJQuery {
     constructor() {
@@ -183,8 +185,8 @@ class LibraryReturnBook extends VPULitElementJQuery {
     }
 
     render() {
-        const suggestionsCSS = utils.getAssetURL('suggestions/suggestions.css');
-        const bulmaCSS = utils.getAssetURL('bulma/bulma.min.css');
+        const suggestionsCSS = utils.getAssetURL(suggestionsCSSPath);
+        const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
