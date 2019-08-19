@@ -98,23 +98,15 @@ class LibraryReturnBook extends VPULitElementJQuery {
             that.$('#send').click((e) => {
                 e.preventDefault();
                 console.log("send");
-                const apiUrl = that.entryPointUrl + that.loanId;
+                const apiUrl = that.entryPointUrl + that.bookOfferId + "/return";
                 console.log(apiUrl);
-
-                // See: loan_status https://developers.exlibrisgroup.com/wp-content/uploads/alma/xsd/rest_item_loan.xsd
-                const data = {
-                    "loanStatus": "COMPLETE"
-                };
-
-                console.log(data);
-                console.log(JSON.stringify(data));
 
                 // disable send button to wait until ajax request was finished (or errored)
                 that.$("#send").prop("disabled", true);
 
                 $.ajax({
                     url: apiUrl,
-                    type: 'PUT',
+                    type: 'POST',
                     contentType: 'application/json',
                     beforeSend: function( jqXHR ) {
                         jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
