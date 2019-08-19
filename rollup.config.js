@@ -13,6 +13,9 @@ const pkg = require('./package.json');
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
 console.log("build: " + build);
 
+let manualChunks = Object.keys(pkg.dependencies).reduce(function (acc, item) { acc[item] = [item]; return acc;}, {});
+manualChunks = Object.keys(pkg.devDependencies).reduce(function (acc, item) { if (item.startsWith('vpu-')) acc[item] = [item]; return acc;}, manualChunks);
+
 export default {
     input: (build != 'test') ? ['src/index.js'] : 'test/**/*.js',
     output: {
@@ -21,7 +24,7 @@ export default {
       chunkFileNames: 'shared/[name].[hash].[format].js',
       format: 'esm'
     },
-    manualChunks: Object.keys(pkg.dependencies).reduce(function (acc, item) { acc[item] = [item]; return acc;}, {}),
+    manualChunks: manualChunks,
     onwarn: function (message, warn) {
         // ignore "suggestions" warning re "use strict"
         if (message.code === 'MODULE_LEVEL_DIRECTIVE') {
