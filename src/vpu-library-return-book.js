@@ -111,7 +111,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
                     beforeSend: function( jqXHR ) {
                         jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
                     },
-                    data: JSON.stringify(data),
+                    data: "{}",
                     success: function(data) {
                         notify({
                             "summary": i18n.t('return-book.success-summary'),
