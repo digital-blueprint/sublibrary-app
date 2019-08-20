@@ -112,6 +112,8 @@ class LibraryShelving extends VPULitElementJQuery {
                             "type": "success",
                             "timeout": 5,
                         });
+
+                        $bookOfferSelect[0].clear();
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         const body = jqXHR.responseJSON !== undefined && jqXHR.responseJSON["hydra:description"] !== undefined ?

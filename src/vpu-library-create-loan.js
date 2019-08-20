@@ -84,6 +84,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                             "summary": i18n.t('create-loan.error-existing-loans-summary'),
                             "body": i18n.t('create-loan.error-existing-loans-body'),
                             "type": "danger",
+                            "timeout": 10,
                         });
                     }
                 });
@@ -123,6 +124,8 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                             "type": "success",
                             "timeout": 5,
                         });
+
+                        $bookOfferSelect[0].clear();
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         const body = jqXHR.responseJSON !== undefined && jqXHR.responseJSON["hydra:description"] !== undefined ?
