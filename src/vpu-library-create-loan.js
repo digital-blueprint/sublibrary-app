@@ -5,7 +5,7 @@ import {html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
-import commonUtils from 'vpu-common/utils';
+import * as commonUtils from 'vpu-common/utils';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
 

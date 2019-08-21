@@ -4,7 +4,7 @@ import {html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
 import VPULitElement from 'vpu-common/vpu-lit-element';
 import 'vpu-language-select';
-import commonUtils from 'vpu-common/utils';
+import * as commonUtils from 'vpu-common/utils';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
 import Navigo from "navigo";
 
