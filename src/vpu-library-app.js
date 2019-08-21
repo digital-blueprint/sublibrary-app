@@ -72,7 +72,7 @@ class LibraryApp extends VPULitElement {
             <vpu-notification lang="${this.lang}"></vpu-notification>
             <header>
                 <div class="container">
-                    <vpu-auth lang="${this.lang}" client-id="${commonUtils.setting('keyCloakClientId')}" load-person force-login></vpu-auth>
+                    <vpu-auth lang="${this.lang}" client-id="${commonUtils.setting('keyCloakClientId')}" load-person force-login style="float:right"></vpu-auth>
                     <vpu-language-select @vpu-language-changed=${this.onLanguageChanged.bind(this)}></vpu-language-select>
                 </div>
             </header>
