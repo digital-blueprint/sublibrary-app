@@ -46,5 +46,16 @@ deploy_demo:
     DEPLOY_TARGET: demo
     DEPLOY_HOST: mw01-dev.tugraz.at
     DEPLOY_KEY: "$DEPLOY_SSH_KEY"
-    DEPLOY_URL: https://frontend-demo.tugraz.at/vpu-library-shelving
+    DEPLOY_URL: https://frontend-demo.tugraz.at
+  <<: *deploy_defaults
+
+deploy_dev:
+  only:
+    refs:
+      - master
+  variables:
+    DEPLOY_TARGET: dev
+    DEPLOY_HOST: mw01-dev.tugraz.at
+    DEPLOY_KEY: "$DEPLOY_SSH_KEY"
+    DEPLOY_URL: https://mw-frontend-dev.tugraz.at
   <<: *deploy_defaults
