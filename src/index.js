@@ -7,4 +7,5 @@ import 'vpu-library-book-offer-select';
 import './vpu-library-shelving.js';
 import './vpu-library-create-loan.js';
 import './vpu-library-return-book.js';
+import './vpu-library-renew-loan.js';
 import './vpu-library-app.js';

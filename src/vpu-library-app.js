@@ -32,6 +32,7 @@ class LibraryApp extends VPULitElement {
                     'vpu-library-shelving*': () => that.switchComponent('vpu-library-shelving'),
                     'vpu-library-create-loan*': () => that.switchComponent('vpu-library-create-loan'),
                     'vpu-library-return-book*': () => that.switchComponent('vpu-library-return-book'),
+                    'vpu-library-renew-loan*': () => that.switchComponent('vpu-library-renew-loan'),
                     '*': () => that.switchComponent('vpu-library-shelving')})
                 .resolve();
         });
@@ -81,13 +82,15 @@ class LibraryApp extends VPULitElement {
                 <div class="container">
                     <a href="#vpu-library-shelving" data-navigo>${i18n.t('menu.shelving')}</a> |
                     <a href="#vpu-library-create-loan" data-navigo>${i18n.t('menu.loan')}</a> |
-                    <a href="#vpu-library-return-book" data-navigo>${i18n.t('menu.return')}</a>
+                    <a href="#vpu-library-return-book" data-navigo>${i18n.t('menu.return')}</a> |
+                    <a href="#vpu-library-renew-loan" data-navigo>${i18n.t('menu.renew')}</a>
                 </div>
             </section>
 
             <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-shelving>
-            <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component"></vpu-library-create-loan>
+            <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-create-loan>
             <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-return-book>
+            <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-renew-loan>
         `;
     }
 }

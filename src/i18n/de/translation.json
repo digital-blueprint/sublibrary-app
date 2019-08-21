@@ -29,10 +29,22 @@
     "success-body": "Das Buch wurde erfolgreich zurückgegeben.",
     "borrower": "Entlehner"
   },
+  "renew-loan": {
+    "title": "Verlängerung",
+    "subtitle": "Erlaubt das Verlängern von Entlehnungen",
+    "error-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
+    "error-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden!",
+    "submit": "Entlehnung verlängern",
+    "success-summary": "Verlängerung erfolgreich",
+    "success-body": "Die Entlehnungen wurde erfolgreich verlängert.",
+    "book": "Buch",
+    "error-load-loans-summary": "Fehler beim Laden der Entlehnungen"
+  },
   "menu": {
     "shelving": "Aufstellung",
     "loan": "Entlehnung",
-    "return": "Rückgabe"
+    "return": "Rückgabe",
+    "renew": "Verlängern"
   },
   "location-identifier": {
     "headline": "Identifikator zur Aufstellung",

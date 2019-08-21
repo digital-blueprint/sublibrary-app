@@ -29,10 +29,22 @@
     "success-body": "The book was returned successfully.",
     "borrower": "Borrower"
   },
+  "renew-loan": {
+    "title": "Renew",
+    "subtitle": "Allows to renew loans",
+    "error-no-existing-loans-summary": "No existing loans",
+    "error-no-existing-loans-body": "No existing loans were found!",
+    "submit": "Renew loan",
+    "success-summary": "Loan renewed successfully",
+    "success-body": "The loan was renewed successfully.",
+    "book": "Book",
+    "error-load-loans-summary": "Error on loading loans"
+  },
   "menu": {
     "shelving": "Shelving",
     "loan": "Loan",
-    "return": "Return"
+    "return": "Return",
+    "renew": "Renew"
   },
   "location-identifier": {
     "headline": "Identifier for book placement",
