@@ -25,12 +25,12 @@ export default {
       format: 'esm'
     },
     manualChunks: manualChunks,
-    onwarn: function (message, warn) {
+    onwarn: function (warning, warn) {
         // ignore "suggestions" warning re "use strict"
-        if (message.code === 'MODULE_LEVEL_DIRECTIVE') {
+        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
             return;
         }
-        warn(message);
+        throw new Error(warning);
     },
     plugins: [
         (build == 'test') ? multiEntry() : false,
