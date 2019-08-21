@@ -13,7 +13,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
     constructor() {
         super();
         this.lang = 'de';
-        this.entryPointUrl = utils.getAPiUrl();
+        this.entryPointUrl = commonUtils.getAPiUrl();
         this.bookOfferId = "";
         this.bookOffer = null;
         this.personId = "";
