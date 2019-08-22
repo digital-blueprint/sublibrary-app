@@ -38,7 +38,12 @@
     "success-summary": "Verlängerung erfolgreich",
     "success-body": "Die Entlehnungen wurde erfolgreich verlängert.",
     "book": "Buch",
-    "error-load-loans-summary": "Fehler beim Laden der Entlehnungen"
+    "error-load-loans-summary": "Fehler beim Laden der Entlehnungen",
+    "end-date": "Enddatum",
+    "renew-loan": "Entlehnung verlängern",
+    "error-renew-loan-summary": "Fehler beim Verlängern",
+    "info-renew-loan-success-summary": "Verlängern erfolgreich",
+    "info-renew-loan-success-body": "Das Verlängern der Entlehnung war erfolgreich."
   },
   "menu": {
     "shelving": "Aufstellung",

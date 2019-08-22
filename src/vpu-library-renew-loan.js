@@ -99,54 +99,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
             }).on('unselect', function (e) {
                 $renewLoanBlock.hide();
             });
-
-            // update loan status of book loan
-            that.$('#send').click((e) => {
-                e.preventDefault();
-                console.log("send");
-                const apiUrl = that.entryPointUrl + that.bookOfferId + "/return";
-                console.log(apiUrl);
-
-                // disable send button to wait until ajax request was finished (or errored)
-                that.$("#send").prop("disabled", true);
-
-                $.ajax({
-                    url: apiUrl,
-                    type: 'POST',
-                    contentType: 'application/json',
-                    beforeSend: function( jqXHR ) {
-                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
-                    },
-                    data: "{}",
-                    success: function(data) {
-                        notify({
-                            "summary": i18n.t('renew-loan.success-summary'),
-                            "body": i18n.t('renew-loan.success-body'),
-                            "type": "success",
-                            "timeout": 5,
-                        });
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        const body = jqXHR.responseJSON !== undefined && jqXHR.responseJSON["hydra:description"] !== undefined ?
-                            jqXHR.responseJSON["hydra:description"] : textStatus;
-
-                        notify({
-                            "summary": i18n.t('error-summary'),
-                            "body": body,
-                            "type": "danger",
-                            "timeout": 10,
-                        });
-                    },
-                    complete: function (jqXHR, textStatus, errorThrown) {
-                        that.updateSubmitButtonDisabled();
-                    }
-                });
-            });
         });
-    }
-
-    updateSubmitButtonDisabled() {
-        this.$("#send").prop("disabled", this.bookOfferId === "");
     }
 
     update(changedProperties) {
@@ -163,28 +116,79 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         this.lang = e.detail.lang;
     }
 
-    loadBorrower(personId) {
-        this.borrower = null;
-        this.borrowerName = "";
-        const apiUrl = this.entryPointUrl + personId;
+    /**
+     * We need to strip the seconds and timezone for the datetime-local input
+     *
+     * @param isoDateTime
+     * @returns {string}
+     */
+    static isoDT2DTL(isoDateTime) {
+        const re = /(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/;
+        const result = re.exec(isoDateTime);
+        return result[1];
+    }
 
-        // load person
+    execRenew(e) {
+        e.preventDefault();
+
+        const tr = e.path[2];
+        const dateTimeSelect = tr.querySelector("input[type='datetime-local']");
+        const loanId = tr.getAttribute("data-id");
+
+        const date = new Date(dateTimeSelect.value);
+        const data = {"endTime": date.toISOString()};
+
+        const apiUrl = this.entryPointUrl + loanId;
+
+        function BreakSignal() {}
+
+        // update loan
         fetch(apiUrl, {
+            method: 'PUT',
+            body: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/ld+json',
                 'Authorization': 'Bearer ' + window.VPUAuthToken,
             },
         })
-            .then(response => response.json())
-            .then((person) => {
-                this.borrower = person;
-                this.borrowerName = person.name;
+            .then((response) => {
+                if(!response.ok) {
+                    console.log(response);
+                    notify({
+                        "summary": i18n.t('renew-loan.error-renew-loan-summary'),
+                        "body": response.statusText,
+                        "type": "danger",
+                    });
+
+                    throw new BreakSignal();
+                } else {
+                    return response.json();
+                }
+            })
+            .catch(BreakSignal, () => {})
+            .then((loan) => {
+                console.log(loan);
+
+                notify({
+                    "summary": i18n.t('renew-loan.info-renew-loan-success-summary'),
+                    "body": i18n.t('renew-loan.info-renew-loan-success-body'),
+                    "type": "info",
+                    "timeout": 5,
+                });
+            })
+            .catch((error) => {
+                notify({
+                    "summary": i18n.t('renew-loan.error-renew-loan-summary'),
+                    "body": error,
+                    "type": "danger",
+                });
             });
     }
 
     render() {
         const suggestionsCSS = utils.getAssetURL(suggestionsCSSPath);
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
+        const minDate = new Date().toISOString();
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
@@ -214,14 +218,21 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                     </div>
                                 </div>
                                 <div id="renew-loan-block">
-                                    <table>
+                                    <table class="table">
                                         <thead>
-                                            <tr><th>${i18n.t('renew-loan.book')}</th><th></th></tr>
+                                            <tr>
+                                                <th>${i18n.t('renew-loan.book')}</th>
+                                                <th>${i18n.t('renew-loan.end-date')}</th>
+                                                <th></th>
+                                            </tr>
                                         </thead>
-                                        ${this.loans.map((loan) => html`<tr>
+                                        ${this.loans.map((loan) => html`
+                                        <tr data-id="${loan['@id']}">
                                             <td>${loan.object.name}</td>
-                                            <td><button data-id="${loan['@id']}" class="button is-link is-small" id="send">${i18n.t('renew-loan.submit')}</button></td>
-                                        </tr>`)}
+                                            <td><input type="datetime-local" name="endTime" min="${LibraryRenewLoan.isoDT2DTL(minDate)}" value="${LibraryRenewLoan.isoDT2DTL(loan.endTime)}"></td>
+                                            <td><button @click="${(e) => this.execRenew(e)}" class="button is-link is-small" id="send" title="${i18n.t('renew-loan.renew-loan')}">Ok</button></td>
+                                        </tr>
+                                        `)}
                                     </table>
                                 </div>
                             </form>

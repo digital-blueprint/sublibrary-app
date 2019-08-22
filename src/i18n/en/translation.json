@@ -38,7 +38,12 @@
     "success-summary": "Loan renewed successfully",
     "success-body": "The loan was renewed successfully.",
     "book": "Book",
-    "error-load-loans-summary": "Error on loading loans"
+    "error-load-loans-summary": "Error on loading loans",
+    "end-date": "End date",
+    "renew-loan": "Renew loan",
+    "error-renew-loan-summary": "Renewal failed",
+    "info-renew-loan-success-summary": "Renewal successfull",
+    "info-renew-loan-success-body": "The renewal of the loan was successful."
   },
   "menu": {
     "shelving": "Shelving",
