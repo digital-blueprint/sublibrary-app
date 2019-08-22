@@ -165,7 +165,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     return response.json();
                 }
             })
-            .catch(BreakSignal, () => {})
             .then((loan) => {
                 console.log(loan);
 
@@ -176,6 +175,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     "timeout": 5,
                 });
             })
+            .catch(BreakSignal, () => {})
             .catch((error) => {
                 notify({
                     "summary": i18n.t('renew-loan.error-renew-loan-summary'),
