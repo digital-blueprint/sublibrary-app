@@ -1,6 +1,6 @@
 import * as utils from './utils.js';
 import {i18n} from './i18n.js';
-import {html} from 'lit-element';
+import {html, css} from 'lit-element';
 import {send as notify} from 'vpu-notification';
 import VPULitElement from 'vpu-common/vpu-lit-element';
 import 'vpu-language-select';
@@ -60,37 +60,50 @@ class LibraryApp extends VPULitElement {
         this._(component).classList.remove('hidden');
     }
 
+    onStyleLoaded () {
+        this.shadowRoot.querySelector("#cover").style.opacity = "100";
+        this.shadowRoot.querySelector("vpu-spinner").style.display = "none";
+    }
+
+    static get styles() {
+        return css`
+            /* Select2 doesn't work well with display: none */
+            .hidden {left: -9999px; position: absolute;}
+            #cover {opacity: 0}
+        `;
+    }
+
     render() {
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
 
         return html`
-            <link rel="stylesheet" href="${bulmaCSS}">
-            <style>
-                /* Select2 doesn't work well with display: none */
-                .hidden {left: -9999px; position: absolute;}
-            </style>
+            <link rel="stylesheet" href="${bulmaCSS}" @load="${this.onStyleLoaded}">
 
-            <vpu-notification lang="${this.lang}"></vpu-notification>
-            <header>
-                <div class="container">
-                    <vpu-auth lang="${this.lang}" client-id="${commonUtils.setting('keyCloakClientId')}" load-person force-login style="float:right"></vpu-auth>
-                    <vpu-language-select @vpu-language-changed=${this.onLanguageChanged.bind(this)}></vpu-language-select>
-                </div>
-            </header>
+            <vpu-spinner></vpu-spinner>
 
-            <section class="section">
-                <div class="container">
-                    <a href="#vpu-library-shelving" data-navigo>${i18n.t('menu.shelving')}</a> |
-                    <a href="#vpu-library-create-loan" data-navigo>${i18n.t('menu.loan')}</a> |
-                    <a href="#vpu-library-return-book" data-navigo>${i18n.t('menu.return')}</a> |
-                    <a href="#vpu-library-renew-loan" data-navigo>${i18n.t('menu.renew')}</a>
-                </div>
-            </section>
+            <div id="cover">
+                <vpu-notification lang="${this.lang}"></vpu-notification>
+                <header>
+                    <div class="container">
+                        <vpu-auth lang="${this.lang}" client-id="${commonUtils.setting('keyCloakClientId')}" load-person force-login style="float:right"></vpu-auth>
+                        <vpu-language-select @vpu-language-changed=${this.onLanguageChanged.bind(this)}></vpu-language-select>
+                    </div>
+                </header>
 
-            <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-shelving>
-            <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-create-loan>
-            <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-return-book>
-            <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-renew-loan>
+                <section class="section">
+                    <div class="container">
+                        <a href="#vpu-library-shelving" data-navigo>${i18n.t('menu.shelving')}</a> |
+                        <a href="#vpu-library-create-loan" data-navigo>${i18n.t('menu.loan')}</a> |
+                        <a href="#vpu-library-return-book" data-navigo>${i18n.t('menu.return')}</a> |
+                        <a href="#vpu-library-renew-loan" data-navigo>${i18n.t('menu.renew')}</a>
+                    </div>
+                </section>
+
+                <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-shelving>
+                <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-create-loan>
+                <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-return-book>
+                <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-renew-loan>
+            </div>
         `;
     }
 }

@@ -42,9 +42,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     that.$('#permission-error-block').show();
                     that.$('form').hide();
                 }
-
-                // hide the cover after the person entity was loaded
-                that.$("#cover").hide();
             });
 
             // show loan list block if person was selected
@@ -195,12 +192,9 @@ class LibraryRenewLoan extends VPULitElementJQuery {
             <style>
                 #renew-loan-block, #permission-error-block { display: none; }
                 #renew-loan-block input { width: 100%; }
-                #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #fff; z-index:9999;}
                 .tile.is-ancestor .tile {margin: 10px;}
                 form {width: 100%};
             </style>
-
-            <div id="cover"></div>
 
             <section class="section">
                 <div class="container">

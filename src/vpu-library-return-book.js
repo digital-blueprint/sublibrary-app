@@ -47,9 +47,6 @@ class LibraryReturnBook extends VPULitElementJQuery {
                     that.$('#permission-error-block').show();
                     that.$('form').hide();
                 }
-
-                // hide the cover after the person entity was loaded
-                that.$("#cover").hide();
             });
 
             // show return book block if book offer was selected
@@ -186,11 +183,8 @@ class LibraryReturnBook extends VPULitElementJQuery {
             <style>
                 #return-book-block, #permission-error-block { display: none; }
                 #return-book-block input { width: 100%; }
-                #cover {position: fixed; height: 100%; width: 100%; top:0; left: 0; background: #fff; z-index:9999;}
                 .tile.is-ancestor .tile {margin: 10px;}
             </style>
-
-            <div id="cover"></div>
 
             <section class="section">
                 <div class="container">
