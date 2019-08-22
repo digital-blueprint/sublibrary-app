@@ -4,6 +4,7 @@
   "main": "src/index.js",
   "devDependencies": {
     "chai": "^4.2.0",
+    "chokidar": "^3.0.2",
     "i18next-scanner": "^2.10.2",
     "karma": "^4.2.0",
     "karma-chai": "^0.1.0",

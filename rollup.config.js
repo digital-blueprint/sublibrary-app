@@ -32,6 +32,9 @@ export default {
         }
         throw new Error(warning);
     },
+    watch: {
+      chokidar: true,
+    },
     plugins: [
         (build == 'test') ? multiEntry() : false,
         resolve({
