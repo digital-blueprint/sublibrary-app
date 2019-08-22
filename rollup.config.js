@@ -62,7 +62,9 @@ export default {
         copy({
             targets: [
                 {src: 'assets/index.html', dest: 'dist', rename: pkg.name + '.html'},
-                {src: 'assets/*', dest: 'dist/local/' + pkg.name},
+                {src: 'assets/*.css', dest: 'dist/local/' + pkg.name},
+                {src: 'assets/*.ico', dest: 'dist/local/' + pkg.name},
+                {src: 'node_modules/vpu-common/vpu-spinner.js', dest: 'dist/local/' + pkg.name, rename: 'spinner.js'},
             ],
         }),
         (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: 'dist', host: '127.0.0.1', port: 8001, historyApiFallback: '/' + pkg.name + '.html'}) : false
