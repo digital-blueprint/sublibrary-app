@@ -131,6 +131,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
     execRenew(e) {
         e.preventDefault();
 
+        const button = e.path[0];
         const tr = e.path[2];
         const dateTimeSelect = tr.querySelector("input[type='datetime-local']");
         const loanId = tr.getAttribute("data-id");
@@ -139,6 +140,8 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         const data = {"endTime": date.toISOString()};
 
         const apiUrl = this.entryPointUrl + loanId;
+
+        button.setAttribute("disabled", "disabled");
 
         // update loan
         fetch(apiUrl, {
@@ -150,6 +153,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
             },
         })
             .then(result => {
+                button.removeAttribute("disabled");
                 if (!result.ok) throw result;
                 return result.json();
             })
