@@ -7,6 +7,7 @@ import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
 import Navigo from "navigo";
+import buildinfo from 'consts:buildinfo';
 
 class LibraryApp extends VPULitElement {
     constructor() {
@@ -103,6 +104,13 @@ class LibraryApp extends VPULitElement {
                 <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-create-loan>
                 <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-return-book>
                 <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-renew-loan>
+
+                <a href="${buildinfo.url}" style="float: right">
+                    <div class="tags has-addons">
+                        <span class="tag is-light">build</span>
+                        <span class="tag is-dark">${buildinfo.info} (${buildinfo.env})</span>
+                    </div>
+                </a>
             </div>
         `;
     }
