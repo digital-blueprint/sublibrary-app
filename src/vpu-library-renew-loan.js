@@ -116,18 +116,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         this.lang = e.detail.lang;
     }
 
-    /**
-     * Converts a date string to a local iso datetime with stripped seconds and timezone for the datetime-local input
-     *
-     * @param dateString
-     * @returns {string}
-     */
-    static dateStr2StrippedIsoDT(dateString) {
-        var pad = function(x) { return x < 10 ? '0' + x : x };
-        const date = new Date(dateString);
-        return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-    }
-
     execRenew(e) {
         e.preventDefault();
 
@@ -233,7 +221,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                 ${this.loans.map((loan) => html`
                                 <tr data-id="${loan['@id']}">
                                     <td>${loan.object.name}</td>
-                                    <td><input type="datetime-local" name="endTime" min="${LibraryRenewLoan.dateStr2StrippedIsoDT(minDate)}" value="${LibraryRenewLoan.dateStr2StrippedIsoDT(loan.endTime)}"></td>
+                                    <td><input type="datetime-local" name="endTime" min="${commonUtils.dateToStrippedIsoDT(minDate)}" value="${commonUtils.dateToStrippedIsoDT(loan.endTime)}"></td>
                                     <td><button @click="${(e) => this.execRenew(e)}" class="button is-link is-small" id="send" title="${i18n.t('renew-loan.renew-loan')}">Ok</button></td>
                                 </tr>
                                 `)}
