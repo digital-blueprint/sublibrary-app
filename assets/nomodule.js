@@ -3,8 +3,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var allCustomElements = [];
     var nodes = document.querySelectorAll('*');
     for (var i = 0, el; el = nodes[i]; ++i) {
-      if (el.localName.indexOf("vpu-") == 0)
+      if (el.localName.indexOf("-") != -1 && el.toString().indexOf("HTMLUnknownElement") != -1) {
         allCustomElements.push(el);
+      }
     }
     return allCustomElements;
   }
