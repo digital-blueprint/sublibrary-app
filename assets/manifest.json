@@ -1,7 +1,7 @@
 {
   "short_name": "Library",
   "name": "TUGraz Library",
-  "start_url": ".",
+  "start_url": "../../vpu-library.html",
   "icons": [
     {
       "src": "icon-192.png",
