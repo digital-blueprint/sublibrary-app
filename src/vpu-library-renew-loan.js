@@ -122,8 +122,9 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         const path = e.composedPath();
         const button = path[0];
         const tr = path[2];
-        const dateTimeSelect = tr.querySelector("input[type='datetime-local']");
-        const date = new Date(dateTimeSelect.value);
+        const dateSelect = tr.querySelector("input[type='date']");
+        const timeSelect = tr.querySelector("input[type='time']");
+        const date = new Date(dateSelect.value + " " + timeSelect.value);
 
         // check if selected date is in the past
         if (date < (new Date())) {
@@ -216,13 +217,14 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                     <tr>
                                         <th>${i18n.t('renew-loan.book')}</th>
                                         <th>${i18n.t('renew-loan.end-date')}</th>
-                                        <th></th>
+                                        <th colspan="2"></th>
                                     </tr>
                                 </thead>
                                 ${this.loans.map((loan) => html`
                                 <tr data-id="${loan['@id']}">
                                     <td>${loan.object.name}</td>
-                                    <td><input type="datetime-local" name="endTime" min="${commonUtils.dateToStrippedIsoDT(minDate)}" value="${commonUtils.dateToStrippedIsoDT(loan.endTime)}"></td>
+                                    <td><input type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loan.endTime)}"></td>
+                                    <td><input type="time" value="${commonUtils.dateToInputTimeString(loan.endTime)}"></td>
                                     <td><button @click="${(e) => this.execRenew(e)}" class="button is-link is-small" id="send" title="${i18n.t('renew-loan.renew-loan')}">Ok</button></td>
                                 </tr>
                                 `)}
