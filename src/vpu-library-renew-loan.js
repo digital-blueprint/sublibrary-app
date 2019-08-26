@@ -134,11 +134,21 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         const button = e.path[0];
         const tr = e.path[2];
         const dateTimeSelect = tr.querySelector("input[type='datetime-local']");
-        const loanId = tr.getAttribute("data-id");
-
         const date = new Date(dateTimeSelect.value);
-        const data = {"endTime": date.toISOString()};
 
+        if (date < (new Date())) {
+            notify({
+                "summary": i18n.t('renew-loan.error-renew-loan-summary'),
+                "body": i18n.t('renew-loan.error-renew-loan-date-in-past'),
+                "type": "warning",
+                "timeout": 5,
+            });
+
+            return;
+        }
+
+        const data = {"endTime": date.toISOString()};
+        const loanId = tr.getAttribute("data-id");
         const apiUrl = this.entryPointUrl + loanId;
 
         button.setAttribute("disabled", "disabled");

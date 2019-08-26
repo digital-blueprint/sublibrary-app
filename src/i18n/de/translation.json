@@ -43,7 +43,8 @@
     "renew-loan": "Entlehnung verlängern",
     "error-renew-loan-summary": "Fehler beim Verlängern",
     "info-renew-loan-success-summary": "Verlängern erfolgreich",
-    "info-renew-loan-success-body": "Das Verlängern der Entlehnung war erfolgreich."
+    "info-renew-loan-success-body": "Das Verlängern der Entlehnung war erfolgreich.",
+    "error-renew-loan-date-in-past": "Enddatum darf nicht in der Vergangenheit liegen!"
   },
   "menu": {
     "shelving": "Aufstellung",

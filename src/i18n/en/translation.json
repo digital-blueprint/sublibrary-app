@@ -43,7 +43,8 @@
     "renew-loan": "Renew loan",
     "error-renew-loan-summary": "Renewal failed",
     "info-renew-loan-success-summary": "Renewal successfull",
-    "info-renew-loan-success-body": "The renewal of the loan was successful."
+    "info-renew-loan-success-body": "The renewal of the loan was successful.",
+    "error-renew-loan-date-in-past": "End time may not be in the past!"
   },
   "menu": {
     "shelving": "Shelving",
