@@ -119,8 +119,9 @@ class LibraryRenewLoan extends VPULitElementJQuery {
     execRenew(e) {
         e.preventDefault();
 
-        const button = e.path[0];
-        const tr = e.path[2];
+        const path = e.composedPath();
+        const button = path[0];
+        const tr = path[2];
         const dateTimeSelect = tr.querySelector("input[type='datetime-local']");
         const date = new Date(dateTimeSelect.value);
 
