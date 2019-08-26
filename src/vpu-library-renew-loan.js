@@ -117,15 +117,15 @@ class LibraryRenewLoan extends VPULitElementJQuery {
     }
 
     /**
-     * We need to strip the seconds and timezone for the datetime-local input
+     * Converts a date string to a local iso datetime with stripped seconds and timezone for the datetime-local input
      *
-     * @param isoDateTime
+     * @param dateString
      * @returns {string}
      */
-    static isoDT2DTL(isoDateTime) {
-        const re = /(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})/;
-        const result = re.exec(isoDateTime);
-        return result[1];
+    static dateStr2StrippedIsoDT(dateString) {
+        var pad = function(x) { return x < 10 ? '0' + x : x };
+        const date = new Date(dateString);
+        return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
     }
 
     execRenew(e) {
@@ -136,6 +136,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         const dateTimeSelect = tr.querySelector("input[type='datetime-local']");
         const date = new Date(dateTimeSelect.value);
 
+        // check if selected date is in the past
         if (date < (new Date())) {
             notify({
                 "summary": i18n.t('renew-loan.error-renew-loan-summary'),
@@ -232,7 +233,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                 ${this.loans.map((loan) => html`
                                 <tr data-id="${loan['@id']}">
                                     <td>${loan.object.name}</td>
-                                    <td><input type="datetime-local" name="endTime" min="${LibraryRenewLoan.isoDT2DTL(minDate)}" value="${LibraryRenewLoan.isoDT2DTL(loan.endTime)}"></td>
+                                    <td><input type="datetime-local" name="endTime" min="${LibraryRenewLoan.dateStr2StrippedIsoDT(minDate)}" value="${LibraryRenewLoan.dateStr2StrippedIsoDT(loan.endTime)}"></td>
                                     <td><button @click="${(e) => this.execRenew(e)}" class="button is-link is-small" id="send" title="${i18n.t('renew-loan.renew-loan')}">Ok</button></td>
                                 </tr>
                                 `)}
