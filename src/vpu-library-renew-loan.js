@@ -140,8 +140,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
 
         const apiUrl = this.entryPointUrl + loanId;
 
-        function BreakSignal() {}
-
         // update loan
         fetch(apiUrl, {
             method: 'PUT',
@@ -151,21 +149,12 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                 'Authorization': 'Bearer ' + window.VPUAuthToken,
             },
         })
-            .then((response) => {
-                if(!response.ok) {
-                    console.log(response);
-                    notify({
-                        "summary": i18n.t('renew-loan.error-renew-loan-summary'),
-                        "body": response.statusText,
-                        "type": "danger",
-                    });
-
-                    throw new BreakSignal();
-                } else {
-                    return response.json();
-                }
+            .then(result => {
+                if (!result.ok) throw result;
+                return result.json();
             })
-            .then((loan) => {
+            .then(loan => {
+                console.log("loan");
                 console.log(loan);
 
                 notify({
@@ -174,13 +163,15 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     "type": "info",
                     "timeout": 5,
                 });
-            })
-            .catch(BreakSignal, () => {})
-            .catch((error) => {
-                notify({
-                    "summary": i18n.t('renew-loan.error-renew-loan-summary'),
-                    "body": error,
-                    "type": "danger",
+            }).catch(error => {
+                error.json().then((json) => {
+                    const body = json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
+
+                    notify({
+                        "summary": i18n.t('renew-loan.error-renew-loan-summary'),
+                        "body": body,
+                        "type": "danger",
+                    });
                 });
             });
     }
@@ -208,41 +199,34 @@ class LibraryRenewLoan extends VPULitElementJQuery {
             </section>
             <section class="section">
                 <div class="container">
-                    <div class="tile is-ancestor">
-                        <div class="tile">
-                            <form>
-                                <div class="field">
-                                    <label class="label">${i18n.t('person-select.headline')}</label>
-                                    <div class="control">
-                                        <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-person-select>
-                                    </div>
-                                </div>
-                                <div id="renew-loan-block">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>${i18n.t('renew-loan.book')}</th>
-                                                <th>${i18n.t('renew-loan.end-date')}</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        ${this.loans.map((loan) => html`
-                                        <tr data-id="${loan['@id']}">
-                                            <td>${loan.object.name}</td>
-                                            <td><input type="datetime-local" name="endTime" min="${LibraryRenewLoan.isoDT2DTL(minDate)}" value="${LibraryRenewLoan.isoDT2DTL(loan.endTime)}"></td>
-                                            <td><button @click="${(e) => this.execRenew(e)}" class="button is-link is-small" id="send" title="${i18n.t('renew-loan.renew-loan')}">Ok</button></td>
-                                        </tr>
-                                        `)}
-                                    </table>
-                                </div>
-                            </form>
-                            <div class="notification is-danger" id="permission-error-block">
-                                ${i18n.t('error-permission-message')}
+                    <form>
+                        <div class="field">
+                            <label class="label">${i18n.t('person-select.headline')}</label>
+                            <div class="control">
+                                <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-person-select>
                             </div>
                         </div>
-                        <div class="tile">
-                            <vpu-knowledge-base-web-page-element-view entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="bedienstete/bibliothek/buch-ausleihen" text="${i18n.t('more-information')}"></vpu-knowledge-base-web-page-element-view>
+                        <div id="renew-loan-block">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>${i18n.t('renew-loan.book')}</th>
+                                        <th>${i18n.t('renew-loan.end-date')}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                ${this.loans.map((loan) => html`
+                                <tr data-id="${loan['@id']}">
+                                    <td>${loan.object.name}</td>
+                                    <td><input type="datetime-local" name="endTime" min="${LibraryRenewLoan.isoDT2DTL(minDate)}" value="${LibraryRenewLoan.isoDT2DTL(loan.endTime)}"></td>
+                                    <td><button @click="${(e) => this.execRenew(e)}" class="button is-link is-small" id="send" title="${i18n.t('renew-loan.renew-loan')}">Ok</button></td>
+                                </tr>
+                                `)}
+                            </table>
                         </div>
+                    </form>
+                    <div class="notification is-danger" id="permission-error-block">
+                        ${i18n.t('error-permission-message')}
                     </div>
                 </div>
             </section>
