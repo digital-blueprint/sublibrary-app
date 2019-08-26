@@ -4,10 +4,10 @@ import commonjs from 'rollup-plugin-commonjs';
 import copy from 'rollup-plugin-copy';
 import {terser} from "rollup-plugin-terser";
 import json from 'rollup-plugin-json';
-import replace from "rollup-plugin-replace";
 import serve from 'rollup-plugin-serve';
 import multiEntry from 'rollup-plugin-multi-entry';
 import url from "rollup-plugin-url";
+import consts from 'rollup-plugin-consts';
 
 const pkg = require('./package.json');
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
@@ -37,6 +37,9 @@ export default {
     },
     plugins: [
         (build == 'test') ? multiEntry() : false,
+        consts({
+          environment: build,
+        }),
         resolve({
           customResolveOptions: {
             // ignore node_modules from vendored packages
@@ -57,9 +60,6 @@ export default {
           ],
           emitFiles: true,
           fileName: 'shared/[name].[hash][extname]'
-        }),
-        replace({
-            "process.env.BUILD": '"' + build + '"',
         }),
         (build !== 'local' && build !== 'test') ? terser() : false,
         copy({
