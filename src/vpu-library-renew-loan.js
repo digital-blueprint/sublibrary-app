@@ -82,6 +82,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                             "timeout": 5,
                         });
                     } else {
+                        // TODO: check if logged-in user has permissions to the library of loan.object.library
                         that.loans = result['hydra:member'];
                         console.log(that.loans);
 
