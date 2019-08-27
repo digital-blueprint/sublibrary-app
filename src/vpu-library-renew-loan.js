@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import * as utils from './utils.js';
 import {i18n} from './i18n.js';
-import {html} from 'lit-element';
+import {css, html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
@@ -37,6 +37,9 @@ class LibraryRenewLoan extends VPULitElementJQuery {
 
             // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
             window.addEventListener("vpu-auth-person-init", () => {
+                that.$('#login-error-block').hide();
+                that._('form').classList.remove("hidden");
+
                 if (!Array.isArray(window.VPUPerson.roles) || window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') === -1) {
                     // TODO: implement overlay with error message, we currently cannot hide the form because select2 doesn't seem to initialize properly if the web-component is invisible
                     that.$('#permission-error-block').show();
@@ -178,6 +181,18 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         });
     }
 
+    static get styles() {
+        return css`
+            /* Select2 doesn't work well with display: none */
+            .hidden {left: -9999px; position: absolute;}
+
+            #renew-loan-block, #permission-error-block { display: none; }
+            #renew-loan-block input { width: 100%; }
+            .tile.is-ancestor .tile {margin: 10px;}
+            form {width: 100%};
+        `;
+    }
+
     render() {
         const suggestionsCSS = utils.getAssetURL(suggestionsCSSPath);
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
@@ -186,12 +201,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
             <link rel="stylesheet" href="${suggestionsCSS}">
-            <style>
-                #renew-loan-block, #permission-error-block { display: none; }
-                #renew-loan-block input { width: 100%; }
-                .tile.is-ancestor .tile {margin: 10px;}
-                form {width: 100%};
-            </style>
 
             <section class="section">
                 <div class="container">
@@ -201,7 +210,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
             </section>
             <section class="section">
                 <div class="container">
-                    <form>
+                    <form class="hidden">
                         <div class="field">
                             <label class="label">${i18n.t('person-select.headline')}</label>
                             <div class="control">
@@ -228,6 +237,9 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                             </table>
                         </div>
                     </form>
+                    <div class="notification is-warning" id="login-error-block">
+                        ${i18n.t('error-login-message')}
+                    </div>
                     <div class="notification is-danger" id="permission-error-block">
                         ${i18n.t('error-permission-message')}
                     </div>

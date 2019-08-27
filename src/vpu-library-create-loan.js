@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import * as utils from './utils.js';
 import {i18n} from './i18n.js';
-import {html} from 'lit-element';
+import {css, html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
@@ -38,6 +38,9 @@ class LibraryCreateLoan extends VPULitElementJQuery {
 
             // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
             window.addEventListener("vpu-auth-person-init", () => {
+                that.$('#login-error-block').hide();
+                that._('form').classList.remove("hidden");
+
                 if (!Array.isArray(window.VPUPerson.roles) || window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') === -1) {
                     // TODO: implement overlay with error message, we currently cannot hide the form because select2 doesn't seem to initialize properly if the web-component is invisible
                     that.$('#permission-error-block').show();
@@ -160,6 +163,17 @@ class LibraryCreateLoan extends VPULitElementJQuery {
         this.lang = e.detail.lang;
     }
 
+    static get styles() {
+        return css`
+            /* Select2 doesn't work well with display: none */
+            .hidden {left: -9999px; position: absolute;}
+
+            #create-loan-block, #permission-error-block { display: none; }
+            #create-loan-block input { width: 100%; }
+            .tile.is-ancestor .tile {margin: 10px;}
+        `;
+    }
+
     render() {
         const suggestionsCSS = utils.getAssetURL(suggestionsCSSPath);
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
@@ -167,11 +181,6 @@ class LibraryCreateLoan extends VPULitElementJQuery {
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
             <link rel="stylesheet" href="${suggestionsCSS}">
-            <style>
-                #create-loan-block, #permission-error-block { display: none; }
-                #create-loan-block input { width: 100%; }
-                .tile.is-ancestor .tile {margin: 10px;}
-            </style>
 
             <section class="section">
                 <div class="container">
@@ -181,41 +190,37 @@ class LibraryCreateLoan extends VPULitElementJQuery {
             </section>
             <section class="section">
                 <div class="container">
-                    <div class="tile is-ancestor">
-                        <div class="tile">
-                            <form>
-                                <div class="field">
-                                    <label class="label">${i18n.t('person-select.headline')}</label>
-                                    <div class="control">
-                                        <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-person-select>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
-                                    <div class="control">
-                                         <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-library-book-offer-select>
-                                    </div>
-                                </div>
-                                <div class="field">
-                                    <div class="notification is-info">
-                                        Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>, <code>+F987654</code>
-                                    </div>
-                                </div>
-                                <div id="create-loan-block">
-                                    <div class="field">
-                                        <div class="control">
-                                             <button class="button is-link" id="send" disabled="disabled">${i18n.t('create-loan.submit')}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            <div class="notification is-danger" id="permission-error-block">
-                                ${i18n.t('error-permission-message')}
+                    <form class="hidden">
+                        <div class="field">
+                            <label class="label">${i18n.t('person-select.headline')}</label>
+                            <div class="control">
+                                <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-person-select>
                             </div>
                         </div>
-                        <div class="tile">
-                            <vpu-knowledge-base-web-page-element-view entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="bedienstete/bibliothek/buch-ausleihen" text="${i18n.t('more-information')}"></vpu-knowledge-base-web-page-element-view>
+                        <div class="field">
+                            <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
+                            <div class="control">
+                                 <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-library-book-offer-select>
+                            </div>
                         </div>
+                        <div class="field">
+                            <div class="notification is-info">
+                                Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>, <code>+F987654</code>
+                            </div>
+                        </div>
+                        <div id="create-loan-block">
+                            <div class="field">
+                                <div class="control">
+                                     <button class="button is-link" id="send" disabled="disabled">${i18n.t('create-loan.submit')}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="notification is-warning" id="login-error-block">
+                        ${i18n.t('error-login-message')}
+                    </div>
+                    <div class="notification is-danger" id="permission-error-block">
+                        ${i18n.t('error-permission-message')}
                     </div>
                 </div>
             </section>

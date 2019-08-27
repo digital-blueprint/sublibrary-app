@@ -60,7 +60,8 @@
   "success-summary": "Book lineup successful",
   "success-body": "The book lineup was successful.",
   "error-summary": "An error occurred",
-  "error-permission-message": "You need to be a library officer to shelve books!",
+  "error-permission-message": "You need to be a library officer to use this function!",
+  "error-login-message": "You need to be logged in to use this function!",
   "title": "Library shelving",
   "subtitle": "Allows the shelving of books in the library",
   "more-information": "More information"
