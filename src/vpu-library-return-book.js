@@ -183,7 +183,6 @@ class LibraryReturnBook extends VPULitElementJQuery {
 
             #return-book-block, #permission-error-block { display: none; }
             #return-book-block input { width: 100%; }
-            .tile.is-ancestor .tile {margin: 10px;}
         `;
     }
 

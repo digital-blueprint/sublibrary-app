@@ -170,7 +170,6 @@ class LibraryCreateLoan extends VPULitElementJQuery {
 
             #create-loan-block, #permission-error-block { display: none; }
             #create-loan-block input { width: 100%; }
-            .tile.is-ancestor .tile {margin: 10px;}
         `;
     }
 

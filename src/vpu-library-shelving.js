@@ -154,7 +154,6 @@ class LibraryShelving extends VPULitElementJQuery {
 
             #location-identifier-block, #permission-error-block { display: none; }
             #location-identifier-block input { width: 100%; }
-            .tile.is-ancestor .tile {margin: 10px;}
         `;
     }
 
