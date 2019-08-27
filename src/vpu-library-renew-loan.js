@@ -53,6 +53,8 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                 that.personId = that.person["@id"];
                 const apiUrl = that.entryPointUrl + that.personId + "/library-book-loans";
 
+                sessionStorage.setItem('vpu-person-id', that.personId);
+
                 // load list of loans for person
                 fetch(apiUrl, {
                     headers: {
@@ -186,7 +188,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
             .hidden {left: -9999px; position: absolute;}
 
             #renew-loan-block, #permission-error-block { display: none; }
-            form {width: 100%}
+            form, table {width: 100%}
 
             @media (min-width: 900px) {
                 td.date-col {
@@ -206,6 +208,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         const suggestionsCSS = utils.getAssetURL(suggestionsCSSPath);
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
         const minDate = new Date().toISOString();
+        const personId = sessionStorage.getItem('vpu-person-id') || '';
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
@@ -223,7 +226,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                         <div class="field">
                             <label class="label">${i18n.t('person-select.headline')}</label>
                             <div class="control">
-                                <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-person-select>
+                                <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${personId}"></vpu-person-select>
                             </div>
                         </div>
                         <div id="renew-loan-block">
