@@ -182,14 +182,25 @@ class LibraryRenewLoan extends VPULitElementJQuery {
     }
 
     static get styles() {
+        // language=css
         return css`
             /* Select2 doesn't work well with display: none */
             .hidden {left: -9999px; position: absolute;}
 
             #renew-loan-block, #permission-error-block { display: none; }
-            #renew-loan-block input { width: 100%; }
-            .tile.is-ancestor .tile {margin: 10px;}
-            form {width: 100%};
+            form {width: 100%}
+
+            @media (min-width: 900px) {
+                td.date-col {
+                    white-space: nowrap;
+                }
+            }
+
+            @media (max-width: 900px) {
+                td.date-col input[type="time"] {
+                    margin-top: 5px;
+                }
+            }
         `;
     }
 
@@ -223,17 +234,21 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                     <tr>
                                         <th>${i18n.t('renew-loan.book')}</th>
                                         <th>${i18n.t('renew-loan.end-date')}</th>
-                                        <th colspan="2"></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
-                                ${this.loans.map((loan) => html`
-                                <tr data-id="${loan['@id']}">
-                                    <td>${loan.object.name}</td>
-                                    <td><input type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loan.endTime)}"></td>
-                                    <td><input type="time" value="${commonUtils.dateToInputTimeString(loan.endTime)}"></td>
-                                    <td><button @click="${(e) => this.execRenew(e)}" class="button is-link is-small" id="send" title="${i18n.t('renew-loan.renew-loan')}">Ok</button></td>
-                                </tr>
-                                `)}
+                                <tbody>
+                                    ${this.loans.map((loan) => html`
+                                    <tr data-id="${loan['@id']}">
+                                        <td>${loan.object.name}</td>
+                                        <td class="date-col">
+                                            <input type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loan.endTime)}">
+                                            <input type="time" value="${commonUtils.dateToInputTimeString(loan.endTime)}">
+                                        </td>
+                                        <td><button @click="${(e) => this.execRenew(e)}" class="button is-link is-small" id="send" title="${i18n.t('renew-loan.renew-loan')}">Ok</button></td>
+                                    </tr>
+                                    `)}
+                                </tbody>
                             </table>
                         </div>
                     </form>
