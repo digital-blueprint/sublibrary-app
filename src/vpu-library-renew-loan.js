@@ -59,21 +59,11 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                         'Authorization': 'Bearer ' + window.VPUAuthToken,
                     },
                 })
-                .then((response) => {
-                    if(!response.ok) {
-                        console.log(response);
-                        notify({
-                            "summary": i18n.t('renew-loan.error-load-loans-summary'),
-                            "body": response.statusText,
-                            "type": "danger",
-                        });
-
-                        throw new BreakSignal();
-                    } else {
-                        return response.json();
-                    }
+                .then(result => {
+                    if (!result.ok) throw result;
+                    return result.json();
                 })
-                .then((result) => {
+                .then(result => {
                     if (result['hydra:totalItems'] === 0) {
                         notify({
                             "summary": i18n.t('renew-loan.error-no-existing-loans-summary'),
@@ -88,13 +78,17 @@ class LibraryRenewLoan extends VPULitElementJQuery {
 
                         $renewLoanBlock.show();
                     }
-                })
-                .catch(BreakSignal, () => {})
-                .catch((error) => {
-                    notify({
-                        "summary": i18n.t('renew-loan.error-load-loans-summary'),
-                        "body": error,
-                        "type": "danger",
+                }).catch(error => {
+                    error.json().then((json) => {
+                        return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
+                    }).catch(() => {
+                        return error.statusText !== undefined ? error.statusText : error;
+                    }).then((body) => {
+                        notify({
+                            "summary": i18n.t('renew-loan.error-load-loans-summary'),
+                            "body": body,
+                            "type": "danger",
+                        });
                     });
                 });
             }).on('unselect', function (e) {
@@ -154,32 +148,34 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                 'Authorization': 'Bearer ' + window.VPUAuthToken,
             },
         })
-            .then(result => {
-                button.removeAttribute("disabled");
-                if (!result.ok) throw result;
-                return result.json();
-            })
-            .then(loan => {
-                console.log("loan");
-                console.log(loan);
+        .then(result => {
+            button.removeAttribute("disabled");
+            if (!result.ok) throw result;
+            return result.json();
+        })
+        .then(loan => {
+            console.log("loan");
+            console.log(loan);
 
+            notify({
+                "summary": i18n.t('renew-loan.info-renew-loan-success-summary'),
+                "body": i18n.t('renew-loan.info-renew-loan-success-body'),
+                "type": "info",
+                "timeout": 5,
+            });
+        }).catch(error => {
+            error.json().then((json) => {
+                return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
+            }).catch(() => {
+                return error.statusText !== undefined ? error.statusText : error;
+            }).then((body) => {
                 notify({
-                    "summary": i18n.t('renew-loan.info-renew-loan-success-summary'),
-                    "body": i18n.t('renew-loan.info-renew-loan-success-body'),
-                    "type": "info",
-                    "timeout": 5,
-                });
-            }).catch(error => {
-                error.json().then((json) => {
-                    const body = json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
-
-                    notify({
-                        "summary": i18n.t('renew-loan.error-renew-loan-summary'),
-                        "body": body,
-                        "type": "danger",
-                    });
+                    "summary": i18n.t('renew-loan.error-renew-loan-summary'),
+                    "body": body,
+                    "type": "danger",
                 });
             });
+        });
     }
 
     render() {
