@@ -177,6 +177,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
     }
 
     static get styles() {
+        // language=css
         return css`
             /* Select2 doesn't work well with display: none */
             .hidden {left: -9999px; position: absolute;}
