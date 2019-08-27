@@ -53,8 +53,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                 that.personId = that.person["@id"];
                 const apiUrl = that.entryPointUrl + that.personId + "/library-book-loans";
 
-                function BreakSignal() {}
-
                 // load list of loans for person
                 fetch(apiUrl, {
                     headers: {
