@@ -41,7 +41,7 @@
     "suggestions": "^1.6.0"
   },
   "scripts": {
-    "clean": "rm dist/*",
+    "clean": "rm dist/* -R",
     "build": "npm run build-local",
     "build-local": "rollup -c",
     "build-dev": "rollup -c --environment BUILD:development",
