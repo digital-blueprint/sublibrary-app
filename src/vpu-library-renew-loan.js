@@ -37,6 +37,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         this.updateComplete.then(()=>{
             const $personSelect = that.$('vpu-person-select');
             const $renewLoanBlock = that.$('#renew-loan-block');
+            const $loansLoadingIndicator = that.$('#loans-loading');
 
             // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
             window.addEventListener("vpu-auth-person-init", () => {
@@ -67,6 +68,9 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     }
                 }));
 
+                $renewLoanBlock.hide();
+                $loansLoadingIndicator.show();
+
                 // load list of loans for person
                 fetch(apiUrl, {
                     headers: {
@@ -75,6 +79,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     },
                 })
                 .then(result => {
+                    $loansLoadingIndicator.hide();
                     if (!result.ok) throw result;
                     return result.json();
                 })
@@ -91,7 +96,9 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                         that.loans = result['hydra:member'];
                         console.log(that.loans);
 
-                        $renewLoanBlock.show();
+                        if (that.loans.length > 0) {
+                            $renewLoanBlock.show();
+                        }
                     }
                 }).catch(error => {
                     error.json().then((json) => {
@@ -238,6 +245,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                 <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.personId}"></vpu-person-select>
                             </div>
                         </div>
+                        <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                         <div id="renew-loan-block">
                             <table class="table">
                                 <thead>
