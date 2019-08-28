@@ -32,8 +32,7 @@
   "renew-loan": {
     "title": "Verlängerung",
     "subtitle": "Erlaubt das Verlängern von Entlehnungen",
-    "error-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
-    "error-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden!",
+    "no-loans": "Es wurden keine bestehenden Entlehnungen gefunden!",
     "submit": "Entlehnung verlängern",
     "success-summary": "Verlängerung erfolgreich",
     "success-body": "Die Entlehnungen wurde erfolgreich verlängert.",

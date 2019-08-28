@@ -37,6 +37,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         this.updateComplete.then(()=>{
             const $personSelect = that.$('vpu-person-select');
             const $renewLoanBlock = that.$('#renew-loan-block');
+            const $noLoansBlock = that.$('#no-loans-block');
             const $loansLoadingIndicator = that.$('#loans-loading');
 
             // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
@@ -69,6 +70,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                 }));
 
                 $renewLoanBlock.hide();
+                $noLoansBlock.hide();
                 $loansLoadingIndicator.show();
 
                 // load list of loans for person
@@ -84,21 +86,14 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     return result.json();
                 })
                 .then(result => {
-                    if (result['hydra:totalItems'] === 0) {
-                        notify({
-                            "summary": i18n.t('renew-loan.error-no-existing-loans-summary'),
-                            "body": i18n.t('renew-loan.error-no-existing-loans-body'),
-                            "type": "warning",
-                            "timeout": 5,
-                        });
-                    } else {
-                        // TODO: check if logged-in user has permissions to the library of loan.object.library
-                        that.loans = result['hydra:member'];
-                        console.log(that.loans);
+                    // TODO: check if logged-in user has permissions to the library of loan.object.library
+                    that.loans = result['hydra:member'];
+                    console.log(that.loans);
 
-                        if (that.loans.length > 0) {
-                            $renewLoanBlock.show();
-                        }
+                    if (that.loans.length > 0) {
+                        $renewLoanBlock.show();
+                    } else {
+                        $noLoansBlock.show();
                     }
                 }).catch(error => {
                     error.json().then((json) => {
@@ -268,6 +263,9 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                     `)}
                                 </tbody>
                             </table>
+                        </div>
+                        <div id="no-loans-block" style="display: none">
+                            ${i18n.t('renew-loan.no-loans')}
                         </div>
                     </form>
                     <div class="notification is-warning" id="login-error-block">

@@ -32,8 +32,7 @@
   "renew-loan": {
     "title": "Renew",
     "subtitle": "Allows to renew loans",
-    "error-no-existing-loans-summary": "No existing loans",
-    "error-no-existing-loans-body": "No existing loans were found!",
+    "no-loans": "No existing loans were found!",
     "submit": "Renew loan",
     "success-summary": "Loan renewed successfully",
     "success-body": "The loan was renewed successfully.",
