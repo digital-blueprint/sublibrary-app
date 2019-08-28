@@ -16,12 +16,14 @@ class LibraryShelving extends VPULitElementJQuery {
         super();
         this.lang = 'de';
         this.entryPointUrl = commonUtils.getAPiUrl();
+        this.bookOfferId = "";
     }
 
     static get properties() {
         return {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
+            bookOfferId: { type: String, attribute: 'book-offer-id' },
         };
     }
 
@@ -54,11 +56,23 @@ class LibraryShelving extends VPULitElementJQuery {
                 console.log($bookOfferSelect.attr("value"));
                 console.log($bookOfferSelect.prop("value"));
                 const bookOffer = $(this).data("object");
+                that.bookOfferId = bookOffer["@id"];
                 $locationIdentifierInput.val(bookOffer.locationIdentifier).trigger("input");
 
                 $locationIdentifierBlock.show();
 
-                const apiUrl = that.entryPointUrl + bookOffer["@id"] + "/location_identifiers";
+                const apiUrl = that.entryPointUrl + that.bookOfferId + "/location_identifiers";
+
+                // set book-offer-id of the custom element
+                that.setAttribute("book-offer-id", that.bookOfferId);
+
+                // fire a change event
+                that.dispatchEvent(new CustomEvent('change', {
+                    detail: {
+                        type: "book-offer-id",
+                        value: that.bookOfferId,
+                    }
+                }));
 
                 // fetch and setup the location identifier suggestions
                 fetch(apiUrl, {
@@ -178,7 +192,7 @@ class LibraryShelving extends VPULitElementJQuery {
                         <div class="field">
                             <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                             <div class="control">
-                                 <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-library-book-offer-select>
+                                 <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.bookOfferId}"></vpu-library-book-offer-select>
                             </div>
                         </div>
                         <div class="field">

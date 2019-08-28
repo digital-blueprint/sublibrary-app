@@ -4,10 +4,8 @@ import {i18n} from './i18n.js';
 import {css, html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
-import Suggestions from 'suggestions';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
-import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
 
 class LibraryReturnBook extends VPULitElementJQuery {
@@ -27,6 +25,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
         return {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
+            bookOfferId: { type: String, attribute: 'book-offer-id' },
             borrower: { type: Object, attribute: false },
             borrowerName: { type: String, attribute: false },
         };
@@ -58,6 +57,17 @@ class LibraryReturnBook extends VPULitElementJQuery {
                 that.bookOfferId = that.bookOffer["@id"];
                 that.updateSubmitButtonDisabled();
                 const apiUrl = that.entryPointUrl + that.bookOfferId + "/loans";
+
+                // set book-offer-id of the custom element
+                that.setAttribute("book-offer-id", that.bookOfferId);
+
+                // fire a change event
+                that.dispatchEvent(new CustomEvent('change', {
+                    detail: {
+                        type: "book-offer-id",
+                        value: that.bookOfferId,
+                    }
+                }));
 
                 // check if there are already loans on this book offer
                 fetch(apiUrl, {
@@ -188,12 +198,10 @@ class LibraryReturnBook extends VPULitElementJQuery {
     }
 
     render() {
-        const suggestionsCSS = utils.getAssetURL(suggestionsCSSPath);
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
-            <link rel="stylesheet" href="${suggestionsCSS}">
 
             <section class="section">
                 <div class="container">
@@ -207,7 +215,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
                         <div class="field">
                             <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                             <div class="control">
-                                 <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-library-book-offer-select>
+                                 <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.bookOfferId}"></vpu-library-book-offer-select>
                             </div>
                         </div>
                         <div class="field">

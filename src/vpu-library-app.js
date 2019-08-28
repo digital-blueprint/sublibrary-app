@@ -36,7 +36,22 @@ class LibraryApp extends VPULitElement {
                     'vpu-library-renew-loan*': () => that.switchComponent('vpu-library-renew-loan'),
                     '*': () => that.switchComponent('vpu-library-shelving')})
                 .resolve();
+
+            this.shadowRoot.querySelectorAll(".component").forEach((element) => {
+                element.addEventListener("change", LibraryApp.updateSessionStorage);
+            });
         });
+    }
+
+    static updateSessionStorage(event) {
+        switch (event.detail.type) {
+            case "person-id":
+                sessionStorage.setItem('vpu-person-id', event.detail.value);
+                break;
+            case "book-offer-id":
+                sessionStorage.setItem('vpu-book-offer-id', event.detail.value);
+                break;
+        }
     }
 
     update(changedProperties) {
@@ -53,12 +68,22 @@ class LibraryApp extends VPULitElement {
         this.lang = e.detail.lang;
     }
 
-    switchComponent(component) {
+    switchComponent(componentTag) {
         this.shadowRoot.querySelectorAll(".component").forEach((element) => {
             element.classList.add('hidden');
         });
 
-        this._(component).classList.remove('hidden');
+        const component = this._(componentTag);
+
+        if (component.hasAttribute("person-id")) {
+            component.setAttribute("person-id", sessionStorage.getItem('vpu-person-id') || '');
+        }
+
+        if (component.hasAttribute("book-offer-id")) {
+            component.setAttribute("book-offer-id", sessionStorage.getItem('vpu-book-offer-id') || '');
+        }
+
+        component.classList.remove('hidden');
     }
 
     onStyleLoaded () {
@@ -101,10 +126,10 @@ class LibraryApp extends VPULitElement {
                     </div>
                 </section>
 
-                <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-shelving>
-                <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-create-loan>
-                <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-return-book>
-                <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden"></vpu-library-renew-loan>
+                <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden" book-offer-id=""></vpu-library-shelving>
+                <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden" person-id="" book-offer-id=""></vpu-library-create-loan>
+                <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden" book-offer-id=""></vpu-library-return-book>
+                <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden" person-id=""></vpu-library-renew-loan>
 
                 <a href="${buildinfo.url}" style="float: right">
                     <div class="tags has-addons">

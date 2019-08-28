@@ -6,7 +6,6 @@ import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
-import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
 
 class LibraryCreateLoan extends VPULitElementJQuery {
@@ -24,6 +23,8 @@ class LibraryCreateLoan extends VPULitElementJQuery {
         return {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
+            bookOfferId: { type: String, attribute: 'book-offer-id' },
+            personId: { type: String, attribute: 'person-id' },
         };
     }
 
@@ -52,6 +53,17 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                 that.person = $(this).data("object");
                 that.personId = that.person["@id"];
                 that.updateSubmitButtonDisabled();
+
+                // set person-id of the custom element
+                that.setAttribute("person-id", that.personId);
+
+                // fire a change event
+                that.dispatchEvent(new CustomEvent('change', {
+                    detail: {
+                        type: "person-id",
+                        value: that.personId,
+                    }
+                }));
             });
 
             // show create loan block if book offer was selected
@@ -60,6 +72,17 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                 that.bookOfferId = that.bookOffer["@id"];
                 that.updateSubmitButtonDisabled();
                 const apiUrl = that.entryPointUrl + that.bookOfferId + "/loans";
+
+                // set book-offer-id of the custom element
+                that.setAttribute("book-offer-id", that.bookOfferId);
+
+                // fire a change event
+                that.dispatchEvent(new CustomEvent('change', {
+                    detail: {
+                        type: "book-offer-id",
+                        value: that.bookOfferId,
+                    }
+                }));
 
                 // check if there are already loans on this book offer
                 fetch(apiUrl, {
@@ -175,12 +198,10 @@ class LibraryCreateLoan extends VPULitElementJQuery {
     }
 
     render() {
-        const suggestionsCSS = utils.getAssetURL(suggestionsCSSPath);
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
-            <link rel="stylesheet" href="${suggestionsCSS}">
 
             <section class="section">
                 <div class="container">
@@ -194,13 +215,13 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                         <div class="field">
                             <label class="label">${i18n.t('person-select.headline')}</label>
                             <div class="control">
-                                <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-person-select>
+                                <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.personId}"></vpu-person-select>
                             </div>
                         </div>
                         <div class="field">
                             <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                             <div class="control">
-                                 <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}"></vpu-library-book-offer-select>
+                                 <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.bookOfferId}"></vpu-library-book-offer-select>
                             </div>
                         </div>
                         <div class="field">

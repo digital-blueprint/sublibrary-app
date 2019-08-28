@@ -6,7 +6,6 @@ import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
-import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
 
 class LibraryRenewLoan extends VPULitElementJQuery {
@@ -19,10 +18,14 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         this.loans = [];
     }
 
+    /**
+     * See: https://lit-element.polymer-project.org/guide/properties#conversion-type
+     */
     static get properties() {
         return {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
+            personId: { type: String, attribute: 'person-id' },
             loans: { type: Object, attribute: false },
         };
     }
@@ -53,7 +56,16 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                 that.personId = that.person["@id"];
                 const apiUrl = that.entryPointUrl + that.personId + "/library-book-loans";
 
-                sessionStorage.setItem('vpu-person-id', that.personId);
+                // set person-id of the custom element
+                that.setAttribute("person-id", that.personId);
+
+                // fire a change event
+                that.dispatchEvent(new CustomEvent('change', {
+                    detail: {
+                        type: "person-id",
+                        value: that.personId,
+                    }
+                }));
 
                 // load list of loans for person
                 fetch(apiUrl, {
@@ -205,14 +217,11 @@ class LibraryRenewLoan extends VPULitElementJQuery {
     }
 
     render() {
-        const suggestionsCSS = utils.getAssetURL(suggestionsCSSPath);
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
         const minDate = new Date().toISOString();
-        const personId = sessionStorage.getItem('vpu-person-id') || '';
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
-            <link rel="stylesheet" href="${suggestionsCSS}">
 
             <section class="section">
                 <div class="container">
@@ -226,7 +235,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                         <div class="field">
                             <label class="label">${i18n.t('person-select.headline')}</label>
                             <div class="control">
-                                <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${personId}"></vpu-person-select>
+                                <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.personId}"></vpu-person-select>
                             </div>
                         </div>
                         <div id="renew-loan-block">
