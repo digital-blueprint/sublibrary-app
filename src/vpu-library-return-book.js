@@ -38,6 +38,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
         this.updateComplete.then(()=>{
             const $bookOfferSelect = that.$('vpu-library-book-offer-select');
             const $returnBookBlock = that.$('#return-book-block');
+            const $loansLoadingIndicator = that.$('#loans-loading');
 
             // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
             window.addEventListener("vpu-auth-person-init", () => {
@@ -69,6 +70,8 @@ class LibraryReturnBook extends VPULitElementJQuery {
                     }
                 }));
 
+                $loansLoadingIndicator.show();
+
                 // check if there are already loans on this book offer
                 fetch(apiUrl, {
                     headers: {
@@ -76,17 +79,16 @@ class LibraryReturnBook extends VPULitElementJQuery {
                         'Authorization': 'Bearer ' + window.VPUAuthToken,
                     },
                 })
-                .then(response => response.json())
-                .then((result) => {
-                    if (result['hydra:totalItems'] === 0) {
-                        notify({
-                            "summary": i18n.t('return-book.error-no-existing-loans-summary'),
-                            "body": i18n.t('return-book.error-no-existing-loans-body'),
-                            "type": "warning",
-                            "timeout": 5,
-                        });
-                    } else {
-                        that.loan = result['hydra:member'][0];
+                .then(result => {
+                    $loansLoadingIndicator.hide();
+                    if (!result.ok) throw result;
+                    return result.json();
+                })
+                .then(result => {
+                    const loans = result['hydra:member'];
+
+                    if (loans.length > 0) {
+                        that.loan = loans[0];
                         that.loanId = that.loan["@id"];
                         console.log(that.loan);
                         that.loadBorrower(that.loan.borrower);
@@ -98,7 +100,26 @@ class LibraryReturnBook extends VPULitElementJQuery {
                             "timeout": 5,
                         });
                         $returnBookBlock.show();
+                    } else {
+                        notify({
+                            "summary": i18n.t('return-book.error-no-existing-loans-summary'),
+                            "body": i18n.t('return-book.error-no-existing-loans-body'),
+                            "type": "warning",
+                            "timeout": 5,
+                        });
                     }
+                }).catch(error => {
+                    error.json().then((json) => {
+                        return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
+                    }).catch(() => {
+                        return error.statusText !== undefined ? error.statusText : error;
+                    }).then((body) => {
+                        notify({
+                            "summary": i18n.t('renew-loan.error-load-loans-summary'),
+                            "body": body,
+                            "type": "danger",
+                        });
+                    });
                 });
             }).on('unselect', function (e) {
                 $returnBookBlock.hide();
@@ -223,6 +244,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
                                 Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>, <code>+F987654</code>
                             </div>
                         </div>
+                        <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                         <div id="return-book-block">
                             <div class="field">
                                 <label class="label">${i18n.t('return-book.borrower')}</label>
