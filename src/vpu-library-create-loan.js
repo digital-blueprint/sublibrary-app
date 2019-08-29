@@ -36,6 +36,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
             const $personSelect = that.$('vpu-person-select');
             const $bookOfferSelect = that.$('vpu-library-book-offer-select');
             const $createLoanBlock = that.$('#create-loan-block');
+            const $loansLoadingIndicator = that.$('#loans-loading');
 
             // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
             window.addEventListener("vpu-auth-person-init", () => {
@@ -84,6 +85,8 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                     }
                 }));
 
+                $loansLoadingIndicator.show();
+
                 // check if there are already loans on this book offer
                 fetch(apiUrl, {
                     headers: {
@@ -91,9 +94,23 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                         'Authorization': 'Bearer ' + window.VPUAuthToken,
                     },
                 })
-                .then(response => response.json())
-                .then((result) => {
-                    if (result['hydra:totalItems'] === 0) {
+                .then(result => {
+                    $loansLoadingIndicator.hide();
+                    if (!result.ok) throw result;
+                    return result.json();
+                })
+                .then(result => {
+                    const loans = result['hydra:member'];
+
+                    if (loans.length > 0) {
+                        console.log(loans);
+                        notify({
+                            "summary": i18n.t('create-loan.error-existing-loans-summary'),
+                            "body": i18n.t('create-loan.error-existing-loans-body'),
+                            "type": "danger",
+                            "timeout": 10,
+                        });
+                    } else {
                         notify({
                             "summary": i18n.t('create-loan.info-no-existing-loans-summary'),
                             "body": i18n.t('create-loan.info-no-existing-loans-body'),
@@ -101,15 +118,19 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                             "timeout": 5,
                         });
                         $createLoanBlock.show();
-                    } else {
-                        console.log(result['hydra:member']);
-                        notify({
-                            "summary": i18n.t('create-loan.error-existing-loans-summary'),
-                            "body": i18n.t('create-loan.error-existing-loans-body'),
-                            "type": "danger",
-                            "timeout": 10,
-                        });
                     }
+                }).catch(error => {
+                    error.json().then((json) => {
+                        return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
+                    }).catch(() => {
+                        return error.statusText !== undefined ? error.statusText : error;
+                    }).then((body) => {
+                        notify({
+                            "summary": i18n.t('renew-loan.error-load-loans-summary'),
+                            "body": body,
+                            "type": "danger",
+                        });
+                    });
                 });
             }).on('unselect', function (e) {
                 $createLoanBlock.hide();
@@ -229,6 +250,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                                 Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>, <code>+F987654</code>
                             </div>
                         </div>
+                        <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                         <div id="create-loan-block">
                             <div class="field">
                                 <div class="control">
