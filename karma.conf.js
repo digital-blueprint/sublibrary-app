@@ -1,6 +1,6 @@
 // Trick to use the auto-downloaded puppeteer chrome binary
 process.env.CHROME_BIN = require('puppeteer').executablePath();
-const pkg = require('./package.json');
+process.env.FIREFOX_BIN = require('puppeteer-firefox').executablePath();
 
 module.exports = function(config) {
   config.set({
@@ -11,7 +11,7 @@ module.exports = function(config) {
       {pattern: './**/*', included: false, watched: true, served: true},
     ],
     autoWatch: true,
-    browsers: ['ChromeHeadlessNoSandbox'],
+    browsers: ['ChromeHeadlessNoSandbox', 'FirefoxHeadless'],
     customLaunchers: {
       ChromeHeadlessNoSandbox: {
         base: 'ChromeHeadless',

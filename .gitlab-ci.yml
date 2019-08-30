@@ -15,7 +15,7 @@ test:
   stage: test
   script:
     - apt update
-    - apt install -y npm chromium
+    - apt install -y npm chromium firefox-esr
     - npm install
     - npm run build-dev
     - npm run build

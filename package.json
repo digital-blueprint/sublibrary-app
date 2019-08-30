@@ -30,7 +30,9 @@
     "vpu-language-select": "file:./vendor/language-select",
     "vpu-library-book-offer-select": "file:./vendor/library-book-offer-select",
     "vpu-notification": "file:./vendor/notification",
-    "vpu-person-select": "file:./vendor/person-select"
+    "vpu-person-select": "file:./vendor/person-select",
+    "karma-firefox-launcher": "^1.2.0",
+    "puppeteer-firefox": "^0.5.0"
   },
   "dependencies": {
     "bulma": "^0.7.5",
