@@ -8,17 +8,20 @@ import * as commonUtils from 'vpu-common/utils';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
 import Navigo from "navigo";
 import buildinfo from 'consts:buildinfo';
+import {classMap} from 'lit-html/directives/class-map.js';
 
 class LibraryApp extends VPULitElement {
     constructor() {
         super();
         this.lang = 'de';
+        this.activeView = 'vpu-library-shelving';
         this.entryPointUrl = commonUtils.getAPiUrl();
     }
 
     static get properties() {
         return {
             lang: { type: String },
+            activeView: { type: String, attribute: false},
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
         };
     }
@@ -69,9 +72,7 @@ class LibraryApp extends VPULitElement {
     }
 
     switchComponent(componentTag) {
-        this.shadowRoot.querySelectorAll(".component").forEach((element) => {
-            element.classList.add('hidden');
-        });
+        this.activeView = componentTag;
 
         const component = this._(componentTag);
 
@@ -82,8 +83,6 @@ class LibraryApp extends VPULitElement {
         if (component.hasAttribute("book-offer-id")) {
             component.setAttribute("book-offer-id", sessionStorage.getItem('vpu-book-offer-id') || '');
         }
-
-        component.classList.remove('hidden');
     }
 
     onStyleLoaded () {
@@ -97,11 +96,29 @@ class LibraryApp extends VPULitElement {
             /* Select2 doesn't work well with display: none */
             .hidden {left: -9999px; position: absolute;}
             #cover {opacity: 0}
+
+            .menu a {
+                padding: 0.3em;
+                font-weight: 600;
+                color: #000;
+            }
+            .menu a:hover {
+                color: #E4154B;
+            }
+            .selected {border-bottom: 1px solid #000; color: #000}
         `;
     }
 
     render() {
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
+
+        const getViewClasses = (name => {
+            return classMap({hidden: this.activeView != name});
+        });
+
+        const getSelectClasses = (name => {
+            return classMap({selected: this.activeView == name});
+        });
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}" @load="${this.onStyleLoaded}">
@@ -118,18 +135,18 @@ class LibraryApp extends VPULitElement {
                 </header>
 
                 <section class="section">
-                    <div class="container">
-                        <a href="#vpu-library-shelving" data-navigo>${i18n.t('menu.shelving')}</a> |
-                        <a href="#vpu-library-create-loan" data-navigo>${i18n.t('menu.loan')}</a> |
-                        <a href="#vpu-library-return-book" data-navigo>${i18n.t('menu.return')}</a> |
-                        <a href="#vpu-library-renew-loan" data-navigo>${i18n.t('menu.renew')}</a>
+                    <div class="container menu">
+                        <a href="#vpu-library-shelving" data-navigo class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
+                        <a href="#vpu-library-create-loan" data-navigo class="${getSelectClasses('vpu-library-create-loan')}"">${i18n.t('menu.loan')}</a> |
+                        <a href="#vpu-library-return-book" data-navigo class="${getSelectClasses('vpu-library-return-book')}"">${i18n.t('menu.return')}</a> |
+                        <a href="#vpu-library-renew-loan" data-navigo class="${getSelectClasses('vpu-library-renew-loan')}"">${i18n.t('menu.renew')}</a>
                     </div>
                 </section>
 
-                <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden" book-offer-id=""></vpu-library-shelving>
-                <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden" person-id="" book-offer-id=""></vpu-library-create-loan>
-                <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden" book-offer-id=""></vpu-library-return-book>
-                <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component hidden" person-id=""></vpu-library-renew-loan>
+                <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-shelving')}" book-offer-id=""></vpu-library-shelving>
+                <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-create-loan')}" person-id="" book-offer-id=""></vpu-library-create-loan>
+                <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-return-book')}" book-offer-id=""></vpu-library-return-book>
+                <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-renew-loan')}" person-id=""></vpu-library-renew-loan>
 
                 <a href="${buildinfo.url}" style="float: right">
                     <div class="tags has-addons">
