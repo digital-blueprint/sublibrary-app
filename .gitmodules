@@ -19,3 +19,6 @@
 [submodule "vendor/library-book-offer-select"]
 	path = vendor/library-book-offer-select
 	url = git@gitlab.tugraz.at:VPU/WebComponents/LibraryBookOfferSelect.git
+[submodule "vendor/datatableview"]
+	path = vendor/datatableview
+	url = git@gitlab.tugraz.at:VPU/WebComponents/datatableview.git
