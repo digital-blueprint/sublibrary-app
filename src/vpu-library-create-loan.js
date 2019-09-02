@@ -232,7 +232,6 @@ class LibraryCreateLoan extends VPULitElementJQuery {
             .hidden {left: -9999px; position: absolute;}
 
             #create-loan-block, #permission-error-block { display: none; }
-            #create-loan-block input { width: 100%; }
         `;
     }
 
@@ -272,13 +271,13 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                                 Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>, <code>+F987654</code>
                             </div>
                         </div>
-                        <div class="field">
-                            <label class="label">${i18n.t('renew-loan.end-date')}</label>
-                            <input type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loanDate)}">
-                            <input type="time" value="${commonUtils.dateToInputTimeString(loanDate)}">
-                        </div>
                         <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                         <div id="create-loan-block">
+                            <div class="field">
+                                <label class="label">${i18n.t('renew-loan.end-date')}</label>
+                                <input type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loanDate)}">
+                                <input type="time" value="${commonUtils.dateToInputTimeString(loanDate)}">
+                            </div>
                             <div class="field">
                                 <div class="control">
                                      <button class="button is-link" id="send" disabled="disabled">${i18n.t('create-loan.submit')}</button>
