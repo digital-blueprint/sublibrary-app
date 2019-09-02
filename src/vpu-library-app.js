@@ -137,9 +137,9 @@ class LibraryApp extends VPULitElement {
                 <section class="section">
                     <div class="container menu">
                         <a href="#vpu-library-shelving" data-navigo class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
-                        <a href="#vpu-library-create-loan" data-navigo class="${getSelectClasses('vpu-library-create-loan')}"">${i18n.t('menu.loan')}</a> |
-                        <a href="#vpu-library-return-book" data-navigo class="${getSelectClasses('vpu-library-return-book')}"">${i18n.t('menu.return')}</a> |
-                        <a href="#vpu-library-renew-loan" data-navigo class="${getSelectClasses('vpu-library-renew-loan')}"">${i18n.t('menu.renew')}</a>
+                        <a href="#vpu-library-create-loan" data-navigo class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a> |
+                        <a href="#vpu-library-return-book" data-navigo class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a> |
+                        <a href="#vpu-library-renew-loan" data-navigo class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
                     </div>
                 </section>
 
