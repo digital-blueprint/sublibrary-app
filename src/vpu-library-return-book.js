@@ -144,6 +144,8 @@ class LibraryReturnBook extends VPULitElementJQuery {
                     },
                     data: "{}",
                     success: function(data) {
+                        $bookOfferSelect[0].clear();
+
                         notify({
                             "summary": i18n.t('return-book.success-summary'),
                             "body": i18n.t('return-book.success-body'),
