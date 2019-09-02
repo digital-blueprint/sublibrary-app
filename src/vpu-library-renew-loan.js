@@ -290,29 +290,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                         <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                         <div id="renew-loan-block">
                             <vpu-data-table-view searching paging lang="${this.lang}" id="book-loans-1" columns-count="4" @click="${(e) => this.execRenew(e)}"></vpu-data-table-view>
-                            <div>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>${i18n.t('renew-loan.book')}</th>
-                                        <th>${i18n.t('renew-loan.end-date')}</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${this.loans.map((loan) => html`
-                                    <tr data-id="${loan['@id']}">
-                                        <td>${loan.object.name}</td>
-                                        <td class="date-col">
-                                            <input type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loan.endTime)}">
-                                            <input type="time" value="${commonUtils.dateToInputTimeString(loan.endTime)}">
-                                        </td>
-                                        <td><button @click="${(e) => this.execRenew(e)}" class="button is-link is-small" id="send" title="${i18n.t('renew-loan.renew-loan')}">Ok</button></td>
-                                    </tr>
-                                    `)}
-                                </tbody>
-                            </table>
-                            </div>
                         </div>
                         <div id="no-loans-block" style="display: none">
                             ${i18n.t('renew-loan.no-loans')}
