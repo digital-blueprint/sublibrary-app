@@ -115,7 +115,12 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                     '<input type="date" min="' + commonUtils.dateToInputDateString(minDate) + '" value="' + commonUtils.dateToInputDateString(loan.endTime) + '">'
                                     + '<input type="time" value="' + commonUtils.dateToInputTimeString(loan.endTime) + '">',
                                     loan.endTime,
-                                    '<button data-id="' + loan['@id'] + '" onclick="(e) => execRenew(e);" class="button is-link is-small" name="send" title="' + i18n.t('renew-loan.renew-loan') + '">Ok</button>',
+                                    // '<button data-id="' + loan['@id'] + '" onclick="(e) => execRenew(e);" class="button is-link is-small" name="send" title="' + i18n.t('renew-loan.renew-loan') + '">Ok</button>',
+                                    '<vpu-button data-id="' + loan['@id'] + '"'
+                                        + ' data-date="' + commonUtils.dateToInputDateString(loan.endTime) + '"'
+                                        + ' data-time="' + commonUtils.dateToInputTimeString(loan.endTime) + '"'
+                                        + ' onclick="(e) => execRenew(e);" value="Ok" name="send" disabled="disabled"'
+                                        + ' type="link" title="' + i18n.t('renew-loan.renew-loan') + '"></vpu-button>'
 
                                 ];
                                 tbl.push(row);
@@ -170,15 +175,12 @@ class LibraryRenewLoan extends VPULitElementJQuery {
     }
 
     execRenew(e) {
-        if (e.originalTarget.nodeName !== 'BUTTON'  || e.originalTarget.name !== 'send') {
-            return;
-        }
-
         e.preventDefault();
 
         const path = e.composedPath();
-        const button = path[0];
-        const tr = path[2];
+        const button = path[2];
+        const loanId = button.getAttribute("data-id");
+        const tr = path[4];
         const dateSelect = tr.querySelector("input[type='date']");
         const timeSelect = tr.querySelector("input[type='time']");
         const date = new Date(dateSelect.value + " " + timeSelect.value);
@@ -196,7 +198,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         }
 
         const data = {"endTime": date.toISOString()};
-        const loanId = button.getAttribute("data-id");
         const apiUrl = this.entryPointUrl + loanId;
 
         button.setAttribute("disabled", "disabled");
@@ -239,7 +240,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     "type": "danger",
                 });
             });
-        });
+        }).finally(() => { button.stop(); });
     }
 
     static get styles() {
@@ -267,7 +268,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
 
     render() {
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
-        const minDate = new Date().toISOString();
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
