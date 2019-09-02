@@ -144,6 +144,8 @@ class LibraryReturnBook extends VPULitElementJQuery {
                     },
                     data: "{}",
                     success: function(data) {
+                        $bookOfferSelect[0].clear();
+
                         notify({
                             "summary": i18n.t('return-book.success-summary'),
                             "body": i18n.t('return-book.success-body'),
@@ -163,6 +165,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
                         });
                     },
                     complete: function (jqXHR, textStatus, errorThrown) {
+                        that._("#send").stop();
                         that.updateSubmitButtonDisabled();
                     }
                 });
@@ -254,7 +257,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
                             </div>
                             <div class="field">
                                 <div class="control">
-                                     <button class="button is-link" id="send" disabled="disabled">${i18n.t('return-book.submit')}</button>
+                                     <vpu-button id="send" disabled="disabled" value="${i18n.t('return-book.submit')}" type="link"></vpu-button>
                                 </div>
                             </div>
                         </div>

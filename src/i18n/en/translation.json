@@ -38,7 +38,7 @@
     "success-body": "The loan was renewed successfully.",
     "book": "Book",
     "error-load-loans-summary": "Error on loading loans",
-    "end-date": "End date",
+    "end-date": "Return date",
     "renew-loan": "Renew loan",
     "error-renew-loan-summary": "Renewal failed",
     "info-renew-loan-success-summary": "Renewal successfull",
