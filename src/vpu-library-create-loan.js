@@ -139,12 +139,30 @@ class LibraryCreateLoan extends VPULitElementJQuery {
             // post loan with borrower
             that.$('#send').click((e) => {
                 e.preventDefault();
+
+                const dateSelect = that._("input[type='date']");
+                const timeSelect = that._("input[type='time']");
+                const date = new Date(dateSelect.value + " " + timeSelect.value);
+
+                // check if selected date is in the past
+                if (date < (new Date())) {
+                    notify({
+                        "summary": i18n.t('error-summary'),
+                        "body": i18n.t('renew-loan.error-renew-loan-date-in-past'),
+                        "type": "warning",
+                        "timeout": 5,
+                    });
+
+                    return;
+                }
+
                 console.log("send");
                 const apiUrl = that.entryPointUrl + that.bookOfferId + "/loans";
                 console.log(apiUrl);
 
                 const data = {
-                    "borrower": that.personId
+                    "borrower": that.personId,
+                    "endTime": date.toISOString()
                 };
 
                 console.log(data);
@@ -220,6 +238,10 @@ class LibraryCreateLoan extends VPULitElementJQuery {
 
     render() {
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
+        const minDate = new Date().toISOString();
+        let date = new Date();
+        date.setMonth(date.getMonth() + 1);
+        const loanDate = date.toISOString();
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
@@ -249,6 +271,11 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                             <div class="notification is-info">
                                 Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>, <code>+F987654</code>
                             </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">${i18n.t('renew-loan.end-date')}</label>
+                            <input type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loanDate)}">
+                            <input type="time" value="${commonUtils.dateToInputTimeString(loanDate)}">
                         </div>
                         <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                         <div id="create-loan-block">
