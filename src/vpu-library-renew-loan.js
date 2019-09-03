@@ -36,6 +36,20 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         const that = this;
 
         this.updateComplete.then(()=>{
+            // language=css
+            const css = `@media (min-width: 900px) {
+                td .date-col {
+                    white-space: nowrap;
+                }
+            }
+
+            @media (max-width: 900px) {
+                td .date-col input[type="time"] {
+                    margin-top: 5px;
+                }
+            }`;
+
+            this._("vpu-data-table-view").setCSSStyle(css);
             const $personSelect = that.$('vpu-person-select');
             const $renewLoanBlock = that.$('#renew-loan-block');
             const $noLoansBlock = that.$('#no-loans-block');
@@ -112,14 +126,14 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                 const row = [
                                     //loan['@id'],
                                     loan.object.name,
-                                    '<input type="date" min="' + commonUtils.dateToInputDateString(minDate) + '" value="' + commonUtils.dateToInputDateString(loan.endTime) + '">'
-                                    + '<input type="time" value="' + commonUtils.dateToInputTimeString(loan.endTime) + '">',
+                                    '<div class="date-col"><input type="date" min="' + commonUtils.dateToInputDateString(minDate) + '" value="' + commonUtils.dateToInputDateString(loan.endTime) + '"> '
+                                    + '<input type="time" value="' + commonUtils.dateToInputTimeString(loan.endTime) + '"></div>',
                                     loan.endTime,
                                     `<vpu-button data-id="${loan['@id']}"
                                                  data-date="${commonUtils.dateToInputDateString(loan.endTime)}"
                                                  data-time="${commonUtils.dateToInputTimeString(loan.endTime)}"
                                                  value="Ok" name="send" disabled="disabled"
-                                                 type="link" title="${i18n.t('renew-loan.renew-loan')}"></vpu-button>`
+                                                 type="is-link is-small" title="${i18n.t('renew-loan.renew-loan')}"></vpu-button>`
                                 ];
                                 tbl.push(row);
                             });
@@ -259,18 +273,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
 
             #renew-loan-block, #permission-error-block { display: none; }
             form, table {width: 100%}
-
-            @media (min-width: 900px) {
-                td.date-col {
-                    white-space: nowrap;
-                }
-            }
-
-            @media (max-width: 900px) {
-                td.date-col input[type="time"] {
-                    margin-top: 5px;
-                }
-            }
         `;
     }
 
