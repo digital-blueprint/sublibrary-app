@@ -115,13 +115,11 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                     '<input type="date" min="' + commonUtils.dateToInputDateString(minDate) + '" value="' + commonUtils.dateToInputDateString(loan.endTime) + '">'
                                     + '<input type="time" value="' + commonUtils.dateToInputTimeString(loan.endTime) + '">',
                                     loan.endTime,
-                                    // '<button data-id="' + loan['@id'] + '" onclick="(e) => execRenew(e);" class="button is-link is-small" name="send" title="' + i18n.t('renew-loan.renew-loan') + '">Ok</button>',
-                                    '<vpu-button data-id="' + loan['@id'] + '"'
-                                        + ' data-date="' + commonUtils.dateToInputDateString(loan.endTime) + '"'
-                                        + ' data-time="' + commonUtils.dateToInputTimeString(loan.endTime) + '"'
-                                        + ' onclick="(e) => execRenew(e);" value="Ok" name="send" disabled="disabled"'
-                                        + ' type="link" title="' + i18n.t('renew-loan.renew-loan') + '"></vpu-button>'
-
+                                    `<vpu-button data-id="${loan['@id']}"
+                                                 data-date="${commonUtils.dateToInputDateString(loan.endTime)}"
+                                                 data-time="${commonUtils.dateToInputTimeString(loan.endTime)}"
+                                                 value="Ok" name="send" disabled="disabled"
+                                                 type="link" title="${i18n.t('renew-loan.renew-loan')}"></vpu-button>`
                                 ];
                                 tbl.push(row);
                             });
@@ -134,13 +132,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                         $noLoansBlock.show();
                     }
                 })
-                .catch(BreakSignal, () => {})
-                .catch((error) => {
-                    notify({
-                        "summary": i18n.t('renew-loan.error-load-loans-summary'),
-                        "body": error,
-                        "type": "danger",
-                    })})
                 .catch(error => {
                     error.json().then((json) => {
                         return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
@@ -175,12 +166,28 @@ class LibraryRenewLoan extends VPULitElementJQuery {
     }
 
     execRenew(e) {
+        const path = e.composedPath();
+        let button, buttonIndex = -1;
+
+        // search for the vpu-button
+        path.some((item, index) => {
+            if (item.nodeName === "VPU-BUTTON") {
+                button = item;
+                buttonIndex = index;
+
+                return true;
+            }
+        });
+
+        // if the button was not found it wasn't clicked
+        if (buttonIndex === -1) {
+            return;
+        }
+
         e.preventDefault();
 
-        const path = e.composedPath();
-        const button = path[2];
         const loanId = button.getAttribute("data-id");
-        const tr = path[4];
+        const tr = path[buttonIndex + 2];
         const dateSelect = tr.querySelector("input[type='date']");
         const timeSelect = tr.querySelector("input[type='time']");
         const date = new Date(dateSelect.value + " " + timeSelect.value);
@@ -194,6 +201,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                 "timeout": 5,
             });
 
+            button.stop();
             return;
         }
 
@@ -226,8 +234,8 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                 "type": "info",
                 "timeout": 5,
             });
-            dateSelect.value = '2020-02-04'; //commonUtils.dateToInputDateString(loan.endTime);
-            timeSelect.value = '12:21'; //commonUtils.dateToInputTimeString(loan.endTime);
+            dateSelect.value = commonUtils.dateToInputDateString(loan.endTime);
+            timeSelect.value = commonUtils.dateToInputTimeString(loan.endTime);
         }).catch(error => {
             error.json().then((json) => {
                 return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
