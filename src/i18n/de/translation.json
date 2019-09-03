@@ -39,6 +39,7 @@
     "book": "Buch",
     "error-load-loans-summary": "Fehler beim Laden der Entlehnungen",
     "end-date": "Rückgabedatum",
+    "loans": "Entlehnungen",
     "renew-loan": "Entlehnung verlängern",
     "error-renew-loan-summary": "Fehler beim Verlängern",
     "info-renew-loan-success-summary": "Verlängern erfolgreich",

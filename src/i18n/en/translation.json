@@ -39,6 +39,7 @@
     "book": "Book",
     "error-load-loans-summary": "Error on loading loans",
     "end-date": "Return date",
+    "loans": "Loans",
     "renew-loan": "Renew loan",
     "error-renew-loan-summary": "Renewal failed",
     "info-renew-loan-success-summary": "Renewal successfull",
