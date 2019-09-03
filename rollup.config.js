@@ -4,6 +4,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import copy from 'rollup-plugin-copy';
 import {terser} from "rollup-plugin-terser";
 import json from 'rollup-plugin-json';
+import replace from "rollup-plugin-replace";
 import serve from 'rollup-plugin-serve';
 import multiEntry from 'rollup-plugin-multi-entry';
 import url from "rollup-plugin-url";
@@ -84,6 +85,9 @@ export default {
           emitFiles: true,
           fileName: 'shared/[name].[hash][extname]'
         }),
+        replace({
+            "process.env.BUILD": '"' + build + '"',
+        }),
         (build !== 'local' && build !== 'test') ? terser() : false,
         copy({
             targets: [
@@ -95,6 +99,13 @@ export default {
                 {src: 'assets/manifest.json', dest: 'dist', rename: pkg.name + '.manifest.json'},
                 {src: 'assets/nomodule.js', dest: 'dist/local/' + pkg.name},
                 {src: 'node_modules/material-design-icons-svg/paths/*.json', dest: 'dist/local/vpu-common/icons'},
+            ],
+        }),
+        copy({
+            targets: [
+                {src: 'node_modules/datatables.net-dt/css', dest: 'dist/local/vpu-data-table-view/'},
+                {src: 'node_modules/datatables.net-dt/images', dest: 'dist/local/vpu-data-table-view/'},
+                {src: 'node_modules/datatables.net-responsive-dt/css', dest: 'dist/local/vpu-data-table-view'},
             ],
         }),
         (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: 'dist', host: '127.0.0.1', port: 8001, historyApiFallback: '/' + pkg.name + '.html'}) : false

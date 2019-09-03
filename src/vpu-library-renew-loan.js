@@ -7,6 +7,7 @@ import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
+import 'vpu-data-table-view';
 
 class LibraryRenewLoan extends VPULitElementJQuery {
     constructor() {
@@ -88,14 +89,50 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                 .then(result => {
                     // TODO: check if logged-in user has permissions to the library of loan.object.library
                     that.loans = result['hydra:member'];
-                    console.log(that.loans);
 
                     if (that.loans.length > 0) {
+                        console.log('update vpu-data-table-view');
+                        const vdtv1 = that.shadowRoot.querySelector('#book-loans-1');
+                        if (vdtv1 !== null) {
+                            const minDate = new Date().toISOString();
+                            const columns = [
+                                {title: i18n.t('renew-loan.book') },
+                                {title: i18n.t('renew-loan.end-date') },
+                                null,
+                                ''
+                            ];
+                            const vdtv1_columnDefs = [
+                                {targets: [2], visible: false},
+                                {targets: [1], orderData: [2]},
+                                {targets: [2, 3], searchable: false},
+                                {targets: [3], sortable: false}
+                            ];
+                            const tbl = [];
+                            that.loans.forEach(function(loan) {
+                                const row = [
+                                    //loan['@id'],
+                                    loan.object.name,
+                                    '<input type="date" min="' + commonUtils.dateToInputDateString(minDate) + '" value="' + commonUtils.dateToInputDateString(loan.endTime) + '">'
+                                    + '<input type="time" value="' + commonUtils.dateToInputTimeString(loan.endTime) + '">',
+                                    loan.endTime,
+                                    `<vpu-button data-id="${loan['@id']}"
+                                                 data-date="${commonUtils.dateToInputDateString(loan.endTime)}"
+                                                 data-time="${commonUtils.dateToInputTimeString(loan.endTime)}"
+                                                 value="Ok" name="send" disabled="disabled"
+                                                 type="link" title="${i18n.t('renew-loan.renew-loan')}"></vpu-button>`
+                                ];
+                                tbl.push(row);
+                            });
+                            vdtv1.set_columns(columns)
+                                .set_columnDefs(vdtv1_columnDefs)
+                                .set_datatable(tbl);
+                        }
                         $renewLoanBlock.show();
                     } else {
                         $noLoansBlock.show();
                     }
-                }).catch(error => {
+                })
+                .catch(error => {
                     error.json().then((json) => {
                         return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
                     }).catch(() => {
@@ -129,11 +166,28 @@ class LibraryRenewLoan extends VPULitElementJQuery {
     }
 
     execRenew(e) {
+        const path = e.composedPath();
+        let button, buttonIndex = -1;
+
+        // search for the vpu-button
+        path.some((item, index) => {
+            if (item.nodeName === "VPU-BUTTON") {
+                button = item;
+                buttonIndex = index;
+
+                return true;
+            }
+        });
+
+        // if the button was not found it wasn't clicked
+        if (buttonIndex === -1) {
+            return;
+        }
+
         e.preventDefault();
 
-        const path = e.composedPath();
-        const button = path[0];
-        const tr = path[2];
+        const loanId = button.getAttribute("data-id");
+        const tr = path[buttonIndex + 2];
         const dateSelect = tr.querySelector("input[type='date']");
         const timeSelect = tr.querySelector("input[type='time']");
         const date = new Date(dateSelect.value + " " + timeSelect.value);
@@ -147,11 +201,11 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                 "timeout": 5,
             });
 
+            button.stop();
             return;
         }
 
         const data = {"endTime": date.toISOString()};
-        const loanId = tr.getAttribute("data-id");
         const apiUrl = this.entryPointUrl + loanId;
 
         button.setAttribute("disabled", "disabled");
@@ -172,7 +226,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         })
         .then(loan => {
             console.log("loan");
-            console.log(loan);
+            console.dir(loan);
 
             notify({
                 "summary": i18n.t('renew-loan.info-renew-loan-success-summary'),
@@ -180,6 +234,8 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                 "type": "info",
                 "timeout": 5,
             });
+            dateSelect.value = commonUtils.dateToInputDateString(loan.endTime);
+            timeSelect.value = commonUtils.dateToInputTimeString(loan.endTime);
         }).catch(error => {
             error.json().then((json) => {
                 return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
@@ -192,7 +248,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     "type": "danger",
                 });
             });
-        });
+        }).finally(() => { button.stop(); });
     }
 
     static get styles() {
@@ -220,7 +276,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
 
     render() {
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
-        const minDate = new Date().toISOString();
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
@@ -242,27 +297,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                         </div>
                         <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                         <div id="renew-loan-block">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>${i18n.t('renew-loan.book')}</th>
-                                        <th>${i18n.t('renew-loan.end-date')}</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${this.loans.map((loan) => html`
-                                    <tr data-id="${loan['@id']}">
-                                        <td>${loan.object.name}</td>
-                                        <td class="date-col">
-                                            <input type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loan.endTime)}">
-                                            <input type="time" value="${commonUtils.dateToInputTimeString(loan.endTime)}">
-                                        </td>
-                                        <td><button @click="${(e) => this.execRenew(e)}" class="button is-link is-small" id="send" title="${i18n.t('renew-loan.renew-loan')}">Ok</button></td>
-                                    </tr>
-                                    `)}
-                                </tbody>
-                            </table>
+                            <vpu-data-table-view searching paging lang="${this.lang}" id="book-loans-1" columns-count="4" @click="${(e) => this.execRenew(e)}"></vpu-data-table-view>
                         </div>
                         <div id="no-loans-block" style="display: none">
                             ${i18n.t('renew-loan.no-loans')}
