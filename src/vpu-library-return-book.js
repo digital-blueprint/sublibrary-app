@@ -257,7 +257,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
                             </div>
                             <div class="field">
                                 <div class="control">
-                                     <vpu-button id="send" disabled="disabled" value="${i18n.t('return-book.submit')}" type="link"></vpu-button>
+                                     <vpu-button id="send" disabled="disabled" value="${i18n.t('return-book.submit')}" type="is-link"></vpu-button>
                                 </div>
                             </div>
                         </div>

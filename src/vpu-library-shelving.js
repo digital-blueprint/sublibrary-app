@@ -140,6 +140,7 @@ class LibraryShelving extends VPULitElementJQuery {
                         });
                     },
                     complete: function (jqXHR, textStatus, errorThrown) {
+                        that._("#send").stop();
                         that.$("#send").prop("disabled", false);
                     }
                 });
@@ -209,7 +210,7 @@ class LibraryShelving extends VPULitElementJQuery {
                             </div>
                             <div class="field">
                                 <div class="control">
-                                     <button class="button is-link" id="send" disabled="disabled">${i18n.t('location-identifier.submit')}</button>
+                                     <vpu-button id="send" disabled="disabled" value="${i18n.t('location-identifier.submit')}" type="is-link"></vpu-button>
                                 </div>
                             </div>
                         </div>

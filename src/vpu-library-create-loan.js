@@ -200,6 +200,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                         });
                     },
                     complete: function (jqXHR, textStatus, errorThrown) {
+                        that._("#send").stop();
                         that.updateSubmitButtonDisabled();
                     }
                 });
@@ -280,7 +281,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                             </div>
                             <div class="field">
                                 <div class="control">
-                                     <button class="button is-link" id="send" disabled="disabled">${i18n.t('create-loan.submit')}</button>
+                                     <vpu-button id="send" disabled="disabled" value="${i18n.t('create-loan.submit')}" type="is-link"></vpu-button>
                                 </div>
                             </div>
                         </div>
