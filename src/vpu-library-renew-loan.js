@@ -109,7 +109,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     that.loans = result['hydra:member'];
 
                     if (that.loans.length > 0) {
-                        const vdtv1 = that.shadowRoot.querySelector('#book-loans-1');
+                        const vdtv1 = that._('#book-loans-1');
                         if (vdtv1 !== null) {
                             const minDate = new Date().toISOString();
                             const columns = [
@@ -129,9 +129,11 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                 const row = [
                                     loan.object.name,
                                     `<div class="date-col">
-                                        <input type="date" min="${commonUtils.dateToInputDateString(minDate)}"
+                                        <input data-date-id="${loan['@id']}"
+                                               type="date" min="${commonUtils.dateToInputDateString(minDate)}"
                                                value="${commonUtils.dateToInputDateString(loan.endTime)}">
-                                        <input type="time" value="${commonUtils.dateToInputTimeString(loan.endTime)}">
+                                        <input data-time-id="${loan['@id']}"
+                                               type="time" value="${commonUtils.dateToInputTimeString(loan.endTime)}">
                                     </div>`,
                                     loan.endTime,
                                     `<vpu-button data-id="${loan['@id']}"
@@ -172,7 +174,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === "lang") {
                 i18n.changeLanguage(this.lang);
-                const vdtv1 = this.shadowRoot.querySelector('#book-loans-1');
+                const vdtv1 = this._('#book-loans-1');
                 if (vdtv1 !== null) {
                     const columns = [
                         {title: i18n.t('renew-loan.book') },
@@ -214,9 +216,9 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         e.preventDefault();
 
         const loanId = button.getAttribute("data-id");
-        const tr = path[buttonIndex + 2];
-        const dateSelect = tr.querySelector("input[type='date']");
-        const timeSelect = tr.querySelector("input[type='time']");
+        const vdtv1 = this._('#book-loans-1');
+        const dateSelect = vdtv1.shadowRoot.querySelector(`input[data-date-id='${loanId}']`);
+        const timeSelect = vdtv1.shadowRoot.querySelector(`input[data-time-id='${loanId}']`);
         const date = new Date(dateSelect.value + " " + timeSelect.value);
 
         // check if selected date is in the past
