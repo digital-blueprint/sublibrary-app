@@ -109,7 +109,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     that.loans = result['hydra:member'];
 
                     if (that.loans.length > 0) {
-                        console.log('update vpu-data-table-view');
                         const vdtv1 = that.shadowRoot.querySelector('#book-loans-1');
                         if (vdtv1 !== null) {
                             const minDate = new Date().toISOString();
@@ -128,16 +127,16 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                             const tbl = [];
                             that.loans.forEach(function(loan) {
                                 const row = [
-                                    //loan['@id'],
                                     loan.object.name,
-                                    '<div class="date-col"><input type="date" min="' + commonUtils.dateToInputDateString(minDate) + '" value="' + commonUtils.dateToInputDateString(loan.endTime) + '"> '
-                                    + '<input type="time" value="' + commonUtils.dateToInputTimeString(loan.endTime) + '"></div>',
+                                    `<div class="date-col">
+                                        <input type="date" min="${commonUtils.dateToInputDateString(minDate)}"
+                                               value="${commonUtils.dateToInputDateString(loan.endTime)}">
+                                        <input type="time" value="${commonUtils.dateToInputTimeString(loan.endTime)}">
+                                    </div>`,
                                     loan.endTime,
                                     `<vpu-button data-id="${loan['@id']}"
-                                                 data-date="${commonUtils.dateToInputDateString(loan.endTime)}"
-                                                 data-time="${commonUtils.dateToInputTimeString(loan.endTime)}"
-                                                 value="Ok" name="send" disabled="disabled"
-                                                 type="is-link is-small" title="${i18n.t('renew-loan.renew-loan')}"></vpu-button>`
+                                                 value="Ok" name="send" disabled="disabled" type="is-link is-small"
+                                                 title="${i18n.t('renew-loan.renew-loan')}"></vpu-button>`
                                 ];
                                 tbl.push(row);
                             });
@@ -173,6 +172,16 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === "lang") {
                 i18n.changeLanguage(this.lang);
+                const vdtv1 = this.shadowRoot.querySelector('#book-loans-1');
+                if (vdtv1 !== null) {
+                    const columns = [
+                        {title: i18n.t('renew-loan.book') },
+                        {title: i18n.t('renew-loan.end-date') },
+                        null,
+                        ''
+                    ];
+                    vdtv1.set_columns(columns).set_datatable();
+                }
             }
         });
 
@@ -243,9 +252,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
             return result.json();
         })
         .then(loan => {
-            console.log("loan");
-            console.dir(loan);
-
             notify({
                 "summary": i18n.t('renew-loan.info-renew-loan-success-summary'),
                 "body": i18n.t('renew-loan.info-renew-loan-success-body'),
