@@ -137,8 +137,8 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                     </div>`,
                                     loan.endTime,
                                     `<vpu-button data-id="${loan['@id']}"
-                                                 value="Ok" name="send" disabled="disabled" type="is-link is-small"
-                                                 title="${i18n.t('renew-loan.renew-loan')}"></vpu-button>`
+                                                 value="Ok" name="send" type="is-link is-small"
+                                                 title="${i18n.t('renew-loan.renew-loan')}" no-spinner-on-click></vpu-button>`
                                 ];
                                 tbl.push(row);
                             });
@@ -215,6 +215,11 @@ class LibraryRenewLoan extends VPULitElementJQuery {
 
         e.preventDefault();
 
+        if (button.hasAttribute("disabled")) {
+            return;
+        }
+
+        button.start();
         const loanId = button.getAttribute("data-id");
         const vdtv1 = this._('#book-loans-1');
         const dateSelect = vdtv1.shadowRoot.querySelector(`input[data-date-id='${loanId}']`);
@@ -237,8 +242,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         const data = {"endTime": date.toISOString()};
         const apiUrl = this.entryPointUrl + loanId;
 
-        button.setAttribute("disabled", "disabled");
-
         // update loan
         fetch(apiUrl, {
             method: 'PUT',
@@ -249,7 +252,6 @@ class LibraryRenewLoan extends VPULitElementJQuery {
             },
         })
         .then(result => {
-            button.removeAttribute("disabled");
             if (!result.ok) throw result;
             return result.json();
         })
