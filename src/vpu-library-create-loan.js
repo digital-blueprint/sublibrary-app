@@ -168,9 +168,6 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                 console.log(data);
                 console.log(JSON.stringify(data));
 
-                // disable send button to wait until ajax request was finished (or errored)
-                that.$("#send").prop("disabled", true);
-
                 $.ajax({
                     url: apiUrl,
                     type: 'POST',

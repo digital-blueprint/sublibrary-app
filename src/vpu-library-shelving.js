@@ -108,9 +108,6 @@ class LibraryShelving extends VPULitElementJQuery {
                 console.log(data);
                 console.log(JSON.stringify(data));
 
-                // disable send button to wait until ajax request was finished (or errored)
-                that.$("#send").prop("disabled", true);
-
                 $.ajax({
                     url: apiUrl,
                     type: 'PUT',
@@ -141,7 +138,6 @@ class LibraryShelving extends VPULitElementJQuery {
                     },
                     complete: function (jqXHR, textStatus, errorThrown) {
                         that._("#send").stop();
-                        that.$("#send").prop("disabled", false);
                     }
                 });
             });
