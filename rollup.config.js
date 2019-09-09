@@ -9,7 +9,7 @@ import serve from 'rollup-plugin-serve';
 import multiEntry from 'rollup-plugin-multi-entry';
 import url from "rollup-plugin-url";
 import consts from 'rollup-plugin-consts';
-import del from 'rollup-plugin-delete'
+import del from 'rollup-plugin-delete';
 
 const pkg = require('./package.json');
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
