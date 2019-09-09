@@ -31,12 +31,37 @@ class LibraryApp extends VPULitElement {
         const that = this;
 
         this.updateComplete.then(()=>{
+            // see: https://github.com/krasimir/navigo
             new Navigo(null, true)
                 .on({
-                    'vpu-library-shelving*': () => that.switchComponent('vpu-library-shelving'),
-                    'vpu-library-create-loan*': () => that.switchComponent('vpu-library-create-loan'),
-                    'vpu-library-return-book*': () => that.switchComponent('vpu-library-return-book'),
-                    'vpu-library-renew-loan*': () => that.switchComponent('vpu-library-renew-loan'),
+                    ':lang/:component*': (params) => {
+                        // fallback to "de" if language is not valid
+                        const lang = ["en", "de"].includes(params.lang.toLowerCase()) ? params.lang : "de";
+
+                        // switch language if another language is requested
+                        if (that.lang !== lang) {
+                            that.lang = lang;
+
+                            const event = new CustomEvent("vpu-language-changed", {
+                                bubbles: true,
+                                detail: {'lang': lang}
+                            });
+
+                            this.dispatchEvent(event);
+                        }
+
+                        // remove the additional parameters added by Keycloak
+                        let componentTag = params.component.toLowerCase().replace(/&.+/,"");
+
+                        // fallback to shelving if not found
+                        // TODO: do we want a "not found" page?
+                        if (that._(componentTag) === null) {
+                            componentTag = "vpu-library-shelving";
+                        }
+
+                        // switch to the component
+                        that.switchComponent(componentTag);
+                    },
                     '*': () => that.switchComponent('vpu-library-shelving')})
                 .resolve();
 
@@ -136,10 +161,10 @@ class LibraryApp extends VPULitElement {
 
                 <section class="section">
                     <div class="container menu">
-                        <a href="#vpu-library-shelving" data-navigo class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
-                        <a href="#vpu-library-create-loan" data-navigo class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a> |
-                        <a href="#vpu-library-return-book" data-navigo class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a> |
-                        <a href="#vpu-library-renew-loan" data-navigo class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
+                        <a href="#${this.lang}/vpu-library-shelving" data-navigo class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
+                        <a href="#${this.lang}/vpu-library-create-loan" data-navigo class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a> |
+                        <a href="#${this.lang}/vpu-library-return-book" data-navigo class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a> |
+                        <a href="#${this.lang}/vpu-library-renew-loan" data-navigo class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
                     </div>
                 </section>
 
