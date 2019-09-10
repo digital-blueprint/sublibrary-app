@@ -6,6 +6,18 @@
     "headline": "Book",
     "placeholder": "Please enter a barcode"
   },
+  "vpu-library-shelving": {
+    "page-title": "Shelving"
+  },
+  "vpu-library-create-loan": {
+    "page-title": "Loan"
+  },
+  "vpu-library-return-book": {
+    "page-title": "Return"
+  },
+  "vpu-library-renew-loan": {
+    "page-title": "Renew"
+  },
   "create-loan": {
     "title": "Loan",
     "subtitle": "Allows to create loans for books",
@@ -57,6 +69,7 @@
     "placeholder": "Please enter the identifier to place the book",
     "submit": "Send"
   },
+  "page-title": "Library application",
   "success-summary": "Book lineup successful",
   "success-body": "The book lineup was successful.",
   "error-summary": "An error occurred",

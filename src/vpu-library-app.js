@@ -98,8 +98,8 @@ class LibraryApp extends VPULitElement {
 
     switchComponent(componentTag) {
         this.activeView = componentTag;
-
         const component = this._(componentTag);
+        this.updatePageTitle();
 
         if (component.hasAttribute("person-id")) {
             component.setAttribute("person-id", sessionStorage.getItem('vpu-person-id') || '');
@@ -108,6 +108,10 @@ class LibraryApp extends VPULitElement {
         if (component.hasAttribute("book-offer-id")) {
             component.setAttribute("book-offer-id", sessionStorage.getItem('vpu-book-offer-id') || '');
         }
+    }
+
+    updatePageTitle() {
+        document.title = `${i18n.t('page-title')} - ${i18n.t(this.activeView + '.page-title')}`;
     }
 
     onStyleLoaded () {
@@ -144,6 +148,8 @@ class LibraryApp extends VPULitElement {
         const getSelectClasses = (name => {
             return classMap({selected: this.activeView == name});
         });
+
+        this.updatePageTitle();
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}" @load="${this.onStyleLoaded}">
