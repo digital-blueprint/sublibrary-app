@@ -94,6 +94,10 @@ class LibraryApp extends VPULitElement {
 
     onLanguageChanged(e) {
         this.lang = e.detail.lang;
+
+        // update url in browser window if language was changed
+        const url = location.href.replace(/^http.+#(\w{2})(\/.+)$/ig, `#${this.lang}$2`);
+        window.history.pushState({},"", url);
     }
 
     switchComponent(componentTag) {
