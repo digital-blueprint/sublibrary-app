@@ -7,16 +7,16 @@
     "placeholder": "Please enter a barcode"
   },
   "vpu-library-shelving": {
-    "page-title": "Shelving"
+    "page-title": "Book shelving"
   },
   "vpu-library-create-loan": {
-    "page-title": "Loan"
+    "page-title": "Loan book"
   },
   "vpu-library-return-book": {
-    "page-title": "Return"
+    "page-title": "Return book"
   },
   "vpu-library-renew-loan": {
-    "page-title": "Renew"
+    "page-title": "Renew book loan"
   },
   "create-loan": {
     "title": "Loan",

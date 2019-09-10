@@ -7,16 +7,16 @@
     "placeholder": "Bitte geben Sie einen Barcode ein"
   },
   "vpu-library-shelving": {
-    "page-title": "Aufstellung"
+    "page-title": "Buchaufstellung"
   },
   "vpu-library-create-loan": {
-    "page-title": "Entlehnung"
+    "page-title": "Buchentlehnung"
   },
   "vpu-library-return-book": {
-    "page-title": "Rückgabe"
+    "page-title": "Buchrückgabe"
   },
   "vpu-library-renew-loan": {
-    "page-title": "Verlängerung"
+    "page-title": "Buchverlängerung"
   },
   "create-loan": {
     "title": "Entlehung",
