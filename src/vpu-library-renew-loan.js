@@ -8,6 +8,7 @@ import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
 import 'vpu-data-table-view';
+import * as errorUtils from "vpu-common/error";
 
 class LibraryRenewLoan extends VPULitElementJQuery {
     constructor() {
@@ -150,20 +151,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                     } else {
                         $noLoansBlock.show();
                     }
-                })
-                .catch(error => {
-                    error.json().then((json) => {
-                        return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
-                    }).catch(() => {
-                        return error.statusText !== undefined ? error.statusText : error;
-                    }).then((body) => {
-                        notify({
-                            "summary": i18n.t('renew-loan.error-load-loans-summary'),
-                            "body": body,
-                            "type": "danger",
-                        });
-                    });
-                });
+                }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
             }).on('unselect', function (e) {
                 $renewLoanBlock.hide();
             });
@@ -264,19 +252,8 @@ class LibraryRenewLoan extends VPULitElementJQuery {
             });
             dateSelect.value = commonUtils.dateToInputDateString(loan.endTime);
             timeSelect.value = commonUtils.dateToInputTimeString(loan.endTime);
-        }).catch(error => {
-            error.json().then((json) => {
-                return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
-            }).catch(() => {
-                return error.statusText !== undefined ? error.statusText : error;
-            }).then((body) => {
-                notify({
-                    "summary": i18n.t('renew-loan.error-renew-loan-summary'),
-                    "body": body,
-                    "type": "danger",
-                });
-            });
-        }).finally(() => { button.stop(); });
+        }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-renew-loan-summary')))
+        .finally(() => { button.stop(); });
     }
 
     static get styles() {

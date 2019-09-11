@@ -7,7 +7,7 @@ import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
-import * as error from "vpu-common/error";
+import * as errorUtils from "vpu-common/error";
 
 class LibraryCreateLoan extends VPULitElementJQuery {
     constructor() {
@@ -120,19 +120,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                         });
                         $createLoanBlock.show();
                     }
-                }).catch(error => {
-                    error.json().then((json) => {
-                        return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
-                    }).catch(() => {
-                        return error.statusText !== undefined ? error.statusText : error;
-                    }).then((body) => {
-                        notify({
-                            "summary": i18n.t('renew-loan.error-load-loans-summary'),
-                            "body": body,
-                            "type": "danger",
-                        });
-                    });
-                });
+                }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
             }).on('unselect', function (e) {
                 $createLoanBlock.hide();
             });
@@ -187,7 +175,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
 
                         $bookOfferSelect[0].clear();
                     },
-                    error: error.xhrError,
+                    error: errorUtils.handleXhrError,
                     complete: function (jqXHR, textStatus, errorThrown) {
                         that._("#send").stop();
                         that.updateSubmitButtonDisabled();

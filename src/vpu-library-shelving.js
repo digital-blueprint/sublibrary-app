@@ -9,7 +9,7 @@ import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
-import * as error from "vpu-common/error";
+import * as errorUtils from "vpu-common/error";
 
 
 class LibraryShelving extends VPULitElementJQuery {
@@ -127,7 +127,7 @@ class LibraryShelving extends VPULitElementJQuery {
 
                         $bookOfferSelect[0].clear();
                     },
-                    error: error.xhrError,
+                    error: errorUtils.handleXhrError,
                     complete: function (jqXHR, textStatus, errorThrown) {
                         that._("#send").stop();
                     }

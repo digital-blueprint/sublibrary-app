@@ -7,7 +7,7 @@ import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
-import * as error from "vpu-common/error";
+import * as errorUtils from "vpu-common/error";
 
 class LibraryReturnBook extends VPULitElementJQuery {
     constructor() {
@@ -109,19 +109,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
                             "timeout": 5,
                         });
                     }
-                }).catch(error => {
-                    error.json().then((json) => {
-                        return json["hydra:description"] !== undefined ? json["hydra:description"] : error.statusText;
-                    }).catch(() => {
-                        return error.statusText !== undefined ? error.statusText : error;
-                    }).then((body) => {
-                        notify({
-                            "summary": i18n.t('renew-loan.error-load-loans-summary'),
-                            "body": body,
-                            "type": "danger",
-                        });
-                    });
-                });
+                }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
             }).on('unselect', function (e) {
                 $returnBookBlock.hide();
             });
@@ -151,7 +139,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
                             "timeout": 5,
                         });
                     },
-                    error: error.xhrError,
+                    error: errorUtils.handleXhrError,
                     complete: function (jqXHR, textStatus, errorThrown) {
                         that._("#send").stop();
                         that.updateSubmitButtonDisabled();
