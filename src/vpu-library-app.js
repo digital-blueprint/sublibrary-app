@@ -1,7 +1,6 @@
 import * as utils from './utils.js';
 import {i18n} from './i18n.js';
 import {html, css} from 'lit-element';
-import {send as notify} from 'vpu-notification';
 import VPULitElement from 'vpu-common/vpu-lit-element';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
