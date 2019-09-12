@@ -39,16 +39,7 @@ class LibraryApp extends VPULitElement {
                         const lang = ["en", "de"].includes(params.lang.toLowerCase()) ? params.lang : "de";
 
                         // switch language if another language is requested
-                        if (that.lang !== lang) {
-                            that.lang = lang;
-
-                            const event = new CustomEvent("vpu-language-changed", {
-                                bubbles: true,
-                                detail: {'lang': lang}
-                            });
-
-                            this.dispatchEvent(event);
-                        }
+                        that.updateLangIfChanged(lang);
 
                         // remove the additional parameters added by Keycloak
                         let componentTag = params.component.toLowerCase().replace(/&.+/,"");
@@ -69,6 +60,22 @@ class LibraryApp extends VPULitElement {
                 element.addEventListener("change", LibraryApp.updateSessionStorage);
             });
         });
+    }
+
+    /**
+     * Switches language if another language is requested
+     */
+    updateLangIfChanged(lang) {
+        if (this.lang !== lang) {
+            this.lang = lang;
+
+            const event = new CustomEvent("vpu-language-changed", {
+                bubbles: true,
+                detail: {'lang': lang}
+            });
+
+            this.dispatchEvent(event);
+        }
     }
 
     static updateSessionStorage(event) {
