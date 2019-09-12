@@ -146,11 +146,11 @@ class LibraryApp extends VPULitElement {
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
 
         const getViewClasses = (name => {
-            return classMap({hidden: this.activeView != name});
+            return classMap({hidden: this.activeView !== name});
         });
 
         const getSelectClasses = (name => {
-            return classMap({selected: this.activeView == name});
+            return classMap({selected: this.activeView === name});
         });
 
         this.updatePageTitle();
