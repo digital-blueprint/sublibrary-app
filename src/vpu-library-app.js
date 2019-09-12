@@ -52,8 +52,14 @@ class LibraryApp extends VPULitElement {
                         // switch to the component
                         that.switchComponent(componentTag);
                     },
-                    '*': () => that.switchComponent('vpu-library-shelving')})
-                .resolve();
+                    '*': () => {
+                        // update url in browser window to default language and component to prevent problems with
+                        // language changes and Keycloak
+                        window.history.pushState({},"", `#${this.lang}/vpu-library-shelving`);
+
+                        that.switchComponent('vpu-library-shelving')
+                    }
+                }).resolve();
 
             this.shadowRoot.querySelectorAll(".component").forEach((element) => {
                 element.addEventListener("change", LibraryApp.updateSessionStorage);
