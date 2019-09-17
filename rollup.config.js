@@ -42,7 +42,8 @@ export default {
       dir: 'dist',
       entryFileNames: pkg.name + '.js',
       chunkFileNames: 'shared/[name].[hash].[format].js',
-      format: 'esm'
+      format: 'esm',
+      sourcemap: true
     },
     manualChunks: manualChunks,
     onwarn: function (warning, warn) {
