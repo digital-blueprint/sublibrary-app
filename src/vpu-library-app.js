@@ -155,6 +155,7 @@ class LibraryApp extends VPULitElement {
     }
 
     render() {
+        const date = new Date(buildinfo.time);
         const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
 
         const getViewClasses = (name => {
@@ -196,7 +197,7 @@ class LibraryApp extends VPULitElement {
                 <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-renew-loan')}" person-id=""></vpu-library-renew-loan>
 
                 <a href="${buildinfo.url}" style="float: right">
-                    <div class="tags has-addons">
+                    <div class="tags has-addons" title="Build Time: ${date.toString()}">
                         <span class="tag is-light">build</span>
                         <span class="tag is-dark">${buildinfo.info} (${buildinfo.env})</span>
                     </div>

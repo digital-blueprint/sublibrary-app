@@ -32,6 +32,7 @@ function getBuildInfo() {
     return {
         info: commit,
         url: newUrl,
+        time: new Date().toISOString(),
         env: build
     }
 }
