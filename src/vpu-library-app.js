@@ -8,6 +8,9 @@ import bulmaCSSPath from 'bulma/css/bulma.min.css';
 import Navigo from "navigo";
 import buildinfo from 'consts:buildinfo';
 import {classMap} from 'lit-html/directives/class-map.js';
+import * as errorreport from 'vpu-common/errorreport';
+
+errorreport.init({release: 'vpi-library-app@' + buildinfo.info})
 
 class LibraryApp extends VPULitElement {
     constructor() {
@@ -202,6 +205,13 @@ class LibraryApp extends VPULitElement {
                         <span class="tag is-dark">${buildinfo.info} (${buildinfo.env})</span>
                     </div>
                 </a>
+                <input type="button" class="button is-small" @click="${() => {
+                    try {
+                        throw new Error('I\'m an error');
+                    } catch (e) {
+                        errorreport.captureException(e);
+                    }
+                }}" value="test error">
             </div>
         `;
     }
