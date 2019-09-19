@@ -22,3 +22,6 @@
 [submodule "vendor/datatableview"]
 	path = vendor/datatableview
 	url = git@gitlab.tugraz.at:VPU/WebComponents/datatableview.git
+[submodule "vendor/person-profile"]
+	path = vendor/person-profile
+	url = git@gitlab.tugraz.at:VPU/WebComponents/PersonProfile.git
