@@ -1,4 +1,3 @@
-import * as utils from './utils.js';
 import {i18n} from './i18n.js';
 import {html, css} from 'lit-element';
 import VPULitElement from 'vpu-common/vpu-lit-element';
@@ -159,7 +158,8 @@ class LibraryApp extends VPULitElement {
 
     render() {
         const date = new Date(buildinfo.time);
-        const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
+        commonUtils.initAssetBaseURL('vpu-library-app-src');
+        const bulmaCSS = commonUtils.getAssetURL(bulmaCSSPath);
 
         const getViewClasses = (name => {
             return classMap({hidden: this.activeView !== name});

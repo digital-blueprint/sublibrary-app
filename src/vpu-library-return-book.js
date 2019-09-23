@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import * as utils from './utils.js';
 import {i18n} from './i18n.js';
 import {css, html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
@@ -198,7 +197,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
     }
 
     render() {
-        const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
+        const bulmaCSS = commonUtils.getAssetURL(bulmaCSSPath);
 
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">

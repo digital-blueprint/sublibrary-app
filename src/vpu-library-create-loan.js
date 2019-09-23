@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import * as utils from './utils.js';
 import {i18n} from './i18n.js';
 import {css, html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
@@ -214,7 +213,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
     }
 
     render() {
-        const bulmaCSS = utils.getAssetURL(bulmaCSSPath);
+        const bulmaCSS = commonUtils.getAssetURL(bulmaCSSPath);
         const minDate = new Date().toISOString();
         let date = new Date();
         date.setMonth(date.getMonth() + 1);
