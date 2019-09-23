@@ -35,15 +35,16 @@
     "vpu-language-select": "file:./vendor/language-select",
     "vpu-library-book-offer-select": "file:./vendor/library-book-offer-select",
     "vpu-notification": "file:./vendor/notification",
+    "vpu-person-profile": "file:./vendor/person-profile",
     "vpu-person-select": "file:./vendor/person-select"
   },
   "dependencies": {
     "bulma": "^0.7.5",
     "jquery": "^3.4.1",
     "lit-element": "^2.2.1",
-    "navigo": "^7.1.2",
     "select2": "^4.0.10",
-    "suggestions": "^1.6.0"
+    "suggestions": "^1.6.0",
+    "universal-router": "^8.3.0"
   },
   "scripts": {
     "clean": "rm dist/* -R",

@@ -4,10 +4,10 @@ import VPULitElement from 'vpu-common/vpu-lit-element';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
-import Navigo from "navigo";
 import buildinfo from 'consts:buildinfo';
 import {classMap} from 'lit-html/directives/class-map.js';
 import * as errorreport from 'vpu-common/errorreport';
+import UniversalRouter from 'universal-router';
 
 errorreport.init({release: 'vpi-library-app@' + buildinfo.info})
 
@@ -17,6 +17,72 @@ class LibraryApp extends VPULitElement {
         this.lang = 'de';
         this.activeView = 'vpu-library-shelving';
         this.entryPointUrl = commonUtils.getAPiUrl();
+        const that = this;
+
+        const routes = [
+            {
+                path: '',
+                action: () => {
+                    return { redirect: "de/vpu-library-create-loan" }
+                }
+            },
+            {
+                path: '/:lang',
+                action: (context) => {
+                    let lang = context.params.lang.toLowerCase();
+
+                    // fallback to "de" if language is not valid
+                    lang = ["en", "de"].includes(lang) ? lang : "de";
+
+                    // switch language if another language is requested
+                    that.updateLangIfChanged(lang);
+
+                    console.log("lang: " + lang);
+                },
+                children: [
+                    {
+                        path: '',
+                        action: (context) => {
+                            return { redirect: `${context.params.component}/vpu-library-shelving` }
+                        }
+                    },
+                    {
+                        path: '/:component',
+                        action: (context) => {
+                            // remove the additional parameters added by Keycloak
+                            let componentTag = context.params.component.toLowerCase().replace(/&.+/,"");
+
+                            // fallback to shelving if not found
+                            // TODO: do we want a "not found" page?
+                            if (that._(componentTag) === null) {
+                                componentTag = "vpu-library-shelving";
+                            }
+
+                            // switch to the component
+                            that.switchComponent(componentTag);
+
+                            console.log("componentTag: " + componentTag);
+                        },
+                    },
+                ],
+            },
+        ];
+
+        this.router = new UniversalRouter(routes);
+
+        // TODO: maybe we can handle the base url here
+        this.router.resolve(location.pathname).then(page => {
+            if (page.redirect) {
+                // do redirect
+                window.location = page.redirect
+            }
+        });
+
+        // listen to the vpu-auth-profile event to switch to the person profile
+        window.addEventListener("vpu-auth-profile", () => {
+            window.history.pushState({}, "", `/${this.lang}/vpu-person-profile`);
+            that.switchComponent('vpu-person-profile');
+        });
     }
 
     static get properties() {
@@ -32,39 +98,19 @@ class LibraryApp extends VPULitElement {
         const that = this;
 
         this.updateComplete.then(()=>{
-            // see: https://github.com/krasimir/navigo
-            new Navigo(null, true)
-                .on({
-                    ':lang/:component*': (params) => {
-                        // fallback to "de" if language is not valid
-                        const lang = ["en", "de"].includes(params.lang.toLowerCase()) ? params.lang : "de";
-
-                        // switch language if another language is requested
-                        that.updateLangIfChanged(lang);
-
-                        // remove the additional parameters added by Keycloak
-                        let componentTag = params.component.toLowerCase().replace(/&.+/,"");
-
-                        // fallback to shelving if not found
-                        // TODO: do we want a "not found" page?
-                        if (that._(componentTag) === null) {
-                            componentTag = "vpu-library-shelving";
-                        }
-
-                        // switch to the component
-                        that.switchComponent(componentTag);
-                    },
-                    '*': () => {
-                        // update url in browser window to default language and component to prevent problems with
-                        // language changes and Keycloak
-                        window.history.pushState({},"", `#${this.lang}/vpu-library-shelving`);
-
-                        that.switchComponent('vpu-library-shelving')
-                    }
-                }).resolve();
-
             this.shadowRoot.querySelectorAll(".component").forEach((element) => {
                 element.addEventListener("change", LibraryApp.updateSessionStorage);
+            });
+
+            // jump to the other pages without reloading the browser window
+            this.shadowRoot.querySelectorAll("a[data-nav]").forEach((link) => {
+                link.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    const location = link.getAttribute('href');
+                    console.log("location: " + location);
+                    this.router.resolve(location);
+                    window.history.pushState({}, "", location);
+                });
             });
         });
     }
@@ -110,7 +156,7 @@ class LibraryApp extends VPULitElement {
         this.lang = e.detail.lang;
 
         // update url in browser window if language was changed
-        const url = location.href.replace(/^http.+#(\w{2})(\/.+)$/ig, `#${this.lang}$2`);
+        const url = location.href.replace(/^http.+\/(\w{2})(\/.+)$/ig, `/${this.lang}$2`);
         window.history.pushState({},"", url);
     }
 
@@ -187,10 +233,10 @@ class LibraryApp extends VPULitElement {
 
                 <section class="section">
                     <div class="container menu">
-                        <a href="#${this.lang}/vpu-library-shelving" data-navigo class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
-                        <a href="#${this.lang}/vpu-library-create-loan" data-navigo class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a> |
-                        <a href="#${this.lang}/vpu-library-return-book" data-navigo class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a> |
-                        <a href="#${this.lang}/vpu-library-renew-loan" data-navigo class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
+                        <a href="/${this.lang}/vpu-library-shelving" data-nav class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
+                        <a href="/${this.lang}/vpu-library-create-loan" data-nav class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a> |
+                        <a href="/${this.lang}/vpu-library-return-book" data-nav class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a> |
+                        <a href="/${this.lang}/vpu-library-renew-loan" data-nav class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
                     </div>
                 </section>
 
@@ -198,6 +244,7 @@ class LibraryApp extends VPULitElement {
                 <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-create-loan')}" person-id="" book-offer-id=""></vpu-library-create-loan>
                 <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-return-book')}" book-offer-id=""></vpu-library-return-book>
                 <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-renew-loan')}" person-id=""></vpu-library-renew-loan>
+                <vpu-person-profile entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-person-profile')}"></vpu-person-profile>
 
                 <a href="${buildinfo.url}" style="float: right">
                     <div class="tags has-addons" title="Build Time: ${date.toString()}">

@@ -26,7 +26,7 @@ function getBuildInfo() {
     let commit = child_process.execSync('git rev-parse --short HEAD').toString().trim();
 
     let parsed = url.parse(remote);
-    let newPath = parsed.path.slice(0, parsed.path.lastIndexOf('.'))
+    let newPath = parsed.path.slice(0, parsed.path.lastIndexOf('.'));
     let newUrl = parsed.protocol + '//' + parsed.host + newPath + '/commit/' + commit;
 
     return {
@@ -52,7 +52,7 @@ export default {
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
             return;
         }
-        throw new Error(warning);
+        warn(warning);
     },
     watch: {
       chokidar: true,
