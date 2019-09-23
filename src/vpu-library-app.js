@@ -69,7 +69,12 @@ class LibraryApp extends VPULitElement {
             },
         ];
 
-        this.router = new UniversalRouter(routes);
+        const routerOptions = {
+            errorHandler: (error, context) => {
+                throw error;
+            },
+        }
+        this.router = new UniversalRouter(routes, routerOptions);
 
         // TODO: maybe we can handle the base url here
         this.router.resolve(location.pathname).then(page => {
