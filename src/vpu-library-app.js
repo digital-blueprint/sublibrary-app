@@ -17,6 +17,7 @@ class LibraryApp extends VPULitElement {
         this.lang = 'de';
         this.activeView = 'vpu-library-shelving';
         this.entryPointUrl = commonUtils.getAPiUrl();
+        this.user = '';
         const that = this;
 
         const routes = [
@@ -90,6 +91,7 @@ class LibraryApp extends VPULitElement {
             lang: { type: String },
             activeView: { type: String, attribute: false},
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
+            user: { type: String, attribute: false },
         };
     }
 
@@ -111,6 +113,10 @@ class LibraryApp extends VPULitElement {
                     this.router.resolve(location);
                     window.history.pushState({}, "", location);
                 });
+            });
+
+            window.addEventListener("vpu-auth-person-init", () => {
+                that.user = that._('vpu-auth').person.identifier;
             });
         });
     }
@@ -244,7 +250,7 @@ class LibraryApp extends VPULitElement {
                 <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-create-loan')}" person-id="" book-offer-id=""></vpu-library-create-loan>
                 <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-return-book')}" book-offer-id=""></vpu-library-return-book>
                 <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-renew-loan')}" person-id=""></vpu-library-renew-loan>
-                <vpu-person-profile entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-person-profile')}"></vpu-person-profile>
+                <vpu-person-profile entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-person-profile')}" value="${this.user}"></vpu-person-profile>
 
                 <a href="${buildinfo.url}" style="float: right">
                     <div class="tags has-addons" title="Build Time: ${date.toString()}">
