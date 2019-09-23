@@ -23,7 +23,7 @@ class LibraryApp extends VPULitElement {
             {
                 path: '',
                 action: () => {
-                    return { redirect: "de/vpu-library-create-loan" }
+                    return { redirect: "/de/vpu-library-create-loan" }
                 }
             },
             {
