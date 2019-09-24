@@ -22,6 +22,15 @@ class LibraryApp extends VPULitElement {
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.user = '';
 
+        this.initRouter();
+
+        // listen to the vpu-auth-profile event to switch to the person profile
+        window.addEventListener("vpu-auth-profile", () => {
+            this.switchComponent('vpu-person-profile');
+        });
+    }
+
+    initRouter() {
         const routes = [
             {
                 path: '',
@@ -63,43 +72,79 @@ class LibraryApp extends VPULitElement {
         this.router = new UniversalRouter(routes, {
             baseUrl: basePath.replace(/\/$/, ""),
         });
-        this.setRouteFromPathname(location.pathname);
 
-        // listen to the vpu-auth-profile event to switch to the person profile
-        window.addEventListener("vpu-auth-profile", () => {
-            this.setRoute({component: 'vpu-person-profile'});
-        });
+        this.setStateFromCurrentLocation();
 
         window.addEventListener('popstate', (event) => {
-            this.setRouteFromPathname(location.pathname);
+            this.setStateFromCurrentLocation();
         });
     }
 
-    setRoute(page) {
-        const pathname = this.getRoutePathname(page);
-        this.setRouteFromPathname(pathname);
+    /**
+     * Update the router after some internal state change.
+     */
+    updateRouter() {
+        // Queue updates so we can call this multiple times when changing state
+        // without it resulting in multiple location changes
+        setTimeout(() => {
+            const newPathname = this.getRoutePathname();
+            const oldPathname = location.pathname;
+            if (newPathname === oldPathname)
+                return;
+            window.history.pushState({}, '', newPathname);
+        });
     }
 
-    setRouteFromPathname(pathname) {
-        this.router.resolve({pathname: pathname}).then(page => {
-            this.switchComponent(page.component);
-            this.updateLangIfChanged(page.lang);
-            let newPathname = this.getRoutePathname(page);
-            if (location.pathname !== newPathname) {
-                window.history.pushState({}, '', newPathname);
+    /**
+     * In case something else has changed the location, update the app state accordingly.
+     */
+    setStateFromCurrentLocation() {
+        const oldPathName = location.pathname;
+        this.router.resolve({pathname: oldPathName}).then(page => {
+            const newPathname = this.getRoutePathname(page);
+            // In case of a router redirect, set the new location
+            if (newPathname != oldPathName) {
+                window.history.replaceState({}, '', newPathname);
             }
+            this.updateState(page);
         });
     }
 
+    /**
+     * Given a new routing path set the location and the app state.
+     *
+     * @param {string} pathname
+     */
+    updateRouterFromPathname(pathname) {
+        this.router.resolve({pathname: pathname}).then(page => {
+            let newPathname = this.getRoutePathname(page);
+            if (location.pathname === newPathname)
+                return;
+            window.history.pushState({}, '', newPathname);
+            this.updateState(page);
+        });
+    }
+
+    /**
+     * Pass some new router state to get a new router path that can
+     * be passed to updateRouterFromPathname() later on. If nothing is
+     * passed the current state is used.
+     *
+     * @param {object} [page]
+     */
     getRoutePathname(page) {
-        const getUrl = generateUrls(this.router);
         if (!page)
             page = {}
         if (!page.lang)
             page.lang = this.lang;
         if (!page.component)
             page.component = this.activeView;
-        return getUrl('component', page);
+        return generateUrls(this.router)('component', page);
+    }
+
+    updateState(page) {
+        this.updateLangIfChanged(page.lang);
+        this.switchComponent(page.component);
     }
 
     static get properties() {
@@ -125,7 +170,7 @@ class LibraryApp extends VPULitElement {
                 link.addEventListener("click", (e) => {
                     e.preventDefault();
                     const location = link.getAttribute('href');
-                    this.setRouteFromPathname(location);
+                    this.updateRouterFromPathname(location);
                 });
             });
 
@@ -141,6 +186,7 @@ class LibraryApp extends VPULitElement {
     updateLangIfChanged(lang) {
         if (this.lang !== lang) {
             this.lang = lang;
+            this.updateRouter();
 
             const event = new CustomEvent("vpu-language-changed", {
                 bubbles: true,
@@ -173,14 +219,23 @@ class LibraryApp extends VPULitElement {
     }
 
     onLanguageChanged(e) {
-        this.lang = e.detail.lang;
-        this.setRoute({lang: this.lang});
+        const newLang = e.detail.lang
+        const changed = (this.lang !== newLang);
+        this.lang = newLang;
+        if (changed)
+            this.updateRouter();
     }
 
     switchComponent(componentTag) {
+        const changed = (componentTag !== this.activeView);
         this.activeView = componentTag;
         const component = this._(componentTag);
         this.updatePageTitle();
+        if (changed)
+            this.updateRouter();
+
+        if (!component)
+            return;
 
         if (component.hasAttribute("person-id")) {
             component.setAttribute("person-id", sessionStorage.getItem('vpu-person-id') || '');
