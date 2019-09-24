@@ -68,6 +68,7 @@ export default {
         consts({
           environment: build,
           buildinfo: getBuildInfo(),
+          basePath: basePath,
         }),
         ejsAssetPlugin('assets/index.ejs', pkg.name + '.html', {
           geturl: (p) => {

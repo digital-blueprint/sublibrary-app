@@ -5,9 +5,11 @@ import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
 import bulmaCSSPath from 'bulma/css/bulma.min.css';
 import buildinfo from 'consts:buildinfo';
+import basePath from 'consts:basePath';
 import {classMap} from 'lit-html/directives/class-map.js';
 import * as errorreport from 'vpu-common/errorreport';
 import UniversalRouter from 'universal-router';
+import generateUrls from 'universal-router/generateUrls'
 
 errorreport.init({release: 'vpi-library-app@' + buildinfo.info})
 
@@ -15,80 +17,89 @@ class LibraryApp extends VPULitElement {
     constructor() {
         super();
         this.lang = 'de';
-        this.activeView = 'vpu-library-shelving';
+        this.defaultView = 'vpu-library-shelving';
+        this.activeView = this.defaultView;
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.user = '';
-        const that = this;
 
         const routes = [
             {
                 path: '',
-                action: () => {
-                    return { redirect: "/de/vpu-library-create-loan" }
+                action: (context) => {
+                    return {
+                        lang: this.lang,
+                        component: this.defaultView,
+                    }
                 }
             },
             {
                 path: '/:lang',
-                action: (context) => {
-                    let lang = context.params.lang.toLowerCase();
-
-                    // fallback to "de" if language is not valid
-                    lang = ["en", "de"].includes(lang) ? lang : "de";
-
-                    // switch language if another language is requested
-                    that.updateLangIfChanged(lang);
-
-                    console.log("lang: " + lang);
-                },
                 children: [
                     {
                         path: '',
-                        action: (context) => {
-                            return { redirect: `${context.params.component}/vpu-library-shelving` }
+                        action: (context, params) => {
+                            return {
+                                lang: params.lang,
+                                component: this.defaultView,
+                            }
                         }
                     },
                     {
+                        name: 'component',
                         path: '/:component',
-                        action: (context) => {
+                        action: (context, params) => {
                             // remove the additional parameters added by Keycloak
-                            let componentTag = context.params.component.toLowerCase().replace(/&.+/,"");
-
-                            // fallback to shelving if not found
-                            // TODO: do we want a "not found" page?
-                            if (that._(componentTag) === null) {
-                                componentTag = "vpu-library-shelving";
-                            }
-
-                            // switch to the component
-                            that.switchComponent(componentTag);
-
-                            console.log("componentTag: " + componentTag);
+                            let componentTag = params.component.toLowerCase().replace(/&.+/,"");
+                            return {
+                                lang: params.lang,
+                                component: componentTag,
+                            };
                         },
                     },
                 ],
             },
         ];
 
-        const routerOptions = {
-            errorHandler: (error, context) => {
-                throw error;
-            },
-        }
-        this.router = new UniversalRouter(routes, routerOptions);
-
-        // TODO: maybe we can handle the base url here
-        this.router.resolve(location.pathname).then(page => {
-            if (page.redirect) {
-                // do redirect
-                window.location = page.redirect
-            }
+        this.router = new UniversalRouter(routes, {
+            baseUrl: basePath.replace(/\/$/, ""),
         });
+        this.setRouteFromPathname(location.pathname);
 
         // listen to the vpu-auth-profile event to switch to the person profile
         window.addEventListener("vpu-auth-profile", () => {
-            window.history.pushState({}, "", `/${this.lang}/vpu-person-profile`);
-            that.switchComponent('vpu-person-profile');
+            this.setRoute({component: 'vpu-person-profile'});
         });
+
+        window.addEventListener('popstate', (event) => {
+            this.setRouteFromPathname(location.pathname);
+        });
+    }
+
+    setRoute(page) {
+        const pathname = this.getRoutePathname(page);
+        this.setRouteFromPathname(pathname);
+    }
+
+    setRouteFromPathname(pathname) {
+        this.router.resolve({pathname: pathname}).then(page => {
+            this.switchComponent(page.component);
+            this.updateLangIfChanged(page.lang);
+            let newPathname = this.getRoutePathname(page);
+            if (location.pathname !== newPathname) {
+                window.history.pushState({}, '', newPathname);
+            }
+        });
+    }
+
+    getRoutePathname(page) {
+        const getUrl = generateUrls(this.router);
+        if (!page)
+            page = {}
+        if (!page.lang)
+            page.lang = this.lang;
+        if (!page.component)
+            page.component = this.activeView;
+        return getUrl('component', page);
     }
 
     static get properties() {
@@ -114,9 +125,7 @@ class LibraryApp extends VPULitElement {
                 link.addEventListener("click", (e) => {
                     e.preventDefault();
                     const location = link.getAttribute('href');
-                    console.log("location: " + location);
-                    this.router.resolve(location);
-                    window.history.pushState({}, "", location);
+                    this.setRouteFromPathname(location);
                 });
             });
 
@@ -165,10 +174,7 @@ class LibraryApp extends VPULitElement {
 
     onLanguageChanged(e) {
         this.lang = e.detail.lang;
-
-        // update url in browser window if language was changed
-        const url = location.href.replace(/^http.+\/(\w{2})(\/.+)$/ig, `/${this.lang}$2`);
-        window.history.pushState({},"", url);
+        this.setRoute({lang: this.lang});
     }
 
     switchComponent(componentTag) {
@@ -244,10 +250,11 @@ class LibraryApp extends VPULitElement {
 
                 <section class="section">
                     <div class="container menu">
-                        <a href="/${this.lang}/vpu-library-shelving" data-nav class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
-                        <a href="/${this.lang}/vpu-library-create-loan" data-nav class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a> |
-                        <a href="/${this.lang}/vpu-library-return-book" data-nav class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a> |
-                        <a href="/${this.lang}/vpu-library-renew-loan" data-nav class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
+                    
+                        <a href="${this.getRoutePathname({component: 'vpu-library-shelving'})}" data-nav class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
+                        <a href="${this.getRoutePathname({component: 'vpu-library-create-loan'})}" data-nav class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a> |
+                        <a href="${this.getRoutePathname({component: 'vpu-library-return-book'})}" data-nav class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a> |
+                        <a href="${this.getRoutePathname({component: 'vpu-library-renew-loan'})}" data-nav class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
                     </div>
                 </section>
 
