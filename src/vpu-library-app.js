@@ -108,6 +108,9 @@ class LibraryApp extends VPULitElement {
                 window.history.replaceState({}, '', newPathname);
             }
             this.updateState(page);
+        }).catch((e) => {
+            // In case we can't resolve the location, just leave things as is.
+            // This happens when a user enters a wrong URL or when testing with karma.
         });
     }
 
@@ -123,6 +126,8 @@ class LibraryApp extends VPULitElement {
                 return;
             window.history.pushState({}, '', newPathname);
             this.updateState(page);
+        }).catch((err) => {
+            throw new Error(`Route not found: ${pathname}`);
         });
     }
 
