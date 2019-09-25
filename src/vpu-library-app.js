@@ -9,9 +9,9 @@ import basePath from 'consts:basePath';
 import {classMap} from 'lit-html/directives/class-map.js';
 import * as errorreport from 'vpu-common/errorreport';
 import UniversalRouter from 'universal-router';
-import generateUrls from 'universal-router/generateUrls'
+import generateUrls from 'universal-router/generateUrls';
 
-errorreport.init({release: 'vpi-library-app@' + buildinfo.info})
+errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
 
 class LibraryApp extends VPULitElement {
     constructor() {
@@ -38,7 +38,7 @@ class LibraryApp extends VPULitElement {
                     return {
                         lang: this.lang,
                         component: this.defaultView,
-                    }
+                    };
                 }
             },
             {
@@ -50,7 +50,7 @@ class LibraryApp extends VPULitElement {
                             return {
                                 lang: params.lang,
                                 component: this.defaultView,
-                            }
+                            };
                         }
                     },
                     {
@@ -135,7 +135,7 @@ class LibraryApp extends VPULitElement {
      */
     getRoutePathname(page) {
         if (!page)
-            page = {}
+            page = {};
         if (!page.lang)
             page.lang = this.lang;
         if (!page.component)
@@ -220,7 +220,7 @@ class LibraryApp extends VPULitElement {
     }
 
     onLanguageChanged(e) {
-        const newLang = e.detail.lang
+        const newLang = e.detail.lang;
         const changed = (this.lang !== newLang);
         this.lang = newLang;
         if (changed)

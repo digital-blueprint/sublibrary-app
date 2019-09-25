@@ -82,7 +82,7 @@ class LibraryShelving extends VPULitElementJQuery {
                     },
                 })
                 .then(response => response.json())
-                .then((result) => {new Suggestions(locationIdentifierInput, result['hydra:member'])});
+                .then((result) => {new Suggestions(locationIdentifierInput, result['hydra:member']);});
             }).on('unselect', function (e) {
                 console.log("unselect");
                 $locationIdentifierBlock.hide();
