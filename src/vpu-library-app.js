@@ -69,6 +69,7 @@ class LibraryApp extends VPULitElement {
             },
         ];
 
+        // https://github.com/kriasoft/universal-router
         this.router = new UniversalRouter(routes, {
             baseUrl: basePath.replace(/\/$/, ""),
         });
