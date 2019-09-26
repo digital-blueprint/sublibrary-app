@@ -122,6 +122,8 @@ class LibraryApp extends VPULitElement {
 
     /**
      * Switches language if another language is requested
+     *
+     * @param {string} lang
      */
     updateLangIfChanged(lang) {
         if (this.lang !== lang) {

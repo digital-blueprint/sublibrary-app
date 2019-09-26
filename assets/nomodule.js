@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  function findAllCustomElements() {
+function findAllCustomElements() {
     var allCustomElements = [];
     var nodes = document.querySelectorAll('*');
     for (var i = 0; i < nodes.length; ++i) {
