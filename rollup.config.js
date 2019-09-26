@@ -12,6 +12,7 @@ import urlPlugin from "rollup-plugin-url";
 import consts from 'rollup-plugin-consts';
 import del from 'rollup-plugin-delete';
 import ejsAssetPlugin from './ejs-asset-plugin.js';
+import chai from 'chai';
 
 const pkg = require('./package.json');
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
@@ -55,6 +56,10 @@ export default {
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
             return;
         }
+        // ignore chai warnings
+        if (warning.code === 'CIRCULAR_DEPENDENCY') {
+          return;
+        }
         warn(warning);
     },
     watch: {
@@ -82,7 +87,10 @@ export default {
           }
         }),
         commonjs({
-            include: 'node_modules/**'
+            include: 'node_modules/**',
+            namedExports: {
+              'chai': Object.keys(chai),
+            }
         }),
         json(),
         urlPlugin({

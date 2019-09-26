@@ -1,3 +1,5 @@
+import {expect} from 'chai';
+
 import '../src/vpu-library-shelving';
 import '../src/vpu-library-app.js';
 

@@ -5,7 +5,7 @@ process.env.FIREFOX_BIN = require('puppeteer-firefox').executablePath();
 module.exports = function(config) {
   config.set({
     basePath: 'dist',
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha'],
     files: [
       {pattern: './*.js', included: true, watched: true, served: true, type: 'module'},
       {pattern: './**/*', included: false, watched: true, served: true},
