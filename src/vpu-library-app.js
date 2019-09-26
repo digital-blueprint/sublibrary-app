@@ -128,7 +128,7 @@ class LibraryApp extends VPULitElement {
     updateLangIfChanged(lang) {
         if (this.lang !== lang) {
             this.lang = lang;
-            this.router.updat();
+            this.router.update();
 
             const event = new CustomEvent("vpu-language-changed", {
                 bubbles: true,
@@ -174,7 +174,7 @@ class LibraryApp extends VPULitElement {
         const component = this._(componentTag);
         this.updatePageTitle();
         if (changed)
-            this.router.updat();
+            this.router.update();
 
         if (!component)
             return;

@@ -78,7 +78,7 @@ export class Router {
             window.history.pushState({}, '', pathname);
             this.setState(page);
         }).catch((err) => {
-            throw new Error(`Route not found: ${pathname}`);
+            throw new Error(`Route not found: ${pathname}: ${err}`);
         });
     }
 
