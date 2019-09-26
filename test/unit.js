@@ -1,40 +1,40 @@
-import {expect} from 'chai';
+import {assert} from 'chai';
 
 import '../src/vpu-library-shelving';
 import '../src/vpu-library-app.js';
 
-describe('vpu-library-shelving basics', () => {
+suite('vpu-library-shelving basics', () => {
   let node;
 
-  beforeEach(async () => {
+  suiteSetup(async () => {
     node = document.createElement('vpu-library-shelving');
     document.body.appendChild(node);
     await node.updateComplete;
   });
 
-  afterEach(() => {
+  suiteTeardown(() => {
     node.remove();
   });
 
-  it('should render', () => {
-      expect(node).to.have.property('shadowRoot');
+  test('should render', () => {
+    assert(node.shadowRoot !== undefined);
   });
 });
 
-describe('vpu-library-app basics', () => {
+suite('vpu-library-app basics', () => {
   let node;
 
-  beforeEach(async () => {
+  suiteSetup(async () => {
     node = document.createElement('vpu-library-app');
     document.body.appendChild(node);
     await node.updateComplete;
   });
 
-  afterEach(() => {
+  suiteTeardown(() => {
     node.remove();
   });
 
-  it('should render', () => {
-      expect(node).to.have.property('shadowRoot');
+  test('should render', () => {
+    assert(node.shadowRoot !== undefined);
   });
 });
