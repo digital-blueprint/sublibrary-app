@@ -8,8 +8,7 @@ import buildinfo from 'consts:buildinfo';
 import basePath from 'consts:basePath';
 import {classMap} from 'lit-html/directives/class-map.js';
 import * as errorreport from 'vpu-common/errorreport';
-import UniversalRouter from 'universal-router';
-import generateUrls from 'universal-router/generateUrls';
+import {Router} from './router.js';
 
 errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
 
@@ -54,7 +53,7 @@ class LibraryApp extends VPULitElement {
                         }
                     },
                     {
-                        name: 'component',
+                        name: 'mainRoute',
                         path: '/:component',
                         action: (context, params) => {
                             // remove the additional parameters added by Keycloak
@@ -69,88 +68,23 @@ class LibraryApp extends VPULitElement {
             },
         ];
 
-        // https://github.com/kriasoft/universal-router
-        this.router = new UniversalRouter(routes, {
+        this.router = new Router(routes, {
+            routeName: 'mainRoute',
+            getState: () => {
+                return {
+                    component: this.activeView,
+                    lang: this.lang,
+                };
+            },
+            setState: (state) => {
+                this.updateLangIfChanged(state.lang);
+                this.switchComponent(state.component);
+            }
+        },{
             baseUrl: basePath.replace(/\/$/, ""),
         });
 
-        this.setStateFromCurrentLocation();
-
-        window.addEventListener('popstate', (event) => {
-            this.setStateFromCurrentLocation();
-        });
-    }
-
-    /**
-     * Update the router after some internal state change.
-     */
-    updateRouter() {
-        // Queue updates so we can call this multiple times when changing state
-        // without it resulting in multiple location changes
-        setTimeout(() => {
-            const newPathname = this.getRoutePathname();
-            const oldPathname = location.pathname;
-            if (newPathname === oldPathname)
-                return;
-            window.history.pushState({}, '', newPathname);
-        });
-    }
-
-    /**
-     * In case something else has changed the location, update the app state accordingly.
-     */
-    setStateFromCurrentLocation() {
-        const oldPathName = location.pathname;
-        this.router.resolve({pathname: oldPathName}).then(page => {
-            const newPathname = this.getRoutePathname(page);
-            // In case of a router redirect, set the new location
-            if (newPathname != oldPathName) {
-                window.history.replaceState({}, '', newPathname);
-            }
-            this.updateState(page);
-        }).catch((e) => {
-            // In case we can't resolve the location, just leave things as is.
-            // This happens when a user enters a wrong URL or when testing with karma.
-        });
-    }
-
-    /**
-     * Given a new routing path set the location and the app state.
-     *
-     * @param {string} pathname
-     */
-    updateRouterFromPathname(pathname) {
-        this.router.resolve({pathname: pathname}).then(page => {
-            let newPathname = this.getRoutePathname(page);
-            if (location.pathname === newPathname)
-                return;
-            window.history.pushState({}, '', newPathname);
-            this.updateState(page);
-        }).catch((err) => {
-            throw new Error(`Route not found: ${pathname}`);
-        });
-    }
-
-    /**
-     * Pass some new router state to get a new router path that can
-     * be passed to updateRouterFromPathname() later on. If nothing is
-     * passed the current state is used.
-     *
-     * @param {object} [page]
-     */
-    getRoutePathname(page) {
-        if (!page)
-            page = {};
-        if (!page.lang)
-            page.lang = this.lang;
-        if (!page.component)
-            page.component = this.activeView;
-        return generateUrls(this.router)('component', page);
-    }
-
-    updateState(page) {
-        this.updateLangIfChanged(page.lang);
-        this.switchComponent(page.component);
+        this.router.setStateFromCurrentLocation();
     }
 
     static get properties() {
@@ -176,7 +110,7 @@ class LibraryApp extends VPULitElement {
                 link.addEventListener("click", (e) => {
                     e.preventDefault();
                     const location = link.getAttribute('href');
-                    this.updateRouterFromPathname(location);
+                    this.router.updateRouterFromPathname(location);
                 });
             });
 
@@ -192,7 +126,7 @@ class LibraryApp extends VPULitElement {
     updateLangIfChanged(lang) {
         if (this.lang !== lang) {
             this.lang = lang;
-            this.updateRouter();
+            this.router.updateRouter();
 
             const event = new CustomEvent("vpu-language-changed", {
                 bubbles: true,
@@ -229,7 +163,7 @@ class LibraryApp extends VPULitElement {
         const changed = (this.lang !== newLang);
         this.lang = newLang;
         if (changed)
-            this.updateRouter();
+            this.router.updateRouter();
     }
 
     switchComponent(componentTag) {
@@ -238,7 +172,7 @@ class LibraryApp extends VPULitElement {
         const component = this._(componentTag);
         this.updatePageTitle();
         if (changed)
-            this.updateRouter();
+            this.router.updateRouter();
 
         if (!component)
             return;
@@ -312,10 +246,10 @@ class LibraryApp extends VPULitElement {
                 <section class="section">
                     <div class="container menu">
                     
-                        <a href="${this.getRoutePathname({component: 'vpu-library-shelving'})}" data-nav class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
-                        <a href="${this.getRoutePathname({component: 'vpu-library-create-loan'})}" data-nav class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a> |
-                        <a href="${this.getRoutePathname({component: 'vpu-library-return-book'})}" data-nav class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a> |
-                        <a href="${this.getRoutePathname({component: 'vpu-library-renew-loan'})}" data-nav class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
+                        <a href="${this.router.getRoutePathname({component: 'vpu-library-shelving'})}" data-nav class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
+                        <a href="${this.router.getRoutePathname({component: 'vpu-library-create-loan'})}" data-nav class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a> |
+                        <a href="${this.router.getRoutePathname({component: 'vpu-library-return-book'})}" data-nav class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a> |
+                        <a href="${this.router.getRoutePathname({component: 'vpu-library-renew-loan'})}" data-nav class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
                     </div>
                 </section>
 
