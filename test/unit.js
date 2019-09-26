@@ -60,8 +60,8 @@ suite('router', () => {
     });
 
     router.setStateFromCurrentLocation();
-    router.updateRouter();
-    router.updateRouterFromPathname("/");
-    assert.equal(router.getRoutePathname(), '/');
+    router.update();
+    router.updateFromPathname("/");
+    assert.equal(router.getPathname(), '/');
   });
 });

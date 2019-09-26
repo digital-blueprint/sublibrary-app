@@ -39,7 +39,7 @@ export class Router {
     setStateFromCurrentLocation() {
         const oldPathName = location.pathname;
         this.router.resolve({pathname: oldPathName}).then(page => {
-            const newPathname = this.getRoutePathname(page);
+            const newPathname = this.getPathname(page);
             // In case of a router redirect, set the new location
             if (newPathname != oldPathName) {
                 window.history.replaceState({}, '', newPathname);
@@ -54,11 +54,11 @@ export class Router {
     /**
      * Update the router after some internal state change.
      */
-    updateRouter() {
+    update() {
         // Queue updates so we can call this multiple times when changing state
         // without it resulting in multiple location changes
         setTimeout(() => {
-            const newPathname = this.getRoutePathname();
+            const newPathname = this.getPathname();
             const oldPathname = location.pathname;
             if (newPathname === oldPathname)
                 return;
@@ -71,7 +71,7 @@ export class Router {
      *
      * @param {string} pathname
      */
-    updateRouterFromPathname(pathname) {
+    updateFromPathname(pathname) {
         this.router.resolve({pathname: pathname}).then(page => {
             if (location.pathname === pathname)
                 return;
@@ -84,13 +84,13 @@ export class Router {
 
     /**
      * Pass some new router state to get a new router path that can
-     * be passed to updateRouterFromPathname() later on. If nothing is
+     * be passed to updateFromPathname() later on. If nothing is
      * passed the current state is used.
      *
      * @param {object} [partialState] The optional partial new state
      * @returns {string} The new path
      */
-    getRoutePathname(partialState) {
+    getPathname(partialState) {
         const currentState = this.getState();
         if (partialState === undefined)
             partialState = {};

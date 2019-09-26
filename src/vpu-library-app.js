@@ -110,7 +110,7 @@ class LibraryApp extends VPULitElement {
                 link.addEventListener("click", (e) => {
                     e.preventDefault();
                     const location = link.getAttribute('href');
-                    this.router.updateRouterFromPathname(location);
+                    this.router.updateFromPathname(location);
                 });
             });
 
@@ -128,7 +128,7 @@ class LibraryApp extends VPULitElement {
     updateLangIfChanged(lang) {
         if (this.lang !== lang) {
             this.lang = lang;
-            this.router.updateRouter();
+            this.router.updat();
 
             const event = new CustomEvent("vpu-language-changed", {
                 bubbles: true,
@@ -165,7 +165,7 @@ class LibraryApp extends VPULitElement {
         const changed = (this.lang !== newLang);
         this.lang = newLang;
         if (changed)
-            this.router.updateRouter();
+            this.router.update();
     }
 
     switchComponent(componentTag) {
@@ -174,7 +174,7 @@ class LibraryApp extends VPULitElement {
         const component = this._(componentTag);
         this.updatePageTitle();
         if (changed)
-            this.router.updateRouter();
+            this.router.updat();
 
         if (!component)
             return;
@@ -248,10 +248,10 @@ class LibraryApp extends VPULitElement {
                 <section class="section">
                     <div class="container menu">
                     
-                        <a href="${this.router.getRoutePathname({component: 'vpu-library-shelving'})}" data-nav class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
-                        <a href="${this.router.getRoutePathname({component: 'vpu-library-create-loan'})}" data-nav class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a> |
-                        <a href="${this.router.getRoutePathname({component: 'vpu-library-return-book'})}" data-nav class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a> |
-                        <a href="${this.router.getRoutePathname({component: 'vpu-library-renew-loan'})}" data-nav class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
+                        <a href="${this.router.getPathname({component: 'vpu-library-shelving'})}" data-nav class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a> |
+                        <a href="${this.router.getPathname({component: 'vpu-library-create-loan'})}" data-nav class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a> |
+                        <a href="${this.router.getPathname({component: 'vpu-library-return-book'})}" data-nav class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a> |
+                        <a href="${this.router.getPathname({component: 'vpu-library-renew-loan'})}" data-nav class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
                     </div>
                 </section>
 
