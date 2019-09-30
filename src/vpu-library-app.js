@@ -222,7 +222,7 @@ class LibraryApp extends VPULitElement {
             }
 
             aside { grid-area: sidebar; margin: 30px 15px; }
-            main { grid-area: main; margin:  30px 15px; }
+            main { grid-area: main; margin: 30px 15px; }
             footer { grid-area: footer; margin: 30px; }
 
             header .hd1-left {
