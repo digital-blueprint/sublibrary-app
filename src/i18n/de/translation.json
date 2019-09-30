@@ -1,4 +1,9 @@
 {
+  "logo": {
+    "word1": "Wissen",
+    "word2": "Technik",
+    "word3": "Leidenschaft"
+  },
   "person-select": {
     "headline": "Person"
   },
