@@ -292,6 +292,15 @@ class LibraryApp extends VPULitElement {
                 display: inline-block;
             }
 
+            #int-header-logo a:hover path, #int-header-logo a:focus path {
+                fill:#000 !important;
+                transition:none;
+            }
+
+            #int-header-logo * {
+                transition:fill 0.15s, stroke 0.15s;
+            }
+
             header a {
                 color: black;
                 display: inline;
