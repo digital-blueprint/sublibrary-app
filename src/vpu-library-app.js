@@ -292,6 +292,10 @@ class LibraryApp extends VPULitElement {
                 display: inline-block;
             }
 
+            #int-header-logo-img {
+                overflow: visible;
+            }
+
             #int-header-logo a:hover path, #int-header-logo a:focus path {
                 fill:#000 !important;
                 transition:none;
