@@ -16,7 +16,7 @@ class LibraryApp extends VPULitElement {
     constructor() {
         super();
         this.lang = 'de';
-        this.defaultView = 'vpu-library-shelving';
+        this.defaultView = 'shelving';
         this.activeView = this.defaultView;
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.user = '';
@@ -25,7 +25,7 @@ class LibraryApp extends VPULitElement {
 
         // listen to the vpu-auth-profile event to switch to the person profile
         window.addEventListener("vpu-auth-profile", () => {
-            this.switchComponent('vpu-person-profile');
+            this.switchComponent('person-profile');
         });
     }
 
@@ -36,7 +36,7 @@ class LibraryApp extends VPULitElement {
                 action: (context) => {
                     return {
                         lang: this.lang,
-                        component: this.defaultView,
+                        component: 'shelving',
                     };
                 }
             },
@@ -48,7 +48,7 @@ class LibraryApp extends VPULitElement {
                         action: (context, params) => {
                             return {
                                 lang: params.lang,
-                                component: this.defaultView,
+                                component: 'shelving',
                             };
                         }
                     },
@@ -171,7 +171,15 @@ class LibraryApp extends VPULitElement {
     switchComponent(componentTag) {
         const changed = (componentTag !== this.activeView);
         this.activeView = componentTag;
-        const component = this._(componentTag);
+
+        const componentToWC = {
+            'create-loan': 'vpu-library-create-loan',
+            'renew-loan': 'vpu-library-renew-loan',
+            'return-book': 'vpu-library-return-book',
+            'shelving': 'vpu-library-shelving',
+        };
+
+        const component = this._(componentToWC[componentTag]);
         this.updatePageTitle();
         if (changed)
             this.router.update();
@@ -189,7 +197,7 @@ class LibraryApp extends VPULitElement {
     }
 
     updatePageTitle() {
-        document.title = `${i18n.t('page-title')} - ${i18n.t(this.activeView + '.page-title')}`;
+        document.title = `${i18n.t('page-title')} - ${i18n.t(this.activeView + '.title')}`;
     }
 
     onStyleLoaded () {
@@ -354,19 +362,19 @@ class LibraryApp extends VPULitElement {
 
                 <aside>
                     <div class="container menu">
-                        <a href="${this.router.getPathname({component: 'vpu-library-shelving'})}" data-nav class="${getSelectClasses('vpu-library-shelving')}">${i18n.t('menu.shelving')}</a>
-                        <a href="${this.router.getPathname({component: 'vpu-library-create-loan'})}" data-nav class="${getSelectClasses('vpu-library-create-loan')}">${i18n.t('menu.loan')}</a>
-                        <a href="${this.router.getPathname({component: 'vpu-library-return-book'})}" data-nav class="${getSelectClasses('vpu-library-return-book')}">${i18n.t('menu.return')}</a>
-                        <a href="${this.router.getPathname({component: 'vpu-library-renew-loan'})}" data-nav class="${getSelectClasses('vpu-library-renew-loan')}">${i18n.t('menu.renew')}</a>
+                        <a href="${this.router.getPathname({component: 'shelving'})}" data-nav class="${getSelectClasses('shelving')}">${i18n.t('menu.shelving')}</a>
+                        <a href="${this.router.getPathname({component: 'create-loan'})}" data-nav class="${getSelectClasses('create-loan')}">${i18n.t('menu.loan')}</a>
+                        <a href="${this.router.getPathname({component: 'return-book'})}" data-nav class="${getSelectClasses('return-book')}">${i18n.t('menu.return')}</a>
+                        <a href="${this.router.getPathname({component: 'renew-loan'})}" data-nav class="${getSelectClasses('renew-loan')}">${i18n.t('menu.renew')}</a>
                     </div>
                 </aside>
 
                 <main>
-                    <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-shelving')}" book-offer-id=""></vpu-library-shelving>
-                    <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-create-loan')}" person-id="" book-offer-id=""></vpu-library-create-loan>
-                    <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-return-book')}" book-offer-id=""></vpu-library-return-book>
-                    <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-library-renew-loan')}" person-id=""></vpu-library-renew-loan>
-                    <vpu-person-profile entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('vpu-person-profile')}" value="${this.user}"></vpu-person-profile>
+                    <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('shelving')}" book-offer-id=""></vpu-library-shelving>
+                    <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('create-loan')}" person-id="" book-offer-id=""></vpu-library-create-loan>
+                    <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('return-book')}" book-offer-id=""></vpu-library-return-book>
+                    <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('renew-loan')}" person-id=""></vpu-library-renew-loan>
+                    <vpu-person-profile entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('person-profile')}" value="${this.user}"></vpu-person-profile>
                 </main>
 
                 <footer>
