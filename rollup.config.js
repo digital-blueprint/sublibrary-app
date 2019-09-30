@@ -127,6 +127,12 @@ export default {
                 {src: 'node_modules/datatables.net-responsive-dt/css', dest: 'dist/local/vpu-data-table-view'},
             ],
         }),
+        copy({
+            targets: [
+                {src: 'assets/icon_key_hover_tugprod.png', dest:'dist/local/vpu-auth'},
+                {src: 'assets/icon_key_normal_tugprod.png', dest:'dist/local/vpu-auth'},
+            ],
+        }),
         (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: 'dist', host: '127.0.0.1', port: 8001, historyApiFallback: '/' + pkg.name + '.html'}) : false
     ]
 };
