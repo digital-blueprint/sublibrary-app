@@ -1,0 +1,17 @@
+{
+  "element": "vpu-library-return-book",
+  "module_src": "vpu-library-return-book.js",
+  "name": {
+    "de": "Bilbliothek Rückgabe",
+    "en": "Library book return"
+  },
+  "short_name": {
+    "de": "Rückgabe",
+    "en": "Return book"
+  },
+  "description": {
+    "de": "Erlaubt die Rückgabe von Büchern",
+    "en": "Allows to return books"
+  }
+}
+

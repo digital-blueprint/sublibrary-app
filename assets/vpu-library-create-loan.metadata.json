@@ -1,0 +1,17 @@
+{
+  "element": "vpu-library-create-loan",
+  "module_src": "vpu-library-create-loan.js",
+  "name": {
+    "de": "Bilbliothek Buchentlehnung",
+    "en": "Library book loan"
+  },
+  "short_name": {
+    "de": "Buchentlehnung",
+    "en": "Book loan"
+  },
+  "description": {
+    "de": "Erlaubt das Aufstellen von Büchern in der Bibliothek",
+    "en": "Allows the shelving of books in the library"
+  }
+}
+

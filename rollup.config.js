@@ -122,6 +122,7 @@ export default {
                 {src: 'node_modules/vpu-common/vpu-spinner.js', dest: 'dist/local/' + pkg.name, rename: 'spinner.js'},
                 {src: 'assets/icon-*.png', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/manifest.json', dest: 'dist', rename: pkg.name + '.manifest.json'},
+                {src: 'assets/*.metadata.json', dest: 'dist'},
                 {src: 'assets/nomodule.js', dest: 'dist/local/' + pkg.name},
                 {src: 'node_modules/material-design-icons-svg/paths/*.json', dest: 'dist/local/vpu-common/icons'},
             ],

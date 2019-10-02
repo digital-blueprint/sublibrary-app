@@ -1,0 +1,17 @@
+{
+  "element": "vpu-library-renew-loan",
+  "module_src": "vpu-library-renew-loan.js",
+  "name": {
+    "de": "Bilbliothek Buchverlängerung",
+    "en": "Library book loan renewal"
+  },
+  "short_name": {
+    "de": "Verlängerung",
+    "en": "Renew book"
+  },
+  "description": {
+    "de": "Erlaubt das Verlängern von Bcuhentlehnungen",
+    "en": "Allows to renew book loans"
+  }
+}
+

@@ -20,13 +20,70 @@ class LibraryApp extends VPULitElement {
         this.activeView = this.defaultView;
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.user = '';
+        this.metadata = [];
 
+        // route-name: path of metadata json
+        this.metadataPaths = {
+            "shelving": basePath +'vpu-library-shelving.metadata.json',
+            "create-loan": basePath +'vpu-library-create-loan.metadata.json',
+            "return-book": basePath +'vpu-library-return-book.metadata.json',
+            "renew-loan": basePath +'vpu-library-renew-loan.metadata.json',
+        };
+
+        this.fetchMetadata();
         this.initRouter();
 
         // listen to the vpu-auth-profile event to switch to the person profile
         window.addEventListener("vpu-auth-profile", () => {
             this.switchComponent('person-profile');
         });
+    }
+
+    /**
+     /**
+     * Fetches the metadata of the components we want to use in the menu, dynamically imports the js modules for them,
+     * then triggers a rebuilding of the menu and resolves the current route
+     *
+     * @returns {Promise<void>}
+     */
+    async fetchMetadata() {
+        const that = this;
+        let metadata = [];
+
+        // fetch the metadata of the components we want to use in the menu
+        for (let routingName in this.metadataPaths) {
+            const url = this.metadataPaths[routingName];
+
+            // let's wait so the menu items are in the correct order
+            await fetch(url, {
+                headers: {'Content-Type': 'application/json'}
+            })
+                .then(result => {
+                    if (!result.ok) throw result;
+                    return result.json();
+                })
+                .then((data) => {
+                    if (data["element"] !== undefined) {
+                        metadata[routingName] = data;
+                    }
+                }).catch(error => {
+                    console.error(error);
+                });
+        }
+
+        // dynamically import the js modules of the components
+        for (let routingName in metadata) {
+            const data = metadata[routingName];
+            await import(basePath + data.module_src);
+        }
+
+        // this also triggers a rebuilding of the menu
+        that.metadata = metadata;
+
+        // resolve the current route
+        this.router.setStateFromCurrentLocation();
+
+        return Promise.resolve();
     }
 
     initRouter() {
@@ -93,6 +150,7 @@ class LibraryApp extends VPULitElement {
             activeView: { type: String, attribute: false},
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             user: { type: String, attribute: false },
+            metadata: { type: Array, attribute: false },
         };
     }
 
@@ -103,15 +161,6 @@ class LibraryApp extends VPULitElement {
         this.updateComplete.then(()=>{
             this.shadowRoot.querySelectorAll(".component").forEach((element) => {
                 element.addEventListener("change", LibraryApp.updateSessionStorage);
-            });
-
-            // jump to the other pages without reloading the browser window
-            this.shadowRoot.querySelectorAll("a[data-nav]").forEach((link) => {
-                link.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    const location = link.getAttribute('href');
-                    this.router.updateFromPathname(location);
-                });
             });
 
             window.addEventListener("vpu-auth-person-init", () => {
@@ -160,6 +209,13 @@ class LibraryApp extends VPULitElement {
         super.update(changedProperties);
     }
 
+    onMenuItemClick(e) {
+        e.preventDefault();
+        const link = e.path[0];
+        const location = link.getAttribute('href');
+        this.router.updateFromPathname(location);
+    }
+
     onLanguageChanged(e) {
         const newLang = e.detail.lang;
         const changed = (this.lang !== newLang);
@@ -171,15 +227,7 @@ class LibraryApp extends VPULitElement {
     switchComponent(componentTag) {
         const changed = (componentTag !== this.activeView);
         this.activeView = componentTag;
-
-        const componentToWC = {
-            'create-loan': 'vpu-library-create-loan',
-            'renew-loan': 'vpu-library-renew-loan',
-            'return-book': 'vpu-library-return-book',
-            'shelving': 'vpu-library-shelving',
-        };
-
-        const component = this._(componentToWC[componentTag]);
+        const component = this._(this.metadata[componentTag].element);
         this.updatePageTitle();
         if (changed)
             this.router.update();
@@ -212,9 +260,9 @@ class LibraryApp extends VPULitElement {
 
             #cover {
                 display: grid;
-                grid-template-columns: 250px auto;
-                grid-template-rows: 120px auto 60px;
-                grid-template-areas: "header header" "sidebar main" "footer footer";
+                grid-template-columns: 180px auto;
+                grid-template-rows: 120px auto auto 40px;
+                grid-template-areas: "header header" "headline headline" "sidebar main" "footer footer";
                 opacity: 0;
             }
 
@@ -230,8 +278,13 @@ class LibraryApp extends VPULitElement {
             }
 
             aside { grid-area: sidebar; margin: 30px 15px; }
+            #headline { grid-area: headline; margin: 15px; text-align: center; }
             main { grid-area: main; margin: 30px 15px; }
             footer { grid-area: footer; margin: 30px; }
+
+            #headline .subtitle {
+                display: none;
+            }
 
             header .hd1-left {
                 display: flex;
@@ -324,6 +377,27 @@ class LibraryApp extends VPULitElement {
             .menu a.selected { color: white; background-color: black; }
 
             a { transition: background-color 0.15s ease 0s, color 0.15s ease 0s; }
+
+            @media (max-width: 680px) {
+                #cover {
+                    grid-template-columns: auto;
+                    grid-template-rows: 40px auto auto auto 40px;
+                    grid-template-areas: "header" "headline" "sidebar" "main" "footer";
+                }
+
+                header {
+                    grid-template-rows: 40px;
+                    grid-template-areas: "hd1-left hd1-right";
+                }
+
+                header .hd2-left, header .hd2-right {
+                    display: none;
+                }
+
+                #headline .subtitle {
+                    display: block;
+                }
+            }
         `;
     }
 
@@ -373,12 +447,14 @@ class LibraryApp extends VPULitElement {
                     </div>
                 </header>
 
+                <div id="headline">
+                    <h1 class="title">${i18n.t('headline.title')}</h1>
+                    <h2 class="subtitle">${i18n.t('create-loan.subtitle')}</h2>
+                </div>
+
                 <aside>
                     <div class="container menu">
-                        <a href="${this.router.getPathname({component: 'shelving'})}" data-nav class="${getSelectClasses('shelving')}">${i18n.t('menu.shelving')}</a>
-                        <a href="${this.router.getPathname({component: 'create-loan'})}" data-nav class="${getSelectClasses('create-loan')}">${i18n.t('menu.loan')}</a>
-                        <a href="${this.router.getPathname({component: 'return-book'})}" data-nav class="${getSelectClasses('return-book')}">${i18n.t('menu.return')}</a>
-                        <a href="${this.router.getPathname({component: 'renew-loan'})}" data-nav class="${getSelectClasses('renew-loan')}">${i18n.t('menu.renew')}</a>
+                        ${Object.keys(this.metadata).map((routingName) => html`<a @click="${(e) => this.onMenuItemClick(e)}" href="${this.router.getPathname({component: routingName})}" data-nav class="${getSelectClasses(routingName)}">${this.metadata[routingName].short_name[this.lang]}</a>`)}
                     </div>
                 </aside>
 

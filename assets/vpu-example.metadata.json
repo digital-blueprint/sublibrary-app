@@ -10,7 +10,7 @@
     "en": "Book loan"
   },
   "description": {
-    "de": "Erlaubt das Aufstellen von Büchern in der Bibliothek",
+    "de": "Erlaubt das Aufstellen von BÃ¼chern in der Bibliothek",
     "en": "Allows the shelving of books in the library"
   },
   "icons": [
@@ -26,4 +26,3 @@
     }
   ]
 }
-
