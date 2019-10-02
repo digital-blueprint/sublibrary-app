@@ -20,6 +20,7 @@ class LibraryApp extends VPULitElement {
         this.activeView = this.defaultView;
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.user = '';
+        this.subtitle = '';
         this.metadata = [];
 
         // route-name: path of metadata json
@@ -151,6 +152,7 @@ class LibraryApp extends VPULitElement {
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             user: { type: String, attribute: false },
             metadata: { type: Array, attribute: false },
+            subtitle: { type: String, attribute: false },
         };
     }
 
@@ -227,8 +229,10 @@ class LibraryApp extends VPULitElement {
     switchComponent(componentTag) {
         const changed = (componentTag !== this.activeView);
         this.activeView = componentTag;
-        const component = this._(this.metadata[componentTag].element);
+        const metadata = this.activeMetaData();
+        const component = this._(metadata.element);
         this.updatePageTitle();
+        this.subtitle = this.activeMetaDataText("short_name");
         if (changed)
             this.router.update();
 
@@ -244,8 +248,29 @@ class LibraryApp extends VPULitElement {
         }
     }
 
+    activeMetaData() {
+        return this.metaData(this.activeView);
+    }
+
+    metaData(routingName) {
+        return this.metadata[routingName];
+    }
+
+    // metaDataText(metadata, key) {
+    //     return metadata !== undefined && metadata[key] !== undefined ? metadata[key][this.lang] : '';
+    // }
+
+    metaDataText(routingName, key) {
+        const metadata = this.metaData(routingName);
+        return metadata !== undefined && metadata[key] !== undefined ? metadata[key][this.lang] : '';
+    }
+
+    activeMetaDataText(key) {
+        return this.metaDataText(this.activeView, key);
+    }
+
     updatePageTitle() {
-        document.title = `${i18n.t('page-title')} - ${i18n.t(this.activeView + '.title')}`;
+        document.title = `${i18n.t('page-title')} - ${this.activeMetaDataText("short_name")}`;
     }
 
     onStyleLoaded () {
@@ -257,6 +282,9 @@ class LibraryApp extends VPULitElement {
         // language=css
         return css`
             .hidden {display: none}
+
+            h1.title {margin-bottom: 0}
+            h2.subtitle {margin-top: 1.5em}
 
             #cover {
                 display: grid;
@@ -449,12 +477,12 @@ class LibraryApp extends VPULitElement {
 
                 <div id="headline">
                     <h1 class="title">${i18n.t('headline.title')}</h1>
-                    <h2 class="subtitle">${i18n.t('create-loan.subtitle')}</h2>
+                    <h2 class="subtitle">${this.subtitle}</h2>
                 </div>
 
                 <aside>
                     <div class="container menu">
-                        ${Object.keys(this.metadata).map((routingName) => html`<a @click="${(e) => this.onMenuItemClick(e)}" href="${this.router.getPathname({component: routingName})}" data-nav class="${getSelectClasses(routingName)}">${this.metadata[routingName].short_name[this.lang]}</a>`)}
+                        ${Object.keys(this.metadata).map((routingName) => html`<a @click="${(e) => this.onMenuItemClick(e)}" href="${this.router.getPathname({component: routingName})}" data-nav class="${getSelectClasses(routingName)}" title="${this.metaDataText(routingName, "description")}">${this.metaDataText(routingName, "short_name")}</a>`)}
                     </div>
                 </aside>
 
