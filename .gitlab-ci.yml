@@ -1,4 +1,4 @@
-image: debian:buster
+image: ubuntu:18.04
 
 before_script:
   - apt update
@@ -15,7 +15,7 @@ test:
   stage: test
   script:
     - apt update
-    - apt install -y npm chromium firefox-esr
+    - apt install -y npm chromium-browser firefox
     - npm install
     - npm run build-dev
     - npm run build

@@ -1,6 +1,5 @@
 // Trick to use the auto-downloaded puppeteer chrome binary
 process.env.CHROME_BIN = require('puppeteer').executablePath();
-process.env.FIREFOX_BIN = require('puppeteer-firefox').executablePath();
 
 module.exports = function(config) {
   config.set({
