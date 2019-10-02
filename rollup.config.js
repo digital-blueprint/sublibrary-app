@@ -42,10 +42,16 @@ function getBuildInfo() {
 }
 
 export default {
-    input: (build != 'test') ? ['src/index.js'] : 'test/**/*.js',
+    input: (build != 'test') ? [
+      'src/vpu-library.js',
+      'src/vpu-library-shelving.js',
+      'src/vpu-library-create-loan.js',
+      'src/vpu-library-return-book.js',
+      'src/vpu-library-renew-loan.js',
+    ] : 'test/**/*.js',
     output: {
       dir: 'dist',
-      entryFileNames: pkg.name + '.js',
+      entryFileNames: '[name].js',
       chunkFileNames: 'shared/[name].[hash].[format].js',
       format: 'esm',
       sourcemap: true

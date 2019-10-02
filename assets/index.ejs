@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- PWA manfiest file -->
     <link rel="manifest" href="<%= geturl('vpu-library.manifest.json') %>">
+
+    <!-- IE11 error handling -->
     <script nomodule src="<%= geturl('local/vpu-library/nomodule.js') %>"></script>
-    <script type="module" src="<%= geturl('local/vpu-library/spinner.js') %>"></script>
+
+    <!-- Loading spinner -->
+    <script src="<%= geturl('local/vpu-library/spinner.js') %>"></script>
+
+    <!-- App bundles-->
+    <script type="module" src="<%= geturl('vpu-library-shelving.js') %>"></script>
+    <script type="module" src="<%= geturl('vpu-library-create-loan.js') %>"></script>
+    <script type="module" src="<%= geturl('vpu-library-return-book.js') %>"></script>
+    <script type="module" src="<%= geturl('vpu-library-renew-loan.js') %>"></script>
     <script type="module" id="vpu-library-app-src" src="<%= geturl('vpu-library.js') %>"></script>
+
+    <!-- Font related CSS -->
     <link rel="stylesheet" type="text/css" href="<%= geturl('local/vpu-library/library.css') %>">
 </head>
 
