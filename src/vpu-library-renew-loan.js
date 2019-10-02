@@ -272,40 +272,30 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
 
-            <section class="section">
-                <div class="container">
-                    <h1 class="title">${i18n.t('renew-loan.title')}</h1>
-                    <h2 class="subtitle">${i18n.t('renew-loan.subtitle')}</h2>
-                </div>
-            </section>
-            <section class="section">
-                <div class="container">
-                    <form class="hidden">
-                        <div class="field">
-                            <label class="label">${i18n.t('person-select.headline')}</label>
-                            <div class="control">
-                                <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.personId}"></vpu-person-select>
-                            </div>
-                        </div>
-                        <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
-                        <div id="renew-loan-block" class="field">
-                            <label class="label">${i18n.t('renew-loan.loans')}</label>
-                            <div class="control">
-                                <vpu-data-table-view searching paging lang="${this.lang}" id="book-loans-1" columns-count="4" @click="${(e) => this.execRenew(e)}"></vpu-data-table-view>
-                            </div>
-                        </div>
-                        <div id="no-loans-block" style="display: none">
-                            ${i18n.t('renew-loan.no-loans')}
-                        </div>
-                    </form>
-                    <div class="notification is-warning" id="login-error-block">
-                        ${i18n.t('error-login-message')}
-                    </div>
-                    <div class="notification is-danger" id="permission-error-block">
-                        ${i18n.t('error-permission-message')}
+            <form class="hidden">
+                <div class="field">
+                    <label class="label">${i18n.t('person-select.headline')}</label>
+                    <div class="control">
+                        <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.personId}"></vpu-person-select>
                     </div>
                 </div>
-            </section>
+                <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
+                <div id="renew-loan-block" class="field">
+                    <label class="label">${i18n.t('renew-loan.loans')}</label>
+                    <div class="control">
+                        <vpu-data-table-view searching paging lang="${this.lang}" id="book-loans-1" columns-count="4" @click="${(e) => this.execRenew(e)}"></vpu-data-table-view>
+                    </div>
+                </div>
+                <div id="no-loans-block" style="display: none">
+                    ${i18n.t('renew-loan.no-loans')}
+                </div>
+            </form>
+            <div class="notification is-warning" id="login-error-block">
+                ${i18n.t('error-login-message')}
+            </div>
+            <div class="notification is-danger" id="permission-error-block">
+                ${i18n.t('error-permission-message')}
+            </div>
         `;
     }
 }

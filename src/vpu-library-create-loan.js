@@ -222,54 +222,44 @@ class LibraryCreateLoan extends VPULitElementJQuery {
         return html`
             <link rel="stylesheet" href="${bulmaCSS}">
 
-            <section class="section">
-                <div class="container">
-                    <h1 class="title">${i18n.t('create-loan.title')}</h1>
-                    <h2 class="subtitle">${i18n.t('create-loan.subtitle')}</h2>
-                </div>
-            </section>
-            <section class="section">
-                <div class="container">
-                    <form class="hidden">
-                        <div class="field">
-                            <label class="label">${i18n.t('person-select.headline')}</label>
-                            <div class="control">
-                                <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.personId}"></vpu-person-select>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
-                            <div class="control">
-                                 <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.bookOfferId}"></vpu-library-book-offer-select>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="notification is-info">
-                                Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>, <code>+F987654</code>
-                            </div>
-                        </div>
-                        <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
-                        <div id="create-loan-block">
-                            <div class="field">
-                                <label class="label">${i18n.t('renew-loan.end-date')}</label>
-                                <input type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loanDate)}">
-                                <input type="time" value="${commonUtils.dateToInputTimeString(loanDate)}">
-                            </div>
-                            <div class="field">
-                                <div class="control">
-                                     <vpu-button id="send" disabled="disabled" value="${i18n.t('create-loan.submit')}" type="is-link"></vpu-button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="notification is-warning" id="login-error-block">
-                        ${i18n.t('error-login-message')}
-                    </div>
-                    <div class="notification is-danger" id="permission-error-block">
-                        ${i18n.t('error-permission-message')}
+            <form class="hidden">
+                <div class="field">
+                    <label class="label">${i18n.t('person-select.headline')}</label>
+                    <div class="control">
+                        <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.personId}"></vpu-person-select>
                     </div>
                 </div>
-            </section>
+                <div class="field">
+                    <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
+                    <div class="control">
+                         <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.bookOfferId}"></vpu-library-book-offer-select>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="notification is-info">
+                        Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>, <code>+F987654</code>
+                    </div>
+                </div>
+                <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
+                <div id="create-loan-block">
+                    <div class="field">
+                        <label class="label">${i18n.t('renew-loan.end-date')}</label>
+                        <input type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loanDate)}">
+                        <input type="time" value="${commonUtils.dateToInputTimeString(loanDate)}">
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                             <vpu-button id="send" disabled="disabled" value="${i18n.t('create-loan.submit')}" type="is-link"></vpu-button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="notification is-warning" id="login-error-block">
+                ${i18n.t('error-login-message')}
+            </div>
+            <div class="notification is-danger" id="permission-error-block">
+                ${i18n.t('error-permission-message')}
+            </div>
         `;
     }
 }
