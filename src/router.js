@@ -41,7 +41,7 @@ export class Router {
         this.router.resolve({pathname: oldPathName}).then(page => {
             const newPathname = this.getPathname(page);
             // In case of a router redirect, set the new location
-            if (newPathname != oldPathName) {
+            if (newPathname !== oldPathName) {
                 window.history.replaceState({}, '', newPathname);
             }
             this.setState(page);

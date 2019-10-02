@@ -80,7 +80,7 @@ class LibraryApp extends VPULitElement {
                 this.updateLangIfChanged(state.lang);
                 this.switchComponent(state.component);
             }
-        },{
+        }, {
             baseUrl: basePath.replace(/\/$/, ""),
         });
 
