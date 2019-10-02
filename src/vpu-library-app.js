@@ -213,7 +213,7 @@ class LibraryApp extends VPULitElement {
 
     onMenuItemClick(e) {
         e.preventDefault();
-        const link = e.path[0];
+        const link = e.composedPath()[0];
         const location = link.getAttribute('href');
         this.router.updateFromPathname(location);
     }
