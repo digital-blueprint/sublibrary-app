@@ -124,7 +124,7 @@ export default {
                 {src: 'assets/manifest.json', dest: 'dist', rename: pkg.name + '.manifest.json'},
                 {src: 'assets/*.metadata.json', dest: 'dist'},
                 {src: 'assets/nomodule.js', dest: 'dist/local/' + pkg.name},
-                {src: 'node_modules/material-design-icons-svg/paths/*.json', dest: 'dist/local/vpu-common/icons'},
+                {src: 'node_modules/vpu-common/assets/icons/*.svg', dest: 'dist/local/vpu-common/icons'},
             ],
         }),
         copy({
