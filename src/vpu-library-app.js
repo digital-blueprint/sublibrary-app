@@ -463,7 +463,6 @@ class LibraryApp extends VPULitElement {
         let menuTemplates = [];
         for (let routingName in this.metadata) {
             const data = this.metadata[routingName];
-            console.log(data);
 
             if (data['visible']) {
                 menuTemplates.push(html`<a @click="${(e) => this.onMenuItemClick(e)}" href="${this.router.getPathname({component: routingName})}" data-nav class="${getSelectClasses(routingName)}" title="${this.metaDataText(routingName, "description")}">${this.metaDataText(routingName, "short_name")}</a>`);
