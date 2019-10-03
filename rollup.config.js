@@ -48,7 +48,7 @@ export default {
       'src/vpu-library-create-loan.js',
       'src/vpu-library-return-book.js',
       'src/vpu-library-renew-loan.js',
-      'node_modules/vpu-person-profile/src/person-profile.js',
+      'node_modules/vpu-person-profile/src/vpu-person-profile.js',
     ] : 'test/**/*.js',
     output: {
       dir: 'dist',
