@@ -431,7 +431,6 @@ class LibraryApp extends VPULitElement {
 
     render() {
         const date = new Date(buildinfo.time);
-        commonUtils.initAssetBaseURL('vpu-library-app-src');
         const bulmaCSS = commonUtils.getAssetURL(bulmaCSSPath);
 
         const getViewClasses = (name => {
@@ -507,4 +506,5 @@ class LibraryApp extends VPULitElement {
     }
 }
 
+commonUtils.initAssetBaseURL('vpu-library-app-src');
 commonUtils.defineCustomElement('vpu-library-app', LibraryApp);
