@@ -29,7 +29,7 @@ class LibraryApp extends VPULitElement {
             "create-loan": basePath +'vpu-library-create-loan.metadata.json',
             "return-book": basePath +'vpu-library-return-book.metadata.json',
             "renew-loan": basePath +'vpu-library-renew-loan.metadata.json',
-            "person-profile": { visibility: "hidden", path: basePath +'vpu-person-profile.metadata.json' },
+            "person-profile": { visible: false, path: basePath +'vpu-person-profile.metadata.json' },
         };
 
         this.fetchMetadata();
@@ -56,8 +56,10 @@ class LibraryApp extends VPULitElement {
         for (let routingName in this.metadataPaths) {
             const data = this.metadataPaths[routingName];
             let url;
+            let visible = true;
 
             if (typeof data === 'object') {
+                visible = data['visible'] === undefined ? true : data['visible'];
                 url = data['path'];
             } else {
                 url = data;
@@ -72,6 +74,7 @@ class LibraryApp extends VPULitElement {
                     return result.json();
                 })
                 .then((data) => {
+                    data['visible'] = visible;
                     if (data["element"] !== undefined) {
                         metadata[routingName] = data;
                     }
@@ -456,6 +459,17 @@ class LibraryApp extends VPULitElement {
 
         this.updatePageTitle();
 
+        // build the menu
+        let menuTemplates = [];
+        for (let routingName in this.metadata) {
+            const data = this.metadata[routingName];
+            console.log(data);
+
+            if (data['visible']) {
+                menuTemplates.push(html`<a @click="${(e) => this.onMenuItemClick(e)}" href="${this.router.getPathname({component: routingName})}" data-nav class="${getSelectClasses(routingName)}" title="${this.metaDataText(routingName, "description")}">${this.metaDataText(routingName, "short_name")}</a>`);
+            }
+        }
+
         return html`
             <link rel="stylesheet" href="${bulmaCSS}" @load="${this.onStyleLoaded}">
             <vpu-spinner></vpu-spinner>
@@ -494,7 +508,7 @@ class LibraryApp extends VPULitElement {
 
                 <aside>
                     <div class="container menu">
-                        ${Object.keys(this.metadata).map((routingName) => html`<a @click="${(e) => this.onMenuItemClick(e)}" href="${this.router.getPathname({component: routingName})}" data-nav class="${getSelectClasses(routingName)}" title="${this.metaDataText(routingName, "description")}">${this.metaDataText(routingName, "short_name")}</a>`)}
+                        ${menuTemplates}
                     </div>
                 </aside>
 
