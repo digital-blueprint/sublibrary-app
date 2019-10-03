@@ -1,5 +1,6 @@
 import path from 'path';
 import url from 'url';
+import glob from 'glob';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import copy from 'rollup-plugin-copy';
@@ -7,7 +8,6 @@ import {terser} from "rollup-plugin-terser";
 import json from 'rollup-plugin-json';
 import replace from "rollup-plugin-replace";
 import serve from 'rollup-plugin-serve';
-import multiEntry from 'rollup-plugin-multi-entry';
 import urlPlugin from "rollup-plugin-url";
 import consts from 'rollup-plugin-consts';
 import del from 'rollup-plugin-delete';
@@ -49,7 +49,7 @@ export default {
       'src/vpu-library-return-book.js',
       'src/vpu-library-renew-loan.js',
       'node_modules/vpu-person-profile/src/vpu-person-profile.js',
-    ] : 'test/**/*.js',
+    ] : glob.sync('test/**/*.js'),
     output: {
       dir: 'dist',
       entryFileNames: '[name].js',
@@ -76,7 +76,6 @@ export default {
         del({
           targets: 'dist/*'
         }),
-        (build == 'test') ? multiEntry() : false,
         consts({
           environment: build,
           buildinfo: getBuildInfo(),
