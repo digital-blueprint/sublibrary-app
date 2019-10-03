@@ -48,6 +48,7 @@ export default {
       'src/vpu-library-create-loan.js',
       'src/vpu-library-return-book.js',
       'src/vpu-library-renew-loan.js',
+      'node_modules/vpu-person-profile/src/person-profile.js',
     ] : 'test/**/*.js',
     output: {
       dir: 'dist',
@@ -123,6 +124,7 @@ export default {
                 {src: 'assets/icon-*.png', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/manifest.json', dest: 'dist', rename: pkg.name + '.manifest.json'},
                 {src: 'assets/*.metadata.json', dest: 'dist'},
+                {src: 'node_modules/vpu-person-profile/assets/*.metadata.json', dest: 'dist'},
                 {src: 'assets/nomodule.js', dest: 'dist/local/' + pkg.name},
                 {src: 'node_modules/vpu-common/assets/icons/*.svg', dest: 'dist/local/vpu-common/icons'},
             ],

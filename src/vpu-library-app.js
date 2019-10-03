@@ -29,6 +29,7 @@ class LibraryApp extends VPULitElement {
             "create-loan": basePath +'vpu-library-create-loan.metadata.json',
             "return-book": basePath +'vpu-library-return-book.metadata.json',
             "renew-loan": basePath +'vpu-library-renew-loan.metadata.json',
+            "person-profile": { visibility: "hidden", path: basePath +'vpu-person-profile.metadata.json' },
         };
 
         this.fetchMetadata();
@@ -53,7 +54,14 @@ class LibraryApp extends VPULitElement {
 
         // fetch the metadata of the components we want to use in the menu
         for (let routingName in this.metadataPaths) {
-            const url = this.metadataPaths[routingName];
+            const data = this.metadataPaths[routingName];
+            let url;
+
+            if (typeof data === 'object') {
+                url = data['path'];
+            } else {
+                url = data;
+            }
 
             // let's wait so the menu items are in the correct order
             await fetch(url, {
@@ -230,6 +238,11 @@ class LibraryApp extends VPULitElement {
         const changed = (componentTag !== this.activeView);
         this.activeView = componentTag;
         const metadata = this.activeMetaData();
+
+        if (metadata === undefined) {
+            return;
+        }
+
         const component = this._(metadata.element);
         this.updatePageTitle();
         this.subtitle = this.activeMetaDataText("short_name");
