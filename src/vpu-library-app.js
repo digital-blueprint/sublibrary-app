@@ -294,13 +294,22 @@ class LibraryApp extends VPULitElement {
         this.shadowRoot.querySelector("vpu-spinner").style.display = "none";
     }
 
+    toggleMenu() {
+        const menu = this._("ul.menu");
+
+        if (menu === null) {
+            return;
+        }
+
+        menu.classList.toggle('hidden');
+    }
+
     static get styles() {
         // language=css
         return css`
             .hidden {display: none}
 
             h1.title {margin-bottom: 0}
-            h2.subtitle {margin-top: 1.5em}
 
             #cover {
                 display: grid;
@@ -325,10 +334,6 @@ class LibraryApp extends VPULitElement {
             #headline { grid-area: headline; margin: 15px; text-align: center; }
             main { grid-area: main; margin: 30px 15px; }
             footer { grid-area: footer; margin: 30px; }
-
-            #headline .subtitle {
-                display: none;
-            }
 
             header .hd1-left {
                 display: flex;
@@ -407,6 +412,14 @@ class LibraryApp extends VPULitElement {
                 display: inline;
             }
 
+            aside ul.menu {
+                list-style: none;
+            }
+
+            ul.menu li.close {
+                display: none;
+            }
+
             .menu a {
                 padding: 0.3em;
                 font-weight: 600;
@@ -419,6 +432,20 @@ class LibraryApp extends VPULitElement {
             }
 
             .menu a.selected { color: white; background-color: black; }
+
+            aside .subtitle {
+                display: none;
+                color: #4a4a4a;
+                font-size: 1.25rem;
+                font-weight: 400;
+                line-height: 1.25;
+                cursor: pointer;
+                text-align: center;
+            }
+
+            ul.menu.hidden {
+                display: block;
+            }
 
             a { transition: background-color 0.15s ease 0s, color 0.15s ease 0s; }
 
@@ -438,8 +465,37 @@ class LibraryApp extends VPULitElement {
                     display: none;
                 }
 
-                #headline .subtitle {
+                aside {
+                    margin: 0 15px;
+                }
+
+                aside h2.subtitle {
                     display: block;
+                    margin-bottom: 0.5em;
+                }
+
+                /* bulma override */
+                aside h2.subtitle:not(:last-child) {
+                    margin-bottom: 0.5em;
+                }
+
+                aside .menu {
+                    border: black 1px solid;
+                }
+
+                .menu a {
+                    padding: 15px;
+                }
+
+                ul.menu li.close {
+                    display: block;
+                    padding: 0 15px 15px 15px;
+                    text-align: right;
+                    cursor: pointer;
+                }
+
+                ul.menu.hidden {
+                    display: none;
                 }
             }
         `;
@@ -465,7 +521,7 @@ class LibraryApp extends VPULitElement {
             const data = this.metadata[routingName];
 
             if (data['visible']) {
-                menuTemplates.push(html`<a @click="${(e) => this.onMenuItemClick(e)}" href="${this.router.getPathname({component: routingName})}" data-nav class="${getSelectClasses(routingName)}" title="${this.metaDataText(routingName, "description")}">${this.metaDataText(routingName, "short_name")}</a>`);
+                menuTemplates.push(html`<li><a @click="${(e) => this.onMenuItemClick(e)}" href="${this.router.getPathname({component: routingName})}" data-nav class="${getSelectClasses(routingName)}" title="${this.metaDataText(routingName, "description")}">${this.metaDataText(routingName, "short_name")}</a></li>`);
             }
         }
 
@@ -502,13 +558,17 @@ class LibraryApp extends VPULitElement {
 
                 <div id="headline">
                     <h1 class="title">${i18n.t('headline.title')}</h1>
-                    <h2 class="subtitle">${this.subtitle}</h2>
                 </div>
 
                 <aside>
-                    <div class="container menu">
+                    <h2 class="subtitle" @click="${this.toggleMenu}">
+                        ${this.subtitle}
+                        <vpu-icon name="chevron-down" style="color: red"></vpu-icon>
+                    </h2>
+                    <ul class="menu hidden">
                         ${menuTemplates}
-                    </div>
+                        <li class="close" @click="${this.toggleMenu}"><vpu-icon name="close" style="color: red"></vpu-icon></li>
+                    </ul>
                 </aside>
 
                 <main>
