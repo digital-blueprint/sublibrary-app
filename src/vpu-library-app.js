@@ -304,6 +304,11 @@ class LibraryApp extends VPULitElement {
         }
 
         menu.classList.toggle('hidden');
+
+        const chevron = this._("#menu-chevron-icon");
+        if (chevron !== null) {
+            chevron.name = menu.classList.contains('hidden') ? 'chevron-down' : 'chevron-up';
+        }
     }
 
     static get styles() {
@@ -565,7 +570,7 @@ class LibraryApp extends VPULitElement {
                 <aside>
                     <h2 class="subtitle" @click="${this.toggleMenu}">
                         ${this.subtitle}
-                        <vpu-icon name="chevron-down" style="color: red"></vpu-icon>
+                        <vpu-icon name="chevron-down" style="color: red" id="menu-chevron-icon"></vpu-icon>
                     </h2>
                     <ul class="menu hidden">
                         ${menuTemplates}
