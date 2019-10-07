@@ -233,8 +233,10 @@ class LibraryApp extends VPULitElement {
         const newLang = e.detail.lang;
         const changed = (this.lang !== newLang);
         this.lang = newLang;
-        if (changed)
+        if (changed) {
             this.router.update();
+            this.subtitle = this.activeMetaDataText("short_name");
+        }
     }
 
     switchComponent(componentTag) {
