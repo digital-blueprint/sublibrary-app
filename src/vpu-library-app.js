@@ -490,8 +490,12 @@ class LibraryApp extends VPULitElement {
                     border: black 1px solid;
                 }
 
+                .menu li {
+                    padding: 7px;
+                }
+
                 .menu a {
-                    padding: 15px;
+                    padding: 8px;
                 }
 
                 ul.menu li.close {
