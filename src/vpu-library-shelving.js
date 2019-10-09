@@ -152,11 +152,18 @@ class LibraryShelving extends VPULitElementJQuery {
     static get styles() {
         // language=css
         return css`
+            ${commonUtils.getThemeCSS()}
+            ${commonUtils.getGeneralCSS()}
+            ${commonUtils.getNotificationCSS()}
+
             /* Select2 doesn't work well with display: none */
             .hidden {left: -9999px; position: absolute;}
 
             #location-identifier-block, #permission-error-block { display: none; }
-            #location-identifier-block input { width: 100%; }
+            #location-identifier-block input {
+                width: 100%;
+                border-radius: var(--vpu-border-radius);
+            }
         `;
     }
 
