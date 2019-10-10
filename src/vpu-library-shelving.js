@@ -7,7 +7,6 @@ import Suggestions from 'suggestions';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
-import bulmaCSSPath from 'bulma/css/bulma.min.css';
 import * as errorUtils from "vpu-common/error";
 
 
@@ -169,10 +168,8 @@ class LibraryShelving extends VPULitElementJQuery {
 
     render() {
         const suggestionsCSS = commonUtils.getAssetURL(suggestionsCSSPath);
-        const bulmaCSS = commonUtils.getAssetURL(bulmaCSSPath);
 
         return html`
-            <link rel="stylesheet" href="${bulmaCSS}">
             <link rel="stylesheet" href="${suggestionsCSS}">
 
             <form class="hidden">
@@ -196,7 +193,7 @@ class LibraryShelving extends VPULitElementJQuery {
                     </div>
                     <div class="field">
                         <div class="control">
-                             <vpu-button id="send" disabled="disabled" value="${i18n.t('location-identifier.submit')}" type="is-link"></vpu-button>
+                             <vpu-button id="send" disabled="disabled" value="${i18n.t('location-identifier.submit')}" type="is-primary"></vpu-button>
                         </div>
                     </div>
                 </div>
