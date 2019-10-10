@@ -245,7 +245,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                     <div class="field">
                         <label class="label">${i18n.t('renew-loan.end-date')}</label>
                         <input type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loanDate)}">
-                        <input type="time" value="${commonUtils.dateToInputTimeString(loanDate)}">
+                        <input type="time" class="hidden" value="23:59:59">
                     </div>
                     <div class="field">
                         <div class="control">
