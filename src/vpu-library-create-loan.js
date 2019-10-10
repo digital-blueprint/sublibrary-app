@@ -5,7 +5,6 @@ import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
-import bulmaCSSPath from 'bulma/css/bulma.min.css';
 import * as errorUtils from "vpu-common/error";
 
 class LibraryCreateLoan extends VPULitElementJQuery {
@@ -205,22 +204,21 @@ class LibraryCreateLoan extends VPULitElementJQuery {
     static get styles() {
         // language=css
         return css`
-            /* Select2 doesn't work well with display: none */
-            .hidden {left: -9999px; position: absolute;}
+            ${commonUtils.getThemeCSS()}
+            ${commonUtils.getGeneralCSS()}
+            ${commonUtils.getNotificationCSS()}
 
-            #create-loan-block, #permission-error-block { display: none; }
+            .hidden, #create-loan-block, #permission-error-block { display: none; }
         `;
     }
 
     render() {
-        const bulmaCSS = commonUtils.getAssetURL(bulmaCSSPath);
         const minDate = new Date().toISOString();
         let date = new Date();
         date.setMonth(date.getMonth() + 1);
         const loanDate = date.toISOString();
 
         return html`
-            <link rel="stylesheet" href="${bulmaCSS}">
 
             <form class="hidden">
                 <div class="field">
@@ -249,7 +247,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
                     </div>
                     <div class="field">
                         <div class="control">
-                             <vpu-button id="send" disabled="disabled" value="${i18n.t('create-loan.submit')}" type="is-link"></vpu-button>
+                             <vpu-button id="send" disabled="disabled" value="${i18n.t('create-loan.submit')}" type="is-primary"></vpu-button>
                         </div>
                     </div>
                 </div>
