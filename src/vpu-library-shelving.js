@@ -155,7 +155,7 @@ class LibraryShelving extends VPULitElementJQuery {
             ${commonUtils.getGeneralCSS()}
             ${commonUtils.getNotificationCSS()}
 
-            .hidden, #location-identifier-block, #permission-error-block { display: none; }
+            #location-identifier-block, #permission-error-block { display: none; }
 
             #location-identifier-block input {
                 width: 100%;

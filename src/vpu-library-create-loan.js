@@ -208,7 +208,7 @@ class LibraryCreateLoan extends VPULitElementJQuery {
             ${commonUtils.getGeneralCSS()}
             ${commonUtils.getNotificationCSS()}
 
-            .hidden, #create-loan-block, #permission-error-block { display: none; }
+            #create-loan-block, #permission-error-block { display: none; }
         `;
     }
 
@@ -219,7 +219,6 @@ class LibraryCreateLoan extends VPULitElementJQuery {
         const loanDate = date.toISOString();
 
         return html`
-
             <form class="hidden">
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
