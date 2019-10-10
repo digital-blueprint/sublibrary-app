@@ -5,7 +5,6 @@ import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
-import bulmaCSSPath from 'bulma/css/bulma.min.css';
 import * as errorUtils from "vpu-common/error";
 
 class LibraryReturnBook extends VPULitElementJQuery {
@@ -188,8 +187,9 @@ class LibraryReturnBook extends VPULitElementJQuery {
     static get styles() {
         // language=css
         return css`
-            /* Select2 doesn't work well with display: none */
-            .hidden {left: -9999px; position: absolute;}
+            ${commonUtils.getThemeCSS()}
+            ${commonUtils.getGeneralCSS()}
+            ${commonUtils.getNotificationCSS()}
 
             #return-book-block, #permission-error-block { display: none; }
             #return-book-block input { width: 100%; }
@@ -197,11 +197,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
     }
 
     render() {
-        const bulmaCSS = commonUtils.getAssetURL(bulmaCSSPath);
-
         return html`
-            <link rel="stylesheet" href="${bulmaCSS}">
-
             <form class="hidden">
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
@@ -224,7 +220,7 @@ class LibraryReturnBook extends VPULitElementJQuery {
                     </div>
                     <div class="field">
                         <div class="control">
-                             <vpu-button id="send" disabled="disabled" value="${i18n.t('return-book.submit')}" type="is-link"></vpu-button>
+                             <vpu-button id="send" disabled="disabled" value="${i18n.t('return-book.submit')}" type="is-primary"></vpu-button>
                         </div>
                     </div>
                 </div>
