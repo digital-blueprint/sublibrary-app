@@ -5,7 +5,6 @@ import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
-import bulmaCSSPath from 'bulma/css/bulma.min.css';
 import 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
 
@@ -133,11 +132,11 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                                type="date" min="${commonUtils.dateToInputDateString(minDate)}"
                                                value="${commonUtils.dateToInputDateString(loan.endTime)}">
                                         <input data-time-id="${loan['@id']}"
-                                               type="time" value="${commonUtils.dateToInputTimeString(loan.endTime)}">
+                                               type="time" class="hidden" value="23:59:59">
                                     </div>`,
                                     loan.endTime,
                                     `<vpu-button data-id="${loan['@id']}"
-                                                 value="Ok" name="send" type="is-link is-small"
+                                                 value="Ok" name="send" type="is-primary is-small"
                                                  title="${i18n.t('renew-loan.renew-loan')}" no-spinner-on-click></vpu-button>`
                                 ];
                                 tbl.push(row);
@@ -258,8 +257,8 @@ class LibraryRenewLoan extends VPULitElementJQuery {
     static get styles() {
         // language=css
         return css`
-            /* Select2 doesn't work well with display: none */
-            .hidden {left: -9999px; position: absolute;}
+            ${commonUtils.getThemeCSS()}
+            ${commonUtils.getGeneralCSS()}
 
             #renew-loan-block, #permission-error-block { display: none; }
             form, table {width: 100%}
@@ -267,11 +266,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
     }
 
     render() {
-        const bulmaCSS = commonUtils.getAssetURL(bulmaCSSPath);
-
         return html`
-            <link rel="stylesheet" href="${bulmaCSS}">
-
             <form class="hidden">
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
