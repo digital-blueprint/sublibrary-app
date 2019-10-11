@@ -191,7 +191,7 @@ class LibraryShelving extends VPULitElementJQuery {
                     </div>
                     <div class="field">
                         <div class="control">
-                             <vpu-button id="send" disabled="disabled" value="${i18n.t('location-identifier.submit')}" type="is-primary"></vpu-button>
+                             <vpu-button id="send" disabled="disabled" value="${i18n.t('location-identifier.submit')}" type=""></vpu-button>
                         </div>
                     </div>
                 </div>

@@ -136,7 +136,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
                                     </div>`,
                                     loan.endTime,
                                     `<vpu-button data-id="${loan['@id']}"
-                                                 value="Ok" name="send" type="is-primary is-small"
+                                                 value="Ok" name="send" type="is-small"
                                                  title="${i18n.t('renew-loan.renew-loan')}" no-spinner-on-click></vpu-button>`
                                 ];
                                 tbl.push(row);

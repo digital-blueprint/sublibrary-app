@@ -314,6 +314,12 @@ class LibraryApp extends VPULitElement {
     static get styles() {
         // language=css
         return css`
+            /* TU-Graz style override */
+            :host {
+                --vpu-override-info-bg-color: #245b78;
+                --vpu-override-danger-bg-color: #e4154b;
+            }
+
             .hidden {display: none}
 
             h1.title {margin-bottom: 0}
@@ -429,7 +435,7 @@ class LibraryApp extends VPULitElement {
 
             .menu a {
                 padding: 0.3em;
-                font-weight: 600;
+                font-weight: 300;
                 color: #000;
                 display: block;
             }
