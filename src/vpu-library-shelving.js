@@ -6,6 +6,7 @@ import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import Suggestions from 'suggestions';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
+import * as commonStyles from 'vpu-common/styles';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import * as errorUtils from "vpu-common/error";
 
@@ -151,9 +152,9 @@ class LibraryShelving extends VPULitElementJQuery {
     static get styles() {
         // language=css
         return css`
-            ${commonUtils.getThemeCSS()}
-            ${commonUtils.getGeneralCSS()}
-            ${commonUtils.getNotificationCSS()}
+            ${commonStyles.getThemeCSS()}
+            ${commonStyles.getGeneralCSS()}
+            ${commonStyles.getNotificationCSS()}
 
             #location-identifier-block, #permission-error-block { display: none; }
 

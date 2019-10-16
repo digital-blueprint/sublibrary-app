@@ -5,6 +5,7 @@ import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
+import * as commonStyles from 'vpu-common/styles';
 import 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
 
@@ -257,8 +258,8 @@ class LibraryRenewLoan extends VPULitElementJQuery {
     static get styles() {
         // language=css
         return css`
-            ${commonUtils.getThemeCSS()}
-            ${commonUtils.getGeneralCSS()}
+            ${commonStyles.getThemeCSS()}
+            ${commonStyles.getGeneralCSS()}
 
             #renew-loan-block, #permission-error-block { display: none; }
             form, table {width: 100%}

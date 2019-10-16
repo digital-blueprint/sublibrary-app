@@ -5,6 +5,7 @@ import {send as notify} from 'vpu-notification';
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
+import * as commonStyles from 'vpu-common/styles';
 import * as errorUtils from "vpu-common/error";
 
 class LibraryCreateLoan extends VPULitElementJQuery {
@@ -204,9 +205,9 @@ class LibraryCreateLoan extends VPULitElementJQuery {
     static get styles() {
         // language=css
         return css`
-            ${commonUtils.getThemeCSS()}
-            ${commonUtils.getGeneralCSS()}
-            ${commonUtils.getNotificationCSS()}
+            ${commonStyles.getThemeCSS()}
+            ${commonStyles.getGeneralCSS()}
+            ${commonStyles.getNotificationCSS()}
 
             #create-loan-block, #permission-error-block { display: none; }
         `;
