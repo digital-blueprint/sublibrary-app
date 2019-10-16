@@ -3,7 +3,7 @@ import {html, css} from 'lit-element';
 import VPULitElement from 'vpu-common/vpu-lit-element';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
-import bulmaCSSPath from 'bulma/css/bulma.min.css';
+import * as commonStyles from 'vpu-common/styles';
 import buildinfo from 'consts:buildinfo';
 import basePath from 'consts:basePath';
 import {classMap} from 'lit-html/directives/class-map.js';
@@ -291,11 +291,6 @@ class LibraryApp extends VPULitElement {
         document.title = `${i18n.t('page-title')} - ${this.activeMetaDataText("short_name")}`;
     }
 
-    onStyleLoaded () {
-        this.shadowRoot.querySelector("#cover").style.opacity = "100";
-        this.shadowRoot.querySelector("vpu-spinner").style.display = "none";
-    }
-
     toggleMenu() {
         const menu = this._("ul.menu");
 
@@ -314,6 +309,9 @@ class LibraryApp extends VPULitElement {
     static get styles() {
         // language=css
         return css`
+            ${commonStyles.getThemeCSS()}
+            ${commonStyles.getGeneralCSS()}
+
             /* TU-Graz style override */
             :host {
                 --vpu-override-info-bg-color: #245b78;
@@ -327,12 +325,11 @@ class LibraryApp extends VPULitElement {
 
             h1.title {margin-bottom: 0}
 
-            #cover {
+            #main {
                 display: grid;
                 grid-template-columns: 180px auto;
                 grid-template-rows: 120px auto auto 40px;
                 grid-template-areas: "header header" "headline headline" "sidebar main" "footer footer";
-                opacity: 0;
             }
 
             header {
@@ -438,7 +435,7 @@ class LibraryApp extends VPULitElement {
 
             .menu a {
                 padding: 0.3em;
-                font-weight: 300;
+                font-weight: 400;
                 color: #000;
                 display: block;
             }
@@ -466,7 +463,7 @@ class LibraryApp extends VPULitElement {
             a { transition: background-color 0.15s ease 0s, color 0.15s ease 0s; }
 
             @media (max-width: 680px) {
-                #cover {
+                #main {
                     grid-template-columns: auto;
                     grid-template-rows: 40px auto auto auto 40px;
                     grid-template-areas: "header" "headline" "sidebar" "main" "footer";
@@ -523,7 +520,6 @@ class LibraryApp extends VPULitElement {
 
     render() {
         const date = new Date(buildinfo.time);
-        const bulmaCSS = commonUtils.getAssetURL(bulmaCSSPath);
 
         const getViewClasses = (name => {
             return classMap({hidden: this.activeView !== name});
@@ -546,9 +542,7 @@ class LibraryApp extends VPULitElement {
         }
 
         return html`
-            <link rel="stylesheet" href="${bulmaCSS}" @load="${this.onStyleLoaded}">
-            <vpu-spinner></vpu-spinner>
-            <div id="cover">
+            <div id="main" style="opacity: 100">
                 <vpu-notification lang="${this.lang}"></vpu-notification>
                 <header>
                     <div class="hd1-left">
