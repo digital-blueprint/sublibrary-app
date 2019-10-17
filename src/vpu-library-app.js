@@ -42,11 +42,10 @@ class LibraryApp extends VPULitElement {
     }
 
     /**
-     /**
      * Fetches the metadata of the components we want to use in the menu, dynamically imports the js modules for them,
      * then triggers a rebuilding of the menu and resolves the current route
      *
-     * @returns {Promise<void>}
+     * @returns {Promise<void>} metadata
      */
     async fetchMetadata() {
         const that = this;

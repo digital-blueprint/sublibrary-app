@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "src/vpu-library.js",
   "devDependencies": {
+    "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
     "chokidar": "^3.2.1",
     "ejs": "^2.7.1",
