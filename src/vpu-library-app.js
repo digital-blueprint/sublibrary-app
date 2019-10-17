@@ -311,6 +311,7 @@ class LibraryApp extends VPULitElement {
         return css`
             ${commonStyles.getThemeCSS()}
             ${commonStyles.getGeneralCSS()}
+            ${commonStyles.getTagCSS()}
 
             /* TU-Graz style override */
             :host {
