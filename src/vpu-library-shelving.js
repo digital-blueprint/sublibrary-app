@@ -27,6 +27,29 @@ class LibraryShelving extends VPULitElementJQuery {
         };
     }
 
+    onAuthPersonInit() {
+        // retry if we still need some time until the initialization
+        if (window.VPUPerson === undefined || window.VPUPerson === null) {
+            return false;
+        }
+
+        // return if the init was already done (no need for another retry)
+        if (!this._('form').classList.contains("hidden")) {
+            return true;
+        }
+
+        this.$('#login-error-block').hide();
+        this._('form').classList.remove("hidden");
+
+        if (!Array.isArray(window.VPUPerson.roles) || window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') === -1) {
+            // TODO: implement overlay with error message, we currently cannot hide the form because select2 doesn't seem to initialize properly if the web-component is invisible
+            this.$('#permission-error-block').show();
+            this.$('form').hide();
+        }
+
+        return true;
+    }
+
     connectedCallback() {
         super.connectedCallback();
         const that = this;
@@ -37,17 +60,14 @@ class LibraryShelving extends VPULitElementJQuery {
             const locationIdentifierInput = that._('#location-identifier');
             const $locationIdentifierBlock = that.$('#location-identifier-block');
 
-            // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
-            window.addEventListener("vpu-auth-person-init", () => {
-                that.$('#login-error-block').hide();
-                that._('form').classList.remove("hidden");
+            if (window.VPUPerson === undefined) {
+                // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
+                window.addEventListener("vpu-auth-person-init", () => { that.onAuthPersonInit(); });
+            }
 
-                if (!Array.isArray(window.VPUPerson.roles) || window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') === -1) {
-                    // TODO: implement overlay with error message, we currently cannot hide the form because select2 doesn't seem to initialize properly if the web-component is invisible
-                    that.$('#permission-error-block').show();
-                    that.$('form').hide();
-                }
-            });
+            // fallback in the case that the vpu-auth-person-init event was already dispatched
+            // we need to call it in a different function so we can access "this" in onAuthPersonInit()
+            commonUtils.pollFunc(() => { return that.onAuthPersonInit(); }, 10000, 100);
 
             // show location identifier block if book offer was selected
             $bookOfferSelect.change(function () {
