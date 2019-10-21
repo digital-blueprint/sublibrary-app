@@ -2,7 +2,7 @@ import $ from 'jquery';
 import {i18n} from './i18n.js';
 import {css, html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
-import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
+import VPULibraryLitElement from "./vpu-library-lit-element";
 import Suggestions from 'suggestions';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
@@ -11,7 +11,7 @@ import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import * as errorUtils from "vpu-common/error";
 
 
-class LibraryShelving extends VPULitElementJQuery {
+class LibraryShelving extends VPULibraryLitElement {
     constructor() {
         super();
         this.lang = 'de';
@@ -27,29 +27,6 @@ class LibraryShelving extends VPULitElementJQuery {
         };
     }
 
-    onAuthPersonInit() {
-        // retry if we still need some time until the initialization
-        if (window.VPUPerson === undefined || window.VPUPerson === null) {
-            return false;
-        }
-
-        // return if the init was already done (no need for another retry)
-        if (!this._('form').classList.contains("hidden")) {
-            return true;
-        }
-
-        this.$('#login-error-block').hide();
-        this._('form').classList.remove("hidden");
-
-        if (!Array.isArray(window.VPUPerson.roles) || window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') === -1) {
-            // TODO: implement overlay with error message, we currently cannot hide the form because select2 doesn't seem to initialize properly if the web-component is invisible
-            this.$('#permission-error-block').show();
-            this.$('form').hide();
-        }
-
-        return true;
-    }
-
     connectedCallback() {
         super.connectedCallback();
         const that = this;
@@ -60,14 +37,8 @@ class LibraryShelving extends VPULitElementJQuery {
             const locationIdentifierInput = that._('#location-identifier');
             const $locationIdentifierBlock = that.$('#location-identifier-block');
 
-            if (window.VPUPerson === undefined) {
-                // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
-                window.addEventListener("vpu-auth-person-init", () => { that.onAuthPersonInit(); });
-            }
-
-            // fallback in the case that the vpu-auth-person-init event was already dispatched
-            // Note: we need to call onAuthPersonInit() in a different function so we can access "this" inside onAuthPersonInit()
-            commonUtils.pollFunc(() => { return that.onAuthPersonInit(); }, 10000, 100);
+            // show user interface when logged in person object is available
+            that.callInitUserInterface();
 
             // show location identifier block if book offer was selected
             $bookOfferSelect.change(function () {

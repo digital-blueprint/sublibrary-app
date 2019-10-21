@@ -2,13 +2,13 @@ import $ from 'jquery';
 import {i18n} from './i18n.js';
 import {css, html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
-import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
+import VPULibraryLitElement from './vpu-library-lit-element';
 import 'vpu-language-select';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import * as errorUtils from "vpu-common/error";
 
-class LibraryCreateLoan extends VPULitElementJQuery {
+class LibraryCreateLoan extends VPULibraryLitElement {
     constructor() {
         super();
         this.lang = 'de';
@@ -38,17 +38,8 @@ class LibraryCreateLoan extends VPULitElementJQuery {
             const $createLoanBlock = that.$('#create-loan-block');
             const $loansLoadingIndicator = that.$('#loans-loading');
 
-            // check if the currently logged-in user has the role "ROLE_F_BIB_F" set
-            window.addEventListener("vpu-auth-person-init", () => {
-                that.$('#login-error-block').hide();
-                that._('form').classList.remove("hidden");
-
-                if (!Array.isArray(window.VPUPerson.roles) || window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') === -1) {
-                    // TODO: implement overlay with error message, we currently cannot hide the form because select2 doesn't seem to initialize properly if the web-component is invisible
-                    that.$('#permission-error-block').show();
-                    that.$('form').hide();
-                }
-            });
+            // show user interface when logged in person object is available
+            that.callInitUserInterface();
 
             $personSelect.change(function () {
                 that.person = $(this).data("object");
