@@ -66,7 +66,7 @@ class LibraryShelving extends VPULitElementJQuery {
             }
 
             // fallback in the case that the vpu-auth-person-init event was already dispatched
-            // we need to call it in a different function so we can access "this" in onAuthPersonInit()
+            // Note: we need to call onAuthPersonInit() in a different function so we can access "this" inside onAuthPersonInit()
             commonUtils.pollFunc(() => { return that.onAuthPersonInit(); }, 10000, 100);
 
             // show location identifier block if book offer was selected
