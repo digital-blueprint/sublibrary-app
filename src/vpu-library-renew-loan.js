@@ -260,6 +260,7 @@ class LibraryRenewLoan extends VPULitElementJQuery {
         return css`
             ${commonStyles.getThemeCSS()}
             ${commonStyles.getGeneralCSS()}
+            ${commonStyles.getNotificationCSS()}
 
             #renew-loan-block, #permission-error-block { display: none; }
             form, table {width: 100%}
