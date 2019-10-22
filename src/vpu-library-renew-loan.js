@@ -159,6 +159,8 @@ class LibraryRenewLoan extends VPULibraryLitElement {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === "lang") {
                 i18n.changeLanguage(this.lang);
+
+                /*
                 const vdtv1 = this._('#book-loans-1');
                 if (vdtv1 !== null) {
                     const columns = [
@@ -169,6 +171,10 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                     ];
                     vdtv1.set_columns(columns).set_datatable();
                 }
+                */
+
+                // we need to update the book list because of the localization of the "Contact" button
+                this.$('vpu-person-select').change();
             }
         });
 
