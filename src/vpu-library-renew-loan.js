@@ -39,7 +39,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             // language=css
             const css = `
                 @media (min-width: 900px) {
-                    td .date-col {
+                    td .date-col, td .button-col {
                         white-space: nowrap;
                     }
                 }
@@ -58,6 +58,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             const $renewLoanBlock = that.$('#renew-loan-block');
             const $noLoansBlock = that.$('#no-loans-block');
             const $loansLoadingIndicator = that.$('#loans-loading');
+            const $refreshButtonBlock = that.$('#refresh-button-block');
 
             // show user interface when logged in person object is available
             that.callInitUserInterface();
@@ -82,6 +83,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                 $renewLoanBlock.hide();
                 $noLoansBlock.hide();
                 $loansLoadingIndicator.show();
+                $refreshButtonBlock.show();
 
                 // load list of loans for person
                 fetch(apiUrl, {
@@ -127,9 +129,14 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                                                type="time" class="hidden" value="23:59:59">
                                     </div>`,
                                     loan.endTime,
-                                    `<vpu-button data-id="${loan['@id']}"
-                                                 value="Ok" name="send" type="is-small"
-                                                 title="${i18n.t('renew-loan.renew-loan')}" no-spinner-on-click></vpu-button>`
+                                    `<div class="button-col">
+                                        <vpu-button data-id="${loan['@id']}" data-type="renew"
+                                                    value="Ok" name="send" type="is-small"
+                                                    title="${i18n.t('renew-loan.renew-loan')}" no-spinner-on-click></vpu-button>
+                                        <vpu-button data-id="${loan['@id']}" data-type="contact" data-book-name="${loan.object.name}"
+                                                    value="${i18n.t('renew-loan.contact-value')}" name="send" type="is-small"
+                                                    title="${i18n.t('renew-loan.contact-title', {personName: that.person.name})}" no-spinner-on-click></vpu-button>
+                                    </div>`
                                 ];
                                 tbl.push(row);
                             });
@@ -172,7 +179,12 @@ class LibraryRenewLoan extends VPULibraryLitElement {
         this.lang = e.detail.lang;
     }
 
-    execRenew(e) {
+    /**
+     * Handles all clicks on the data table
+     *
+     * @param e
+     */
+    onDataTableClick(e) {
         const path = e.composedPath();
         let button, buttonIndex = -1;
 
@@ -197,53 +209,67 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             return;
         }
 
-        button.start();
+        const type = button.getAttribute("data-type");
         const loanId = button.getAttribute("data-id");
-        const vdtv1 = this._('#book-loans-1');
-        const dateSelect = vdtv1.shadowRoot.querySelector(`input[data-date-id='${loanId}']`);
-        const timeSelect = vdtv1.shadowRoot.querySelector(`input[data-time-id='${loanId}']`);
-        const date = new Date(dateSelect.value + " " + timeSelect.value);
 
-        // check if selected date is in the past
-        if (date < (new Date())) {
-            notify({
-                "summary": i18n.t('renew-loan.error-renew-loan-summary'),
-                "body": i18n.t('renew-loan.error-renew-loan-date-in-past'),
-                "type": "warning",
-                "timeout": 5,
-            });
+        // check with button was clicked
+        switch(type) {
+            case "renew":
+                button.start();
+                const vdtv1 = this._('#book-loans-1');
+                const dateSelect = vdtv1.shadowRoot.querySelector(`input[data-date-id='${loanId}']`);
+                const timeSelect = vdtv1.shadowRoot.querySelector(`input[data-time-id='${loanId}']`);
+                const date = new Date(dateSelect.value + " " + timeSelect.value);
 
-            button.stop();
-            return;
+                // check if selected date is in the past
+                if (date < (new Date())) {
+                    notify({
+                        "summary": i18n.t('renew-loan.error-renew-loan-summary'),
+                        "body": i18n.t('renew-loan.error-renew-loan-date-in-past'),
+                        "type": "warning",
+                        "timeout": 5,
+                    });
+
+                    button.stop();
+                    return;
+                }
+
+                const data = {"endTime": date.toISOString()};
+                const apiUrl = this.entryPointUrl + loanId;
+
+                // update loan
+                fetch(apiUrl, {
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/ld+json',
+                        'Authorization': 'Bearer ' + window.VPUAuthToken,
+                    },
+                })
+                    .then(result => {
+                        if (!result.ok) throw result;
+                        return result.json();
+                    })
+                    .then(loan => {
+                        notify({
+                            "summary": i18n.t('renew-loan.info-renew-loan-success-summary'),
+                            "body": i18n.t('renew-loan.info-renew-loan-success-body'),
+                            "type": "info",
+                            "timeout": 5,
+                        });
+                        dateSelect.value = commonUtils.dateToInputDateString(loan.endTime);
+                        timeSelect.value = commonUtils.dateToInputTimeString(loan.endTime);
+                    }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-renew-loan-summary')))
+                    .finally(() => { button.stop(); });
+                break;
+            case "contact":
+                const bookName = button.getAttribute("data-book-name");
+                const subject = i18n.t('renew-loan.contact-subject', {bookName: bookName});
+
+                // open mail client with new mail
+                location.href = `mailto:${this.person.email}?subject=${subject}`;
+                break;
         }
-
-        const data = {"endTime": date.toISOString()};
-        const apiUrl = this.entryPointUrl + loanId;
-
-        // update loan
-        fetch(apiUrl, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + window.VPUAuthToken,
-            },
-        })
-        .then(result => {
-            if (!result.ok) throw result;
-            return result.json();
-        })
-        .then(loan => {
-            notify({
-                "summary": i18n.t('renew-loan.info-renew-loan-success-summary'),
-                "body": i18n.t('renew-loan.info-renew-loan-success-body'),
-                "type": "info",
-                "timeout": 5,
-            });
-            dateSelect.value = commonUtils.dateToInputDateString(loan.endTime);
-            timeSelect.value = commonUtils.dateToInputTimeString(loan.endTime);
-        }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-renew-loan-summary')))
-        .finally(() => { button.stop(); });
     }
 
     static get styles() {
@@ -253,7 +279,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
 
-            #renew-loan-block, #permission-error-block { display: none; }
+            #renew-loan-block, #permission-error-block, #refresh-button-block { display: none; }
             form, table {width: 100%}
         `;
     }
@@ -267,11 +293,19 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                         <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.personId}"></vpu-person-select>
                     </div>
                 </div>
+                <div class="field" id="refresh-button-block">
+                    <div class="control">
+                         <vpu-button value="${i18n.t('renew-loan.button-refresh-value')}"
+                                     title="${i18n.t('renew-loan.button-refresh-title', {personName: this.person ? this.person.name : ""})}"
+                                     no-spinner-on-click type="is-small"
+                                     @click="${(e) => this.$('vpu-person-select').change()}"></vpu-button>
+                    </div>
+                </div>
                 <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                 <div id="renew-loan-block" class="field">
                     <label class="label">${i18n.t('renew-loan.loans')}</label>
                     <div class="control">
-                        <vpu-data-table-view searching paging lang="${this.lang}" id="book-loans-1" columns-count="4" @click="${(e) => this.execRenew(e)}"></vpu-data-table-view>
+                        <vpu-data-table-view searching paging lang="${this.lang}" id="book-loans-1" columns-count="4" @click="${(e) => this.onDataTableClick(e)}"></vpu-data-table-view>
                     </div>
                 </div>
                 <div id="no-loans-block" style="display: none">
