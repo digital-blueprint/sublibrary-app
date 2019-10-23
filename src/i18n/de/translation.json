@@ -58,7 +58,7 @@
     "error-renew-loan-date-in-past": "Enddatum darf nicht in der Vergangenheit liegen!",
     "button-refresh-value": "Aktualisieren",
     "button-refresh-title": "Entlehnungen von {{personName}} erneut laden",
-    "contact-value": "Kontakt",
+    "contact-value": "EMail",
     "contact-title": "Per EMail Kontakt mit {{personName}} aufnehmen",
     "contact-subject": "Entlehnung von: {{bookName}}"
   },

@@ -58,7 +58,7 @@
     "error-renew-loan-date-in-past": "End time may not be in the past!",
     "button-refresh-value": "Refresh",
     "button-refresh-title": "Load loans from {{personName}} again",
-    "contact-value": "Contact",
+    "contact-value": "EMail",
     "contact-title": "Contact {{personName}} via email",
     "contact-subject": "Loaning of: {{bookName}}"
   },
