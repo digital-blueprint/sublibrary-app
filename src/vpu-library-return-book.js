@@ -39,6 +39,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
             const $bookOfferSelect = that.$('vpu-library-book-offer-select');
             const $returnBookBlock = that.$('#return-book-block');
             const $loansLoadingIndicator = that.$('#loans-loading');
+            const $refreshButtonBlock = that.$('#refresh-button-block');
 
             // show user interface when logged in person object is available
             that.callInitUserInterface();
@@ -91,6 +92,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
                             "timeout": 5,
                         });
                         $returnBookBlock.show();
+                        $refreshButtonBlock.show();
                     } else {
                         notify({
                             "summary": i18n.t('return-book.error-no-existing-loans-summary'),
@@ -102,6 +104,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
                 }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
             }).on('unselect', function (e) {
                 $returnBookBlock.hide();
+                $refreshButtonBlock.hide();
             });
 
             // update loan status of book loan
@@ -183,8 +186,9 @@ class LibraryReturnBook extends VPULibraryLitElement {
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
 
-            #return-book-block, #permission-error-block { display: none; }
+            #return-book-block, #permission-error-block, #refresh-button-block { display: none; }
             #return-book-block input { width: 100%; }
+            #refresh-button-block { padding-top: 1rem; }
         `;
     }
 
@@ -214,6 +218,14 @@ class LibraryReturnBook extends VPULibraryLitElement {
                         <div class="control">
                              <vpu-button id="send" disabled="disabled" value="${i18n.t('return-book.submit')}" type=""></vpu-button>
                         </div>
+                    </div>
+                </div>
+                <div class="field" id="refresh-button-block">
+                    <div class="control">
+                         <vpu-button value="${i18n.t('renew-loan.button-refresh-value')}"
+                                     title="${i18n.t('renew-loan.button-refresh-title', {personName: this.person ? this.person.name : ""})}"
+                                     no-spinner-on-click type="is-small"
+                                     @click="${(e) => this.$('vpu-library-book-offer-select').change()}"></vpu-button>
                     </div>
                 </div>
             </form>
