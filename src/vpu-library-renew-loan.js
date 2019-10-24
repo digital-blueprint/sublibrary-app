@@ -58,7 +58,6 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             const $renewLoanBlock = that.$('#renew-loan-block');
             const $noLoansBlock = that.$('#no-loans-block');
             const $loansLoadingIndicator = that.$('#loans-loading');
-            const $refreshButtonBlock = that.$('#refresh-button-block');
 
             // show user interface when logged in person object is available
             that.callInitUserInterface();
@@ -83,7 +82,6 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                 $renewLoanBlock.hide();
                 $noLoansBlock.hide();
                 $loansLoadingIndicator.show();
-                $refreshButtonBlock.show();
 
                 // load list of loans for person
                 fetch(apiUrl, {
@@ -285,7 +283,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
 
-            #renew-loan-block, #permission-error-block, #refresh-button-block { display: none; }
+            #renew-loan-block, #permission-error-block { display: none; }
             form, table {width: 100%}
         `;
     }
@@ -296,15 +294,11 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">
-                        <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.personId}"></vpu-person-select>
-                    </div>
-                </div>
-                <div class="field" id="refresh-button-block">
-                    <div class="control">
-                         <vpu-button value="${i18n.t('renew-loan.button-refresh-value')}"
-                                     title="${i18n.t('renew-loan.button-refresh-title', {personName: this.person ? this.person.name : ""})}"
-                                     no-spinner-on-click type="is-small"
-                                     @click="${(e) => this.$('vpu-person-select').change()}"></vpu-button>
+                        <vpu-person-select entry-point-url="${this.entryPointUrl}"
+                                           lang="${this.lang}"
+                                           value="${this.personId}"
+                                           show-reload-button
+                                           reload-button-title="${this.person ? i18n.t('renew-loan.button-refresh-title', {personName: this.person.name}): ""}"></vpu-person-select>
                     </div>
                 </div>
                 <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
