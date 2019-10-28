@@ -27,7 +27,7 @@ test:
     # Install PHP dependencies
     - "composer require 'deployer/deployer: ^6.4' 'deployer/recipes: ^6.2'"
     # Deploy
-    - ./vendor/bin/dep deploy "${$CI_ENVIRONMENT_NAME}"
+    - ./vendor/bin/dep deploy "${CI_ENVIRONMENT_NAME}"
     - echo "Deployed to ${CI_ENVIRONMENT_URL}"
 
 deploy_demo:
