@@ -17,6 +17,7 @@ class LibraryShelving extends VPULibraryLitElement {
         this.lang = 'de';
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.bookOfferId = "";
+        this.bookOffer = null;
     }
 
     static get properties() {
@@ -46,9 +47,9 @@ class LibraryShelving extends VPULibraryLitElement {
                 console.log($bookOfferSelect.val());
                 console.log($bookOfferSelect.attr("value"));
                 console.log($bookOfferSelect.prop("value"));
-                const bookOffer = $(this).data("object");
-                that.bookOfferId = bookOffer["@id"];
-                $locationIdentifierInput.val(bookOffer.locationIdentifier).trigger("input");
+                that.bookOffer = $(this).data("object");
+                that.bookOfferId = that.bookOffer["@id"];
+                $locationIdentifierInput.val(that.bookOffer.locationIdentifier).trigger("input");
 
                 $locationIdentifierBlock.show();
 
@@ -166,7 +167,11 @@ class LibraryShelving extends VPULibraryLitElement {
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                         <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.bookOfferId}"></vpu-library-book-offer-select>
+                         <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}"
+                                                        lang="${this.lang}"
+                                                        value="${this.bookOfferId}"
+                                                        show-reload-button
+                                                        reload-button-title="${this.bookOffer ? i18n.t('renew-loan.button-refresh-title', {personName: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>
                 </div>
                 <div class="field">
