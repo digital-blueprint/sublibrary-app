@@ -7,7 +7,7 @@ import * as commonStyles from 'vpu-common/styles';
 import buildinfo from 'consts:buildinfo';
 import basePath from 'consts:basePath';
 import {classMap} from 'lit-html/directives/class-map.js';
-import * as errorreport from 'vpu-common/errorreport';
+// import * as errorreport from 'vpu-common/errorreport';
 import {Router} from './router.js';
 
 // errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
