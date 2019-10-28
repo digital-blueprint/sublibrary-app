@@ -10,7 +10,7 @@ import {classMap} from 'lit-html/directives/class-map.js';
 import * as errorreport from 'vpu-common/errorreport';
 import {Router} from './router.js';
 
-errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
+// errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
 
 class LibraryApp extends VPULitElement {
     constructor() {
