@@ -65,6 +65,11 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             // show loan list block if person was selected
             $personSelect.change(function () {
                 that.person = $(this).data("object");
+
+                if (that.person === undefined) {
+                    return;
+                }
+
                 that.personId = that.person["@id"];
                 const apiUrl = that.entryPointUrl + that.personId + "/library-book-loans";
 

@@ -25,6 +25,7 @@ class LibraryShelving extends VPULibraryLitElement {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             bookOfferId: { type: String, attribute: 'book-offer-id' },
+            bookOffer: { type: Object, attribute: false },
         };
     }
 
@@ -171,7 +172,7 @@ class LibraryShelving extends VPULibraryLitElement {
                                                         lang="${this.lang}"
                                                         value="${this.bookOfferId}"
                                                         show-reload-button
-                                                        reload-button-title="${this.bookOffer ? i18n.t('renew-loan.button-refresh-title', {personName: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
+                                                        reload-button-title="${this.bookOffer ? i18n.t('shelving.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>
                 </div>
                 <div class="field">

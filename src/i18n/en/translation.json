@@ -15,7 +15,8 @@
     "placeholder": "Please enter a barcode"
   },
   "shelving": {
-    "title": "Book shelving"
+    "title": "Book shelving",
+    "button-refresh-title": "Load shelving from {{name}} again"
   },
   "create-loan": {
     "title": "Loan",
@@ -26,7 +27,8 @@
     "error-existing-loans-body": "Existing loan was found, a new one cannot be created!",
     "submit": "Loan book",
     "success-summary": "Book loan creation successful",
-    "success-body": "The book loan creation successful."
+    "success-body": "The book loan creation successful.",
+    "button-refresh-title": "Check loans of {{name}} again"
   },
   "return-book": {
     "title": "Return",
@@ -38,7 +40,8 @@
     "submit": "Return book",
     "success-summary": "Book returned successfully",
     "success-body": "The book was returned successfully.",
-    "borrower": "Borrower"
+    "borrower": "Borrower",
+    "button-refresh-title": "Load loans of {{name}} again"
   },
   "renew-loan": {
     "title": "Renew",
@@ -56,7 +59,6 @@
     "info-renew-loan-success-summary": "Renewal successfull",
     "info-renew-loan-success-body": "The renewal of the loan was successful.",
     "error-renew-loan-date-in-past": "End time may not be in the past!",
-    "button-refresh-value": "Refresh",
     "button-refresh-title": "Load loans from {{personName}} again",
     "contact-value": "EMail",
     "contact-title": "Contact {{personName}} via email",

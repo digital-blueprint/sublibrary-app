@@ -24,6 +24,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             bookOfferId: { type: String, attribute: 'book-offer-id' },
+            bookOffer: { type: Object, attribute: false },
             personId: { type: String, attribute: 'person-id' },
         };
     }
@@ -221,7 +222,11 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                         <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.bookOfferId}"></vpu-library-book-offer-select>
+                         <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}"
+                                                        lang="${this.lang}"
+                                                        value="${this.bookOfferId}"
+                                                        show-reload-button
+                                                        reload-button-title="${this.bookOffer ? i18n.t('create-loan.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>
                 </div>
                 <div class="field">
