@@ -4,6 +4,7 @@ import {css, html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
 import VPULibraryLitElement from "./vpu-library-lit-element";
 import 'vpu-language-select';
+import 'vpu-library-book-offer-select';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import * as errorUtils from "vpu-common/error";
