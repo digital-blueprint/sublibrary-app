@@ -205,7 +205,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
                 </div>
                 <div class="field">
                     <div class="notification is-info">
-                        Example book barcodes: <code>+F55555</code>, <code>+F123456</code>, <code>+F1234567</code>, <code>+F987654</code>
+                        Example book barcodes: <code>+F58330104</code>, <code>+F58019101</code>, <code>+F53498803</code>, <code>+F58347402</code>
                     </div>
                 </div>
                 <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>

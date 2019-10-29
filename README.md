@@ -37,7 +37,7 @@ npm test
 
 Jump to <http://localhost:8001> and you should get a Single Sign On login page.
 
-Example book barcodes: `+F55555`, `+F123456`, `+F1234567`
+Example book barcodes: `+F58330104`, `+F58019101`, `+F53498803`
 
 
 ## Remote development
