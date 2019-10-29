@@ -85,12 +85,6 @@ class LibraryApp extends VPULitElement {
                 });
         }
 
-        // dynamically import the js modules of the components
-        for (let routingName in metadata) {
-            const data = metadata[routingName];
-            await import(basePath + data.module_src);
-        }
-
         // this also triggers a rebuilding of the menu
         that.metadata = metadata;
 
@@ -244,28 +238,33 @@ class LibraryApp extends VPULitElement {
     switchComponent(componentTag) {
         const changed = (componentTag !== this.activeView);
         this.activeView = componentTag;
+        if (changed)
+            this.router.update();
         const metadata = this.activeMetaData();
 
         if (metadata === undefined) {
             return;
         }
 
-        const component = this._(metadata.element);
-        this.updatePageTitle();
-        this.subtitle = this.activeMetaDataText("short_name");
-        if (changed)
-            this.router.update();
+        import(basePath + metadata.module_src).then(() => {
+            const component = this._(metadata.element);
+            this.updatePageTitle();
+            this.subtitle = this.activeMetaDataText("short_name");
 
-        if (!component)
-            return;
+            if (!component)
+                return;
 
-        if (component.hasAttribute("person-id")) {
-            component.setAttribute("person-id", sessionStorage.getItem('vpu-person-id') || '');
-        }
+            if (component.hasAttribute("person-id")) {
+                component.setAttribute("person-id", sessionStorage.getItem('vpu-person-id') || '');
+            }
 
-        if (component.hasAttribute("book-offer-id")) {
-            component.setAttribute("book-offer-id", sessionStorage.getItem('vpu-book-offer-id') || '');
-        }
+            if (component.hasAttribute("book-offer-id")) {
+                component.setAttribute("book-offer-id", sessionStorage.getItem('vpu-book-offer-id') || '');
+            }
+        }).catch((e) => {
+            console.error(`Error loading ${ metadata.element }`);
+            throw e;
+        });
     }
 
     activeMetaData() {
