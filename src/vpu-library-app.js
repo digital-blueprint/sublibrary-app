@@ -12,6 +12,7 @@ import basePath from 'consts:basePath';
 import {classMap} from 'lit-html/directives/class-map.js';
 // import * as errorreport from 'vpu-common/errorreport';
 import {Router} from './router.js';
+import * as utils from "./utils";
 
 // errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
 
@@ -174,6 +175,11 @@ class LibraryApp extends VPULitElement {
 
             window.addEventListener("vpu-auth-person-init", () => {
                 that.user = that._('vpu-auth').person.identifier;
+
+                const libraries = utils.getCurrentLibraries();
+
+                // TODO: we need a selector to choose from library if there are multiple libraries
+                window.VPUPersonLibrary = libraries.length > 0 ? libraries[0] : "";
             });
         });
     }

@@ -78,6 +78,8 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                     }
                 }));
 
+                // TODO: check if library of book matches person's functions
+
                 $loansLoadingIndicator.show();
 
                 // check if there are already loans on this book offer
@@ -143,6 +145,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
                 const data = {
                     "borrower": that.personId,
+                    "library": window.VPUPersonLibrary,
                     "endTime": date.toISOString()
                 };
 
