@@ -59,6 +59,12 @@ class SelectInstitute extends VPULitElement {
         window.VPUPersonLibrary = this.institute;
         console.log('(change) window.VPUPersonLibrary = ' + window.VPUPersonLibrary);
     }
+    //
+    // selectOpen() {
+    //     var e = document.createEvent('MouseEvents');
+    //     e.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    //     this.select.dispatchEvent(e);
+    // }
 
     static get styles() {
         // language=css
@@ -66,6 +72,12 @@ class SelectInstitute extends VPULitElement {
             ${commonStyles.getThemeCSS()}
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
+            select, option {
+              -webkit-appearance: none; /* WebKit/Chromium */
+              -moz-appearance: none; /* Gecko */
+              appearance: none; /* future (or now) */
+              border: 0;
+            }
             #select-1 {
                 border-radius: var(--vpu-border-radius);
                 color: inherit;
@@ -77,10 +89,11 @@ class SelectInstitute extends VPULitElement {
 
     render() {
         return html`
-        <select id="select-1" class="select" ?disabled=${this.institutes.length < 2} @change="${this.changed}">
+        <select id="select-1" ?disabled=${this.institutes.length < 2} @change="${this.changed}">
         ${ this.institutes.map((item) => { return html`<option value=${item} ?selected=${item === this.institute}>${item}</option>`;})}
         </select>
         `;
+//    <vpu-icon name="chevron-down" id="menu-chevron-icon" @click="${this.selectOpen}"></vpu-icon>
     }
 
     /**
