@@ -13,6 +13,7 @@ import {classMap} from 'lit-html/directives/class-map.js';
 // import * as errorreport from 'vpu-common/errorreport';
 import {Router} from './router.js';
 import * as utils from "./utils";
+import './vpu-select-institute.js';
 
 // errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
 
@@ -175,11 +176,6 @@ class LibraryApp extends VPULitElement {
 
             window.addEventListener("vpu-auth-person-init", () => {
                 that.user = that._('vpu-auth').person.identifier;
-
-                const libraries = utils.getCurrentLibraries();
-
-                // TODO: we need a selector to choose from library if there are multiple libraries
-                window.VPUPersonLibrary = libraries.length > 0 ? libraries[0] : "";
             });
         });
     }
@@ -478,7 +474,7 @@ class LibraryApp extends VPULitElement {
                 }
 
                 header {
-                    grid-template-rows: 40px;
+                    grid-template-rows: auto;
                     grid-template-areas: "hd1-left hd1-right";
                 }
 
@@ -557,7 +553,10 @@ class LibraryApp extends VPULitElement {
                         <vpu-language-select @vpu-language-changed=${this.onLanguageChanged.bind(this)}></vpu-language-select>
                     </div>
                     <div class="hd1-right">
+                    <div style="display: inline">
                         <vpu-auth lang="${this.lang}" client-id="${commonUtils.setting('keyCloakClientId')}" load-person remember-login></vpu-auth>
+                        <vpu-select-institute lang="${this.lang}"></vpu-select-institute>
+                    </div>
                     </div>
                     <div class="hd2-left">
                         <div class="header">
