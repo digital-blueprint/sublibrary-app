@@ -90,7 +90,8 @@ class LibraryShelving extends VPULibraryLitElement {
             that.$('#send').click((e) => {
                 e.preventDefault();
                 console.log("send");
-                const apiUrl = that.entryPointUrl + $bookOfferSelect.val();
+                const apiUrl = that.entryPointUrl + $bookOfferSelect.val() +
+                    "?library=" + encodeURIComponent(window.VPUPersonLibrary);
                 console.log(apiUrl);
                 console.log($locationIdentifierInput);
 
