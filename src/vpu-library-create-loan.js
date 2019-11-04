@@ -32,77 +32,11 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
     connectedCallback() {
         super.connectedCallback();
-        const that = this;
 
         this.updateComplete.then(()=>{
-            const $bookOfferSelect = that.$('vpu-library-book-offer-select');
-
             // show user interface when logged in person object is available
-            that.callInitUserInterface();
-
-            // post loan with borrower
-            that.$('#send').click((e) => {
-                e.preventDefault();
-
-                const dateSelect = that._("input[type='date']");
-                const timeSelect = that._("input[type='time']");
-                const date = new Date(dateSelect.value + " " + timeSelect.value);
-
-                // check if selected date is in the past
-                if (date < (new Date())) {
-                    notify({
-                        "summary": i18n.t('error-summary'),
-                        "body": i18n.t('renew-loan.error-renew-loan-date-in-past'),
-                        "type": "warning",
-                        "timeout": 5,
-                    });
-
-                    return;
-                }
-
-                console.log("send");
-                const apiUrl = that.entryPointUrl + that.bookOfferId + "/loans";
-                console.log(apiUrl);
-
-                const data = {
-                    "borrower": that.personId,
-                    "library": window.VPUPersonLibrary.code,
-                    "endTime": date.toISOString()
-                };
-
-                console.log(data);
-                console.log(JSON.stringify(data));
-
-                $.ajax({
-                    url: apiUrl,
-                    type: 'POST',
-                    contentType: 'application/json',
-                    beforeSend: function( jqXHR ) {
-                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
-                    },
-                    data: JSON.stringify(data),
-                    success: function(data) {
-                        notify({
-                            "summary": i18n.t('create-loan.success-summary'),
-                            "body": i18n.t('create-loan.success-body'),
-                            "type": "success",
-                            "timeout": 5,
-                        });
-
-                        $bookOfferSelect[0].clear();
-                    },
-                    error: errorUtils.handleXhrError,
-                    complete: function (jqXHR, textStatus, errorThrown) {
-                        that._("#send").stop();
-                        that.updateSubmitButtonDisabled();
-                    }
-                });
-            });
+            this.callInitUserInterface();
         });
-    }
-
-    updateSubmitButtonDisabled() {
-        this.$("#send").prop("disabled", this.personId === "" || this.bookOfferId === "");
     }
 
     update(changedProperties) {
@@ -152,7 +86,6 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
         this.bookOffer = bookOffer;
         this.bookOfferId = bookOfferId;
-        this.updateSubmitButtonDisabled();
 
         const apiUrl = this.entryPointUrl + this.bookOfferId + "/loans";
 
@@ -210,8 +143,6 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         const person = JSON.parse(select.dataset.object);
         const personId = person["@id"];
 
-        this.updateSubmitButtonDisabled();
-
         this.personId = personId;
         this.person = person;
 
@@ -222,6 +153,64 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                 value: this.personId,
             }
         }));
+    }
+
+    onSubmitClicked(e) {
+        e.preventDefault();
+
+        const bookOfferSelect = this.shadowRoot.querySelector('vpu-library-book-offer-select');
+        const dateSelect = this._("input[type='date']");
+        const timeSelect = this._("input[type='time']");
+        const date = new Date(dateSelect.value + " " + timeSelect.value);
+
+        // check if selected date is in the past
+        if (date < (new Date())) {
+            notify({
+                "summary": i18n.t('error-summary'),
+                "body": i18n.t('renew-loan.error-renew-loan-date-in-past'),
+                "type": "warning",
+                "timeout": 5,
+            });
+
+            return;
+        }
+
+        console.log("send");
+        const apiUrl = this.entryPointUrl + this.bookOfferId + "/loans";
+        console.log(apiUrl);
+
+        const data = {
+            "borrower": this.personId,
+            "library": window.VPUPersonLibrary.code,
+            "endTime": date.toISOString()
+        };
+
+        console.log(data);
+        console.log(JSON.stringify(data));
+
+        $.ajax({
+            url: apiUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            beforeSend: function( jqXHR ) {
+                jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
+            },
+            data: JSON.stringify(data),
+            success: function(data) {
+                notify({
+                    "summary": i18n.t('create-loan.success-summary'),
+                    "body": i18n.t('create-loan.success-body'),
+                    "type": "success",
+                    "timeout": 5,
+                });
+
+                bookOfferSelect.clear();
+            },
+            error: errorUtils.handleXhrError,
+            complete: (jqXHR, textStatus, errorThrown) => {
+                this._("#send").stop();
+            }
+        });
     }
 
     render() {
@@ -268,7 +257,11 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                     </div>
                     <div class="field">
                         <div class="control">
-                             <vpu-button id="send" disabled="disabled" value="${i18n.t('create-loan.submit')}" type=""></vpu-button>
+                             <vpu-button id="send"
+                                         @click=${this.onSubmitClicked}
+                                         ?disabled="${this.personId === "" || this.bookOfferId === ""}"
+                                         value="${i18n.t('create-loan.submit')}"
+                                         type=""></vpu-button>
                         </div>
                     </div>
                 </div>
