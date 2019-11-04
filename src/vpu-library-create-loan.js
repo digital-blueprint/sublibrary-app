@@ -164,6 +164,10 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         bookOffer = JSON.parse(bookOffer);
 
         const bookOfferId = bookOffer["@id"];
+
+        if (this.bookOffer !== null && bookOfferId === this.bookOfferId)
+            return;
+
         this.bookOffer = bookOffer;
         this.bookOfferId = bookOfferId;
         this.updateSubmitButtonDisabled();
