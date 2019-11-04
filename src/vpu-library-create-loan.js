@@ -35,28 +35,10 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         const that = this;
 
         this.updateComplete.then(()=>{
-            const $personSelect = that.$('vpu-person-select');
             const $bookOfferSelect = that.$('vpu-library-book-offer-select');
 
             // show user interface when logged in person object is available
             that.callInitUserInterface();
-
-            $personSelect.change(function () {
-                that.person = $(this).data("object");
-                that.personId = that.person["@id"];
-                that.updateSubmitButtonDisabled();
-
-                // set person-id of the custom element
-                that.setAttribute("person-id", that.personId);
-
-                // fire a change event
-                that.dispatchEvent(new CustomEvent('change', {
-                    detail: {
-                        type: "person-id",
-                        value: that.personId,
-                    }
-                }));
-            });
 
             // post loan with borrower
             that.$('#send').click((e) => {
@@ -223,6 +205,25 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
     }
 
+    onPersonSelectChanged(e) {
+        const select = e.target;
+        const person = JSON.parse(select.dataset.object);
+        const personId = person["@id"];
+
+        this.updateSubmitButtonDisabled();
+
+        this.personId = personId;
+        this.person = person;
+
+        // fire a change event
+        this.dispatchEvent(new CustomEvent('change', {
+            detail: {
+                type: "person-id",
+                value: this.personId,
+            }
+        }));
+    }
+
     render() {
         const minDate = new Date().toISOString();
         let date = new Date();
@@ -234,7 +235,11 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">
-                        <vpu-person-select entry-point-url="${this.entryPointUrl}" lang="${this.lang}" value="${this.personId}"></vpu-person-select>
+                        <vpu-person-select entry-point-url="${this.entryPointUrl}"
+                                           @change=${this.onPersonSelectChanged}
+                                           lang="${this.lang}"
+                                           value="${this.personId}">
+                        </vpu-person-select>
                     </div>
                 </div>
                 <div class="field">
