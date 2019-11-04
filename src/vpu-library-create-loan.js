@@ -145,7 +145,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
                 const data = {
                     "borrower": that.personId,
-                    "library": window.VPUPersonLibrary,
+                    "library": window.VPUPersonLibrary.code,
                     "endTime": date.toISOString()
                 };
 
