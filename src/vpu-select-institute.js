@@ -44,14 +44,12 @@ class SelectInstitute extends VPULitElementJQuery {
                 this.institutes = await this.getAssosiatedInstitutes();
                 this.institute = this.institutes.length > 0 ? this.institutes[0] : {};
                 window.VPUPersonLibrary = this.institute;
-                console.log('(init) window.VPUPersonLibrary:');
-                console.dir(window.VPUPersonLibrary);
                 this.initSelect2();
             });
         });
     }
 
-    initSelect2(ignorePreset = false) {
+    initSelect2() {
         const that = this;
         const $this = $(this);
 
@@ -73,14 +71,11 @@ class SelectInstitute extends VPULitElementJQuery {
             dropdownParent: this.$('#select-institute-dropdown'),
             data: this.institutes.map((item, id) => { return {'id': item.id, 'text': item.code + ' ' + item.name }; }),
         }).on("select2:select", function (e) {
-            //debugger
             if (that.$select ) {
                 that.institute = that.institutes.find(function(item) {
                     return item.code  + ' ' === that.$select.select2('data')[0].text.substring(0, item.code.length + 1);
                 });
                 window.VPUPersonLibrary = that.institute;
-                console.log('(change) window.VPUPersonLibrary:');
-                console.dir(window.VPUPersonLibrary);
             }
         });
 
@@ -193,8 +188,6 @@ class SelectInstitute extends VPULitElementJQuery {
                         'Authorization': 'Bearer ' + window.VPUAuthToken,
                     },
                 });
-                //.then(response => response.json())
-                //.then((org) => {
                 const org = await response.json();
                     const institute = {
                         id: matches[2],
@@ -202,7 +195,6 @@ class SelectInstitute extends VPULitElementJQuery {
                         name: org.name,
                     };
                     results.push( institute );
-                // });
             }
         }
 
