@@ -37,8 +37,6 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         this.updateComplete.then(()=>{
             const $personSelect = that.$('vpu-person-select');
             const $bookOfferSelect = that.$('vpu-library-book-offer-select');
-            const $createLoanBlock = that.$('#create-loan-block');
-            const $loansLoadingIndicator = that.$('#loans-loading');
 
             // show user interface when logged in person object is available
             that.callInitUserInterface();
@@ -58,65 +56,6 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                         value: that.personId,
                     }
                 }));
-            });
-
-            // show create loan block if book offer was selected
-            $bookOfferSelect.change(function () {
-                that.bookOffer = $(this).data("object");
-                that.bookOfferId = that.bookOffer["@id"];
-                that.updateSubmitButtonDisabled();
-                const apiUrl = that.entryPointUrl + that.bookOfferId + "/loans";
-
-                // set book-offer-id of the custom element
-                that.setAttribute("book-offer-id", that.bookOfferId);
-
-                // fire a change event
-                that.dispatchEvent(new CustomEvent('change', {
-                    detail: {
-                        type: "book-offer-id",
-                        value: that.bookOfferId,
-                    }
-                }));
-
-                // TODO: check if library of book matches person's functions
-
-                $loansLoadingIndicator.show();
-
-                // check if there are already loans on this book offer
-                fetch(apiUrl, {
-                    headers: {
-                        'Content-Type': 'application/ld+json',
-                        'Authorization': 'Bearer ' + window.VPUAuthToken,
-                    },
-                })
-                .then(result => {
-                    $loansLoadingIndicator.hide();
-                    if (!result.ok) throw result;
-                    return result.json();
-                })
-                .then(result => {
-                    const loans = result['hydra:member'];
-
-                    if (loans.length > 0) {
-                        console.log(loans);
-                        notify({
-                            "summary": i18n.t('create-loan.error-existing-loans-summary'),
-                            "body": i18n.t('create-loan.error-existing-loans-body'),
-                            "type": "danger",
-                            "timeout": 10,
-                        });
-                    } else {
-                        notify({
-                            "summary": i18n.t('create-loan.info-no-existing-loans-summary'),
-                            "body": i18n.t('create-loan.info-no-existing-loans-body'),
-                            "type": "info",
-                            "timeout": 5,
-                        });
-                        $createLoanBlock.show();
-                    }
-                }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
-            }).on('unselect', function (e) {
-                $createLoanBlock.hide();
             });
 
             // post loan with borrower
@@ -209,6 +148,77 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         `;
     }
 
+    onBookSelectChanged(e) {
+        const select = e.target;
+        let bookOffer = select.dataset.object;
+        const createLoanBlock = this.shadowRoot.querySelector('#create-loan-block');
+        const loansLoadingIndicator = this.shadowRoot.querySelector('#loans-loading');
+
+        if (!bookOffer) {
+            this.bookOffer = null;
+            this.bookOfferId = "";
+            createLoanBlock.style.display = "none";
+            return;
+        }
+
+        bookOffer = JSON.parse(bookOffer);
+
+        const bookOfferId = bookOffer["@id"];
+        this.bookOffer = bookOffer;
+        this.bookOfferId = bookOfferId;
+        this.updateSubmitButtonDisabled();
+
+        const apiUrl = this.entryPointUrl + this.bookOfferId + "/loans";
+
+        // set book-offer-id of the custom element
+        this.setAttribute("book-offer-id", this.bookOfferId);
+
+        // fire a change event
+        this.dispatchEvent(new CustomEvent('change', {
+            detail: {
+                type: "book-offer-id",
+                value: this.bookOfferId,
+            }
+        }));
+
+        // TODO: check if library of book matches person's functions
+        loansLoadingIndicator.style.display = "block";
+
+        // check if there are already loans on this book offer
+        fetch(apiUrl, {
+            headers: {
+                'Content-Type': 'application/ld+json',
+                'Authorization': 'Bearer ' + window.VPUAuthToken,
+            },
+        })
+        .then(result => {
+            loansLoadingIndicator.style.display = "none";
+            if (!result.ok) throw result;
+            return result.json();
+        })
+        .then(result => {
+            const loans = result['hydra:member'];
+
+            if (loans.length > 0) {
+                console.log(loans);
+                notify({
+                    "summary": i18n.t('create-loan.error-existing-loans-summary'),
+                    "body": i18n.t('create-loan.error-existing-loans-body'),
+                    "type": "danger",
+                    "timeout": 10,
+                });
+            } else {
+                notify({
+                    "summary": i18n.t('create-loan.info-no-existing-loans-summary'),
+                    "body": i18n.t('create-loan.info-no-existing-loans-body'),
+                    "type": "info",
+                    "timeout": 5,
+                });
+                createLoanBlock.style.display = "block";
+            }
+        }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
+    }
+
     render() {
         const minDate = new Date().toISOString();
         let date = new Date();
@@ -227,6 +237,8 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
                          <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}"
+                                                        @change=${this.onBookSelectChanged}
+                                                        @unselect=${this.onBookSelectChanged}
                                                         lang="${this.lang}"
                                                         value="${this.bookOfferId}"
                                                         show-reload-button
