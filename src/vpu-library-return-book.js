@@ -111,7 +111,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
                 e.preventDefault();
                 console.log("send");
                 const apiUrl = that.entryPointUrl + that.bookOfferId + "/return" +
-                    "?library=" + encodeURIComponent(window.VPUPersonLibrary);
+                    "?library=" + encodeURIComponent(window.VPUPersonLibrary.code);
                 console.log(apiUrl);
 
                 $.ajax({
