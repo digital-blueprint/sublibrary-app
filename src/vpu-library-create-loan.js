@@ -1,6 +1,5 @@
 import {i18n} from './i18n.js';
 import {css, html} from 'lit-element';
-import {send as notify} from 'vpu-notification';
 import VPULibraryLitElement from './vpu-library-lit-element';
 import 'vpu-person-select';
 import 'vpu-library-book-offer-select';
@@ -17,6 +16,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         this.bookOffer = null;
         this.personId = "";
         this.person = null;
+        this.status = null;
     }
 
     static get properties() {
@@ -26,6 +26,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
             bookOfferId: { type: String, attribute: 'book-offer-id' },
             bookOffer: { type: Object, attribute: false },
             personId: { type: String, attribute: 'person-id' },
+            status: { type: Object },
         };
     }
 
@@ -48,10 +49,6 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         super.update(changedProperties);
     }
 
-    onLanguageChanged(e) {
-        this.lang = e.detail.lang;
-    }
-
     static get styles() {
         // language=css
         return css`
@@ -69,7 +66,10 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         const createLoanBlock = this.shadowRoot.querySelector('#create-loan-block');
         const loansLoadingIndicator = this.shadowRoot.querySelector('#loans-loading');
 
+        this.status = null;
+
         if (!bookOffer) {
+            this.status = null;
             this.bookOffer = null;
             this.bookOfferId = "";
             createLoanBlock.style.display = "none";
@@ -79,9 +79,6 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         bookOffer = JSON.parse(bookOffer);
 
         const bookOfferId = bookOffer["@id"];
-
-        if (this.bookOffer !== null && bookOfferId === this.bookOfferId)
-            return;
 
         this.bookOffer = bookOffer;
         this.bookOfferId = bookOfferId;
@@ -126,19 +123,15 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         const loans = result['hydra:member'];
 
         if (loans.length > 0) {
-            notify({
-                "summary": i18n.t('create-loan.error-existing-loans-summary'),
-                "body": i18n.t('create-loan.error-existing-loans-body'),
-                "type": "danger",
-                "timeout": 10,
-            });
+            this.status = {
+                "summary": 'create-loan.error-existing-loans-summary',
+                "body": 'create-loan.error-existing-loans-body',
+            };
         } else {
-            notify({
-                "summary": i18n.t('create-loan.info-no-existing-loans-summary'),
-                "body": i18n.t('create-loan.info-no-existing-loans-body'),
-                "type": "info",
-                "timeout": 5,
-            });
+            this.status = {
+                "summary": 'create-loan.info-no-existing-loans-summary',
+                "body": 'create-loan.info-no-existing-loans-body',
+            };
             createLoanBlock.style.display = "block";
         }
     }
@@ -163,20 +156,24 @@ class LibraryCreateLoan extends VPULibraryLitElement {
     async onSubmitClicked(e) {
         e.preventDefault();
         const button = e.currentTarget;
+        try {
+            await this.onSubmitClickedInternal(e);
+        } finally {
+            button.stop();
+        }
+    }
 
-        const bookOfferSelect = this.shadowRoot.querySelector('vpu-library-book-offer-select');
+    async onSubmitClickedInternal(e) {
         const dateSelect = this._("input[type='date']");
         const timeSelect = this._("input[type='time']");
         const date = new Date(dateSelect.value + " " + timeSelect.value);
 
         // check if selected date is in the past
         if (date < (new Date())) {
-            notify({
+            this.status = {
                 "summary": i18n.t('error-summary'),
                 "body": i18n.t('renew-loan.error-renew-loan-date-in-past'),
-                "type": "warning",
-                "timeout": 5,
-            });
+            };
 
             return;
         }
@@ -200,19 +197,13 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         });
 
         if (response.ok) {
-            notify({
-                "summary": i18n.t('create-loan.success-summary'),
-                "body": i18n.t('create-loan.success-body'),
-                "type": "success",
-                "timeout": 5,
-            });
-
-            bookOfferSelect.clear();
+            this.status = {
+                "summary": 'create-loan.success-summary',
+                "body": 'create-loan.success-body',
+            };
         } else {
             await errorUtils.handleFetchError(response);
         }
-
-        button.stop();
     }
 
     render() {
@@ -261,12 +252,18 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                         <div class="control">
                              <vpu-button id="send"
                                          @click=${this.onSubmitClicked}
-                                         ?disabled="${this.personId === "" || this.bookOfferId === ""}"
                                          value="${i18n.t('create-loan.submit')}"
                                          type=""></vpu-button>
                         </div>
                     </div>
                 </div>
+                ${ this.status ? html`
+                    <br>
+                    <div class="notification is-info">
+                        <h4>${i18n.t(this.status.summary)}</h4>
+                        ${i18n.t(this.status.body)}
+                    </div>
+                `: ``}
             </form>
             <div class="notification is-warning" id="login-error-block">
                 ${i18n.t('error-login-message')}
