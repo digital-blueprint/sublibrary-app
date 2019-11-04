@@ -18,33 +18,3 @@ export const findObjectInApiResults = (identifier, results, identifierAttribute 
         }
     }
 };
-
-/**
- * Returns the list of assigned libraries of the current user
- *
- * @returns {Array}
- */
-export const getCurrentLibraries = () => {
-    if (window.VPUPerson === undefined) {
-        return [];
-    }
-
-    const functions = window.VPUPerson.functions;
-
-    if (functions === undefined) {
-        return [];
-    }
-
-    const re = /^F_BIB:F:(\d+):\d+$/;
-    let results = [];
-
-    for (const item of functions) {
-        const matches = re.exec(item);
-
-        if (matches !== null) {
-            results.push("F" + matches[1]);
-        }
-    }
-
-    return results;
-};
