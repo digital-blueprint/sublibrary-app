@@ -76,7 +76,7 @@ class SelectInstitute extends VPULitElementJQuery {
             width: '100%',
             language: this.lang === "de" ? select2LangDe() : select2LangEn(),
             placeholderOption: 'select an institute', //i18n.t('no institute found'),
-            dropdownParent: this._('#select-institute-dropdown'),
+            dropdownParent: this.$('#select-institute-dropdown'),
             data: this.institutes.map((item, id) => { return {'id': item, 'text': item}; }),
         }).on("select2:select", function (e) {
             //debugger
@@ -145,7 +145,7 @@ class SelectInstitute extends VPULitElementJQuery {
         <div class="select">
             <div class="select2-control control">
                 <!-- https://select2.org-->
-                <select id="${this.selectId}" name="select-institute" class="select" style="visibility: hidden;">
+                <select id="${this.selectId}" name="select-institute" class="select" style="visibility: hidden;"></select>
             </div>
             <div id="select-institute-dropdown"></div>
         </div>
