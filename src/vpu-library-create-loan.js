@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import {i18n} from './i18n.js';
 import {css, html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
@@ -64,7 +63,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         `;
     }
 
-    onBookSelectChanged(e) {
+    async onBookSelectChanged(e) {
         const select = e.target;
         let bookOffer = select.dataset.object;
         const createLoanBlock = this.shadowRoot.querySelector('#create-loan-block');
@@ -102,40 +101,46 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
         // TODO: check if library of book matches person's functions
         loansLoadingIndicator.style.display = "block";
+        let result = null;
 
-        // check if there are already loans on this book offer
-        fetch(apiUrl, {
-            headers: {
-                'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + window.VPUAuthToken,
-            },
-        })
-        .then(result => {
+        try {
+            // check if there are already loans on this book offer
+            result = await fetch(apiUrl, {
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    'Authorization': 'Bearer ' + window.VPUAuthToken,
+                },
+            });
+
+            if (!result.ok)
+                throw result;
+
+            result = await result.json();
+        } catch (error) {
+            await errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary'));
+            return;
+        } finally {
             loansLoadingIndicator.style.display = "none";
-            if (!result.ok) throw result;
-            return result.json();
-        })
-        .then(result => {
-            const loans = result['hydra:member'];
+        }
 
-            if (loans.length > 0) {
-                console.log(loans);
-                notify({
-                    "summary": i18n.t('create-loan.error-existing-loans-summary'),
-                    "body": i18n.t('create-loan.error-existing-loans-body'),
-                    "type": "danger",
-                    "timeout": 10,
-                });
-            } else {
-                notify({
-                    "summary": i18n.t('create-loan.info-no-existing-loans-summary'),
-                    "body": i18n.t('create-loan.info-no-existing-loans-body'),
-                    "type": "info",
-                    "timeout": 5,
-                });
-                createLoanBlock.style.display = "block";
-            }
-        }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
+        const loans = result['hydra:member'];
+
+        if (loans.length > 0) {
+            notify({
+                "summary": i18n.t('create-loan.error-existing-loans-summary'),
+                "body": i18n.t('create-loan.error-existing-loans-body'),
+                "type": "danger",
+                "timeout": 10,
+            });
+        } else {
+            notify({
+                "summary": i18n.t('create-loan.info-no-existing-loans-summary'),
+                "body": i18n.t('create-loan.info-no-existing-loans-body'),
+                "type": "info",
+                "timeout": 5,
+            });
+            createLoanBlock.style.display = "block";
+        }
     }
 
     onPersonSelectChanged(e) {
@@ -155,8 +160,9 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         }));
     }
 
-    onSubmitClicked(e) {
+    async onSubmitClicked(e) {
         e.preventDefault();
+        const button = e.currentTarget;
 
         const bookOfferSelect = this.shadowRoot.querySelector('vpu-library-book-offer-select');
         const dateSelect = this._("input[type='date']");
@@ -175,9 +181,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
             return;
         }
 
-        console.log("send");
         const apiUrl = this.entryPointUrl + this.bookOfferId + "/loans";
-        console.log(apiUrl);
 
         const data = {
             "borrower": this.personId,
@@ -185,32 +189,30 @@ class LibraryCreateLoan extends VPULibraryLitElement {
             "endTime": date.toISOString()
         };
 
-        console.log(data);
-        console.log(JSON.stringify(data));
-
-        $.ajax({
-            url: apiUrl,
-            type: 'POST',
-            contentType: 'application/json',
-            beforeSend: function( jqXHR ) {
-                jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
+        let response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + window.VPUAuthToken
             },
-            data: JSON.stringify(data),
-            success: function(data) {
-                notify({
-                    "summary": i18n.t('create-loan.success-summary'),
-                    "body": i18n.t('create-loan.success-body'),
-                    "type": "success",
-                    "timeout": 5,
-                });
-
-                bookOfferSelect.clear();
-            },
-            error: errorUtils.handleXhrError,
-            complete: (jqXHR, textStatus, errorThrown) => {
-                this._("#send").stop();
-            }
+            body: JSON.stringify(data),
         });
+
+        if (response.ok) {
+            notify({
+                "summary": i18n.t('create-loan.success-summary'),
+                "body": i18n.t('create-loan.success-body'),
+                "type": "success",
+                "timeout": 5,
+            });
+
+            bookOfferSelect.clear();
+        } else {
+            await errorUtils.handleFetchError(response);
+        }
+
+        button.stop();
     }
 
     render() {
