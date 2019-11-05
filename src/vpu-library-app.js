@@ -466,6 +466,11 @@ class LibraryApp extends VPULitElement {
 
             a { transition: background-color 0.15s ease 0s, color 0.15s ease 0s; }
 
+            #institute-selector {
+                text-align: left;
+                display: inline-block;
+            }
+
             @media (max-width: 680px) {
                 #main {
                     grid-template-columns: auto;
@@ -474,7 +479,7 @@ class LibraryApp extends VPULitElement {
                 }
 
                 header {
-                    grid-template-rows: auto;
+                    grid-template-rows: 40px;
                     grid-template-areas: "hd1-left hd1-right";
                 }
 
@@ -553,10 +558,7 @@ class LibraryApp extends VPULitElement {
                         <vpu-language-select @vpu-language-changed=${this.onLanguageChanged.bind(this)}></vpu-language-select>
                     </div>
                     <div class="hd1-right">
-                    <div style="display: inline">
                         <vpu-auth lang="${this.lang}" client-id="${commonUtils.setting('keyCloakClientId')}" load-person remember-login></vpu-auth>
-                        <vpu-select-institute lang="${this.lang}"></vpu-select-institute>
-                    </div>
                     </div>
                     <div class="hd2-left">
                         <div class="header">
@@ -579,6 +581,9 @@ class LibraryApp extends VPULitElement {
 
                 <div id="headline">
                     <h1 class="title">${i18n.t('headline.title')}</h1>
+                    <div id="institute-selector">
+                        <vpu-select-institute lang="${this.lang}"></vpu-select-institute>
+                    </div>
                 </div>
 
                 <aside>

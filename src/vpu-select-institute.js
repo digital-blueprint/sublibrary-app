@@ -117,10 +117,6 @@ class SelectInstitute extends VPULitElementJQuery {
             ${commonStyles.getThemeCSS()}
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
-            
-            .select2-control.control {
-                width: 85%;
-            }
 
             .select2-dropdown {
                 border-radius: var(--vpu-border-radius);
@@ -134,7 +130,6 @@ class SelectInstitute extends VPULitElementJQuery {
             .select2-container--default .select2-selection--single .select2-selection__rendered {
                 color: inherit;
             }
-            
         `;
     }
 
