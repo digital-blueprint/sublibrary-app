@@ -23,6 +23,7 @@ class SelectInstitute extends VPULitElementJQuery {
         this.institute = null;
         // For some reason using the same ID on the whole page twice breaks select2 (regardless if they are in different custom elements)
         this.selectId = 'select-institute-' + commonUtils.makeId(24);
+        this.cache = { en: [], de: [] };
     }
 
     static get properties() {
@@ -41,13 +42,18 @@ class SelectInstitute extends VPULitElementJQuery {
             this.$select = this.$('#' + this.selectId);
 
             window.addEventListener("vpu-auth-person-init", async () => {
+                this.cache = { en: [], de: [] };
                 this.initSelect2();
             });
         });
     }
 
     async load_institutes() {
-        this.institutes = await this.getAssosiatedInstitutes();
+        if (this.cache[this.lang].length === 0) {
+            this.cache[this.lang] = await this.getAssociatedInstitutes();
+        }
+        this.institutes = this.cache[this.lang];
+
         if (this.institute === null) {
             this.institute = this.institutes.length > 0 ? this.institutes[0] : null;
         } else {
@@ -66,7 +72,6 @@ class SelectInstitute extends VPULitElementJQuery {
 
         // we need to destroy Select2 and remove the event listeners before we can initialize it again
         if (this.$select && this.$select.hasClass('select2-hidden-accessible')) {
-            this.$select.css('visibility', 'hidden');
             this.$select.off('select2:select');
             this.$select.empty().trigger('change');
             this.$select.select2('destroy');
@@ -74,15 +79,17 @@ class SelectInstitute extends VPULitElementJQuery {
 
         await this.load_institutes();
 
-        this.$select.select2({
-            width: '100%',
-            language: this.lang === "de" ? select2LangDe() : select2LangEn(),
-            placeholderOption: i18n.t('select-institute.placeholder'),
-            dropdownParent: this.$('#select-institute-dropdown'),
-            data: this.institutes.map((item) => {
-                return {'id': item.id, 'text': item.code + ' ' + item.name};
-            }),
-        }).on("select2:select", function () {
+        if (this.institute !== null) {
+
+            this.$select.select2({
+                width: '100%',
+                language: this.lang === "de" ? select2LangDe() : select2LangEn(),
+                placeholderOption: i18n.t('select-institute.placeholder'),
+                dropdownParent: this.$('#select-institute-dropdown'),
+                data: this.institutes.map((item) => {
+                    return {'id': item.id, 'text': item.code + ' ' + item.name};
+                }),
+            }).on("select2:select", function () {
             if (that.$select ) {
                 that.institute = that.institutes.find(function(item) {
                     return item.id === that.$select.select2('data')[0].id;
@@ -101,9 +108,7 @@ class SelectInstitute extends VPULitElementJQuery {
             }
         });
 
-        if (this.institute !== null) {
             this.$select.val(this.institute.id).trigger('change');
-            this.$select.css('visibility', 'visible');
         }
         return true;
     }
@@ -135,7 +140,7 @@ class SelectInstitute extends VPULitElementJQuery {
      *
      * @returns {Array}
      */
-    async getAssosiatedInstitutes() {
+    async getAssociatedInstitutes() {
         if (window.VPUPerson === undefined) {
             return [];
         }

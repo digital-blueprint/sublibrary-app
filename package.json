@@ -45,7 +45,7 @@
     "bulma": "^0.7.5",
     "jquery": "^3.4.1",
     "lit-element": "^2.2.1",
-    "select2": "4.0.10",
+    "select2": "^4.0.10",
     "suggestions": "^1.6.0",
     "universal-router": "^8.3.0"
   },
