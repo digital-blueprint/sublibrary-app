@@ -233,6 +233,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                                                         lang="${this.lang}"
                                                         value="${this.bookOfferId}"
                                                         show-reload-button
+                                                        /* no-filtering */
                                                         reload-button-title="${this.bookOffer ? i18n.t('create-loan.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>
                 </div>
