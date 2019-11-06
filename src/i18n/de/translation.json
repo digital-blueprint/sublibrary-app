@@ -75,6 +75,9 @@
     "placeholder": "Bitte geben Sie den Identifikator um das Buch aufzustellen ein",
     "submit": "Abschicken"
   },
+  "select-institute": {
+    "placeholder": "Bitte wählen Sie ein Institut"
+  },
   "page-title": "Bibliothek Applikation",
   "success-summary": "Buchaufstellung erfolgreich",
   "success-body": "Das Buch wurde erfolgreich aufgestellt.",

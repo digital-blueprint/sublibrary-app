@@ -75,6 +75,9 @@
     "placeholder": "Please enter the identifier to place the book",
     "submit": "Send"
   },
+  "select-institute": {
+    "placeholder": "Please select an institute"
+  },
   "page-title": "Library application",
   "success-summary": "Book lineup successful",
   "success-body": "The book lineup was successful.",

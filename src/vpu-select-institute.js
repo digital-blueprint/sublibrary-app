@@ -20,7 +20,7 @@ class SelectInstitute extends VPULitElementJQuery {
         this.jsonld = null;
         this.$select = null;
         this.institutes = [];
-        this.institute = {};
+        this.institute = null;
         // For some reason using the same ID on the whole page twice breaks select2 (regardless if they are in different custom elements)
         this.selectId = 'select-institute-' + commonUtils.makeId(24);
     }
@@ -41,17 +41,24 @@ class SelectInstitute extends VPULitElementJQuery {
             this.$select = this.$('#' + this.selectId);
 
             window.addEventListener("vpu-auth-person-init", async () => {
-                this.institutes = await this.getAssosiatedInstitutes();
-                this.institute = this.institutes.length > 0 ? this.institutes[0] : {};
-                window.VPUPersonLibrary = this.institute;
                 this.initSelect2();
             });
         });
     }
 
-    initSelect2() {
+    async load_institutes() {
+        this.institutes = await this.getAssosiatedInstitutes();
+        if (this.institute === null) {
+            this.institute = this.institutes.length > 0 ? this.institutes[0] : null;
+        } else {
+            this.institute = this.institutes.find((institute) => { return institute.id === this.institute.id; });
+        }
+
+        window.VPUPersonLibrary = this.institute;
+    }
+
+    async initSelect2() {
         const that = this;
-        const $this = $(this);
 
         if (this.$select === null) {
             return false;
@@ -59,32 +66,46 @@ class SelectInstitute extends VPULitElementJQuery {
 
         // we need to destroy Select2 and remove the event listeners before we can initialize it again
         if (this.$select && this.$select.hasClass('select2-hidden-accessible')) {
-            this.$select.select2('destroy');
+            this.$select.css('visibility', 'hidden');
             this.$select.off('select2:select');
-            this.$select.off('select2:closing');
+            this.$select.empty().trigger('change');
+            this.$select.select2('destroy');
         }
+
+        await this.load_institutes();
 
         this.$select.select2({
             width: '100%',
             language: this.lang === "de" ? select2LangDe() : select2LangEn(),
-            placeholderOption: 'select an institute', //i18n.t('no institute found'),
+            placeholderOption: i18n.t('select-institute.placeholder'),
             dropdownParent: this.$('#select-institute-dropdown'),
-            data: this.institutes.map((item, id) => { return {'id': item.id, 'text': item.code + ' ' + item.name }; }),
-        }).on("select2:select", function (e) {
+            data: this.institutes.map((item) => {
+                return {'id': item.id, 'text': item.code + ' ' + item.name};
+            }),
+        }).on("select2:select", function () {
             if (that.$select ) {
                 that.institute = that.institutes.find(function(item) {
-                    return item.code  + ' ' === that.$select.select2('data')[0].text.substring(0, item.code.length + 1);
+                    return item.id === that.$select.select2('data')[0].id;
                 });
+
+                // fire a change event
+                that.dispatchEvent(new CustomEvent('change', {
+                    detail: {
+                        value: that.institute.code,
+                    },
+                    bubbles: true
+                }));
+
                 window.VPUPersonLibrary = that.institute;
+                console.log('vpu-institute-select: window.VPUPersonLibrary.code = ' + window.VPUPersonLibrary.code);
             }
         });
 
-        this.$select.css('visibility', 'visible');
+        if (this.institute !== null) {
+            this.$select.val(this.institute.id).trigger('change');
+            this.$select.css('visibility', 'visible');
+        }
         return true;
-    }
-
-    select2IsInitialized() {
-        return this.$select !== null && this.$select.hasClass("select2-hidden-accessible");
     }
 
     update(changedProperties) {
@@ -92,10 +113,8 @@ class SelectInstitute extends VPULitElementJQuery {
             switch (propName) {
                 case "lang":
                     i18n.changeLanguage(this.lang);
-                    if (this.select2IsInitialized()) {
-                        // no other way to set an other language at runtime did work
-                        this.initSelect2(true);
-                    }
+
+                    this.initSelect2();
                     break;
                 case "entryPointUrl":
                     const that = this;
@@ -109,45 +128,6 @@ class SelectInstitute extends VPULitElementJQuery {
         });
 
         super.update(changedProperties);
-    }
-
-    static get styles() {
-        // language=css
-        return css`
-            ${commonStyles.getThemeCSS()}
-            ${commonStyles.getGeneralCSS()}
-            ${commonStyles.getNotificationCSS()}
-
-            .select2-dropdown {
-                border-radius: var(--vpu-border-radius);
-                background: white;
-            }
-
-            .select2-container--default .select2-selection--single {
-                border-radius: var(--vpu-border-radius);
-            }
-
-            .select2-container--default .select2-selection--single .select2-selection__rendered {
-                color: inherit;
-            }
-        `;
-    }
-
-    render() {
-        commonUtils.initAssetBaseURL('vpu-select-institute-src');
-        const select2CSS = commonUtils.getAssetURL(select2CSSPath);
-        return html`
-            <link rel="stylesheet" href="${select2CSS}">
-
-        <div class="select">
-            <div class="select2-control control">
-                <!-- https://select2.org-->
-                <select id="${this.selectId}" name="select-institute" class="select" style="visibility: hidden;"></select>
-            </div>
-            <div id="select-institute-dropdown"></div>
-        </div>
-
-        `;
     }
 
     /**
@@ -176,7 +156,7 @@ class SelectInstitute extends VPULitElementJQuery {
                 const orgId = matches[2];
                 const apiUrl = this.entryPointUrl + '/organizations/knowledge_base_organizations/' + orgId + '?lang=' + this.lang;
 
-                // load person
+                // load organisations
                 const response = await fetch(apiUrl, {
                     headers: {
                         'Content-Type': 'application/ld+json',
@@ -184,18 +164,56 @@ class SelectInstitute extends VPULitElementJQuery {
                     },
                 });
                 const org = await response.json();
-                    const institute = {
-                        id: matches[2],
-                        code: org.alternateName,
-                        name: org.name,
-                    };
-                    results.push( institute );
+                const institute = {
+                    id: matches[2],
+                    code: org.alternateName,
+                    name: org.name,
+                    url: org.url,
+                };
+                results.push( institute );
             }
         }
 
         return results;
     };
 
+    static get styles() {
+        // language=css
+        return css`
+            ${commonStyles.getThemeCSS()}
+            ${commonStyles.getGeneralCSS()}
+            ${commonStyles.getNotificationCSS()}
+
+            .select2-dropdown {
+                border-radius: var(--vpu-border-radius);
+            }
+
+            .select2-container--default .select2-selection--single {
+                border-radius: var(--vpu-border-radius);
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                color: inherit;
+            }
+        `;
+    }
+
+    render() {
+        commonUtils.initAssetBaseURL('vpu-select-institute-src');
+        const select2CSS = commonUtils.getAssetURL(select2CSSPath);
+        return html`
+            <link rel="stylesheet" href="${select2CSS}">
+
+        <div class="select">
+            <div class="select2-control control">
+                <!-- https://select2.org-->
+                <select id="${this.selectId}" name="select-institute" class="select" style="visibility: hidden;"></select>
+            </div>
+            <div id="select-institute-dropdown"></div>
+        </div>
+
+        `;
+    }
 }
 
 commonUtils.defineCustomElement('vpu-select-institute', SelectInstitute);
