@@ -60,8 +60,6 @@ class SelectInstitute extends VPULitElementJQuery {
         // we need to destroy Select2 and remove the event listeners before we can initialize it again
         if (this.$select && this.$select.hasClass('select2-hidden-accessible')) {
             this.$select.select2('destroy');
-            this.$select.off('select2:select');
-            this.$select.off('select2:closing');
         }
 
         this.$select.select2({
