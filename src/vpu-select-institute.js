@@ -41,7 +41,7 @@ class SelectInstitute extends VPULitElementJQuery {
             this.$select = this.$('#' + this.selectId);
 
             window.addEventListener("vpu-auth-person-init", async () => {
-                this.institutes = await this.getAssosiatedInstitutes();
+                this.institutes = await this.getAssociatedInstitutes();
                 this.institute = this.institutes.length > 0 ? this.institutes[0] : {};
                 window.VPUPersonLibrary = this.institute;
                 this.initSelect2();
@@ -51,7 +51,6 @@ class SelectInstitute extends VPULitElementJQuery {
 
     initSelect2() {
         const that = this;
-        const $this = $(this);
 
         if (this.$select === null) {
             return false;
@@ -60,6 +59,7 @@ class SelectInstitute extends VPULitElementJQuery {
         // we need to destroy Select2 and remove the event listeners before we can initialize it again
         if (this.$select && this.$select.hasClass('select2-hidden-accessible')) {
             this.$select.select2('destroy');
+            this.$select.off('select2:select');
         }
 
         this.$select.select2({
@@ -67,11 +67,13 @@ class SelectInstitute extends VPULitElementJQuery {
             language: this.lang === "de" ? select2LangDe() : select2LangEn(),
             placeholderOption: 'select an institute', //i18n.t('no institute found'),
             dropdownParent: this.$('#select-institute-dropdown'),
-            data: this.institutes.map((item, id) => { return {'id': item.id, 'text': item.code + ' ' + item.name }; }),
+            data: this.institutes.map((item, id) => {
+                return {'id': item.id, 'text': item.code + ' ' + item.name};
+            }),
         }).on("select2:select", function (e) {
-            if (that.$select ) {
-                that.institute = that.institutes.find(function(item) {
-                    return item.code  + ' ' === that.$select.select2('data')[0].text.substring(0, item.code.length + 1);
+            if (that.$select) {
+                that.institute = that.institutes.find(function (item) {
+                    return item.code + ' ' === that.$select.select2('data')[0].text.substring(0, item.code.length + 1);
                 });
                 window.VPUPersonLibrary = that.institute;
             }
@@ -92,7 +94,7 @@ class SelectInstitute extends VPULitElementJQuery {
                     i18n.changeLanguage(this.lang);
                     if (this.select2IsInitialized()) {
                         // no other way to set an other language at runtime did work
-                        this.initSelect2(true);
+                        this.initSelect2();
                     }
                     break;
                 case "entryPointUrl":
@@ -153,7 +155,7 @@ class SelectInstitute extends VPULitElementJQuery {
      *
      * @returns {Array}
      */
-    async getAssosiatedInstitutes() {
+    async getAssociatedInstitutes() {
         if (window.VPUPerson === undefined) {
             return [];
         }
