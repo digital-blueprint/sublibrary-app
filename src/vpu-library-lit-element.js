@@ -46,6 +46,8 @@ export default class VPULibraryLitElement extends VPULitElementJQuery {
     getExampleBookBarcodesHtml() {
         return html`
             <div class="notification is-info">
+                <h3>F1490</h3>
+                Example book barcodes: <code>+F20313804</code>, <code>+F24048209</code>, <code>+F24084706</code>
                 <h3>F2050</h3>
                 Example book barcodes: <code>+F21910103</code>, <code>+F36418703</code>, <code>+F34286303</code>,
                 <code>+F47148902</code>, <code>+F2750200X</code>, <code>+F27006305</code>, <code>+F8160107</code>
