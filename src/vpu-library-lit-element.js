@@ -1,5 +1,6 @@
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
 import * as commonUtils from "vpu-common/utils";
+import {html} from 'lit-element';
 
 export default class VPULibraryLitElement extends VPULitElementJQuery {
     /**
@@ -41,4 +42,17 @@ export default class VPULibraryLitElement extends VPULitElementJQuery {
         // we need to call it in a different function so we can access "this" in initUserInterface()
         commonUtils.pollFunc(() => { return this.initUserInterface(); }, 10000, 100);
     }
+
+    getExampleBookBarcodesHtml() {
+        return html`
+            <div class="notification is-info">
+                <h3>F2050</h3>
+                Example book barcodes: <code>+F21910103</code>, <code>+F36418703</code>, <code>+F34286303</code>,
+                <code>+F47148902</code>, <code>+F2750200X</code>, <code>+F27006305</code>, <code>+F8160107</code>
+                <h3>F2190</h3>
+                Example book barcodes: <code>+F5439740X</code>, <code>+F47139202</code>, <code>+F26813604</code>,
+                <code>+F43692000</code>, <code>+F48530609</code>, <code>+F24978201</code>, <code>+F9301604</code>
+            </div>
+        `;
+    };
 }

@@ -177,9 +177,7 @@ class LibraryShelving extends VPULibraryLitElement {
                     </div>
                 </div>
                 <div class="field">
-                    <div class="notification is-info">
-                        Example book barcodes: <code>+F58330104</code>, <code>+F58019101</code>, <code>+F53498803</code>
-                    </div>
+                    ${this.getExampleBookBarcodesHtml()}
                 </div>
                 <div id="location-identifier-block">
                     <div class="field">
