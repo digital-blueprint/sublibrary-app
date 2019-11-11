@@ -17,6 +17,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
         this.personId = "";
         this.person = null;
         this.loans = [];
+        this.orgUnitCode = '';
     }
 
     /**
@@ -28,6 +29,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             personId: { type: String, attribute: 'person-id' },
             loans: { type: Object, attribute: false },
+            orgUnitCode: { type: String, attribute: 'org-unit-code' },
         };
     }
 
@@ -94,8 +96,8 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                 $loansLoadingIndicator.show();
 
                 commonUtils.pollFunc(() => {
-                    // we need to wait until window.VPUPersonLibrary is present!
-                    if (typeof window.VPUPersonLibrary !== 'object' || window.VPUPersonLibrary === null) {
+                    // we need to wait until orgUnitCode is present!
+                    if (this.orgUnitCode === '') {
                         return false;
                     }
 
@@ -133,7 +135,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                                 ];
                                 const tbl = [];
                                 that.loans.forEach(function(loan) {
-                                    if (loan.object.library !== window.VPUPersonLibrary.code) {
+                                    if (loan.object.library !== this.orgUnitCode) {
                                         return;
                                     }
 
@@ -321,6 +323,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                         <vpu-person-select entry-point-url="${this.entryPointUrl}"
                                            lang="${this.lang}"
                                            value="${this.personId}"
+                                           org-unit-code="${this.orgUnitCode}"
                                            show-reload-button
                                            reload-button-title="${this.person ? i18n.t('renew-loan.button-refresh-title', {personName: this.person.name}): ""}"></vpu-person-select>
                     </div>

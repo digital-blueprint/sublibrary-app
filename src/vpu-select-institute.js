@@ -59,8 +59,6 @@ class SelectInstitute extends VPULitElementJQuery {
         } else {
             this.institute = this.institutes.find((institute) => { return institute.id === this.institute.id; });
         }
-
-        window.VPUPersonLibrary = this.institute;
     }
 
     async initSelect2() {
@@ -90,25 +88,34 @@ class SelectInstitute extends VPULitElementJQuery {
                     return {'id': item.id, 'text': item.code + ' ' + item.name};
                 }),
             }).on("select2:select", function () {
-            if (that.$select ) {
-                that.institute = that.institutes.find(function(item) {
-                    return item.id === that.$select.select2('data')[0].id;
-                });
+                if (that.$select ) {
+                    const oldInstituteCode = that.institute.code;
+                    that.institute = that.institutes.find(function(item) {
+                        return item.id === that.$select.select2('data')[0].id;
+                    });
 
-                // fire a change event
-                that.dispatchEvent(new CustomEvent('change', {
-                    detail: {
-                        value: that.institute.code,
-                    },
-                    bubbles: true
-                }));
+                    // fire a change event
+                    if (oldInstituteCode !== that.institute.code) {
+                        const event = new CustomEvent("vpu-institute-changed", {
+                            bubbles: true,
+                            composed: true,
+                            detail: {'orgUnitCode': that.institute.code}
+                        });
+                        this.dispatchEvent(event);
+                    }
 
-                window.VPUPersonLibrary = that.institute;
-                console.log('vpu-institute-select: window.VPUPersonLibrary.code = ' + window.VPUPersonLibrary.code);
-            }
-        });
+                    console.log('vpu-institute-select: institute.code = ' + that.institute.code);
+                }
+            });
 
             this.$select.val(this.institute.id).trigger('change');
+            console.log('institute.code = ' + this.institute.code);
+            const event = new CustomEvent("vpu-institute-changed", {
+                bubbles: true,
+                composed: true,
+                detail: {'orgUnit': this.institute}
+            });
+            this.dispatchEvent(event);
         }
         return true;
     }

@@ -18,6 +18,7 @@ class LibraryShelving extends VPULibraryLitElement {
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.bookOfferId = "";
         this.bookOffer = null;
+        this.ogrUnitCode = '';
     }
 
     static get properties() {
@@ -26,6 +27,7 @@ class LibraryShelving extends VPULibraryLitElement {
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             bookOfferId: { type: String, attribute: 'book-offer-id' },
             bookOffer: { type: Object, attribute: false },
+            orgUnitCode: { type: String, attribute: 'org-unit-code' },
         };
     }
 
@@ -91,7 +93,7 @@ class LibraryShelving extends VPULibraryLitElement {
                 e.preventDefault();
                 console.log("send");
                 const apiUrl = that.entryPointUrl + $bookOfferSelect.val() +
-                    "?library=" + encodeURIComponent(window.VPUPersonLibrary.code);
+                    "?library=" + encodeURIComponent(this.ogrUnitCode);
                 console.log(apiUrl);
                 console.log($locationIdentifierInput);
 
@@ -172,6 +174,7 @@ class LibraryShelving extends VPULibraryLitElement {
                          <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}"
                                                         lang="${this.lang}"
                                                         value="${this.bookOfferId}"
+                                                        org-unit-code="${this.orgUnitCode}"
                                                         show-reload-button
                                                         reload-button-title="${this.bookOffer ? i18n.t('shelving.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>
