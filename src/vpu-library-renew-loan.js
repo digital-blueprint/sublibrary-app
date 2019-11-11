@@ -93,70 +93,84 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                 $noLoansBlock.hide();
                 $loansLoadingIndicator.show();
 
-                // load list of loans for person
-                fetch(apiUrl, {
-                    headers: {
-                        'Content-Type': 'application/ld+json',
-                        'Authorization': 'Bearer ' + window.VPUAuthToken,
-                    },
-                })
-                .then(result => {
-                    $loansLoadingIndicator.hide();
-                    if (!result.ok) throw result;
-                    return result.json();
-                })
-                .then(result => {
-                    // TODO: check if logged-in user has permissions to the library of loan.object.library
-                    that.loans = result['hydra:member'];
-
-                    if (that.loans.length > 0) {
-                        const vdtv1 = that._('#book-loans-1');
-                        if (vdtv1 !== null) {
-                            const minDate = new Date().toISOString();
-                            const columns = [
-                                {title: i18n.t('renew-loan.book') },
-                                {title: i18n.t('renew-loan.end-date') },
-                                null,
-                                ''
-                            ];
-                            const vdtv1_columnDefs = [
-                                {targets: [2], visible: false},
-                                {targets: [1], orderData: [2]},
-                                {targets: [2, 3], searchable: false},
-                                {targets: [3], sortable: false}
-                            ];
-                            const tbl = [];
-                            that.loans.forEach(function(loan) {
-                                const row = [
-                                    loan.object.name,
-                                    `<div class="date-col">
-                                        <input data-date-id="${loan['@id']}"
-                                               type="date" min="${commonUtils.dateToInputDateString(minDate)}"
-                                               value="${commonUtils.dateToInputDateString(loan.endTime)}">
-                                        <input data-time-id="${loan['@id']}"
-                                               type="time" class="hidden" value="23:59:59">
-                                    </div>`,
-                                    loan.endTime,
-                                    `<div class="button-col">
-                                        <vpu-button data-id="${loan['@id']}" data-type="renew"
-                                                    value="Ok" name="send" type="is-small"
-                                                    title="${i18n.t('renew-loan.renew-loan')}" no-spinner-on-click></vpu-button>
-                                        <vpu-button data-id="${loan['@id']}" data-type="contact" data-book-name="${loan.object.name}"
-                                                    value="${i18n.t('renew-loan.contact-value')}" name="send" type="is-small"
-                                                    title="${i18n.t('renew-loan.contact-title', {personName: that.person.name})}" no-spinner-on-click></vpu-button>
-                                    </div>`
-                                ];
-                                tbl.push(row);
-                            });
-                            vdtv1.set_columns(columns)
-                                .set_columnDefs(vdtv1_columnDefs)
-                                .set_datatable(tbl);
-                        }
-                        $renewLoanBlock.show();
-                    } else {
-                        $noLoansBlock.show();
+                commonUtils.pollFunc(() => {
+                    // we need to wait until window.VPUPersonLibrary is present!
+                    if (typeof window.VPUPersonLibrary !== 'object' || window.VPUPersonLibrary === null) {
+                        return false;
                     }
-                }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
+
+                    // load list of loans for person
+                    fetch(apiUrl, {
+                        headers: {
+                            'Content-Type': 'application/ld+json',
+                            'Authorization': 'Bearer ' + window.VPUAuthToken,
+                        },
+                    })
+                    .then(result => {
+                        $loansLoadingIndicator.hide();
+                        if (!result.ok) throw result;
+                        return result.json();
+                    })
+                    .then(result => {
+                        // TODO: check if logged-in user has permissions to the library of loan.object.library
+                        that.loans = result['hydra:member'];
+
+                        if (that.loans.length > 0) {
+                            const vdtv1 = that._('#book-loans-1');
+                            if (vdtv1 !== null) {
+                                const minDate = new Date().toISOString();
+                                const columns = [
+                                    {title: i18n.t('renew-loan.book') },
+                                    {title: i18n.t('renew-loan.end-date') },
+                                    null,
+                                    ''
+                                ];
+                                const vdtv1_columnDefs = [
+                                    {targets: [2], visible: false},
+                                    {targets: [1], orderData: [2]},
+                                    {targets: [2, 3], searchable: false},
+                                    {targets: [3], sortable: false}
+                                ];
+                                const tbl = [];
+                                that.loans.forEach(function(loan) {
+                                    if (loan.object.library !== window.VPUPersonLibrary.code) {
+                                        return;
+                                    }
+
+                                    const row = [
+                                        loan.object.name,
+                                        `<div class="date-col">
+                                            <input data-date-id="${loan['@id']}"
+                                                   type="date" min="${commonUtils.dateToInputDateString(minDate)}"
+                                                   value="${commonUtils.dateToInputDateString(loan.endTime)}">
+                                            <input data-time-id="${loan['@id']}"
+                                                   type="time" class="hidden" value="23:59:59">
+                                        </div>`,
+                                        loan.endTime,
+                                        `<div class="button-col">
+                                            <vpu-button data-id="${loan['@id']}" data-type="renew"
+                                                        value="Ok" name="send" type="is-small"
+                                                        title="${i18n.t('renew-loan.renew-loan')}" no-spinner-on-click></vpu-button>
+                                            <vpu-button data-id="${loan['@id']}" data-type="contact" data-book-name="${loan.object.name}"
+                                                        value="${i18n.t('renew-loan.contact-value')}" name="send" type="is-small"
+                                                        title="${i18n.t('renew-loan.contact-title', {personName: that.person.name})}" no-spinner-on-click></vpu-button>
+                                        </div>`
+                                    ];
+                                    tbl.push(row);
+                                });
+                                vdtv1.set_columns(columns)
+                                    .set_columnDefs(vdtv1_columnDefs)
+                                    .set_datatable(tbl);
+                            }
+                            $renewLoanBlock.show();
+                        } else {
+                            $noLoansBlock.show();
+                        }
+                    }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
+
+                    return true;
+                }, 10000, 100);
+
             }).on('unselect', function (e) {
                 $renewLoanBlock.hide();
             });
