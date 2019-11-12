@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import {i18n} from './i18n.js';
 import {css, html} from 'lit-element';
-import {send as notify} from 'vpu-notification';
 import VPULibraryLitElement from "./vpu-library-lit-element";
 import 'vpu-language-select';
 import 'vpu-library-book-offer-select';
@@ -20,6 +19,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
         this.loan = null;
         this.borrower = null;
         this.borrowerName = "";
+        this.status = null;
     }
 
     static get properties() {
@@ -30,6 +30,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
             bookOffer: { type: Object, attribute: false },
             borrower: { type: Object, attribute: false },
             borrowerName: { type: String, attribute: false },
+            status: { type: Object },
         };
     }
 
@@ -86,20 +87,18 @@ class LibraryReturnBook extends VPULibraryLitElement {
                         console.log(that.loan);
                         that.loadBorrower(that.loan.borrower);
 
-                        notify({
-                            "summary": i18n.t('return-book.info-existing-loans-summary'),
-                            "body": i18n.t('return-book.info-existing-loans-body'),
-                            "type": "info",
-                            "timeout": 5,
-                        });
+                        that.status = {
+                            "summary": 'return-book.info-existing-loans-summary',
+                            "body": 'return-book.info-existing-loans-body',
+                        };
+
                         $returnBookBlock.show();
                     } else {
-                        notify({
-                            "summary": i18n.t('return-book.error-no-existing-loans-summary'),
-                            "body": i18n.t('return-book.error-no-existing-loans-body'),
-                            "type": "warning",
-                            "timeout": 5,
-                        });
+
+                        that.status = {
+                            "summary": 'return-book.error-no-existing-loans-summary',
+                            "body": 'return-book.error-no-existing-loans-body',
+                        };
                     }
                 }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
             }).on('unselect', function (e) {
@@ -125,12 +124,10 @@ class LibraryReturnBook extends VPULibraryLitElement {
                     success: function(data) {
                         $bookOfferSelect[0].clear();
 
-                        notify({
-                            "summary": i18n.t('return-book.success-summary'),
-                            "body": i18n.t('return-book.success-body'),
-                            "type": "success",
-                            "timeout": 5,
-                        });
+                        that.status = {
+                            "summary": 'return-book.success-summary',
+                            "body": 'return-book.success-body',
+                        };
                     },
                     error: errorUtils.handleXhrError,
                     complete: function (jqXHR, textStatus, errorThrown) {
@@ -140,6 +137,10 @@ class LibraryReturnBook extends VPULibraryLitElement {
                 });
             });
         });
+    }
+
+    async onBookSelectChanged(e) {
+        this.status = null;
     }
 
     updateSubmitButtonDisabled() {
@@ -198,10 +199,12 @@ class LibraryReturnBook extends VPULibraryLitElement {
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
                          <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}"
-                                                        lang="${this.lang}"
-                                                        value="${this.bookOfferId}"
-                                                        show-reload-button
-                                                        reload-button-title="${this.bookOffer ? i18n.t('return-book.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
+                            @change=${this.onBookSelectChanged}
+                            @unselect=${this.onBookSelectChanged}
+                            lang="${this.lang}"
+                            value="${this.bookOfferId}"
+                            show-reload-button
+                            reload-button-title="${this.bookOffer ? i18n.t('return-book.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>
                 </div>
                 <div class="field">
@@ -221,6 +224,14 @@ class LibraryReturnBook extends VPULibraryLitElement {
                         </div>
                     </div>
                 </div>
+                
+                ${ this.status ? html`
+                    <br />
+                    <div class="notification is-info">
+                        <h4>${i18n.t(this.status.summary)}</h4>
+                        ${i18n.t(this.status.body)}
+                    </div>
+                `: ``}
             </form>
             <div class="notification is-warning" id="login-error-block">
                 ${i18n.t('error-login-message')}
