@@ -309,6 +309,8 @@ class LibraryRenewLoan extends VPULibraryLitElement {
 
             #renew-loan-block, #permission-error-block { display: none; }
             form, table {width: 100%}
+            
+            #no-loans-block{ font-weight: bold; }
         `;
     }
 
@@ -332,7 +334,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                         <vpu-data-table-view searching paging lang="${this.lang}" id="book-loans-1" columns-count="4" @click="${(e) => this.onDataTableClick(e)}"></vpu-data-table-view>
                     </div>
                 </div>
-                <div id="no-loans-block" style="display: none;font-weight: bold;">
+                <div id="no-loans-block" style="display: none;">
                     ${i18n.t('renew-loan.no-loans')}
                 </div>
             </form>

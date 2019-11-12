@@ -30,7 +30,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
             bookOffer: { type: Object, attribute: false },
             borrower: { type: Object, attribute: false },
             borrowerName: { type: String, attribute: false },
-            status: { type: Object },
+            status: { type: Object , attribute: false  },
         };
     }
 
@@ -199,12 +199,12 @@ class LibraryReturnBook extends VPULibraryLitElement {
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
                          <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}"
-                            @change=${this.onBookSelectChanged}
-                            @unselect=${this.onBookSelectChanged}
-                            lang="${this.lang}"
-                            value="${this.bookOfferId}"
-                            show-reload-button
-                            reload-button-title="${this.bookOffer ? i18n.t('return-book.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
+                                                        @change=${this.onBookSelectChanged}
+                                                        @unselect=${this.onBookSelectChanged}
+                                                        lang="${this.lang}"
+                                                        value="${this.bookOfferId}"
+                                                        show-reload-button
+                                                        reload-button-title="${this.bookOffer ? i18n.t('return-book.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>
                 </div>
                 <div class="field">
@@ -231,7 +231,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
                         <h4>${i18n.t(this.status.summary)}</h4>
                         ${i18n.t(this.status.body)}
                     </div>
-                `: ``}
+                `: ""}
             </form>
             <div class="notification is-warning" id="login-error-block">
                 ${i18n.t('error-login-message')}
