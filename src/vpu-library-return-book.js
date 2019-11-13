@@ -30,7 +30,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
             bookOffer: { type: Object, attribute: false },
             borrower: { type: Object, attribute: false },
             borrowerName: { type: String, attribute: false },
-            status: { type: Object , attribute: false  },
+            status: { type: Object , attribute: false },
         };
     }
 
