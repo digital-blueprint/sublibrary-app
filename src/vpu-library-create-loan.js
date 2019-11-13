@@ -17,7 +17,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         this.personId = "";
         this.person = null;
         this.status = null;
-        this.orgUnitCode = '';
+        this.instituteId = '';
     }
 
     static get properties() {
@@ -28,7 +28,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
             bookOffer: { type: Object, attribute: false },
             personId: { type: String, attribute: 'person-id' },
             status: { type: Object },
-            orgUnitCode: { type: String, attribute: 'org-unit-code' },
+            instituteId: { type: String, attribute: 'institute-id' },
         };
     }
 
@@ -232,7 +232,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                                                         @unselect=${this.onBookSelectChanged}
                                                         lang="${this.lang}"
                                                         value="${this.bookOfferId}"
-                                                        org-unit-code="${this.orgUnitCode}"
+                                                        institute-id="${this.instituteId}"
                                                         show-reload-button
                                                         reload-button-title="${this.bookOffer ? i18n.t('create-loan.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>

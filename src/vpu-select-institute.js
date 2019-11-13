@@ -24,7 +24,7 @@ class SelectInstitute extends VPULitElementJQuery {
         // For some reason using the same ID on the whole page twice breaks select2 (regardless if they are in different custom elements)
         this.selectId = 'select-institute-' + commonUtils.makeId(24);
         this.cache = { en: [], de: [] };
-        this.orgUnitCode = '';
+        this.value = '';
     }
 
     static get properties() {
@@ -33,7 +33,7 @@ class SelectInstitute extends VPULitElementJQuery {
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             institutes: {type: Array, attribute: false},
             institute: {type: Object, attribute: false},
-            orgUnitCode: { type: String, attribute: 'org-unit-code' },
+            value: { type: String },
         }
     }
 
@@ -42,8 +42,7 @@ class SelectInstitute extends VPULitElementJQuery {
 
         this.updateComplete.then(()=> {
             this.$select = this.$('#' + this.selectId);
-            this.orgUnitCode = this.getFirstInstitute();
-            this.fireChangeEvent();
+            this.setFirstInstitute();
 
             window.addEventListener("vpu-auth-person-init", async () => {
                 this.cache = { en: [], de: [] };
@@ -53,27 +52,19 @@ class SelectInstitute extends VPULitElementJQuery {
     }
 
     async load_institutes() {
-        const oldInstitute = this.institute;
-
         if (this.cache[this.lang].length === 0) {
             this.cache[this.lang] = await this.getAssociatedInstitutes();
         }
         this.institutes = this.cache[this.lang];
 
-        if (this.orgUnitCode !== '') {
-            this.institute = this.institutes.find((institute) => { return institute.code === this.orgUnitCode; });
-        } else {
-            // no preset
-            if (this.institute === null) {
-                this.institute = this.institutes.length > 0 ? this.institutes[0] : null;
-            } else {
-                this.institute = this.institutes.find((institute) => {
-                    return institute.id === this.institute.id;
-                });
-            }
+        if (this.institute === null) {
+            this.setFirstInstitute();
         }
-        if (oldInstitute !== this.institute) {
-            this.fireChangeEvent();
+        if (this.institute !== null) {
+            // get institute with all attributes
+            this.institute = this.institutes.find((institute) => {
+                return institute.id === this.institute.id;
+            });
         }
     }
 
@@ -105,38 +96,29 @@ class SelectInstitute extends VPULitElementJQuery {
                 }),
             }).on("select2:select", function () {
                 if (that.$select ) {
-                    const oldInstituteCode = that.institute.code;
                     that.institute = that.institutes.find(function(item) {
                         return item.id === that.$select.select2('data')[0].id;
                     });
 
-                    // fire a change event
-//                    if (oldInstituteCode !== that.institute.code) {
-                        const event = new CustomEvent("change", {
-                            bubbles: true,
-                            composed: true,
-                            detail: {'orgUnitCode': that.institute.code}
-                        });
-                        this.dispatchEvent(event);
-//                    }
-
-                    console.log('vpu-institute-select: institute.code = ' + that.institute.code);
+                    that.fireChangeEvent();
                 }
             });
 
             this.$select.val(this.institute.id).trigger('change');
-            this.fireChangeEvent();
         }
         return true;
     }
 
     fireChangeEvent() {
-        const code = this.institute !== null ? this.institute.code : this.orgUnitCode;
-        console.log('institute.code = ' + code);
+        // console.log('fireChangeEvent() institute:');
+        // console.dir(this.institute);
+        //
         const event = new CustomEvent("change", {
             bubbles: true,
             composed: true,
-            detail: { 'orgUnitCode': code }
+            detail: {
+                'value': this.institute.value,
+            }
         });
         this.dispatchEvent(event);
     }
@@ -149,8 +131,13 @@ class SelectInstitute extends VPULitElementJQuery {
 
                     this.initSelect2();
                     break;
-                case "org-unit-code":
-                    this.institute = this.institutes.find((institute) => { return institute.code === this.orgUnitCode; });
+                case "value":
+                    const matches = this.value.match(/\/\d+$/);
+                    if (matches !== null) {
+                        this.institute = this.institutes.find((institute) => {
+                            return institute.id === matches[1];
+                        });
+                    }
                     break;
                 case "entryPointUrl":
                     const that = this;
@@ -166,15 +153,17 @@ class SelectInstitute extends VPULitElementJQuery {
         super.update(changedProperties);
     }
 
-    getFirstInstitute() {
+    setFirstInstitute() {
          if (window.VPUPerson === undefined) {
-             return '';
+             // console.log('setFirstInstitute(): window.VPUPerson === undefined');
+             return;
          }
 
          const functions = window.VPUPerson.functions;
 
          if (functions === undefined) {
-             return '';
+             // console.log('setFirstInstitute(): functions === undefined');
+             return;
          }
 
          const re = /^F_BIB:F:(\d+):(\d+)$/;
@@ -182,10 +171,19 @@ class SelectInstitute extends VPULitElementJQuery {
              const matches = re.exec(item);
 
              if (matches !== null) {
-                 return 'F' + matches[1];
+                 this.institute = {
+                     id: matches[2],
+                     code: 'F' + matches[1],
+                     name: '',
+                     url: '',
+                     value: '/organizations/knowledge_base_organizations/' + matches[2],
+                 };
+                 this.fireChangeEvent();
+                 break;
              }
          }
-         return '';
+         // console.log('setFirstInstitute():');
+         // console.dir(this.institute);
     }
 
     /**
@@ -223,10 +221,11 @@ class SelectInstitute extends VPULitElementJQuery {
                 });
                 const org = await response.json();
                 const institute = {
-                    id: matches[2],
+                    id: org.identifier,
                     code: org.alternateName,
                     name: org.name,
                     url: org.url,
+                    value: org['@id'],
                 };
                 results.push( institute );
             }
