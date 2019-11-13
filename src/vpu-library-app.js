@@ -27,7 +27,7 @@ class LibraryApp extends VPULitElement {
         this.user = '';
         this.subtitle = '';
         this.metadata = [];
-        this.instituteId ='';
+        this.instituteId = '';
 
         // route-name: path of metadata json
         this.metadataPaths = {

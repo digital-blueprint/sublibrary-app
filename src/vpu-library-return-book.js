@@ -36,6 +36,14 @@ class LibraryReturnBook extends VPULibraryLitElement {
         };
     }
 
+    getLibrary() {
+        //console.log('getLibrary() instituteId = ' + this.instituteId);
+        // until the API understands this:
+        //this.instituteId == '/organizations/knowledge_base_organizations/1263-F2190';
+        // extracting the orgUnitCode (F2190) is done here:
+        return this.instituteId.includes('-') ? this.instituteId.split('-')[1] : '';
+    }
+
     connectedCallback() {
         super.connectedCallback();
         const that = this;
@@ -112,8 +120,8 @@ class LibraryReturnBook extends VPULibraryLitElement {
                 e.preventDefault();
                 console.log("send");
                 const apiUrl = that.entryPointUrl + that.bookOfferId + "/return" +
-                    "?library=" + encodeURIComponent(that.instituteId.includes('-') ? that.instituteId.split('-')[1] : '');
-                console.log(apiUrl);
+                    "?library=" + that.getLibrary();
+                console.log('vpu-library-return-book: #send.click() apiUrl = ' + apiUrl);
 
                 $.ajax({
                     url: apiUrl,

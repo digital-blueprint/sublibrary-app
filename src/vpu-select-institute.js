@@ -117,7 +117,7 @@ class SelectInstitute extends VPULitElementJQuery {
             bubbles: true,
             composed: true,
             detail: {
-                'value': this.institute.value,
+                'value': this.institute.value + '-' + this.institute.code,
             }
         });
         this.dispatchEvent(event);
