@@ -93,7 +93,10 @@ class LibraryShelving extends VPULibraryLitElement {
                 e.preventDefault();
                 console.log("send");
                 const apiUrl = that.entryPointUrl + $bookOfferSelect.val() +
-                    "?library=" + encodeURIComponent(this.ogrUnitCode);
+                    // until the API understands this:
+                    //"?library=" + this.instituteId;
+                    // extracting the orgUnitCode is done here:
+                    "?library=" + (that.instituteId.includes('-') ? that.instituteId.split('-')[1] : '');
                 console.log(apiUrl);
                 console.log($locationIdentifierInput);
 

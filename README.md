@@ -16,6 +16,8 @@
     - example `<vpu-library-shelving lang="de"></vpu-library-shelving>`
 - `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
     - example `<vpu-library-shelving entry-point-url="http://127.0.0.1:8000"></vpu-library-shelving>`
+- `institute-id` (optional, default: empty string): set to the schema.org url with `institute id`-`institute code`
+    - example `<vpu-library-shelving institute-id="/organizations/knowledge_base_organizations/1263-F2190"></vpu-library-shelving>`
 
 ## Local development
 

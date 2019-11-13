@@ -137,6 +137,14 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         }
     }
 
+    getLibrary() {
+        //console.log('getLibrary() instituteId = ' + this.instituteId);
+        // until the API understands this:
+        //this.instituteId == '/organizations/knowledge_base_organizations/1263-F2190';
+        // extracting the orgUnitCode (F2190) is done here:
+        return this.instituteId.includes('-') ? this.instituteId.split('-')[1] : '';
+    }
+
     onPersonSelectChanged(e) {
         const select = e.target;
         const person = JSON.parse(select.dataset.object);
@@ -182,7 +190,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
         const data = {
             "borrower": this.personId,
-            "library": this.orgUnitCode,
+            "library": this.getLibrary(),
             "endTime": date.toISOString()
         };
 
