@@ -20,7 +20,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
         this.borrower = null;
         this.borrowerName = "";
         this.status = null;
-        this.orgUnitCode = '';
+        this.instituteId = '';
     }
 
     static get properties() {
@@ -32,7 +32,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
             borrower: { type: Object, attribute: false },
             borrowerName: { type: String, attribute: false },
             status: { type: Object , attribute: false },
-            orgUnitCode: { type: String, attribute: 'org-unit-code' },
+            instituteId: { type: String, attribute: 'institute-id' },
         };
     }
 
@@ -112,7 +112,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
                 e.preventDefault();
                 console.log("send");
                 const apiUrl = that.entryPointUrl + that.bookOfferId + "/return" +
-                    "?library=" + encodeURIComponent(this.orgUnitCode);
+                    "?library=" + encodeURIComponent(that.instituteId.includes('-') ? that.instituteId.split('-')[1] : '');
                 console.log(apiUrl);
 
                 $.ajax({
@@ -205,7 +205,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
                                                         @unselect=${this.onBookSelectChanged}
                                                         lang="${this.lang}"
                                                         value="${this.bookOfferId}"
-                                                        org-unit-code="${this.orgUnitCode}"
+                                                        institute-id="${this.instituteId}"
                                                         show-reload-button
                                                         reload-button-title="${this.bookOffer ? i18n.t('return-book.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>

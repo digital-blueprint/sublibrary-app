@@ -17,7 +17,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
         this.personId = "";
         this.person = null;
         this.loans = [];
-        this.orgUnitCode = '';
+        this.instituteId = '';
     }
 
     /**
@@ -29,7 +29,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             personId: { type: String, attribute: 'person-id' },
             loans: { type: Object, attribute: false },
-            orgUnitCode: { type: String, attribute: 'org-unit-code' },
+            instituteId: { type: String, attribute: 'institute-id' },
         };
     }
 
@@ -325,7 +325,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                         <vpu-person-select entry-point-url="${this.entryPointUrl}"
                                            lang="${this.lang}"
                                            value="${this.personId}"
-                                           org-unit-code="${this.orgUnitCode}"
+                                           institute-id="${this.instituteId}"
                                            show-reload-button
                                            reload-button-title="${this.person ? i18n.t('renew-loan.button-refresh-title', {personName: this.person.name}): ""}"></vpu-person-select>
                     </div>
