@@ -240,7 +240,8 @@ class LibraryApp extends VPULitElement {
     }
 
     onOrgUnitCodeChanged(e) {
-        this.orgUnitCode = e.detail.orgUnit.code;
+        this.orgUnitCode = e.detail.orgUnitCode;
+        console.log('app/onOrgUnitCodeChanged orgUnitCode = ' + this.orgUnitCode);
     }
 
     switchComponent(componentTag) {
@@ -588,7 +589,7 @@ class LibraryApp extends VPULitElement {
                 <div id="headline">
                     <h1 class="title">${i18n.t('headline.title')}</h1>
                     <div id="institute-selector">
-                        <vpu-select-institute lang="${this.lang}" @vpu-institute-changed="${this.onOrgUnitCodeChanged.bind(this)}"></vpu-select-institute>
+                        <vpu-select-institute lang="${this.lang}" @change="${this.onOrgUnitCodeChanged.bind(this)}"></vpu-select-institute>
                     </div>
                 </div>
 
@@ -604,10 +605,10 @@ class LibraryApp extends VPULitElement {
                 </aside>
 
                 <main>
-                    <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('shelving')}" book-offer-id="" org-unit-code=""></vpu-library-shelving>
-                    <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('create-loan')}" person-id="" book-offer-id="" org-unit-code=""></vpu-library-create-loan>
-                    <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('return-book')}" book-offer-id="" org-unit-code=""></vpu-library-return-book>
-                    <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('renew-loan')}" person-id="" org-unit-code=""></vpu-library-renew-loan>
+                    <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('shelving')}" book-offer-id="" org-unit-code="${this.orgUnitCode}"></vpu-library-shelving>
+                    <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('create-loan')}" person-id="" book-offer-id="" org-unit-code="${this.orgUnitCode}"></vpu-library-create-loan>
+                    <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('return-book')}" book-offer-id="" org-unit-code="${this.orgUnitCode}"></vpu-library-return-book>
+                    <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('renew-loan')}" person-id="" org-unit-code="${this.orgUnitCode}"></vpu-library-renew-loan>
                     <vpu-person-profile entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('person-profile')}" value="${this.user}"></vpu-person-profile>
                 </main>
 
