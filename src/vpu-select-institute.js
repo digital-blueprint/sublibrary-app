@@ -172,7 +172,7 @@ class SelectInstitute extends VPULitElementJQuery {
 
              if (matches !== null) {
                  this.institute = {
-                     id: matches[2],
+                     id: matches[2] + '-F' + matches[1],
                      code: 'F' + matches[1],
                      name: '',
                      url: '',
@@ -209,8 +209,8 @@ class SelectInstitute extends VPULitElementJQuery {
             const matches = re.exec(item);
 
             if (matches !== null) {
-                const orgId = matches[2];
-                const apiUrl = this.entryPointUrl + '/organizations/knowledge_base_organizations/' + orgId + '?lang=' + this.lang;
+                const identifier = matches[2] + '-F' + matches[1];
+                const apiUrl = this.entryPointUrl + '/organizations/knowledge_base_organizations/' + identifier + '?lang=' + this.lang;
 
                 // load organisations
                 const response = await fetch(apiUrl, {
