@@ -97,7 +97,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
 
                 commonUtils.pollFunc(() => {
                     // we need to wait until orgUnitCode is present!
-                    if (this.orgUnitCode === '') {
+                    if (this.instituteId === '') {
                         return false;
                     }
 
@@ -133,9 +133,10 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                                     {targets: [2, 3], searchable: false},
                                     {targets: [3], sortable: false}
                                 ];
+                                const orgUnitCode = this.instituteId.split('-')[1];
                                 const tbl = [];
                                 that.loans.forEach(function(loan) {
-                                    if (loan.object.library !== this.orgUnitCode) {
+                                    if (loan.object.library !== orgUnitCode) {
                                         return;
                                     }
 
