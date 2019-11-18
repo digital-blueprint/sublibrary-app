@@ -31,6 +31,14 @@ class LibraryShelving extends VPULibraryLitElement {
         };
     }
 
+    getLibrary() {
+        //console.log('getLibrary() instituteId = ' + this.instituteId);
+        // until the API understands this:
+        //this.instituteId == '/organizations/knowledge_base_organizations/1263-F2190';
+        // extracting the orgUnitCode (F2190) is done here:
+        return this.instituteId.includes('-') ? this.instituteId.split('-')[1] : '';
+    }
+
     connectedCallback() {
         super.connectedCallback();
         const that = this;
@@ -93,10 +101,7 @@ class LibraryShelving extends VPULibraryLitElement {
                 e.preventDefault();
                 console.log("send");
                 const apiUrl = that.entryPointUrl + $bookOfferSelect.val() +
-                    // until the API understands this:
-                    //"?library=" + this.instituteId;
-                    // extracting the orgUnitCode is done here:
-                    "?library=" + (that.instituteId.includes('-') ? that.instituteId.split('-')[1] : '');
+                    "?library=" + that.getLibrary();
                 console.log(apiUrl);
                 console.log($locationIdentifierInput);
 
