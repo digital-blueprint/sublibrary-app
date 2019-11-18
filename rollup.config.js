@@ -19,8 +19,20 @@ const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : '
 console.log("build: " + build);
 const basePath = (build === 'local') ? '/' : '/apps/library/';
 
-let manualChunks = Object.keys(pkg.dependencies).reduce(function (acc, item) { acc[item] = [item]; return acc;}, {});
-manualChunks = Object.keys(pkg.devDependencies).reduce(function (acc, item) { if (item.startsWith('vpu-')) acc[item] = [item]; return acc;}, manualChunks);
+/**
+ * Returns a list of chunks used for splitting up the bundle.
+ * We recursively use every dependency and ever internal dev dependency (starting with 'vpu-').
+ */
+function getManualChunks(pkg) {
+  let manualChunks = Object.keys(pkg.dependencies).reduce(function (acc, item) { acc[item] = [item]; return acc;}, {});
+  const vpu = Object.keys(pkg.devDependencies).reduce(function (acc, item) { if (item.startsWith('vpu-')) acc[item] = [item]; return acc;}, {});
+  for (const vpuName in vpu) {
+    const subPkg = require('./node_modules/' + vpuName + '/package.json');
+    manualChunks = Object.assign(manualChunks, getManualChunks(subPkg));
+  }
+  manualChunks = Object.assign(manualChunks, vpu);
+  return manualChunks;
+}
 
 function getBuildInfo() {
     const child_process = require('child_process');
@@ -57,7 +69,7 @@ export default {
       format: 'esm',
       sourcemap: true
     },
-    manualChunks: manualChunks,
+    manualChunks: getManualChunks(pkg),
     onwarn: function (warning, warn) {
         // ignore "suggestions" warning re "use strict"
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {

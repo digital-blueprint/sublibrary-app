@@ -97,7 +97,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
 
                 commonUtils.pollFunc(() => {
                     // we need to wait until orgUnitCode is present!
-                    if (this.orgUnitCode === '') {
+                    if (this.instituteId === '') {
                         return false;
                     }
 
@@ -133,9 +133,10 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                                     {targets: [2, 3], searchable: false},
                                     {targets: [3], sortable: false}
                                 ];
+                                const orgUnitCode = this.instituteId.split('-')[1];
                                 const tbl = [];
                                 that.loans.forEach(function(loan) {
-                                    if (loan.object.library !== this.orgUnitCode) {
+                                    if (loan.object.library !== orgUnitCode) {
                                         return;
                                     }
 
@@ -311,6 +312,8 @@ class LibraryRenewLoan extends VPULibraryLitElement {
 
             #renew-loan-block, #permission-error-block { display: none; }
             form, table {width: 100%}
+            
+            #no-loans-block{ font-weight: bold; }
         `;
     }
 
@@ -335,7 +338,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                         <vpu-data-table-view searching paging lang="${this.lang}" id="book-loans-1" columns-count="4" @click="${(e) => this.onDataTableClick(e)}"></vpu-data-table-view>
                     </div>
                 </div>
-                <div id="no-loans-block" style="display: none">
+                <div id="no-loans-block" style="display: none;">
                     ${i18n.t('renew-loan.no-loans')}
                 </div>
             </form>

@@ -148,8 +148,9 @@ class LibraryCreateLoan extends VPULibraryLitElement {
     onPersonSelectChanged(e) {
         const select = e.target;
         const person = JSON.parse(select.dataset.object);
+        const personId = person["@id"];
 
-        this.personId = person["@id"];
+        this.personId = personId;
         this.person = person;
 
         // fire a change event
