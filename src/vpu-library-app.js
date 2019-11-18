@@ -13,6 +13,7 @@ import {classMap} from 'lit-html/directives/class-map.js';
 // import * as errorreport from 'vpu-common/errorreport';
 import {Router} from './router.js';
 import * as utils from "./utils";
+import * as events from 'vpu-common/events.js';
 import './vpu-select-institute.js';
 
 // errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
@@ -28,6 +29,10 @@ class LibraryApp extends VPULitElement {
         this.subtitle = '';
         this.metadata = [];
         this.instituteId = '';
+
+        this._updateAuth = this._updateAuth.bind(this);
+        this._loginStatus = 'unknown';
+        this._subscriber = new events.EventSubscriber('vpu-auth-update', 'vpu-auth-update-request');
 
         // route-name: path of metadata json
         this.metadataPaths = {
@@ -164,11 +169,18 @@ class LibraryApp extends VPULitElement {
             metadata: { type: Array, attribute: false },
             subtitle: { type: String, attribute: false },
             instituteId: { type: String, attribute: 'institute-id' },
+            _loginStatus: { type: Boolean, attribute: false },
         };
+    }
+
+    _updateAuth(login) {
+        this._loginStatus = login.status;
     }
 
     connectedCallback() {
         super.connectedCallback();
+
+        this._subscriber.subscribe(this._updateAuth);
         const that = this;
 
         this.updateComplete.then(()=>{
@@ -180,6 +192,11 @@ class LibraryApp extends VPULitElement {
                 that.user = that._('vpu-auth').person.identifier;
             });
         });
+    }
+
+    disconnectedCallback() {
+        this._subscriber.unsubscribe(this._updateAuth);
+        super.disconnectedCallback();
     }
 
     /**
@@ -545,6 +562,9 @@ class LibraryApp extends VPULitElement {
             return classMap({selected: this.activeView === name});
         });
 
+        // we hide the app until we are either fully logged in or logged out
+        const mainClassMap = classMap({hidden: (this._loginStatus == 'unknown' || this._loginStatus == 'logging-in')});
+
         this.updatePageTitle();
 
         // build the menu
@@ -558,7 +578,8 @@ class LibraryApp extends VPULitElement {
         }
 
         return html`
-            <div id="main" style="opacity: 100">
+            <div class="${mainClassMap}">
+            <div id="main">
                 <vpu-notification lang="${this.lang}"></vpu-notification>
                 <header>
                     <div class="hd1-left">
@@ -620,6 +641,7 @@ class LibraryApp extends VPULitElement {
                         </div>
                     </a>
                 </footer>
+            </div>
             </div>
         `;
     }
