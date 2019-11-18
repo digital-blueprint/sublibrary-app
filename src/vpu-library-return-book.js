@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import {i18n} from './i18n.js';
 import {css, html} from 'lit-element';
-import {send as notify} from 'vpu-notification';
 import VPULibraryLitElement from "./vpu-library-lit-element";
 import 'vpu-language-select';
 import 'vpu-library-book-offer-select';

@@ -71,6 +71,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         this.status = null;
 
         if (!bookOffer) {
+            this.status = null;
             this.bookOffer = null;
             this.bookOfferId = "";
             createLoanBlock.style.display = "none";
