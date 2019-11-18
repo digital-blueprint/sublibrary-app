@@ -33,6 +33,14 @@ class LibraryRenewLoan extends VPULibraryLitElement {
         };
     }
 
+    getLibrary() {
+        //console.log('getLibrary() instituteId = ' + this.instituteId);
+        // until the API understands this:
+        //this.instituteId == '/organizations/knowledge_base_organizations/1263-F2190';
+        // extracting the orgUnitCode (F2190) is done here:
+        return this.instituteId.includes('-') ? this.instituteId.split('-')[1] : '';
+    }
+
     connectedCallback() {
         super.connectedCallback();
         const that = this;
@@ -133,7 +141,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                                     {targets: [2, 3], searchable: false},
                                     {targets: [3], sortable: false}
                                 ];
-                                const orgUnitCode = this.instituteId.split('-')[1];
+                                const orgUnitCode = that.getLibrary();
                                 const tbl = [];
                                 that.loans.forEach(function(loan) {
                                     if (loan.object.library !== orgUnitCode) {
