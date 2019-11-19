@@ -554,6 +554,7 @@ class LibraryApp extends VPULitElement {
     }
 
     render() {
+        const silentCheckSsoUri = commonUtils.getAssetURL('silent-check-sso.html');
         const date = new Date(buildinfo.time);
 
         const getViewClasses = (name => {
@@ -588,7 +589,7 @@ class LibraryApp extends VPULitElement {
                         <vpu-language-select @vpu-language-changed=${this.onLanguageChanged.bind(this)}></vpu-language-select>
                     </div>
                     <div class="hd1-right">
-                        <vpu-auth lang="${this.lang}" client-id="${commonUtils.setting('keyCloakClientId')}" load-person remember-login></vpu-auth>
+                        <vpu-auth lang="${this.lang}" client-id="${commonUtils.setting('keyCloakClientId')}" silent-check-sso-uri="${silentCheckSsoUri}" load-person remember-login></vpu-auth>
                     </div>
                     <div class="hd2-left">
                         <div class="header">

@@ -81,6 +81,10 @@ export default {
         if (warning.code === 'CIRCULAR_DEPENDENCY') {
           return;
         }
+        // keycloak bundled code uses eval
+        if (warning.code === 'EVAL') {
+          return;
+        }
         warn(warning);
     },
     watch: {
@@ -130,6 +134,7 @@ export default {
         (build !== 'local' && build !== 'test') ? terser() : false,
         copy({
             targets: [
+                {src: 'assets/silent-check-sso.html', dest:'dist'},
                 {src: 'assets/htaccess', dest: 'dist', rename: '.htaccess'},
                 {src: 'assets/*.css', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/*.ico', dest: 'dist/local/' + pkg.name},
