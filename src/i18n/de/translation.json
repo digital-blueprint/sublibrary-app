@@ -64,6 +64,20 @@
     "contact-title": "Per EMail Kontakt mit {{personName}} aufnehmen",
     "contact-subject": "Entlehnung von: {{bookName}}"
   },
+  "book-list": {
+    "books": "Bücher",
+    "book-title": "Titel",
+    "book-author": "Autor",
+    "book-barcode": "Barcode",
+    "book-location": "Ort",
+    "book-location-identifier": "Aufstellungsort"
+  },
+  "loan-list": {
+    "loans": "Entlehnungen",
+    "borrower-name": "Entlehner",
+    "due-date": "Rückgabedatum",
+    "return-date": "Rückgegeben am"
+  },
   "menu": {
     "shelving": "Aufstellung",
     "loan": "Entlehnung",

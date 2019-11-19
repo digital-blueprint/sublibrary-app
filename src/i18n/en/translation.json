@@ -64,6 +64,20 @@
     "contact-title": "Contact {{personName}} via email",
     "contact-subject": "Loaning of: {{bookName}}"
   },
+  "book-list": {
+    "books": "Books",
+    "book-title": "Title",
+    "book-author": "Author",
+    "book-barcode": "Barcode",
+    "book-location": "Place",
+    "book-location-identifier": "Shelve"
+  },
+  "loan-list": {
+    "loans": "Loans",
+    "borrower-name": "Borrower",
+    "due-date": "Due date",
+    "return-date": "Return date"
+  },
   "menu": {
     "shelving": "Shelving",
     "loan": "Loan",

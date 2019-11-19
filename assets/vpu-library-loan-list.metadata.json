@@ -1,0 +1,17 @@
+{
+  "element": "vpu-library-loan-list",
+  "module_src": "vpu-library-loan-list.js",
+  "name": {
+    "de": "Bilbliothek Entlehnungen",
+    "en": "Library loans"
+  },
+  "short_name": {
+    "de": "Entlehnungen",
+    "en": "Loans"
+  },
+  "description": {
+    "de": "Zeigt die Bücher eines Instituts an",
+    "en": "Lists all loans of an organization"
+  }
+}
+

@@ -60,6 +60,8 @@ export default {
       'src/vpu-library-create-loan.js',
       'src/vpu-library-return-book.js',
       'src/vpu-library-renew-loan.js',
+      'src/vpu-library-book-list.js',
+      'src/vpu-library-loan-list.js',
       'node_modules/vpu-person-profile/src/vpu-person-profile.js',
     ] : glob.sync('test/**/*.js'),
     output: {

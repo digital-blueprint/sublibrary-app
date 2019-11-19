@@ -40,6 +40,8 @@ class LibraryApp extends VPULitElement {
             "create-loan": basePath +'vpu-library-create-loan.metadata.json',
             "return-book": basePath +'vpu-library-return-book.metadata.json',
             "renew-loan": basePath +'vpu-library-renew-loan.metadata.json',
+            "book-list": basePath +'vpu-library-book-list.metadata.json',
+            "loan-list": basePath +'vpu-library-loan-list.metadata.json',
             "person-profile": { visible: false, path: basePath +'vpu-person-profile.metadata.json' },
         };
 
@@ -630,6 +632,8 @@ class LibraryApp extends VPULitElement {
                     <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('create-loan')}" person-id="" book-offer-id="" institute-id="${this.instituteId}"></vpu-library-create-loan>
                     <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('return-book')}" book-offer-id="" institute-id="${this.instituteId}"></vpu-library-return-book>
                     <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('renew-loan')}" person-id="" institute-id="${this.instituteId}"></vpu-library-renew-loan>
+                    <vpu-library-book-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('book-list')}" institute-id="${this.instituteId}"></vpu-library-book-list>
+                    <vpu-library-loan-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('loan-list')}" institute-id="${this.instituteId}"></vpu-library-loan-list>
                     <vpu-person-profile entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('person-profile')}" value="${this.user}"></vpu-person-profile>
                 </main>
 

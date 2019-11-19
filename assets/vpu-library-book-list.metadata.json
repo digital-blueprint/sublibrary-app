@@ -1,0 +1,17 @@
+{
+  "element": "vpu-library-book-list",
+  "module_src": "vpu-library-book-list.js",
+  "name": {
+    "de": "Bilbliothek Buchliste",
+    "en": "Library book list"
+  },
+  "short_name": {
+    "de": "Buchliste",
+    "en": "Book list"
+  },
+  "description": {
+    "de": "Zeigt die Bücher eines Instituts an",
+    "en": "Lists all books of an organization"
+  }
+}
+
