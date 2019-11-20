@@ -120,8 +120,6 @@ export default {
         urlPlugin({
           limit: 0,
           include: [
-            "node_modules/bulma/**/*.css",
-            "node_modules/bulma/**/*.sass",
             "node_modules/suggestions/**/*.css",
             "node_modules/select2/**/*.css",
           ],

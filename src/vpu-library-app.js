@@ -522,7 +522,6 @@ class LibraryApp extends VPULitElement {
                     margin-bottom: 0.5em;
                 }
 
-                /* bulma override */
                 aside h2.subtitle:not(:last-child) {
                     margin-bottom: 0.5em;
                 }
