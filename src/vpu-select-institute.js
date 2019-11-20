@@ -117,7 +117,7 @@ class SelectInstitute extends VPULitElementJQuery {
             bubbles: true,
             composed: true,
             detail: {
-                'value': this.institute.value + '-' + this.institute.code,
+                'value': this.institute.value,
             }
         });
         this.dispatchEvent(event);
@@ -171,12 +171,14 @@ class SelectInstitute extends VPULitElementJQuery {
              const matches = re.exec(item);
 
              if (matches !== null) {
+                 const id = matches[2] + '-F' + matches[1];
+
                  this.institute = {
-                     id: matches[2] + '-F' + matches[1],
+                     id: id,
                      code: 'F' + matches[1],
                      name: '',
                      url: '',
-                     value: '/organizations/knowledge_base_organizations/' + matches[2],
+                     value: '/organizations/knowledge_base_organizations/' + id,
                  };
                  this.fireChangeEvent();
                  break;
