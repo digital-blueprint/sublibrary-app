@@ -75,7 +75,7 @@
   "loan-list": {
     "loans": "Entlehnungen",
     "borrower-name": "Entlehner",
-    "due-date": "Rückgabedatum",
+    "due-date": "Fällig am",
     "return-date": "Rückgegeben am"
   },
   "menu": {
