@@ -12,17 +12,17 @@ import JSONLD from "vpu-common/jsonld";
 
 select2(window, $);
 
-class SelectInstitute extends VPULitElementJQuery {
+class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
     constructor() {
         super();
         this.lang = 'de';
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.jsonld = null;
         this.$select = null;
-        this.institutes = [];
-        this.institute = null;
+        this.organizations = [];
+        this.organization = null;
         // For some reason using the same ID on the whole page twice breaks select2 (regardless if they are in different custom elements)
-        this.selectId = 'select-institute-' + commonUtils.makeId(24);
+        this.selectId = 'select-organization-' + commonUtils.makeId(24);
         this.cache = { en: [], de: [] };
         this.value = '';
     }
@@ -31,8 +31,8 @@ class SelectInstitute extends VPULitElementJQuery {
         return {
             lang: {type: String},
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            institutes: {type: Array, attribute: false},
-            institute: {type: Object, attribute: false},
+            organizations: {type: Array, attribute: false},
+            organization: {type: Object, attribute: false},
             value: { type: String },
         }
     }
@@ -42,7 +42,7 @@ class SelectInstitute extends VPULitElementJQuery {
 
         this.updateComplete.then(()=> {
             this.$select = this.$('#' + this.selectId);
-            this.setFirstInstitute();
+            this.setFirstOrganization();
 
             window.addEventListener("vpu-auth-person-init", async () => {
                 this.cache = { en: [], de: [] };
@@ -51,19 +51,19 @@ class SelectInstitute extends VPULitElementJQuery {
         });
     }
 
-    async load_institutes() {
+    async load_organizations() {
         if (this.cache[this.lang].length === 0) {
-            this.cache[this.lang] = await this.getAssociatedInstitutes();
+            this.cache[this.lang] = await this.getAssociatedOrganizations();
         }
-        this.institutes = this.cache[this.lang];
+        this.organizations = this.cache[this.lang];
 
-        if (this.institute === null) {
-            this.setFirstInstitute();
+        if (this.organization === null) {
+            this.setFirstOrganization();
         }
-        if (this.institute !== null) {
-            // get institute with all attributes
-            this.institute = this.institutes.find((institute) => {
-                return institute.id === this.institute.id;
+        if (this.organization !== null) {
+            // get organization with all attributes
+            this.organization = this.organizations.find((organization) => {
+                return organization.id === this.organization.id;
             });
         }
     }
@@ -82,21 +82,21 @@ class SelectInstitute extends VPULitElementJQuery {
             this.$select.select2('destroy');
         }
 
-        await this.load_institutes();
+        await this.load_organizations();
 
-        if (this.institute !== null) {
+        if (this.organization !== null) {
 
             this.$select.select2({
                 width: '100%',
                 language: this.lang === "de" ? select2LangDe() : select2LangEn(),
-                placeholderOption: i18n.t('select-institute.placeholder'),
-                dropdownParent: this.$('#select-institute-dropdown'),
-                data: this.institutes.map((item) => {
+                placeholderOption: i18n.t('select-organization.placeholder'),
+                dropdownParent: this.$('#select-organization-dropdown'),
+                data: this.organizations.map((item) => {
                     return {'id': item.id, 'text': item.code + ' ' + item.name};
                 }),
             }).on("select2:select", function () {
                 if (that.$select ) {
-                    that.institute = that.institutes.find(function(item) {
+                    that.organization = that.organizations.find(function(item) {
                         return item.id === that.$select.select2('data')[0].id;
                     });
 
@@ -104,20 +104,20 @@ class SelectInstitute extends VPULitElementJQuery {
                 }
             });
 
-            this.$select.val(this.institute.id).trigger('change');
+            this.$select.val(this.organization.id).trigger('change');
         }
         return true;
     }
 
     fireChangeEvent() {
-        // console.log('fireChangeEvent() institute:');
-        // console.dir(this.institute);
+        // console.log('fireChangeEvent() organization:');
+        // console.dir(this.organization);
         //
         const event = new CustomEvent("change", {
             bubbles: true,
             composed: true,
             detail: {
-                'value': this.institute.value,
+                'value': this.organization.value,
             }
         });
         this.dispatchEvent(event);
@@ -134,8 +134,8 @@ class SelectInstitute extends VPULitElementJQuery {
                 case "value":
                     const matches = this.value.match(/\/\d+$/);
                     if (matches !== null) {
-                        this.institute = this.institutes.find((institute) => {
-                            return institute.id === matches[1];
+                        this.organization = this.organizations.find((organization) => {
+                            return organization.id === matches[1];
                         });
                     }
                     break;
@@ -153,16 +153,16 @@ class SelectInstitute extends VPULitElementJQuery {
         super.update(changedProperties);
     }
 
-    setFirstInstitute() {
+    setFirstOrganization() {
          if (window.VPUPerson === undefined) {
-             // console.log('setFirstInstitute(): window.VPUPerson === undefined');
+             // console.log('setFirstOrganization(): window.VPUPerson === undefined');
              return;
          }
 
          const functions = window.VPUPerson.functions;
 
          if (functions === undefined) {
-             // console.log('setFirstInstitute(): functions === undefined');
+             // console.log('setFirstOrganization(): functions === undefined');
              return;
          }
 
@@ -172,8 +172,7 @@ class SelectInstitute extends VPULitElementJQuery {
 
              if (matches !== null) {
                  const id = matches[2] + '-F' + matches[1];
-
-                 this.institute = {
+                 this.organization = {
                      id: id,
                      code: 'F' + matches[1],
                      name: '',
@@ -184,8 +183,8 @@ class SelectInstitute extends VPULitElementJQuery {
                  break;
              }
          }
-         // console.log('setFirstInstitute():');
-         // console.dir(this.institute);
+         // console.log('setFirstOrganization():');
+         // console.dir(this.organization);
     }
 
     /**
@@ -193,7 +192,7 @@ class SelectInstitute extends VPULitElementJQuery {
      *
      * @returns {Array}
      */
-    async getAssociatedInstitutes() {
+    async getAssociatedOrganizations() {
         if (window.VPUPerson === undefined) {
             return [];
         }
@@ -222,14 +221,14 @@ class SelectInstitute extends VPULitElementJQuery {
                     },
                 });
                 const org = await response.json();
-                const institute = {
+                const organization = {
                     id: org.identifier,
                     code: org.alternateName,
                     name: org.name,
                     url: org.url,
                     value: org['@id'],
                 };
-                results.push( institute );
+                results.push( organization );
             }
         }
 
@@ -258,7 +257,7 @@ class SelectInstitute extends VPULitElementJQuery {
     }
 
     render() {
-        commonUtils.initAssetBaseURL('vpu-select-institute-src');
+        commonUtils.initAssetBaseURL('vpu-select-organization-src');
         const select2CSS = commonUtils.getAssetURL(select2CSSPath);
         return html`
             <link rel="stylesheet" href="${select2CSS}">
@@ -266,13 +265,13 @@ class SelectInstitute extends VPULitElementJQuery {
         <div class="select">
             <div class="select2-control control">
                 <!-- https://select2.org-->
-                <select id="${this.selectId}" name="select-institute" class="select" style="visibility: hidden;"></select>
+                <select id="${this.selectId}" name="select-organization" class="select" style="visibility: hidden;"></select>
             </div>
-            <div id="select-institute-dropdown"></div>
+            <div id="select-organization-dropdown"></div>
         </div>
 
         `;
     }
 }
 
-commonUtils.defineCustomElement('vpu-select-institute', SelectInstitute);
+commonUtils.defineCustomElement('vpu-knowledge-base-organization-select', VPUKnowledgeBaseOrganizationSelect);

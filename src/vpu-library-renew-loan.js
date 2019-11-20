@@ -17,7 +17,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
         this.personId = "";
         this.person = null;
         this.loans = [];
-        this.instituteId = '';
+        this.organizationId = '';
     }
 
     /**
@@ -29,16 +29,16 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             personId: { type: String, attribute: 'person-id' },
             loans: { type: Object, attribute: false },
-            instituteId: { type: String, attribute: 'institute-id' },
+            organizationId: { type: String, attribute: 'organization-id' },
         };
     }
 
     getLibrary() {
-        //console.log('getLibrary() instituteId = ' + this.instituteId);
+        //console.log('getLibrary() organizationId = ' + this.organizationId);
         // until the API understands this:
-        //this.instituteId == '/organizations/knowledge_base_organizations/1263-F2190';
+        //this.organizationId == '/organizations/knowledge_base_organizations/1263-F2190';
         // extracting the orgUnitCode (F2190) is done here:
-        return this.instituteId.includes('-') ? this.instituteId.split('-')[1] : '';
+        return this.organizationId.includes('-') ? this.organizationId.split('-')[1] : '';
     }
 
     connectedCallback() {
@@ -105,7 +105,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
 
                 commonUtils.pollFunc(() => {
                     // we need to wait until orgUnitCode is present!
-                    if (this.instituteId === '') {
+                    if (this.organizationId === '') {
                         return false;
                     }
 
@@ -334,7 +334,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                         <vpu-person-select entry-point-url="${this.entryPointUrl}"
                                            lang="${this.lang}"
                                            value="${this.personId}"
-                                           institute-id="${this.instituteId}"
+                                           organization-id="${this.organizationId}"
                                            show-reload-button
                                            reload-button-title="${this.person ? i18n.t('renew-loan.button-refresh-title', {personName: this.person.name}): ""}"></vpu-person-select>
                     </div>

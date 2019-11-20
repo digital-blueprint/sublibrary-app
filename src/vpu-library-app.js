@@ -14,7 +14,7 @@ import {classMap} from 'lit-html/directives/class-map.js';
 import {Router} from './router.js';
 import * as utils from "./utils";
 import * as events from 'vpu-common/events.js';
-import './vpu-select-institute.js';
+import './vpu-knowledge-base-organisation-select.js';
 
 // errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
 
@@ -28,7 +28,7 @@ class LibraryApp extends VPULitElement {
         this.user = '';
         this.subtitle = '';
         this.metadata = [];
-        this.instituteId = '';
+        this.organizationId = '';
 
         this._updateAuth = this._updateAuth.bind(this);
         this._loginStatus = 'unknown';
@@ -170,7 +170,7 @@ class LibraryApp extends VPULitElement {
             user: { type: String, attribute: false },
             metadata: { type: Array, attribute: false },
             subtitle: { type: String, attribute: false },
-            instituteId: { type: String, attribute: 'institute-id' },
+            organizationId: { type: String, attribute: 'organization-id' },
             _loginStatus: { type: Boolean, attribute: false },
         };
     }
@@ -259,8 +259,8 @@ class LibraryApp extends VPULitElement {
     }
 
     onOrgUnitCodeChanged(e) {
-        this.instituteId = e.detail.value;
-        console.log('app/onOrgUnitCodeChanged instituteId = ' + this.instituteId);
+        this.organizationId = e.detail.value;
+        console.log('app/onOrgUnitCodeChanged organizationId = ' + this.organizationId);
     }
 
     switchComponent(componentTag) {
@@ -613,7 +613,7 @@ class LibraryApp extends VPULitElement {
                 <div id="headline">
                     <h1 class="title">${i18n.t('headline.title')}</h1>
                     <div id="institute-selector">
-                        <vpu-select-institute lang="${this.lang}" value="${this.instituteId}" @change="${this.onOrgUnitCodeChanged.bind(this)}"></vpu-select-institute>
+                        <vpu-knowledge-base-organization-select lang="${this.lang}" value="${this.organizationId}" @change="${this.onOrgUnitCodeChanged.bind(this)}"></vpu-knowledge-base-organization-select>
                     </div>
                 </div>
 
@@ -629,12 +629,12 @@ class LibraryApp extends VPULitElement {
                 </aside>
 
                 <main>
-                    <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('shelving')}" book-offer-id="" institute-id="${this.instituteId}"></vpu-library-shelving>
-                    <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('create-loan')}" person-id="" book-offer-id="" institute-id="${this.instituteId}"></vpu-library-create-loan>
-                    <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('return-book')}" book-offer-id="" institute-id="${this.instituteId}"></vpu-library-return-book>
-                    <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('renew-loan')}" person-id="" institute-id="${this.instituteId}"></vpu-library-renew-loan>
-                    <vpu-library-book-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('book-list')}" institute-id="${this.instituteId}"></vpu-library-book-list>
-                    <vpu-library-loan-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('loan-list')}" institute-id="${this.instituteId}"></vpu-library-loan-list>
+                    <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('shelving')}" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-shelving>
+                    <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('create-loan')}" person-id="" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-create-loan>
+                    <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('return-book')}" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-return-book>
+                    <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('renew-loan')}" person-id="" organization-id="${this.organizationId}"></vpu-library-renew-loan>
+                    <vpu-library-book-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('book-list')}" organization-id="${this.organizationId}"></vpu-library-book-list>
+                    <vpu-library-loan-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('loan-list')}" organization-id="${this.organizationId}"></vpu-library-loan-list>
                     <vpu-person-profile entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('person-profile')}" value="${this.user}"></vpu-person-profile>
                 </main>
 

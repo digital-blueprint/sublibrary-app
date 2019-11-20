@@ -18,7 +18,7 @@ class LibraryShelving extends VPULibraryLitElement {
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.bookOfferId = "";
         this.bookOffer = null;
-        this.instituteId = '';
+        this.organizationId = '';
     }
 
     static get properties() {
@@ -27,16 +27,16 @@ class LibraryShelving extends VPULibraryLitElement {
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             bookOfferId: { type: String, attribute: 'book-offer-id' },
             bookOffer: { type: Object, attribute: false },
-            instituteId: { type: String, attribute: 'institute-id' },
+            organizationId: { type: String, attribute: 'organization-id' },
         };
     }
 
     getLibrary() {
-        //console.log('getLibrary() instituteId = ' + this.instituteId);
+        //console.log('getLibrary() organizationId = ' + this.organizationId);
         // until the API understands this:
-        //this.instituteId == '/organizations/knowledge_base_organizations/1263-F2190';
+        //this.organizationId == '/organizations/knowledge_base_organizations/1263-F2190';
         // extracting the orgUnitCode (F2190) is done here:
-        return this.instituteId.includes('-') ? this.instituteId.split('-')[1] : '';
+        return this.organizationId.includes('-') ? this.organizationId.split('-')[1] : '';
     }
 
     connectedCallback() {
@@ -182,7 +182,7 @@ class LibraryShelving extends VPULibraryLitElement {
                          <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}"
                                                         lang="${this.lang}"
                                                         value="${this.bookOfferId}"
-                                                        institute-id="${this.instituteId}"
+                                                        organization-id="${this.organizationId}"
                                                         show-reload-button
                                                         reload-button-title="${this.bookOffer ? i18n.t('shelving.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>

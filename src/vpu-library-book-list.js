@@ -14,7 +14,7 @@ class LibraryBookList extends VPULibraryLitElement {
         this.personId = "";
         this.person = null;
         this.books = [];
-        this.instituteId = '';
+        this.organizationId = '';
     }
 
     /**
@@ -24,7 +24,7 @@ class LibraryBookList extends VPULibraryLitElement {
         return {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            instituteId: { type: String, attribute: 'institute-id' },
+            organizationId: { type: String, attribute: 'organization-id' },
             books: { type: Object, attribute: false },
         };
     }
@@ -48,7 +48,7 @@ class LibraryBookList extends VPULibraryLitElement {
 
                 // we need to update the column titles
                 this.loadTable();
-            } else if (propName === "instituteId") {
+            } else if (propName === "organizationId") {
                 this.loadTable();
             }
         });
@@ -63,11 +63,11 @@ class LibraryBookList extends VPULibraryLitElement {
         $bookListBlock.hide();
         $noBooksBlock.hide();
 
-        if (this.instituteId === "") {
+        if (this.organizationId === "") {
             return;
         }
 
-        const apiUrl = this.entryPointUrl + this.instituteId + "/library-book-offers";
+        const apiUrl = this.entryPointUrl + this.organizationId + "/library-book-offers";
         const $booksLoadingIndicator = this.$('#books-loading');
 
         $booksLoadingIndicator.show();
