@@ -66,6 +66,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             this.organization = this.organizations.find((organization) => {
                 return organization.id === this.organization.id;
             });
+            this.setDataObject();
             if (old_organization.name === '') {
                 this.fireEvent('init')
             } else {
@@ -106,6 +107,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                         return item.id === that.$select.select2('data')[0].id;
                     });
 
+                    that.setDataObject();
                     that.fireEvent("change");
                 }
             });
@@ -113,6 +115,12 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             this.$select.val(this.organization.id).trigger('change');
         }
         return true;
+    }
+
+    setDataObject() {
+        const $this = $(this);
+        $this.attr("data-object", JSON.stringify(this.organization.object));
+        $this.data("object", this.organization.object);
     }
 
     fireEvent(eventName) {
@@ -124,6 +132,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             composed: true,
             detail: {
                 'value': this.organization.value,
+                'object': this.organization.object,
             }
         });
         this.dispatchEvent(event);
@@ -184,7 +193,24 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                      name: '',
                      url: '',
                      value: '/organizations/knowledge_base_organizations/' + id,
+                     object: {
+                         "@context": {
+                             "@vocab": this.entryPointUrl + "/docs.jsonld#",
+                             "hydra": "http://www.w3.org/ns/hydra/core#",
+                             "identifier": "KnowledgeBaseOrganization/identifier",
+                             "name": "https://schema.org/name",
+                             "alternateName": "https://schema.org/alternateName",
+                             "url": "https://schema.org/url"
+                         },
+                         "@id": "/organizations/knowledge_base_organizations/" + id,
+                         "@type": "http://schema.org/Organization",
+                         "identifier": id,
+                         "name": '',
+                         "url": '',
+                         "alternateName": 'F' + matches[1],
+                     }
                  };
+                 this.setDataObject();
                  this.fireEvent("pre-init");
                  break;
              }
@@ -233,6 +259,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                     name: org.name,
                     url: org.url,
                     value: org['@id'],
+                    object: org,
                 };
                 results.push( organization );
             }

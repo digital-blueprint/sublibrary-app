@@ -612,7 +612,11 @@ class LibraryApp extends VPULitElement {
                 <div id="headline">
                     <h1 class="title">${i18n.t('headline.title')}</h1>
                     <div id="institute-selector">
-                        <vpu-knowledge-base-organization-select lang="${this.lang}" value="${this.organizationId}" @change="${this.onOrgUnitCodeChanged.bind(this)}"></vpu-knowledge-base-organization-select>
+                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                                                                value="${this.organizationId}"
+                                                                @pre-init="${this.onOrgUnitCodeChanged.bind(this)}"
+                                                                @init="${this.onOrgUnitCodeChanged.bind(this)}"
+                                                                @change="${this.onOrgUnitCodeChanged.bind(this)}"></vpu-knowledge-base-organization-select>
                     </div>
                 </div>
 
