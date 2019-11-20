@@ -61,10 +61,16 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             this.setFirstOrganization();
         }
         if (this.organization !== null) {
+            const old_organization = this.organization;
             // get organization with all attributes
             this.organization = this.organizations.find((organization) => {
                 return organization.id === this.organization.id;
             });
+            if (old_organization.name === '') {
+                this.fireEvent('init')
+            } else {
+                this.fireEvent('change')
+            }
         }
     }
 
@@ -100,7 +106,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                         return item.id === that.$select.select2('data')[0].id;
                     });
 
-                    that.fireChangeEvent();
+                    that.fireEvent("change");
                 }
             });
 
@@ -109,11 +115,11 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         return true;
     }
 
-    fireChangeEvent() {
-        // console.log('fireChangeEvent() organization:');
-        // console.dir(this.organization);
-        //
-        const event = new CustomEvent("change", {
+    fireEvent(eventName) {
+        console.log('fireEvent() eventName = ' + eventName + ' organization:');
+        console.dir(this.organization);
+
+        const event = new CustomEvent(eventName, {
             bubbles: true,
             composed: true,
             detail: {
@@ -179,7 +185,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                      url: '',
                      value: '/organizations/knowledge_base_organizations/' + id,
                  };
-                 this.fireChangeEvent();
+                 this.fireEvent("pre-init");
                  break;
              }
          }
