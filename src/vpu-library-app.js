@@ -36,13 +36,13 @@ class LibraryApp extends VPULitElement {
 
         // route-name: path of metadata json
         this.metadataPaths = {
-            "shelving": basePath +'vpu-library-shelving.metadata.json',
-            "create-loan": basePath +'vpu-library-create-loan.metadata.json',
-            "return-book": basePath +'vpu-library-return-book.metadata.json',
-            "renew-loan": basePath +'vpu-library-renew-loan.metadata.json',
-            "book-list": basePath +'vpu-library-book-list.metadata.json',
-            "loan-list": basePath +'vpu-library-loan-list.metadata.json',
-            "person-profile": { visible: false, path: basePath +'vpu-person-profile.metadata.json' },
+            "shelving": {path: basePath +'vpu-library-shelving.metadata.json'},
+            "create-loan": {path: basePath +'vpu-library-create-loan.metadata.json'},
+            "return-book": {path: basePath +'vpu-library-return-book.metadata.json'},
+            "renew-loan": {path: basePath +'vpu-library-renew-loan.metadata.json'},
+            "book-list": {path: basePath +'vpu-library-book-list.metadata.json'},
+            "loan-list": {path: basePath +'vpu-library-loan-list.metadata.json'},
+            "person-profile": {path: basePath +'vpu-person-profile.metadata.json', visible: false},
         };
 
         this.fetchMetadata();
@@ -68,14 +68,9 @@ class LibraryApp extends VPULitElement {
         for (let routingName in this.metadataPaths) {
             const data = this.metadataPaths[routingName];
             let url;
-            let visible = true;
 
-            if (typeof data === 'object') {
-                visible = data['visible'] === undefined ? true : data['visible'];
-                url = data['path'];
-            } else {
-                url = data;
-            }
+            const visible = data['visible'] === undefined ? true : data['visible'];
+            url = data['path'];
 
             // let's wait so the menu items are in the correct order
             await fetch(url, {
