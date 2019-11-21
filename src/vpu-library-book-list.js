@@ -15,6 +15,7 @@ class LibraryBookList extends VPULibraryLitElement {
         this.person = null;
         this.books = [];
         this.organizationId = '';
+        this.abortController = null;
     }
 
     /**
@@ -72,12 +73,21 @@ class LibraryBookList extends VPULibraryLitElement {
 
         $booksLoadingIndicator.show();
 
+        // abort previous list fetch if it is still running
+        if (this.abortController !== null) {
+            this.abortController.abort();
+        }
+
+        this.abortController = new AbortController();
+        const signal = this.abortController.signal;
+
         // load list of books for person
         fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
                 'Authorization': 'Bearer ' + window.VPUAuthToken,
             },
+            signal: signal,
         })
             .then(result => {
                 $booksLoadingIndicator.hide();
