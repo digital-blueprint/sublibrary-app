@@ -57,46 +57,42 @@ class LibraryApp extends VPULitElement {
     /**
      * Fetches the metadata of the components we want to use in the menu, dynamically imports the js modules for them,
      * then triggers a rebuilding of the menu and resolves the current route
-     *
-     * @returns {Promise<void>} metadata
      */
     async fetchMetadata() {
-        const that = this;
-        let metadata = [];
+        const metadata = [];
+
+        const fetchOne = async (data) => {
+            const visible = data['visible'] === undefined ? true : data['visible'];
+            const url = data['path'];
+
+            const result = await fetch(url, {
+                headers: {'Content-Type': 'application/json'}
+            });
+            if (!result.ok)
+                throw result;
+
+            const jsondata = await result.json();
+            jsondata['visible'] = visible;
+            if (jsondata["element"] === undefined)
+                throw new Error("no element defined in metadata");
+
+            return jsondata;
+        };
 
         // fetch the metadata of the components we want to use in the menu
         for (let routingName in this.metadataPaths) {
-            const data = this.metadataPaths[routingName];
-            let url;
-
-            const visible = data['visible'] === undefined ? true : data['visible'];
-            url = data['path'];
-
-            // let's wait so the menu items are in the correct order
-            await fetch(url, {
-                headers: {'Content-Type': 'application/json'}
-            })
-                .then(result => {
-                    if (!result.ok) throw result;
-                    return result.json();
-                })
-                .then((data) => {
-                    data['visible'] = visible;
-                    if (data["element"] !== undefined) {
-                        metadata[routingName] = data;
-                    }
-                }).catch(error => {
-                    console.error(error);
-                });
+            try {
+                metadata[routingName] = await fetchOne(this.metadataPaths[routingName]);
+            } catch (error) {
+                console.log(error);
+            }
         }
 
         // this also triggers a rebuilding of the menu
-        that.metadata = metadata;
+        this.metadata = metadata;
 
         // resolve the current route
         this.router.setStateFromCurrentLocation();
-
-        return Promise.resolve();
     }
 
     initRouter() {
