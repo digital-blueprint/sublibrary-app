@@ -80,9 +80,14 @@ class LibraryApp extends VPULitElement {
         };
 
         // fetch the metadata of the components we want to use in the menu
-        for (let routingName in this.metadataPaths) {
+        let promises = [];
+        for (const routingName in this.metadataPaths) {
+            const metaData = this.metadataPaths[routingName];
+            promises.push([routingName, fetchOne(metaData)]);
+        }
+        for (const [routingName, p] of promises) {
             try {
-                metadata[routingName] = await fetchOne(this.metadataPaths[routingName]);
+                metadata[routingName] = await p;
             } catch (error) {
                 console.log(error);
             }
