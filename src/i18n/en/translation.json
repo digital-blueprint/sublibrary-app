@@ -74,6 +74,7 @@
   },
   "loan-list": {
     "loans": "Loans",
+    "overdue-only": "Show overdue loans only",
     "borrower-name": "Borrower",
     "start-date": "Start date",
     "due-date": "Due date",

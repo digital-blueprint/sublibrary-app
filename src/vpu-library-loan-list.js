@@ -16,6 +16,7 @@ class LibraryLoanList extends VPULibraryLitElement {
         this.loans = [];
         this.organizationId = '';
         this.abortController = null;
+        this.overdueOnly = false;
     }
 
     /**
@@ -27,6 +28,7 @@ class LibraryLoanList extends VPULibraryLitElement {
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             organizationId: { type: String, attribute: 'organization-id' },
             loans: { type: Object, attribute: false },
+            overdueOnly: { type: Boolean, attribute: false },
         };
     }
 
@@ -51,13 +53,19 @@ class LibraryLoanList extends VPULibraryLitElement {
 
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
-            if (propName === "lang") {
-                i18n.changeLanguage(this.lang);
+            switch (propName) {
+                case "lang":
+                    i18n.changeLanguage(this.lang);
 
-                // we need to update the column titles
-                this.loadTable();
-            } else if (propName === "organizationId") {
-                this.loadTable();
+                    // we need to update the column titles
+                    this.buildTable();
+                    break;
+                case "organizationId":
+                    this.loadTable();
+                    break;
+                case "overdueOnly":
+                    this.buildTable();
+                    break;
             }
         });
 
@@ -103,62 +111,75 @@ class LibraryLoanList extends VPULibraryLitElement {
             })
             .then(result => {
                 that.loans = result['hydra:member'];
-
-                if (that.loans.length > 0) {
-                    const vdtv1 = that._('#loan-loans-1');
-                    if (vdtv1 !== null) {
-                        const columns = [
-                            {title: i18n.t('book-list.book-title') },
-                            {title: i18n.t('book-list.book-author') },
-                            {title: i18n.t('book-list.book-barcode') },
-                            {title: i18n.t('loan-list.borrower-name') },
-                            {title: i18n.t('loan-list.start-date') },
-                            null,
-                            {title: i18n.t('loan-list.due-date') },
-                            null,
-                            {title: i18n.t('loan-list.return-date') },
-                            null,
-                        ];
-
-                        // sorting will be done by hidden columns
-                        const columnDefs = [
-                            {targets: [4], orderData: [5]},
-                            {targets: [5], visible: false},
-                            {targets: [6], orderData: [7]},
-                            {targets: [7], visible: false},
-                            {targets: [8], orderData: [9]},
-                            {targets: [9], visible: false},
-                        ];
-
-                        const tbl = [];
-                        that.loans.forEach(function(loan) {
-                            const startTime = new Date(loan.startTime);
-                            const endTime = new Date(loan.endTime);
-                            const returnTime = new Date(loan.returnTime);
-
-                            const row = [
-                                loan.object.book.title,
-                                loan.object.book.author,
-                                loan.object.barcode,
-                                loan.borrower.name,
-                                startTime.toLocaleDateString("de-AT"),
-                                loan.startTime,
-                                endTime.toLocaleDateString("de-AT"),
-                                loan.endTime,
-                                loan.returnTime !== null ? returnTime.toLocaleDateString("de-AT") : "",
-                                loan.returnTime,
-                            ];
-                            tbl.push(row);
-                        });
-                        vdtv1.set_columns(columns)
-                            .set_columnDefs(columnDefs)
-                            .set_datatable(tbl);
-                    }
-                    $loanListBlock.show();
-                } else {
-                    $noLoansBlock.show();
-                }
+                that.buildTable();
             }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
+    }
+
+    buildTable() {
+        const $loanListBlock = this.$('#loan-list-block');
+        const $noLoansBlock = this.$('#no-loans-block');
+        const that = this;
+
+        if (this.loans.length > 0) {
+            const vdtv1 = this._('#loan-loans-1');
+            if (vdtv1 !== null) {
+                const columns = [
+                    {title: i18n.t('book-list.book-title')},
+                    {title: i18n.t('book-list.book-author')},
+                    {title: i18n.t('book-list.book-barcode')},
+                    {title: i18n.t('loan-list.borrower-name')},
+                    {title: i18n.t('loan-list.start-date')},
+                    null,
+                    {title: i18n.t('loan-list.due-date')},
+                    null,
+                    {title: i18n.t('loan-list.return-date')},
+                    null,
+                ];
+
+                // sorting will be done by hidden columns
+                const columnDefs = [
+                    {targets: [4], orderData: [5]},
+                    {targets: [5], visible: false},
+                    {targets: [6], orderData: [7]},
+                    {targets: [7], visible: false},
+                    {targets: [8], orderData: [9]},
+                    {targets: [9], visible: false},
+                ];
+
+                const currentDate = new Date();
+                const tbl = [];
+
+                this.loans.forEach(function (loan) {
+                    const startTime = new Date(loan.startTime);
+                    const endTime = new Date(loan.endTime);
+                    const returnTime = new Date(loan.returnTime);
+
+                    if (that.overdueOnly && (currentDate < endTime || loan.returnTime !== null)) {
+                        return;
+                    }
+
+                    const row = [
+                        loan.object.book.title,
+                        loan.object.book.author,
+                        loan.object.barcode,
+                        loan.borrower.name,
+                        startTime.toLocaleDateString("de-AT"),
+                        loan.startTime,
+                        endTime.toLocaleDateString("de-AT"),
+                        loan.endTime,
+                        loan.returnTime !== null ? returnTime.toLocaleDateString("de-AT") : "",
+                        loan.returnTime,
+                    ];
+                    tbl.push(row);
+                });
+                vdtv1.set_columns(columns)
+                    .set_columnDefs(columnDefs)
+                    .set_datatable(tbl);
+            }
+            $loanListBlock.show();
+        } else {
+            $noLoansBlock.show();
+        }
     }
 
     onLanguageChanged(e) {
@@ -179,14 +200,26 @@ class LibraryLoanList extends VPULibraryLitElement {
         `;
     }
 
+    toggleOverdueOnly() {
+        this.overdueOnly = !this.overdueOnly
+    }
+
     render() {
         return html`
             <form class="hidden">
                 <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
-                <div id="loan-list-block" class="field">
-                    <label class="label">${i18n.t('loan-list.loans')}</label>
-                    <div class="control">
-                        <vpu-data-table-view searching paging lang="${this.lang}" id="loan-loans-1" columns-count="10"></vpu-data-table-view>
+                <div id="loan-list-block">
+                    <div class="field">
+                        <label class="label">
+                            <input type="checkbox" .checked=${this.overdueOnly} @click=${this.toggleOverdueOnly}>
+                            ${i18n.t('loan-list.overdue-only')}
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label class="label">${i18n.t('loan-list.loans')}</label>
+                        <div class="control">
+                            <vpu-data-table-view searching paging lang="${this.lang}" id="loan-loans-1" columns-count="10"></vpu-data-table-view>
+                        </div>
                     </div>
                 </div>
                 <div id="no-loans-block">

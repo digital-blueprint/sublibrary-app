@@ -74,6 +74,7 @@
   },
   "loan-list": {
     "loans": "Entlehnungen",
+    "overdue-only": "Nur überfällige Entlehnungen anzeigen",
     "borrower-name": "Entlehner",
     "start-date": "Entlehndatum",
     "due-date": "Fällig am",
