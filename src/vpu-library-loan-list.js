@@ -32,12 +32,19 @@ class LibraryLoanList extends VPULibraryLitElement {
 
     connectedCallback() {
         super.connectedCallback();
-        const that = this;
 
         this.updateComplete.then(()=>{
             // show user interface when logged in person object is available
-            that.callInitUserInterface();
+            this.callInitUserInterface();
 
+            // language=css
+            const css = `
+                table.dataTable tbody tr.odd {
+                    background-color: #f9f9f9;
+                }
+            `;
+
+            this._("vpu-data-table-view").setCSSStyle(css);
             this.loadTable();
         });
     }

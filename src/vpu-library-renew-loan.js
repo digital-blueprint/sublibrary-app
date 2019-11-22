@@ -66,6 +66,10 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                     margin-bottom: 5px;
                     display: inline-block;
                 }
+
+                table.dataTable tbody tr.odd {
+                    background-color: #f9f9f9;
+                }
             `;
 
             this._("vpu-data-table-view").setCSSStyle(css);
