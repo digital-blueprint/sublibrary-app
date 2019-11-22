@@ -105,29 +105,46 @@ class LibraryLoanList extends VPULibraryLitElement {
                             {title: i18n.t('book-list.book-author') },
                             {title: i18n.t('book-list.book-barcode') },
                             {title: i18n.t('loan-list.borrower-name') },
+                            {title: i18n.t('loan-list.start-date') },
+                            null,
                             {title: i18n.t('loan-list.due-date') },
+                            null,
                             {title: i18n.t('loan-list.return-date') },
+                            null,
                         ];
-                        // const vdtv1_columnDefs = [
-                        //     {targets: [2], visible: false},
-                        //     {targets: [1], orderData: [2]},
-                        //     {targets: [2, 3], searchable: false},
-                        //     {targets: [3], sortable: false}
-                        // ];
+
+                        // sorting will be done by hidden columns
+                        const columnDefs = [
+                            {targets: [4], orderData: [5]},
+                            {targets: [5], visible: false},
+                            {targets: [6], orderData: [7]},
+                            {targets: [7], visible: false},
+                            {targets: [8], orderData: [9]},
+                            {targets: [9], visible: false},
+                        ];
+
                         const tbl = [];
                         that.loans.forEach(function(loan) {
+                            const startTime = new Date(loan.startTime);
+                            const endTime = new Date(loan.endTime);
+                            const returnTime = new Date(loan.returnTime);
+
                             const row = [
                                 loan.object.book.title,
                                 loan.object.book.author,
                                 loan.object.barcode,
                                 loan.borrower.name,
+                                startTime.toLocaleDateString("de-AT"),
+                                loan.startTime,
+                                endTime.toLocaleDateString("de-AT"),
                                 loan.endTime,
+                                loan.returnTime !== null ? returnTime.toLocaleDateString("de-AT") : "",
                                 loan.returnTime,
                             ];
                             tbl.push(row);
                         });
                         vdtv1.set_columns(columns)
-                            // .set_columnDefs(vdtv1_columnDefs)
+                            .set_columnDefs(columnDefs)
                             .set_datatable(tbl);
                     }
                     $loanListBlock.show();
@@ -162,7 +179,7 @@ class LibraryLoanList extends VPULibraryLitElement {
                 <div id="loan-list-block" class="field">
                     <label class="label">${i18n.t('loan-list.loans')}</label>
                     <div class="control">
-                        <vpu-data-table-view searching paging lang="${this.lang}" id="loan-loans-1" columns-count="6"></vpu-data-table-view>
+                        <vpu-data-table-view searching paging lang="${this.lang}" id="loan-loans-1" columns-count="10"></vpu-data-table-view>
                     </div>
                 </div>
                 <div id="no-loans-block">
