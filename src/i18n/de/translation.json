@@ -65,6 +65,7 @@
     "contact-subject": "Entlehnung von: {{bookName}}"
   },
   "book-list": {
+    "no-books": "Es sind keine Bücher vorhanden.",
     "books": "Bücher",
     "book-title": "Titel",
     "book-author": "Autor",
@@ -73,6 +74,7 @@
     "book-location-identifier": "Aufstellungsort"
   },
   "loan-list": {
+    "no-loans": "Es sind keine Entlehnungen vorhanden.",
     "loans": "Entlehnungen",
     "overdue-only": "Nur überfällige Entlehnungen anzeigen",
     "borrower-name": "Entlehner",

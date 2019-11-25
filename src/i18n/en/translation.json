@@ -65,6 +65,7 @@
     "contact-subject": "Loaning of: {{bookName}}"
   },
   "book-list": {
+    "no-books": "There are no books.",
     "books": "Books",
     "book-title": "Title",
     "book-author": "Author",
@@ -73,6 +74,7 @@
     "book-location-identifier": "Shelve"
   },
   "loan-list": {
+    "no-loans": "There are no books.",
     "loans": "Loans",
     "overdue-only": "Show overdue loans only",
     "borrower-name": "Borrower",
