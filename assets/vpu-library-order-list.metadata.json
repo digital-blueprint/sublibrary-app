@@ -1,0 +1,17 @@
+{
+  "element": "vpu-library-order-list",
+  "module_src": "vpu-library-order-list.js",
+  "name": {
+    "de": "Bilbliothek Bestellliste",
+    "en": "Library order list"
+  },
+  "short_name": {
+    "de": "Bestellliste",
+    "en": "Order list"
+  },
+  "description": {
+    "de": "Zeigt die bestellten Bücher eines Instituts an",
+    "en": "Lists all ordered books of an organization"
+  }
+}
+

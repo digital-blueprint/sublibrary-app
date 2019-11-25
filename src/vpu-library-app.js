@@ -42,6 +42,7 @@ class LibraryApp extends VPULitElement {
             "renew-loan": {path: basePath +'vpu-library-renew-loan.metadata.json'},
             "book-list": {path: basePath +'vpu-library-book-list.metadata.json'},
             "loan-list": {path: basePath +'vpu-library-loan-list.metadata.json'},
+            "order-list": {path: basePath +'vpu-library-order-list.metadata.json'},
             "person-profile": {path: basePath +'vpu-person-profile.metadata.json', visible: false},
         };
 
@@ -634,6 +635,7 @@ class LibraryApp extends VPULitElement {
                     <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('renew-loan')}" person-id="" organization-id="${this.organizationId}"></vpu-library-renew-loan>
                     <vpu-library-book-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('book-list')}" organization-id="${this.organizationId}"></vpu-library-book-list>
                     <vpu-library-loan-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('loan-list')}" organization-id="${this.organizationId}"></vpu-library-loan-list>
+                    <vpu-library-order-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('order-list')}" organization-id="${this.organizationId}"></vpu-library-order-list>
                     <vpu-person-profile entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('person-profile')}" value="${this.user}"></vpu-person-profile>
                 </main>
 
