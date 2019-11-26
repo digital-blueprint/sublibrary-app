@@ -235,7 +235,8 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             return [];
         }
 
-        const re = /^F_BIB:F:(\d+):(\d+)$/;
+        // we also allow "_" in the id for example for the special id 1226_1231
+        const re = /^F_BIB:F:(\d+):([\d_]+)$/;
         let results = [];
 
         for (const item of functions) {
