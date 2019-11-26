@@ -75,14 +75,13 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             this._("vpu-data-table-view").setCSSStyle(css);
             const $personSelect = that.$('vpu-person-select');
             const $renewLoanBlock = that.$('#renew-loan-block');
-            const $noLoansBlock = that.$('#no-loans-block');
-            const $loansLoadingIndicator = that.$('#loans-loading');
 
             // show user interface when logged in person object is available
             that.callInitUserInterface();
 
             // show loan list block if person was selected
             $personSelect.change(function () {
+
                 that.person = $(this).data("object");
 
                 if (that.person === undefined) {
@@ -90,7 +89,6 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                 }
 
                 that.personId = that.person["@id"];
-                const apiUrl = that.entryPointUrl + that.personId + "/library-book-loans";
 
                 // set person-id of the custom element
                 that.setAttribute("person-id", that.personId);
@@ -103,66 +101,87 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                     }
                 }));
 
+                that.loadTable();
+
+            }).on('unselect', function (e) {
                 $renewLoanBlock.hide();
-                $noLoansBlock.hide();
-                $loansLoadingIndicator.show();
+            });
+        });
+    }
 
-                commonUtils.pollFunc(() => {
-                    // we need to wait until orgUnitCode is present!
-                    if (this.organizationId === '') {
-                        return false;
-                    }
+    loadTable() {
+        const that = this;
 
-                    // load list of loans for person
-                    fetch(apiUrl, {
-                        headers: {
-                            'Content-Type': 'application/ld+json',
-                            'Authorization': 'Bearer ' + window.VPUAuthToken,
-                        },
-                    })
-                    .then(result => {
-                        $loansLoadingIndicator.hide();
-                        if (!result.ok) throw result;
-                        return result.json();
-                    })
-                    .then(result => {
-                        // TODO: check if logged-in user has permissions to the library of loan.object.library
-                        that.loans = result['hydra:member'];
+        const apiUrl = this.entryPointUrl + this.personId + "/library-book-loans";
 
-                        if (that.loans.length > 0) {
-                            const vdtv1 = that._('#book-loans-1');
-                            if (vdtv1 !== null) {
-                                const minDate = new Date().toISOString();
-                                const columns = [
-                                    {title: i18n.t('renew-loan.book') },
-                                    {title: i18n.t('renew-loan.end-date') },
-                                    null,
-                                    ''
-                                ];
-                                const vdtv1_columnDefs = [
-                                    {targets: [2], visible: false},
-                                    {targets: [1], orderData: [2]},
-                                    {targets: [2, 3], searchable: false},
-                                    {targets: [3], sortable: false}
-                                ];
-                                const orgUnitCode = that.getLibrary();
-                                const tbl = [];
-                                that.loans.forEach(function(loan) {
-                                    if (loan.object.library !== orgUnitCode) {
-                                        return;
-                                    }
+        const $noLoansBlock = this.$('#no-loans-block');
+        const $loansLoadingIndicator = this.$('#loans-loading');
+        const $renewLoanBlock = this.$('#renew-loan-block');
 
-                                    const row = [
-                                        loan.object.name,
-                                        `<div class="date-col">
+        if (this.person == null) {
+            return;
+        }
+
+        $renewLoanBlock.hide();
+        $noLoansBlock.hide();
+        $loansLoadingIndicator.show();
+
+        commonUtils.pollFunc(() => {
+            // we need to wait until orgUnitCode is present!
+            if (this.organizationId === '') {
+                return false;
+            }
+
+            // load list of loans for person
+            fetch(apiUrl, {
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    'Authorization': 'Bearer ' + window.VPUAuthToken,
+                },
+            })
+                .then(result => {
+                    $loansLoadingIndicator.hide();
+                    if (!result.ok) throw result;
+                    return result.json();
+                })
+                .then(result => {
+                    // TODO: check if logged-in user has permissions to the library of loan.object.library
+                    that.loans = result['hydra:member'];
+
+                    if (that.loans.length > 0) {
+                        const vdtv1 = that._('#book-loans-1');
+                        if (vdtv1 !== null) {
+                            const minDate = new Date().toISOString();
+                            const columns = [
+                                {title: i18n.t('renew-loan.book') },
+                                {title: i18n.t('renew-loan.end-date') },
+                                null,
+                                ''
+                            ];
+                            const vdtv1_columnDefs = [
+                                {targets: [2], visible: false},
+                                {targets: [1], orderData: [2]},
+                                {targets: [2, 3], searchable: false},
+                                {targets: [3], sortable: false}
+                            ];
+                            const orgUnitCode = that.getLibrary();
+                            const tbl = [];
+                            that.loans.forEach(function(loan) {
+                                if (loan.object.library !== orgUnitCode) {
+                                    return;
+                                }
+
+                                const row = [
+                                    loan.object.name,
+                                    `<div class="date-col">
                                             <input data-date-id="${loan['@id']}"
                                                    type="date" min="${commonUtils.dateToInputDateString(minDate)}"
                                                    value="${commonUtils.dateToInputDateString(loan.endTime)}">
                                             <input data-time-id="${loan['@id']}"
                                                    type="time" class="hidden" value="23:59:59">
                                         </div>`,
-                                        loan.endTime,
-                                        `<div class="button-col">
+                                    loan.endTime,
+                                    `<div class="button-col">
                                             <vpu-button data-id="${loan['@id']}" data-type="renew"
                                                         value="Ok" name="send" type="is-small"
                                                         title="${i18n.t('renew-loan.renew-loan')}" no-spinner-on-click></vpu-button>
@@ -170,26 +189,21 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                                                         value="${i18n.t('renew-loan.contact-value')}" name="send" type="is-small"
                                                         title="${i18n.t('renew-loan.contact-title', {personName: that.person.name})}" no-spinner-on-click></vpu-button>
                                         </div>`
-                                    ];
-                                    tbl.push(row);
-                                });
-                                vdtv1.set_columns(columns)
-                                    .set_columnDefs(vdtv1_columnDefs)
-                                    .set_datatable(tbl);
-                            }
-                            $renewLoanBlock.show();
-                        } else {
-                            $noLoansBlock.show();
+                                ];
+                                tbl.push(row);
+                            });
+                            vdtv1.set_columns(columns)
+                                .set_columnDefs(vdtv1_columnDefs)
+                                .set_datatable(tbl);
                         }
-                    }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
+                        $renewLoanBlock.show();
+                    } else {
+                        $noLoansBlock.show();
+                    }
+                }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
 
-                    return true;
-                }, 10000, 100);
-
-            }).on('unselect', function (e) {
-                $renewLoanBlock.hide();
-            });
-        });
+            return true;
+        }, 10000, 100);
     }
 
     update(changedProperties) {
@@ -212,6 +226,9 @@ class LibraryRenewLoan extends VPULibraryLitElement {
 
                 // we need to update the book list because of the localization of the "Contact" button
                 this.$('vpu-person-select').change();
+            } else if (propName === "organizationId") {
+
+                this.loadTable();
             }
         });
 
