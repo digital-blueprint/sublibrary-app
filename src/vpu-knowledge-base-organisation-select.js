@@ -200,6 +200,19 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
              return;
          }
 
+         if(sessionStorage.getItem('vpu-organization-id') !== null) {
+             const organizationId = sessionStorage.getItem('vpu-organization-id');
+
+             this.organization = this.organizations.find(function(item) {
+                 return item.value === organizationId;
+             });
+
+             this.setDataObject();
+             this.fireEvent("pre-init");
+
+             return;
+         }
+
          const re = /^F_BIB:F:(\d+):(\d+)$/;
          for (const item of functions) {
              const matches = re.exec(item);

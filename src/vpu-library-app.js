@@ -260,6 +260,9 @@ class LibraryApp extends VPULitElement {
 
     onOrgUnitCodeChanged(e) {
         this.organizationId = e.detail.value;
+
+        sessionStorage.setItem('vpu-organization-id', this.organizationId);
+
         console.log('app/onOrgUnitCodeChanged organizationId = ' + this.organizationId);
     }
 
