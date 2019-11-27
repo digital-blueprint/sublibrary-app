@@ -357,6 +357,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                                            value="${this.personId}"
                                            organization-id="${this.organizationId}"
                                            show-reload-button
+                                           show-birth-date
                                            reload-button-title="${this.person ? i18n.t('renew-loan.button-refresh-title', {personName: this.person.name}): ""}"></vpu-person-select>
                     </div>
                 </div>

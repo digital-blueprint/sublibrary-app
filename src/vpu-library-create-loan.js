@@ -230,7 +230,8 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                         <vpu-person-select entry-point-url="${this.entryPointUrl}"
                                            @change=${this.onPersonSelectChanged}
                                            lang="${this.lang}"
-                                           value="${this.personId}">
+                                           value="${this.personId}"
+                                           show-birth-date>
                         </vpu-person-select>
                     </div>
                 </div>
