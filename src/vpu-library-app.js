@@ -585,7 +585,7 @@ class LibraryApp extends VPULitElement {
                         <vpu-language-select @vpu-language-changed=${this.onLanguageChanged.bind(this)}></vpu-language-select>
                     </div>
                     <div class="hd1-right">
-                        <vpu-auth lang="${this.lang}" client-id="${commonUtils.setting('keyCloakClientId')}" silent-check-sso-uri="${silentCheckSsoUri}" load-person try-login></vpu-auth>
+                        <vpu-auth lang="${this.lang}" show-profile client-id="${commonUtils.setting('keyCloakClientId')}" silent-check-sso-uri="${silentCheckSsoUri}" load-person try-login></vpu-auth>
                     </div>
                     <div class="hd2-left">
                         <div class="header">
