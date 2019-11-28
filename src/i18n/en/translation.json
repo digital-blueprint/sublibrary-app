@@ -71,7 +71,8 @@
     "book-author": "Author",
     "book-barcode": "Barcode",
     "book-location": "Place",
-    "book-location-identifier": "Shelve"
+    "book-location-identifier": "Location",
+    "location-identifier-select-placeholder": "Please select a location to restrict the book list"
   },
   "loan-list": {
     "no-loans": "There are no books.",
