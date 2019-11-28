@@ -135,6 +135,7 @@ export default {
             targets: [
                 {src: 'assets/silent-check-sso.html', dest:'dist'},
                 {src: 'assets/htaccess', dest: 'dist', rename: '.htaccess'},
+                {src: 'assets/htaccess-shared', dest: 'dist/shared/', rename: '.htaccess'},
                 {src: 'assets/*.css', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/*.ico', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/fonts/*', dest: 'dist/local/' + pkg.name + '/fonts'},
