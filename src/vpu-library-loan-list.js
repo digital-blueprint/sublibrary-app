@@ -218,7 +218,8 @@ class LibraryLoanList extends VPULibraryLitElement {
                     <div class="field">
                         <label class="label">${i18n.t('loan-list.loans')}</label>
                         <div class="control">
-                            <vpu-data-table-view searching paging lang="${this.lang}" id="loan-loans-1" columns-count="10"></vpu-data-table-view>
+                            <vpu-data-table-view searching paging exportable export-name="${i18n.t('loan-list.loans')}"
+                                                 lang="${this.lang}" id="loan-loans-1" columns-count="10"></vpu-data-table-view>
                         </div>
                     </div>
                 </div>

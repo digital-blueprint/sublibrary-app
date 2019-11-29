@@ -167,7 +167,8 @@ class LibraryOrderList extends VPULibraryLitElement {
                 <div id="book-list-block" class="field">
                     <label class="label">${i18n.t('book-list.books')}</label>
                     <div class="control">
-                        <vpu-data-table-view searching paging lang="${this.lang}" id="book-books-1" columns-count="5"></vpu-data-table-view>
+                        <vpu-data-table-view searching paging exportable export-name="${i18n.t('book-list.books')}"
+                                             lang="${this.lang}" id="book-books-1" columns-count="5"></vpu-data-table-view>
                     </div>
                 </div>
                 <div id="no-books-block">
