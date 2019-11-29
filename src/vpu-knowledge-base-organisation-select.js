@@ -37,6 +37,10 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         }
     }
 
+    select2IsInitialized() {
+        return this.$select !== null && this.$select.hasClass("select2-hidden-accessible");
+    }
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -47,6 +51,17 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             window.addEventListener("vpu-auth-person-init", async () => {
                 this.cache = { en: [], de: [] };
                 this.initSelect2();
+            });
+
+            // close the selector on blur of the web component
+            $(this).blur(() => {
+                // the 500ms delay is a workaround to actually get an item selected when clicking on it,
+                // because the blur gets also fired when clicking in the selector
+                setTimeout(() => {
+                    if (this.select2IsInitialized()) {
+                        this.$select.select2('close');
+                    }
+                }, 500);
             });
         });
     }
@@ -83,7 +98,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         }
 
         // we need to destroy Select2 and remove the event listeners before we can initialize it again
-        if (this.$select && this.$select.hasClass('select2-hidden-accessible')) {
+        if (this.select2IsInitialized()) {
             this.$select.off('select2:select');
             this.$select.empty().trigger('change');
             this.$select.select2('destroy');

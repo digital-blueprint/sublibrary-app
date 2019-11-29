@@ -201,6 +201,10 @@ class LibraryBookList extends VPULibraryLitElement {
         this.lang = e.detail.lang;
     }
 
+    locationIdentifierSelect2IsInitialized() {
+        return this.$locationIdentifierSelect !== null && this.$locationIdentifierSelect.hasClass("select2-hidden-accessible");
+    }
+
     /**
      * Initializes the locationIdentifier Select2 selector
      */
@@ -209,7 +213,7 @@ class LibraryBookList extends VPULibraryLitElement {
         this.$locationIdentifierSelect = this.$('#' + this.locationIdentifierSelectId);
 
         // destroy previous instance of Select2
-        if (this.$locationIdentifierSelect.hasClass("select2-hidden-accessible")) {
+        if (this.locationIdentifierSelect2IsInitialized()) {
             this.$locationIdentifierSelect.select2("destroy");
         }
 
@@ -221,8 +225,17 @@ class LibraryBookList extends VPULibraryLitElement {
             dropdownParent: this.$('#location-identifier-select-dropdown'),
         }).on("select2:select", function (e) {
             that.locationIdentifier = e.params.data.id;
-        }).on("select2:clear", function (e) {
+        }).on("select2:clear", function () {
             that.locationIdentifier = "";
+        }).on("select2:open", function () {
+            // close the selector when clicked outside of it
+            that.$("#location-identifier-select-dropdown .select2-search__field").blur(() => {
+                // the delay is a workaround to prevent troubles
+                setTimeout(() => {
+                    that.$locationIdentifierSelect.select2('close');
+                }, 250);
+            });
+            //
         });
     }
 
