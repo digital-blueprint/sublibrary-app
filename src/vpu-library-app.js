@@ -27,6 +27,7 @@ class LibraryApp extends VPULitElement {
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.user = '';
         this.subtitle = '';
+        this.description = '';
         this.metadata = [];
         this.organizationId = '';
 
@@ -167,6 +168,7 @@ class LibraryApp extends VPULitElement {
             user: { type: String, attribute: false },
             metadata: { type: Array, attribute: false },
             subtitle: { type: String, attribute: false },
+            description: { type: String, attribute: false },
             organizationId: { type: String, attribute: 'organization-id' },
             _loginStatus: { type: Boolean, attribute: false },
         };
@@ -252,6 +254,7 @@ class LibraryApp extends VPULitElement {
         if (changed) {
             this.router.update();
             this.subtitle = this.activeMetaDataText("short_name");
+            this.description = this.activeMetaDataText("description");
         }
     }
 
@@ -275,6 +278,7 @@ class LibraryApp extends VPULitElement {
             const component = this._(metadata.element);
             this.updatePageTitle();
             this.subtitle = this.activeMetaDataText("short_name");
+            this.description = this.activeMetaDataText("description");
 
             if (!component)
                 return;
@@ -493,6 +497,13 @@ class LibraryApp extends VPULitElement {
                 text-align: left;
                 display: inline-block;
             }
+            
+            .description {
+                font-family: 'source Sans Pro';
+                cursor: pointer;
+                text-align: left;
+                margin-bottom: 1rem;
+            }
 
             @media (max-width: 680px) {
                 #main {
@@ -629,6 +640,7 @@ class LibraryApp extends VPULitElement {
                 </aside>
 
                 <main>
+                    <p class="description">${this.description}</p>
                     <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('shelving')}" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-shelving>
                     <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('create-loan')}" person-id="" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-create-loan>
                     <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('return-book')}" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-return-book>
