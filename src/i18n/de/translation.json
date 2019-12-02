@@ -72,6 +72,9 @@
     "book-barcode": "Barcode",
     "book-location": "Ort",
     "book-location-identifier": "Aufstellungsort",
+    "book-publication-year": "Erscheinungsjahr",
+    "book-publisher": "Verlag",
+    "book-availability-date": "Inventarisierungsdatum",
     "location-identifier-select-placeholder": "Bitte wählen Sie einen Aufstellungsort aus um die Büchsterliste einzuschränken"
   },
   "loan-list": {

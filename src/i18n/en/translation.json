@@ -72,6 +72,9 @@
     "book-barcode": "Barcode",
     "book-location": "Place",
     "book-location-identifier": "Location",
+    "book-publication-year": "Publication year",
+    "book-publisher": "Publisher",
+    "book-availability-date": "Availability date",
     "location-identifier-select-placeholder": "Please select a location to restrict the book list"
   },
   "loan-list": {
