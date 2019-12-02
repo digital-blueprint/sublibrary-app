@@ -283,6 +283,7 @@ class LibraryBookList extends VPULibraryLitElement {
                                                  lang="${this.lang}" id="book-books-1" columns-count="5"></vpu-data-table-view>
                         </div>
                     </div>
+                </div>
                 <div id="no-books-block">
                     ${i18n.t('book-list.no-books')}
                 </div>
