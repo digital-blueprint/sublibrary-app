@@ -19,6 +19,10 @@ const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : '
 console.log("build: " + build);
 const basePath = (build === 'local') ? '/' : '/apps/library/';
 
+const CHUNK_BLACKLIST = [
+  'jszip'  // jszip is a node module by default and rollup chunking is confused by that and emits warnings
+];
+
 /**
  * Returns a list of chunks used for splitting up the bundle.
  * We recursively use every dependency and ever internal dev dependency (starting with 'vpu-').
@@ -31,6 +35,9 @@ function getManualChunks(pkg) {
     manualChunks = Object.assign(manualChunks, getManualChunks(subPkg));
   }
   manualChunks = Object.assign(manualChunks, vpu);
+  for(const name of CHUNK_BLACKLIST) {
+    delete manualChunks[name];
+  }
   return manualChunks;
 }
 
