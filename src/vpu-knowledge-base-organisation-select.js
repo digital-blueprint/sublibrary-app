@@ -116,6 +116,11 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                 data: this.organizations.map((item) => {
                     return {'id': item.id, 'text': item.code + ' ' + item.name};
                 }),
+                sorter: function(data) {
+                    return data.sort(function(a, b) {
+                        return a.text < b.text ? -1 : a.text > b.text ? 1 : 0;
+                    });
+                }
             }).on("select2:select", function () {
                 if (that.$select ) {
                     that.organization = that.organizations.find(function(item) {
@@ -253,6 +258,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         // we also allow "_" in the id for example for the special id 1226_1231
         const re = /^F_BIB:F:(\d+):([\d_]+)$/;
         let results = [];
+        let promises = [];
 
         for (const item of functions) {
             const matches = re.exec(item);
@@ -262,25 +268,29 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                 const apiUrl = this.entryPointUrl + '/organizations/knowledge_base_organizations/' + identifier + '?lang=' + this.lang;
 
                 // load organisations
-                const response = await fetch(apiUrl, {
+                promises.push(fetch(apiUrl, {
                     headers: {
                         'Content-Type': 'application/ld+json',
                         'Authorization': 'Bearer ' + window.VPUAuthToken,
                     },
-                });
-                const org = await response.json();
-                const organization = {
-                    id: org.identifier,
-                    code: org.alternateName,
-                    name: org.name,
-                    url: org.url,
-                    value: org['@id'],
-                    object: org,
-                };
-                results.push( organization );
+                })
+                    .then(response => response.json())
+                    .then(org => {
+                        const organization = {
+                            id: org.identifier,
+                            code: org.alternateName,
+                            name: org.name,
+                            url: org.url,
+                            value: org['@id'],
+                            object: org,
+                        };
+                        results.push(organization);
+                    })
+                );
             }
         }
 
+        await Promise.all(promises);
         return results;
     };
 
