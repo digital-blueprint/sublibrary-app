@@ -75,7 +75,8 @@
     "book-publication-year": "Erscheinungsjahr",
     "book-publisher": "Verlag",
     "book-availability-date": "Inventarisierungsdatum",
-    "location-identifier-select-placeholder": "Bitte wählen Sie einen Aufstellungsort aus um die Büchsterliste einzuschränken"
+    "location-identifier-select-placeholder": "Bitte wählen Sie einen Aufstellungsort aus um die Büchsterliste einzuschränken",
+    "error-load-books": "Liste der Bücher konnte nicht geladen werden"
   },
   "loan-list": {
     "no-loans": "Es sind keine Entlehnungen vorhanden.",
@@ -84,7 +85,11 @@
     "borrower-name": "Entlehner",
     "start-date": "Entlehndatum",
     "due-date": "Fällig am",
-    "return-date": "Rückgegeben am"
+    "return-date": "Rückgegeben am",
+    "error-load-loans": "Liste der Entlehnungen konnte nicht geladen werden"
+  },
+  "order-list": {
+    "error-load-orders": "Liste der Bestellungen konnte nicht geladen werden"
   },
   "menu": {
     "shelving": "Aufstellung",

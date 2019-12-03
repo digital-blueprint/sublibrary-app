@@ -139,7 +139,7 @@ class LibraryOrderList extends VPULibraryLitElement {
                 } else {
                     $noBooksBlock.show();
                 }
-            }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-book.error-load-books-summary')));
+            }).catch(error => errorUtils.handleFetchError(error, i18n.t('order-list.error-load-orders')));
     }
 
     onLanguageChanged(e) {

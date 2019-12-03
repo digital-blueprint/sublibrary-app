@@ -132,7 +132,7 @@ class LibraryBookList extends VPULibraryLitElement {
             .then(result => {
                 that.books = result['hydra:member'];
                 that.buildTable();
-            }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-book.error-load-books-summary')));
+            }).catch(error => errorUtils.handleFetchError(error, i18n.t('book-list.error-load-books')));
     }
 
     buildTable(updateLocationIdentifiers = true) {
