@@ -72,10 +72,9 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         }
         this.organizations = this.cache[this.lang];
 
-        if (this.organization === null) {
+        if (this.organization === null || this.organization === undefined) {
             this.setFirstOrganization();
-        }
-        if (this.organization !== null) {
+        } else {
             const old_organization = this.organization;
             // get organization with all attributes
             this.organization = this.organizations.find((organization) => {
