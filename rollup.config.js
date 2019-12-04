@@ -96,7 +96,9 @@ export default {
         warn(warning);
     },
     watch: {
-      chokidar: true,
+      chokidar: {
+        usePolling: true
+      }
     },
     plugins: [
         del({
