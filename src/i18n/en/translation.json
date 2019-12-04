@@ -72,7 +72,11 @@
     "book-barcode": "Barcode",
     "book-location": "Place",
     "book-location-identifier": "Location",
-    "location-identifier-select-placeholder": "Please select a location to restrict the book list"
+    "book-publication-year": "Publication year",
+    "book-publisher": "Publisher",
+    "book-availability-date": "Availability date",
+    "location-identifier-select-placeholder": "Please select a location to restrict the book list",
+    "error-load-books": "List of books could not be loaded"
   },
   "loan-list": {
     "no-loans": "There are no books.",
@@ -81,7 +85,11 @@
     "borrower-name": "Borrower",
     "start-date": "Start date",
     "due-date": "Due date",
-    "return-date": "Return date"
+    "return-date": "Return date",
+    "error-load-loans": "List of loans could not be loaded"
+  },
+  "order-list": {
+    "error-load-orders": "List of orders could not be loaded"
   },
   "menu": {
     "shelving": "Shelving",

@@ -72,10 +72,9 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         }
         this.organizations = this.cache[this.lang];
 
-        if (this.organization === null) {
+        if (this.organization === null || this.organization === undefined) {
             this.setFirstOrganization();
-        }
-        if (this.organization !== null) {
+        } else {
             const old_organization = this.organization;
             // get organization with all attributes
             this.organization = this.organizations.find((organization) => {
@@ -198,6 +197,18 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
 
          if (functions === undefined) {
              // console.log('setFirstOrganization(): functions === undefined');
+             return;
+         }
+
+        const organizationId = sessionStorage.getItem('vpu-organization-id');
+        if (organizationId !== null) {
+             this.organization = this.organizations.find(function(item) {
+                 return item.value === organizationId;
+             });
+
+             this.setDataObject();
+             this.fireEvent("pre-init");
+
              return;
          }
 

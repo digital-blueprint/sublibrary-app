@@ -19,6 +19,10 @@ const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : '
 console.log("build: " + build);
 const basePath = (build === 'local') ? '/' : '/apps/library/';
 
+const CHUNK_BLACKLIST = [
+  'jszip'  // jszip is a node module by default and rollup chunking is confused by that and emits warnings
+];
+
 /**
  * Returns a list of chunks used for splitting up the bundle.
  * We recursively use every dependency and ever internal dev dependency (starting with 'vpu-').
@@ -31,6 +35,9 @@ function getManualChunks(pkg) {
     manualChunks = Object.assign(manualChunks, getManualChunks(subPkg));
   }
   manualChunks = Object.assign(manualChunks, vpu);
+  for(const name of CHUNK_BLACKLIST) {
+    delete manualChunks[name];
+  }
   return manualChunks;
 }
 
@@ -89,7 +96,9 @@ export default {
         warn(warning);
     },
     watch: {
-      chokidar: true,
+      chokidar: {
+        usePolling: true
+      }
     },
     plugins: [
         del({
@@ -153,6 +162,7 @@ export default {
                 {src: 'node_modules/datatables.net-dt/css', dest: 'dist/local/vpu-data-table-view/'},
                 {src: 'node_modules/datatables.net-dt/images', dest: 'dist/local/vpu-data-table-view/'},
                 {src: 'node_modules/datatables.net-responsive-dt/css', dest: 'dist/local/vpu-data-table-view'},
+                {src: 'node_modules/datatables.net-buttons-dt/css', dest: 'dist/local/vpu-data-table-view'},
             ],
         }),
         (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: 'dist', host: '127.0.0.1', port: 8001, historyApiFallback: '/' + pkg.name + '.html'}) : false

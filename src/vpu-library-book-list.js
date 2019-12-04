@@ -132,7 +132,7 @@ class LibraryBookList extends VPULibraryLitElement {
             .then(result => {
                 that.books = result['hydra:member'];
                 that.buildTable();
-            }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-book.error-load-books-summary')));
+            }).catch(error => errorUtils.handleFetchError(error, i18n.t('book-list.error-load-books')));
     }
 
     buildTable(updateLocationIdentifiers = true) {
@@ -147,23 +147,34 @@ class LibraryBookList extends VPULibraryLitElement {
                 const columns = [
                     {title: i18n.t('book-list.book-title')},
                     {title: i18n.t('book-list.book-author')},
+                    {title: i18n.t('book-list.book-publication-year')},
+                    {title: i18n.t('book-list.book-publisher')},
+                    {title: i18n.t('book-list.book-availability-date')},
                     {title: i18n.t('book-list.book-barcode')},
                     {title: i18n.t('book-list.book-location')},
                     {title: i18n.t('book-list.book-location-identifier')},
                 ];
-                // const vdtv1_columnDefs = [
-                //     {targets: [2], visible: false},
-                //     {targets: [1], orderData: [2]},
-                //     {targets: [2, 3], searchable: false},
-                //     {targets: [3], sortable: false}
-                // ];
+
+                // sorting will be done by hidden columns
+                const columnDefs = [
+                    {targets: [4], orderData: [5]},
+                    {targets: [5], visible: false},
+                ];
+
                 const tbl = [];
                 this.books.forEach(function (bookOffer) {
                     if (that.locationIdentifier === "" ||
                         that.locationIdentifier === bookOffer.locationIdentifier) {
+                        const datePublished = new Date(bookOffer.book.datePublished);
+                        const availabilityStarts = new Date(bookOffer.availabilityStarts);
+
                         const row = [
                             bookOffer.book.title,
                             bookOffer.book.author,
+                            bookOffer.book.datePublished !== null ? datePublished.getFullYear() : "",
+                            bookOffer.book.publisher,
+                            bookOffer.availabilityStarts !== null ? availabilityStarts.toLocaleDateString("de-AT") : "",
+                            bookOffer.availabilityStarts,
                             bookOffer.barcode,
                             bookOffer.location,
                             bookOffer.locationIdentifier,
@@ -179,7 +190,7 @@ class LibraryBookList extends VPULibraryLitElement {
                     }
                 });
                 vdtv1.set_columns(columns)
-                // .set_columnDefs(vdtv1_columnDefs)
+                    .set_columnDefs(columnDefs)
                     .set_datatable(tbl);
             }
             $bookListBlock.show();
@@ -280,7 +291,7 @@ class LibraryBookList extends VPULibraryLitElement {
                         <label class="label">${i18n.t('book-list.books')}</label>
                         <div class="control">
                             <vpu-data-table-view searching paging exportable export-name="${i18n.t('book-list.books')}"
-                                                 lang="${this.lang}" id="book-books-1" columns-count="5"></vpu-data-table-view>
+                                                 lang="${this.lang}" id="book-books-1" columns-count="8"></vpu-data-table-view>
                         </div>
                     </div>
                 </div>

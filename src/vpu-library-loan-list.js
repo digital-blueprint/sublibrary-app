@@ -112,7 +112,7 @@ class LibraryLoanList extends VPULibraryLitElement {
             .then(result => {
                 that.loans = result['hydra:member'];
                 that.buildTable();
-            }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
+            }).catch(error => errorUtils.handleFetchError(error, i18n.t('loan-list.error-load-loans')));
     }
 
     buildTable() {
