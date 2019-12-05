@@ -1,6 +1,7 @@
 {
   "element": "vpu-library-renew-loan",
   "module_src": "vpu-library-renew-loan.js",
+  "routing_name": "renew-loan",
   "name": {
     "de": "Bilbliothek Buchverlängerung",
     "en": "Library book loan renewal"

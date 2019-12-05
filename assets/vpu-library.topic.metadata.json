@@ -1,0 +1,26 @@
+{
+  "name": {
+    "de": "Institutbibliothek",
+    "en": "Library"
+  },
+  "short_name": {
+    "de": "Institutbibliothek",
+    "en": "Library"
+  },
+  "description": {
+    "de": "",
+    "en": ""
+  },
+  "routing_name": "library",
+  "activities": [
+    {"path": "vpu-library-shelving.metadata.json"},
+    {"path": "vpu-library-create-loan.metadata.json"},
+    {"path": "vpu-library-return-book.metadata.json"},
+    {"path": "vpu-library-renew-loan.metadata.json"},
+    {"path": "vpu-library-book-list.metadata.json"},
+    {"path": "vpu-library-loan-list.metadata.json"},
+    {"path": "vpu-library-order-list.metadata.json"},
+    {"path": "vpu-person-profile.metadata.json",
+     "visible": false}
+  ]
+}

@@ -1,6 +1,7 @@
 {
   "element": "vpu-library-create-loan",
   "module_src": "vpu-library-create-loan.js",
+  "routing_name": "create-loan",
   "name": {
     "de": "Bilbliothek Buchentlehnung",
     "en": "Library book loan"

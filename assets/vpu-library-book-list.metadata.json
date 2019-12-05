@@ -1,6 +1,7 @@
 {
   "element": "vpu-library-book-list",
   "module_src": "vpu-library-book-list.js",
+  "routing_name": "book-list",
   "name": {
     "de": "Bilbliothek Buchliste",
     "en": "Library book list"

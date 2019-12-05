@@ -1,6 +1,7 @@
 {
   "element": "vpu-library-order-list",
   "module_src": "vpu-library-order-list.js",
+  "routing_name": "order-list",
   "name": {
     "de": "Bilbliothek Bestellliste",
     "en": "Library order list"

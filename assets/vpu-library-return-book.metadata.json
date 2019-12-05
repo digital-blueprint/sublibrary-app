@@ -1,6 +1,7 @@
 {
   "element": "vpu-library-return-book",
   "module_src": "vpu-library-return-book.js",
+  "routing_name": "return-book",
   "name": {
     "de": "Bilbliothek Rückgabe",
     "en": "Library book return"

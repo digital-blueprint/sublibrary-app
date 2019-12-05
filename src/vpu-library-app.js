@@ -28,26 +28,16 @@ class LibraryApp extends VPULitElement {
         this.user = '';
         this.subtitle = '';
         this.description = '';
-        this.metadata = [];
+        this.routes = [];
+        this.metadata = {};
+        this.topic = {};
         this.organizationId = '';
 
         this._updateAuth = this._updateAuth.bind(this);
         this._loginStatus = 'unknown';
         this._subscriber = new events.EventSubscriber('vpu-auth-update', 'vpu-auth-update-request');
 
-        // route-name: path of metadata json
-        this.metadataPaths = {
-            "shelving": {path: basePath +'vpu-library-shelving.metadata.json'},
-            "create-loan": {path: basePath +'vpu-library-create-loan.metadata.json'},
-            "return-book": {path: basePath +'vpu-library-return-book.metadata.json'},
-            "renew-loan": {path: basePath +'vpu-library-renew-loan.metadata.json'},
-            "book-list": {path: basePath +'vpu-library-book-list.metadata.json'},
-            "loan-list": {path: basePath +'vpu-library-loan-list.metadata.json'},
-            "order-list": {path: basePath +'vpu-library-order-list.metadata.json'},
-            "person-profile": {path: basePath +'vpu-person-profile.metadata.json', visible: false},
-        };
-
-        this.fetchMetadata();
+        this.fetchMetadata(basePath + 'vpu-library.topic.metadata.json');
         this.initRouter();
 
         // listen to the vpu-auth-profile event to switch to the person profile
@@ -59,44 +49,52 @@ class LibraryApp extends VPULitElement {
     /**
      * Fetches the metadata of the components we want to use in the menu, dynamically imports the js modules for them,
      * then triggers a rebuilding of the menu and resolves the current route
+     *
+     * @param {string} topicURL The topic metadata URL or relative path to load things from
      */
-    async fetchMetadata() {
-        const metadata = [];
+    async fetchMetadata(topicURL) {
+        const metadata = {};
+        const routes = [];
 
-        const fetchOne = async (data) => {
-            const visible = data['visible'] === undefined ? true : data['visible'];
-            const url = data['path'];
+        const result = await (await fetch(topicURL, {
+            headers: {'Content-Type': 'application/json'}
+        })).json();
 
-            const result = await fetch(url, {
+        this.topic = result;
+
+        const fetchOne = async (url) => {
+              const result = await fetch(url, {
                 headers: {'Content-Type': 'application/json'}
             });
             if (!result.ok)
                 throw result;
 
             const jsondata = await result.json();
-            jsondata['visible'] = visible;
             if (jsondata["element"] === undefined)
                 throw new Error("no element defined in metadata");
 
             return jsondata;
         };
 
-        // fetch the metadata of the components we want to use in the menu
         let promises = [];
-        for (const routingName in this.metadataPaths) {
-            const metaData = this.metadataPaths[routingName];
-            promises.push([routingName, fetchOne(metaData)]);
+        for (const activity of result.activities) {
+            const actURL = new URL(activity.path, new URL(topicURL, window.location).href).href;
+            promises.push([activity.visible === undefined || activity.visible, fetchOne(actURL)]);
         }
-        for (const [routingName, p] of promises) {
+
+        for (const [visible, p] of promises) {
             try {
-                metadata[routingName] = await p;
+                const activity = await p;
+                activity.visible = visible;
+                metadata[activity.routing_name] = activity;
+                routes.push(activity.routing_name);
             } catch (error) {
                 console.log(error);
             }
         }
-
         // this also triggers a rebuilding of the menu
         this.metadata = metadata;
+        this.routes = routes;
 
         // resolve the current route
         this.router.setStateFromCurrentLocation();
@@ -166,7 +164,8 @@ class LibraryApp extends VPULitElement {
             activeView: { type: String, attribute: false},
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             user: { type: String, attribute: false },
-            metadata: { type: Array, attribute: false },
+            metadata: { type: Object, attribute: false },
+            topic: { type: Object, attribute: false },
             subtitle: { type: String, attribute: false },
             description: { type: String, attribute: false },
             organizationId: { type: String, attribute: 'organization-id' },
@@ -319,6 +318,10 @@ class LibraryApp extends VPULitElement {
     metaDataText(routingName, key) {
         const metadata = this.metaData(routingName);
         return metadata !== undefined && metadata[key] !== undefined ? metadata[key][this.lang] : '';
+    }
+
+    topicMetaDataText(key) {
+        return (this.topic[key] !== undefined) ? this.topic[key][this.lang] : '';
     }
 
     activeMetaDataText(key) {
@@ -587,7 +590,7 @@ class LibraryApp extends VPULitElement {
 
         // build the menu
         let menuTemplates = [];
-        for (let routingName in this.metadata) {
+        for (let routingName of this.routes) {
             const data = this.metadata[routingName];
 
             if (data['visible']) {
@@ -626,7 +629,7 @@ class LibraryApp extends VPULitElement {
                 </header>
 
                 <div id="headline">
-                    <h1 class="title">${i18n.t('headline.title')}</h1>
+                    <h1 class="title">${this.topicMetaDataText('name')}</h1>
                     <div id="institute-selector">
                         <vpu-knowledge-base-organization-select lang="${this.lang}"
                                                                 value="${this.organizationId}"
