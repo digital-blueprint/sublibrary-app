@@ -176,6 +176,11 @@ class LibraryApp extends VPULitElement {
 
     _updateAuth(login) {
         this._loginStatus = login.status;
+
+        // Clear the session storage when the user logs out
+        if (this._loginStatus === 'logging-out') {
+            sessionStorage.clear();
+        }
     }
 
     connectedCallback() {
