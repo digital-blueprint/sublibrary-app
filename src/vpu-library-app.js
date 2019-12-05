@@ -189,10 +189,6 @@ class LibraryApp extends VPULitElement {
         const that = this;
 
         this.updateComplete.then(()=>{
-            this.shadowRoot.querySelectorAll(".component").forEach((element) => {
-                element.addEventListener("change", LibraryApp.updateSessionStorage);
-            });
-
             window.addEventListener("vpu-auth-person-init", () => {
                 that.user = that._('vpu-auth').person.identifier;
             });
@@ -575,10 +571,6 @@ class LibraryApp extends VPULitElement {
         const silentCheckSsoUri = commonUtils.getAssetURL('silent-check-sso.html');
         const date = new Date(buildinfo.time);
 
-        const getViewClasses = (name => {
-            return classMap({hidden: this.activeView !== name});
-        });
-
         const getSelectClasses = (name => {
             return classMap({selected: this.activeView === name});
         });
@@ -597,6 +589,28 @@ class LibraryApp extends VPULitElement {
                 menuTemplates.push(html`<li><a @click="${(e) => this.onMenuItemClick(e)}" href="${this.router.getPathname({component: routingName})}" data-nav class="${getSelectClasses(routingName)}" title="${this.metaDataText(routingName, "description")}">${this.metaDataText(routingName, "short_name")}</a></li>`);
             }
         }
+
+        const renderActivity = () => {
+            const view = this.activeView;
+            if (view === 'shelving')
+                return html`<vpu-library-shelving @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-shelving>`;
+            else if (view === 'create-loan')
+                return html` <vpu-library-create-loan @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" person-id="" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-create-loan>`;
+            else if (view === 'return-book')
+                return html`<vpu-library-return-book @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-return-book>`;
+            else if (view === 'renew-loan')
+                return html`<vpu-library-renew-loan @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" person-id="" organization-id="${this.organizationId}"></vpu-library-renew-loan>`;
+            else if (view === 'book-list')
+                return html`<vpu-library-book-list @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" organization-id="${this.organizationId}"></vpu-library-book-list>`;
+            else if (view === 'loan-list')
+                return html`<vpu-library-loan-list @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" organization-id="${this.organizationId}"></vpu-library-loan-list>`;
+            else if (view === 'order-list')
+                return html`<vpu-library-order-list @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" organization-id="${this.organizationId}"></vpu-library-order-list>`;
+            else if (view === 'person-profile')
+                return html`<vpu-person-profile @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" value="${this.user}"></vpu-person-profile>`;
+            else
+                return html``;
+        };
 
         return html`
             <div class="${mainClassMap}">
@@ -652,14 +666,7 @@ class LibraryApp extends VPULitElement {
 
                 <main>
                     <p class="description">${this.description}</p>
-                    <vpu-library-shelving entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('shelving')}" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-shelving>
-                    <vpu-library-create-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('create-loan')}" person-id="" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-create-loan>
-                    <vpu-library-return-book entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('return-book')}" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-return-book>
-                    <vpu-library-renew-loan entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('renew-loan')}" person-id="" organization-id="${this.organizationId}"></vpu-library-renew-loan>
-                    <vpu-library-book-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('book-list')}" organization-id="${this.organizationId}"></vpu-library-book-list>
-                    <vpu-library-loan-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('loan-list')}" organization-id="${this.organizationId}"></vpu-library-loan-list>
-                    <vpu-library-order-list entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('order-list')}" organization-id="${this.organizationId}"></vpu-library-order-list>
-                    <vpu-person-profile entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component ${getViewClasses('person-profile')}" value="${this.user}"></vpu-person-profile>
+                    ${ renderActivity() }
                 </main>
 
                 <footer>
