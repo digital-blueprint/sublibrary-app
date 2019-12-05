@@ -286,13 +286,8 @@ class LibraryApp extends VPULitElement {
             if (!component)
                 return;
 
-            if (component.hasAttribute("person-id")) {
-                component.setAttribute("person-id", sessionStorage.getItem('vpu-person-id') || '');
-            }
-
-            if (component.hasAttribute("book-offer-id")) {
-                component.setAttribute("book-offer-id", sessionStorage.getItem('vpu-book-offer-id') || '');
-            }
+            component.setAttribute("person-id", sessionStorage.getItem('vpu-person-id') || '');
+            component.setAttribute("book-offer-id", sessionStorage.getItem('vpu-book-offer-id') || '');
         }).catch((e) => {
             console.error(`Error loading ${ metadata.element }`);
             throw e;
@@ -567,6 +562,40 @@ class LibraryApp extends VPULitElement {
         `;
     }
 
+    _createActivityElement(activity) {
+        // We have to create elements dynamically based on a tag name which isn't possible with lit-html.
+        // This means we pass the finished element to lit-html and have to handle element caching and
+        // event binding ourselves.
+
+        if (this._lastElm !== undefined) {
+            if (this._lastElm.tagName.toLowerCase() == activity.element.toLowerCase())
+                return this._lastElm;
+        }
+
+        const elm = document.createElement(activity.element);
+        elm.addEventListener("change", LibraryApp.updateSessionStorage);
+
+        if (this._lastElm !== undefined) {
+            this._lastElm.removeEventListener("change", LibraryApp.updateSessionStorage);
+        }
+
+        this._lastElm = elm;
+        return elm;
+    }
+
+    _renderActivity() {
+        const act = this.metadata[this.activeView];
+        if (act === undefined)
+            return html`<p>[Not Found]</p>`;
+
+        const elm =  this._createActivityElement(act);
+        elm.setAttribute("entry-point-url", this.entryPointUrl);
+        elm.setAttribute("lang", this.lang);
+        elm.setAttribute("organization-id", this.organizationId);
+        elm.setAttribute("value", this.user);
+        return elm;
+    }
+
     render() {
         const silentCheckSsoUri = commonUtils.getAssetURL('silent-check-sso.html');
         const date = new Date(buildinfo.time);
@@ -589,28 +618,6 @@ class LibraryApp extends VPULitElement {
                 menuTemplates.push(html`<li><a @click="${(e) => this.onMenuItemClick(e)}" href="${this.router.getPathname({component: routingName})}" data-nav class="${getSelectClasses(routingName)}" title="${this.metaDataText(routingName, "description")}">${this.metaDataText(routingName, "short_name")}</a></li>`);
             }
         }
-
-        const renderActivity = () => {
-            const view = this.activeView;
-            if (view === 'shelving')
-                return html`<vpu-library-shelving @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-shelving>`;
-            else if (view === 'create-loan')
-                return html` <vpu-library-create-loan @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" person-id="" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-create-loan>`;
-            else if (view === 'return-book')
-                return html`<vpu-library-return-book @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" book-offer-id="" organization-id="${this.organizationId}"></vpu-library-return-book>`;
-            else if (view === 'renew-loan')
-                return html`<vpu-library-renew-loan @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" person-id="" organization-id="${this.organizationId}"></vpu-library-renew-loan>`;
-            else if (view === 'book-list')
-                return html`<vpu-library-book-list @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" organization-id="${this.organizationId}"></vpu-library-book-list>`;
-            else if (view === 'loan-list')
-                return html`<vpu-library-loan-list @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" organization-id="${this.organizationId}"></vpu-library-loan-list>`;
-            else if (view === 'order-list')
-                return html`<vpu-library-order-list @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" organization-id="${this.organizationId}"></vpu-library-order-list>`;
-            else if (view === 'person-profile')
-                return html`<vpu-person-profile @change="${LibraryApp.updateSessionStorage}" entry-point-url="${this.entryPointUrl}" lang="${this.lang}" class="component" value="${this.user}"></vpu-person-profile>`;
-            else
-                return html``;
-        };
 
         return html`
             <div class="${mainClassMap}">
@@ -666,7 +673,7 @@ class LibraryApp extends VPULitElement {
 
                 <main>
                     <p class="description">${this.description}</p>
-                    ${ renderActivity() }
+                    ${ this._renderActivity() }
                 </main>
 
                 <footer>
