@@ -137,12 +137,18 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
     }
 
     setDataObject() {
+        if (!this.organization || !this.organization.object) {
+            return;
+        }
         const $this = $(this);
         $this.attr("data-object", JSON.stringify(this.organization.object));
         $this.data("object", this.organization.object);
     }
 
     fireEvent(eventName) {
+        if (!this.organization) {
+            return;
+        }
         console.log('fireEvent() eventName = ' + eventName + ' organization:');
         console.dir(this.organization);
 
@@ -187,6 +193,32 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         super.update(changedProperties);
     }
 
+    getMinimalOrganization(id, orgUnitCode) {
+        return {
+            id: id,
+                code: 'F' + orgUnitCode,
+            name: '',
+            url: '',
+            value: '/organizations/knowledge_base_organizations/' + id,
+            object: {
+                "@context": {
+                    "@vocab": this.entryPointUrl + "/docs.jsonld#",
+                        "hydra": "http://www.w3.org/ns/hydra/core#",
+                        "identifier": "KnowledgeBaseOrganization/identifier",
+                        "name": "https://schema.org/name",
+                        "alternateName": "https://schema.org/alternateName",
+                        "url": "https://schema.org/url"
+                },
+                "@id": "/organizations/knowledge_base_organizations/" + id,
+                    "@type": "http://schema.org/Organization",
+                    "identifier": id,
+                    "name": '',
+                    "url": '',
+                    "alternateName": 'F' + orgUnitCode,
+            }
+        };
+    }
+
     setFirstOrganization() {
          if (window.VPUPerson === undefined) {
              // console.log('setFirstOrganization(): window.VPUPerson === undefined');
@@ -218,29 +250,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
 
              if (matches !== null) {
                  const id = matches[2] + '-F' + matches[1];
-                 this.organization = {
-                     id: id,
-                     code: 'F' + matches[1],
-                     name: '',
-                     url: '',
-                     value: '/organizations/knowledge_base_organizations/' + id,
-                     object: {
-                         "@context": {
-                             "@vocab": this.entryPointUrl + "/docs.jsonld#",
-                             "hydra": "http://www.w3.org/ns/hydra/core#",
-                             "identifier": "KnowledgeBaseOrganization/identifier",
-                             "name": "https://schema.org/name",
-                             "alternateName": "https://schema.org/alternateName",
-                             "url": "https://schema.org/url"
-                         },
-                         "@id": "/organizations/knowledge_base_organizations/" + id,
-                         "@type": "http://schema.org/Organization",
-                         "identifier": id,
-                         "name": '',
-                         "url": '',
-                         "alternateName": 'F' + matches[1],
-                     }
-                 };
+                 this.organization = this.getMinimalOrganization(id, matches[1]);
                  this.setDataObject();
                  this.fireEvent("pre-init");
                  break;
@@ -287,15 +297,20 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                 })
                     .then(response => response.json())
                     .then(org => {
-                        const organization = {
-                            id: org.identifier,
-                            code: org.alternateName,
-                            name: org.name,
-                            url: org.url,
-                            value: org['@id'],
-                            object: org,
-                        };
-                        results.push(organization);
+                        if (org['@type' !== 'hydra:Error']) {
+                            const organization = {
+                                id: org.identifier,
+                                code: org.alternateName,
+                                name: org.name,
+                                url: org.url,
+                                value: org['@id'],
+                                object: org,
+                            };
+                            results.push(organization);
+                        } else {
+                            const organization = this.getMinimalOrganization(identifier, matches[1]);
+                            results.push(organization);
+                        }
                     })
                 );
             }
