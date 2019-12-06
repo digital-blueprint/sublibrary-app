@@ -501,7 +501,7 @@ class LibraryApp extends VPULitElement {
             }
             
             .description {
-                font-family: 'source Sans Pro';
+                font-family: 'Source Sans Pro';
                 text-align: left;
                 margin-bottom: 1rem;
             }
