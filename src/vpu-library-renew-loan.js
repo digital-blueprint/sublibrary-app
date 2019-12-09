@@ -27,9 +27,9 @@ class LibraryRenewLoan extends VPULibraryLitElement {
         return {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            personId: { type: String, attribute: 'person-id' },
+            personId: { type: String, attribute: 'person-id', reflect: true},
             loans: { type: Object, attribute: false },
-            organizationId: { type: String, attribute: 'organization-id' },
+            organizationId: { type: String, attribute: 'organization-id', reflect: true},
         };
     }
 

@@ -36,7 +36,7 @@ class LibraryBookList extends VPULibraryLitElement {
         return {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            organizationId: { type: String, attribute: 'organization-id' },
+            organizationId: { type: String, attribute: 'organization-id', reflect: true},
             books: { type: Object, attribute: false },
             locationIdentifiers: { type: Array, attribute: false },
             locationIdentifier: { type: String, attribute: false },

@@ -34,6 +34,8 @@ class LibraryApp extends VPULitElement {
         this._loginStatus = 'unknown';
         this._subscriber = new events.EventSubscriber('vpu-auth-update', 'vpu-auth-update-request');
 
+        this._attrObserver = new MutationObserver(this.onAttributeObserved);
+
         this.fetchMetadata(basePath + 'vpu-library.topic.metadata.json');
         this.initRouter();
 
@@ -41,6 +43,16 @@ class LibraryApp extends VPULitElement {
         window.addEventListener("vpu-auth-profile", () => {
             this.switchComponent('person-profile');
         });
+    }
+
+    onAttributeObserved(mutationsList, observer) {
+        for(let mutation of mutationsList) {
+            if (mutation.type === 'attributes') {
+                const key = mutation.attributeName;
+                const value = mutation.target.getAttribute(key);
+                sessionStorage.setItem('vpu-attr-' + key, value);
+            }
+        }
     }
 
     /**
@@ -212,17 +224,6 @@ class LibraryApp extends VPULitElement {
         }
     }
 
-    static updateSessionStorage(event) {
-        switch (event.detail.type) {
-            case "person-id":
-                sessionStorage.setItem('vpu-person-id', event.detail.value);
-                break;
-            case "book-offer-id":
-                sessionStorage.setItem('vpu-book-offer-id', event.detail.value);
-                break;
-        }
-    }
-
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === "lang") {
@@ -253,10 +254,6 @@ class LibraryApp extends VPULitElement {
 
     onOrgUnitCodeChanged(e) {
         this.organizationId = e.detail.value;
-
-        sessionStorage.setItem('vpu-organization-id', this.organizationId);
-
-        console.log('app/onOrgUnitCodeChanged organizationId = ' + this.organizationId);
     }
 
     switchComponent(componentTag) {
@@ -271,16 +268,9 @@ class LibraryApp extends VPULitElement {
         }
 
         import(basePath + metadata.module_src).then(() => {
-            const component = this._(metadata.element);
             this.updatePageTitle();
             this.subtitle = this.activeMetaDataText("short_name");
             this.description = this.activeMetaDataText("description");
-
-            if (!component)
-                return;
-
-            component.setAttribute("person-id", sessionStorage.getItem('vpu-person-id') || '');
-            component.setAttribute("book-offer-id", sessionStorage.getItem('vpu-book-offer-id') || '');
         }).catch((e) => {
             console.error(`Error loading ${ metadata.element }`);
             throw e;
@@ -548,16 +538,23 @@ class LibraryApp extends VPULitElement {
         // event binding ourselves.
 
         if (this._lastElm !== undefined) {
-            if (this._lastElm.tagName.toLowerCase() == activity.element.toLowerCase())
+            if (this._lastElm.tagName.toLowerCase() == activity.element.toLowerCase()) {
                 return this._lastElm;
+            } else {
+                this._attrObserver.disconnect();
+                this._lastElm = undefined;
+            }
         }
 
         const elm = document.createElement(activity.element);
-        elm.addEventListener("change", LibraryApp.updateSessionStorage);
 
-        if (this._lastElm !== undefined) {
-            this._lastElm.removeEventListener("change", LibraryApp.updateSessionStorage);
+        for(const key of this.topic.attributes) {
+            let value = sessionStorage.getItem('vpu-attr-' + key);
+            if (value !== null)
+                elm.setAttribute(key, value);
         }
+
+        this._attrObserver.observe(elm, {attributes: true, attributeFilter: this.topic.attributes});
 
         this._lastElm = elm;
         return elm;
@@ -571,6 +568,7 @@ class LibraryApp extends VPULitElement {
         const elm =  this._createActivityElement(act);
         elm.setAttribute("entry-point-url", this.entryPointUrl);
         elm.setAttribute("lang", this.lang);
+        // Remove this after the selector is in the activities
         elm.setAttribute("organization-id", this.organizationId);
         return elm;
     }

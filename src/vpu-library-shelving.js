@@ -25,9 +25,9 @@ class LibraryShelving extends VPULibraryLitElement {
         return {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            bookOfferId: { type: String, attribute: 'book-offer-id' },
+            bookOfferId: { type: String, attribute: 'book-offer-id', reflect: true},
             bookOffer: { type: Object, attribute: false },
-            organizationId: { type: String, attribute: 'organization-id' },
+            organizationId: { type: String, attribute: 'organization-id', reflect: true},
         };
     }
 

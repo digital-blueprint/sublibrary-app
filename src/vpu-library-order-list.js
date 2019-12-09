@@ -25,7 +25,7 @@ class LibraryOrderList extends VPULibraryLitElement {
         return {
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            organizationId: { type: String, attribute: 'organization-id' },
+            organizationId: { type: String, attribute: 'organization-id', reflect: true},
             books: { type: Object, attribute: false },
         };
     }
