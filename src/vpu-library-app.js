@@ -22,8 +22,7 @@ class LibraryApp extends VPULitElement {
     constructor() {
         super();
         this.lang = 'de';
-        this.defaultView = 'shelving';
-        this.activeView = this.defaultView;
+        this.activeView = '';
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.user = '';
         this.subtitle = '';
@@ -96,8 +95,12 @@ class LibraryApp extends VPULitElement {
         this.metadata = metadata;
         this.routes = routes;
 
-        // resolve the current route
-        this.router.setStateFromCurrentLocation();
+        // Switch to the first route if none is selected
+        if (!this.activeView)
+            this.switchComponent(routes[0]);
+        else
+            this.switchComponent(this.activeView);
+
     }
 
     initRouter() {
@@ -107,7 +110,7 @@ class LibraryApp extends VPULitElement {
                 action: (context) => {
                     return {
                         lang: this.lang,
-                        component: 'shelving',
+                        component: '',
                     };
                 }
             },
@@ -119,7 +122,7 @@ class LibraryApp extends VPULitElement {
                         action: (context, params) => {
                             return {
                                 lang: params.lang,
-                                component: 'shelving',
+                                component: '',
                             };
                         }
                     },
@@ -271,7 +274,7 @@ class LibraryApp extends VPULitElement {
         this.activeView = componentTag;
         if (changed)
             this.router.update();
-        const metadata = this.activeMetaData();
+        const metadata = this.metadata[componentTag];
 
         if (metadata === undefined) {
             return;
@@ -294,20 +297,8 @@ class LibraryApp extends VPULitElement {
         });
     }
 
-    activeMetaData() {
-        return this.metaData(this.activeView);
-    }
-
-    metaData(routingName) {
-        return this.metadata[routingName];
-    }
-
-    // metaDataText(metadata, key) {
-    //     return metadata !== undefined && metadata[key] !== undefined ? metadata[key][this.lang] : '';
-    // }
-
     metaDataText(routingName, key) {
-        const metadata = this.metaData(routingName);
+        const metadata = this.metadata[routingName];
         return metadata !== undefined && metadata[key] !== undefined ? metadata[key][this.lang] : '';
     }
 
@@ -585,7 +576,7 @@ class LibraryApp extends VPULitElement {
     _renderActivity() {
         const act = this.metadata[this.activeView];
         if (act === undefined)
-            return html`<p>[Not Found]</p>`;
+            return html``;
 
         const elm =  this._createActivityElement(act);
         elm.setAttribute("entry-point-url", this.entryPointUrl);
