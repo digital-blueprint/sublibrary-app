@@ -70,7 +70,7 @@ export default {
       'src/vpu-library-book-list.js',
       'src/vpu-library-loan-list.js',
       'src/vpu-library-order-list.js',
-      'node_modules/vpu-person-profile/src/vpu-person-profile.js',
+      'src/vpu-library-profile.js',
     ] : glob.sync('test/**/*.js'),
     output: {
       dir: 'dist',
@@ -152,7 +152,6 @@ export default {
                 {src: 'assets/icon-*.png', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/manifest.json', dest: 'dist', rename: pkg.name + '.manifest.json'},
                 {src: 'assets/*.metadata.json', dest: 'dist'},
-                {src: 'node_modules/vpu-person-profile/assets/*.metadata.json', dest: 'dist'},
                 {src: 'assets/nomodule.js', dest: 'dist/local/' + pkg.name},
                 {src: 'node_modules/vpu-common/assets/icons/*.svg', dest: 'dist/local/vpu-common/icons'},
             ],

@@ -12,7 +12,6 @@ import basePath from 'consts:basePath';
 import {classMap} from 'lit-html/directives/class-map.js';
 // import * as errorreport from 'vpu-common/errorreport';
 import {Router} from './router.js';
-import * as utils from "./utils";
 import * as events from 'vpu-common/events.js';
 import './vpu-knowledge-base-organisation-select.js';
 
@@ -24,7 +23,6 @@ class LibraryApp extends VPULitElement {
         this.lang = 'de';
         this.activeView = '';
         this.entryPointUrl = commonUtils.getAPiUrl();
-        this.user = '';
         this.subtitle = '';
         this.description = '';
         this.routes = [];
@@ -166,7 +164,6 @@ class LibraryApp extends VPULitElement {
             lang: { type: String },
             activeView: { type: String, attribute: false},
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            user: { type: String, attribute: false },
             metadata: { type: Object, attribute: false },
             topic: { type: Object, attribute: false },
             subtitle: { type: String, attribute: false },
@@ -189,13 +186,6 @@ class LibraryApp extends VPULitElement {
         super.connectedCallback();
 
         this._subscriber.subscribe(this._updateAuth);
-        const that = this;
-
-        this.updateComplete.then(()=>{
-            window.addEventListener("vpu-auth-person-init", () => {
-                that.user = that._('vpu-auth').person.identifier;
-            });
-        });
     }
 
     disconnectedCallback() {
@@ -582,7 +572,6 @@ class LibraryApp extends VPULitElement {
         elm.setAttribute("entry-point-url", this.entryPointUrl);
         elm.setAttribute("lang", this.lang);
         elm.setAttribute("organization-id", this.organizationId);
-        elm.setAttribute("value", this.user);
         return elm;
     }
 

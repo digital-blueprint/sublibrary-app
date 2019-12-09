@@ -20,7 +20,7 @@
     {"path": "vpu-library-book-list.metadata.json"},
     {"path": "vpu-library-loan-list.metadata.json"},
     {"path": "vpu-library-order-list.metadata.json"},
-    {"path": "vpu-person-profile.metadata.json",
+    {"path": "vpu-library-profile.metadata.json",
      "visible": false}
   ]
 }
