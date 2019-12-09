@@ -297,7 +297,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                 })
                     .then(response => response.json())
                     .then(org => {
-                        if (org['@type' !== 'hydra:Error']) {
+                        if (org['@type'] !== 'hydra:Error') {
                             const organization = {
                                 id: org.identifier,
                                 code: org.alternateName,
