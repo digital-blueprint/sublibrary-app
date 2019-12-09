@@ -100,7 +100,8 @@
     "submit": "Abschicken"
   },
   "select-organization": {
-    "placeholder": "Bitte wählen Sie ein Institute"
+    "placeholder": "Bitte wählen Sie ein Institute",
+    "load-error": "Fehler beim Laden der Organisation"
   },
   "page-title": "Bibliothek Applikation",
   "success-summary": "Buchaufstellung erfolgreich",

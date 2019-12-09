@@ -100,7 +100,8 @@
     "submit": "Send"
   },
   "select-organization": {
-    "placeholder": "Please select an organization"
+    "placeholder": "Please select an organization",
+    "load-error": "Error loading the organization"
   },
   "page-title": "Library application",
   "success-summary": "Book lineup successful",

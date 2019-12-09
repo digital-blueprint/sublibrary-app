@@ -9,6 +9,7 @@ import select2LangDe from "vpu-person-select/src/i18n/de/select2";
 import select2LangEn from "vpu-person-select/src/i18n/en/select2";
 import VPULitElementJQuery from "vpu-common/vpu-lit-element-jquery";
 import JSONLD from "vpu-common/jsonld";
+import {send as notify} from "vpu-common/notification";
 
 select2(window, $);
 
@@ -149,8 +150,8 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         if (!this.organization) {
             return;
         }
-        console.log('fireEvent() eventName = ' + eventName + ' organization:');
-        console.dir(this.organization);
+        // console.log('fireEvent() eventName = ' + eventName + ' organization:');
+        // console.dir(this.organization);
 
         const event = new CustomEvent(eventName, {
             bubbles: true,
@@ -310,6 +311,12 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                         } else {
                             const organization = this.getMinimalOrganization(identifier, matches[1]);
                             results.push(organization);
+                            notify({
+                                "summary": i18n.t('select-organization.load-error'),
+                                "icon": "sad",
+                                "body": org["hydra:description"],
+                                "type": "danger",
+                            });
                         }
                     })
                 );
@@ -337,6 +344,12 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
 
             .select2-container--default .select2-selection--single .select2-selection__rendered {
                 color: inherit;
+            }
+
+            .notification > img {
+                filter: invert(100%);
+                width: 24px;
+                color: blue;
             }
         `;
     }
