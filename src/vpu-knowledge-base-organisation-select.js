@@ -19,7 +19,6 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         this.lang = 'de';
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.jsonld = null;
-        this.$select = null;
         this.organizations = [];
         this.organization = null;
         // For some reason using the same ID on the whole page twice breaks select2 (regardless if they are in different custom elements)
@@ -36,15 +35,14 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         };
     }
 
-    select2IsInitialized() {
-        return this.$select !== null && this.$select.hasClass("select2-hidden-accessible");
+    select2IsInitialized(elm) {
+        return elm !== null && elm.hasClass("select2-hidden-accessible");
     }
 
     connectedCallback() {
         super.connectedCallback();
 
         this.updateComplete.then(()=> {
-            this.$select = this.$('#' + this.selectId);
             this.setFirstOrganization();
 
             window.addEventListener("vpu-auth-person-init", async () => {
@@ -57,8 +55,9 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                 // the 500ms delay is a workaround to actually get an item selected when clicking on it,
                 // because the blur gets also fired when clicking in the selector
                 setTimeout(() => {
-                    if (this.select2IsInitialized()) {
-                        this.$select.select2('close');
+                    const $select = this.$('#' + this.selectId);
+                    if (this.select2IsInitialized($select)) {
+                        $select.select2('close');
                     }
                 }, 500);
             });
@@ -89,20 +88,21 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
     }
 
     async updateSelect2() {
-        if (this.$select === null) {
-            return false;
-        }
+        await this.updateComplete;
+
+        const $select = this.$('#' + this.selectId);
+        console.assert($select.length, "select2 missing");
 
         // we need to destroy Select2 and remove the event listeners before we can initialize it again
-        if (this.select2IsInitialized()) {
-            this.$select.off('select2:select');
-            this.$select.empty().trigger('change');
-            this.$select.select2('destroy');
+        if (this.select2IsInitialized($select)) {
+            $select.off('select2:select');
+            $select.empty().trigger('change');
+            $select.select2('destroy');
         }
 
         await this.load_organizations();
 
-        this.$select.select2({
+        $select.select2({
             width: '100%',
             language: this.lang === "de" ? select2LangDe() : select2LangEn(),
             placeholderOption: i18n.t('select-organization.placeholder'),
@@ -116,23 +116,19 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                 });
             }
         }).on("select2:select", () => {
-            if (this.$select ) {
-                this.organization = this.organizations.find((item) => {
-                    return item.id === this.$select.select2('data')[0].id;
-                });
+            this.organization = this.organizations.find((item) => {
+                return item.id === $select.select2('data')[0].id;
+            });
 
-                this.setDataObject();
-                this.fireEvent("change");
-            }
+            this.setDataObject();
+            this.fireEvent("change");
         });
 
         if (this.organization !== null)
-            this.$select.val(this.organization.id).trigger('change');
+            $select.val(this.organization.id).trigger('change');
 
         if (this.organizations.length === 0)
-            this.$select.next().hide();
-
-        return true;
+            $select.next().hide();
     }
 
     setDataObject() {
