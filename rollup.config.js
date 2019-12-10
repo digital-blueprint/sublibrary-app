@@ -11,7 +11,7 @@ import serve from 'rollup-plugin-serve';
 import urlPlugin from "@rollup/plugin-url";
 import consts from 'rollup-plugin-consts';
 import del from 'rollup-plugin-delete';
-import ejsAssetPlugin from './ejs-asset-plugin.js';
+import emitEJS from 'rollup-plugin-emit-ejs'
 import chai from 'chai';
 
 const pkg = require('./package.json');
@@ -109,11 +109,15 @@ export default {
           buildinfo: getBuildInfo(),
           basePath: basePath,
         }),
-        ejsAssetPlugin('assets/index.ejs', pkg.name + '.html', {
-          geturl: (p) => {
-            return url.resolve(basePath, p);
+        emitEJS({
+          src: 'assets',
+          data: {
+            geturl: (p) => {
+              return url.resolve(basePath, p);
+            }
           }
         }),
+
         resolve({
           customResolveOptions: {
             // ignore node_modules from vendored packages
