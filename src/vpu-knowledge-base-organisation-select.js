@@ -172,6 +172,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                         this.organization = this.organizations.find((organization) => {
                             return organization.id === matches[1];
                         });
+                        this.updateSelect2();
                     }
                     break;
                 }
