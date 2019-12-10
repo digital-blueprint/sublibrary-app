@@ -114,5 +114,6 @@
   "error-login-message": "You need to be logged in to use this function!",
   "title": "Library shelving",
   "subtitle": "Allows the shelving of books in the library",
-  "more-information": "More information"
+  "more-information": "More information",
+  "page-updated-needs-reload": "The application has been updated. Please reload the page."
 }

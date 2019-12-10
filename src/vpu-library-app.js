@@ -14,8 +14,33 @@ import {classMap} from 'lit-html/directives/class-map.js';
 import {Router} from './router.js';
 import * as events from 'vpu-common/events.js';
 import './vpu-knowledge-base-organisation-select.js';
+import {send as notify} from 'vpu-notification';
 
 // errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
+
+
+/**
+ * In case the application gets updated future dynamic imports might fail.
+ * This sends a notification suggesting the user to reload the page.
+ *
+ * uage: importNotify(import('<path>'));
+ *
+ * @param {Promise} promise
+ */
+const importNotify = async (promise) => {
+    try {
+        return await promise;
+    } catch (error) {
+        console.log(error);
+        notify({
+            "body": i18n.t('page-updated-needs-reload'),
+            "type": "info",
+            "icon": "warning"
+        });
+        throw error;
+    }
+};
+
 
 class LibraryApp extends VPULitElement {
     constructor() {
@@ -267,7 +292,7 @@ class LibraryApp extends VPULitElement {
             return;
         }
 
-        import(basePath + metadata.module_src).then(() => {
+        importNotify(import(basePath + metadata.module_src)).then(() => {
             this.updatePageTitle();
             this.subtitle = this.activeMetaDataText("short_name");
             this.description = this.activeMetaDataText("description");

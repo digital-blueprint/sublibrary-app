@@ -114,5 +114,6 @@
   "error-login-message": "Sie müssen eingeloggt sein um diese Funktion nutzen zu können!",
   "title": "Bibliothek Buchaufstellung",
   "subtitle": "Erlaubt das Aufstellen von Büchern in der Bibliothek",
-  "more-information": "Mehr Information"
+  "more-information": "Mehr Information",
+  "page-updated-needs-reload": "Die Applikation wurde aktualisiert. Bitte laden Sie die Seite neu."
 }
