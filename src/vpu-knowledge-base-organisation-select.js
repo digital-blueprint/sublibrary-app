@@ -49,7 +49,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
 
             window.addEventListener("vpu-auth-person-init", async () => {
                 this.cache = { en: [], de: [] };
-                this.initSelect2();
+                this.updateSelect2();
             });
 
             // close the selector on blur of the web component
@@ -88,7 +88,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         }
     }
 
-    async initSelect2() {
+    async updateSelect2() {
         const that = this;
 
         if (this.$select === null) {
@@ -168,7 +168,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                 case "lang":
                     i18n.changeLanguage(this.lang);
 
-                    this.initSelect2();
+                    this.updateSelect2();
                     break;
                 case "value":
                     const matches = this.value.match(/\/\d+$/);
