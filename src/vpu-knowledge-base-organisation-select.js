@@ -102,34 +102,36 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
 
         await this.load_organizations();
 
-        if (this.organization !== null) {
+        this.$select.select2({
+            width: '100%',
+            language: this.lang === "de" ? select2LangDe() : select2LangEn(),
+            placeholderOption: i18n.t('select-organization.placeholder'),
+            dropdownParent: this.$('#select-organization-dropdown'),
+            data: this.organizations.map((item) => {
+                return {'id': item.id, 'text': item.code + ' ' + item.name};
+            }),
+            sorter: (data) => {
+                return data.sort((a, b) => {
+                    return a.text < b.text ? -1 : a.text > b.text ? 1 : 0;
+                });
+            }
+        }).on("select2:select", () => {
+            if (this.$select ) {
+                this.organization = this.organizations.find((item) => {
+                    return item.id === this.$select.select2('data')[0].id;
+                });
 
-            this.$select.select2({
-                width: '100%',
-                language: this.lang === "de" ? select2LangDe() : select2LangEn(),
-                placeholderOption: i18n.t('select-organization.placeholder'),
-                dropdownParent: this.$('#select-organization-dropdown'),
-                data: this.organizations.map((item) => {
-                    return {'id': item.id, 'text': item.code + ' ' + item.name};
-                }),
-                sorter: (data) => {
-                    return data.sort((a, b) => {
-                        return a.text < b.text ? -1 : a.text > b.text ? 1 : 0;
-                    });
-                }
-            }).on("select2:select", () => {
-                if (this.$select ) {
-                    this.organization = this.organizations.find((item) => {
-                        return item.id === this.$select.select2('data')[0].id;
-                    });
+                this.setDataObject();
+                this.fireEvent("change");
+            }
+        });
 
-                    this.setDataObject();
-                    this.fireEvent("change");
-                }
-            });
-
+        if (this.organization !== null)
             this.$select.val(this.organization.id).trigger('change');
-        }
+
+        if (this.organizations.length === 0)
+            this.$select.next().hide();
+
         return true;
     }
 
