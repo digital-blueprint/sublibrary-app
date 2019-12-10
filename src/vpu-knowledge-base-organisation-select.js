@@ -32,9 +32,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         return {
             lang: {type: String},
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            organizations: {type: Array, attribute: false},
-            organization: {type: Object, attribute: false},
-            value: { type: String },
+            value: {type: String, reflect: true}
         }
     }
 
