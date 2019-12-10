@@ -89,8 +89,6 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
     }
 
     async updateSelect2() {
-        const that = this;
-
         if (this.$select === null) {
             return false;
         }
@@ -114,19 +112,19 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                 data: this.organizations.map((item) => {
                     return {'id': item.id, 'text': item.code + ' ' + item.name};
                 }),
-                sorter: function(data) {
-                    return data.sort(function(a, b) {
+                sorter: (data) => {
+                    return data.sort((a, b) => {
                         return a.text < b.text ? -1 : a.text > b.text ? 1 : 0;
                     });
                 }
-            }).on("select2:select", function () {
-                if (that.$select ) {
-                    that.organization = that.organizations.find(function(item) {
-                        return item.id === that.$select.select2('data')[0].id;
+            }).on("select2:select", () => {
+                if (this.$select ) {
+                    this.organization = this.organizations.find((item) => {
+                        return item.id === this.$select.select2('data')[0].id;
                     });
 
-                    that.setDataObject();
-                    that.fireEvent("change");
+                    this.setDataObject();
+                    this.fireEvent("change");
                 }
             });
 
@@ -179,11 +177,9 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                     }
                     break;
                 case "entryPointUrl":
-                    const that = this;
-
-                    JSONLD.initialize(this.entryPointUrl, function (jsonld) {
-                        that.jsonld = jsonld;
-                    }, {}, that.lang);
+                    JSONLD.initialize(this.entryPointUrl, (jsonld) => {
+                        this.jsonld = jsonld;
+                    }, {}, this.lang);
                     break;
                 default:
             }
@@ -233,7 +229,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
 
         const organizationId = sessionStorage.getItem('vpu-organization-id');
         if (organizationId !== null) {
-             this.organization = this.organizations.find(function(item) {
+             this.organization = this.organizations.find((item) => {
                  return item.value === organizationId;
              });
 
