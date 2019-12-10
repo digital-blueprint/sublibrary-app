@@ -86,7 +86,10 @@
     "error-load-loans": "List of loans could not be loaded"
   },
   "order-list": {
-    "error-load-orders": "List of orders could not be loaded"
+    "error-load-orders": "List of orders could not be loaded",
+    "order-date": "Order date",
+    "delivery-date": "Delivery date",
+    "order-status": "Status"
   },
   "menu": {
     "shelving": "Shelving",

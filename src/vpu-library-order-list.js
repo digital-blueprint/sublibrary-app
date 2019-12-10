@@ -108,31 +108,42 @@ class LibraryOrderList extends VPULibraryLitElement {
                     const vdtv1 = that._('#book-books-1');
                     if (vdtv1 !== null) {
                         const columns = [
-                            {title: i18n.t('book-list.book-title') },
-                            {title: i18n.t('book-list.book-author') },
-                            {title: i18n.t('book-list.book-barcode') },
-                            {title: i18n.t('book-list.book-location') },
-                            {title: i18n.t('book-list.book-location-identifier') },
+                            {title: i18n.t('book-list.book-title')},
+                            {title: i18n.t('book-list.book-author')},
+                            {title: i18n.t('order-list.order-date')},
+                            null,
+                            {title: i18n.t('order-list.delivery-date')},
+                            null,
+                            {title: i18n.t('order-list.order-status')},
                         ];
-                        // const vdtv1_columnDefs = [
-                        //     {targets: [2], visible: false},
-                        //     {targets: [1], orderData: [2]},
-                        //     {targets: [2, 3], searchable: false},
-                        //     {targets: [3], sortable: false}
-                        // ];
+
+                        // sorting will be done by hidden columns
+                        const columnDefs = [
+                            {targets: [2], orderData: [3]},
+                            {targets: [3], visible: false},
+                            {targets: [4], orderData: [5]},
+                            {targets: [5], visible: false},
+                        ];
+
                         const tbl = [];
-                        that.books.forEach(function(bookOffer) {
+                        that.books.forEach(function(bookOrder) {
+                            const orderDate = new Date(bookOrder.orderDate);
+                            const endDateString = bookOrder.orderedItem.orderDelivery.deliveryStatus.endDate || "";
+                            const endDate = new Date(endDateString);
+
                             const row = [
-                                bookOffer.book.title,
-                                bookOffer.book.author,
-                                bookOffer.barcode,
-                                bookOffer.location,
-                                bookOffer.locationIdentifier,
+                                bookOrder.orderedItem.orderedItem.title,
+                                bookOrder.orderedItem.orderedItem.author,
+                                orderDate.toLocaleDateString("de-AT"),
+                                bookOrder.orderDate,
+                                endDateString !== "" ? endDate.toLocaleDateString("de-AT") : "",
+                                endDateString,
+                                bookOrder.orderStatus
                             ];
                             tbl.push(row);
                         });
                         vdtv1.set_columns(columns)
-                            // .set_columnDefs(vdtv1_columnDefs)
+                            .set_columnDefs(columnDefs)
                             .set_datatable(tbl);
                     }
                     $bookListBlock.show();
@@ -168,7 +179,7 @@ class LibraryOrderList extends VPULibraryLitElement {
                     <label class="label">${i18n.t('book-list.books')}</label>
                     <div class="control">
                         <vpu-data-table-view searching paging exportable export-name="${i18n.t('book-list.books')}"
-                                             lang="${this.lang}" id="book-books-1" columns-count="5"></vpu-data-table-view>
+                                             lang="${this.lang}" id="book-books-1"></vpu-data-table-view>
                     </div>
                 </div>
                 <div id="no-books-block">

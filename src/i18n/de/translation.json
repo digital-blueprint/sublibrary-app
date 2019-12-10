@@ -86,7 +86,10 @@
     "error-load-loans": "Liste der Entlehnungen konnte nicht geladen werden"
   },
   "order-list": {
-    "error-load-orders": "Liste der Bestellungen konnte nicht geladen werden"
+    "error-load-orders": "Liste der Bestellungen konnte nicht geladen werden",
+    "order-date": "Bestelldatum",
+    "delivery-date": "Lieferdatum",
+    "order-status": "Status"
   },
   "menu": {
     "shelving": "Aufstellung",
