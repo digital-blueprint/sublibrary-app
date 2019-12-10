@@ -128,16 +128,16 @@ class LibraryOrderList extends VPULibraryLitElement {
                         const tbl = [];
                         that.books.forEach(function(bookOrder) {
                             const orderDate = new Date(bookOrder.orderDate);
-                            const endDateString = bookOrder.orderedItem.orderDelivery.deliveryStatus.endDate || "";
-                            const endDate = new Date(endDateString);
+                            const availableFromString = bookOrder.orderedItem.orderDelivery.deliveryStatus.availableFrom || "";
+                            const availableFrom = new Date(availableFromString);
 
                             const row = [
                                 bookOrder.orderedItem.orderedItem.title,
                                 bookOrder.orderedItem.orderedItem.author,
                                 orderDate.toLocaleDateString("de-AT"),
                                 bookOrder.orderDate,
-                                endDateString !== "" ? endDate.toLocaleDateString("de-AT") : "",
-                                endDateString,
+                                availableFromString !== "" ? availableFrom.toLocaleDateString("de-AT") : "",
+                                availableFromString,
                                 bookOrder.orderStatus
                             ];
                             tbl.push(row);
