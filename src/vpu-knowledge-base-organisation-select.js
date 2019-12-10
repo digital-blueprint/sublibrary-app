@@ -33,7 +33,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             lang: {type: String},
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             value: {type: String, reflect: true}
-        }
+        };
     }
 
     select2IsInitialized() {
@@ -81,9 +81,9 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             });
             this.setDataObject();
             if (old_organization.name === '') {
-                this.fireEvent('init')
+                this.fireEvent('init');
             } else {
-                this.fireEvent('change')
+                this.fireEvent('change');
             }
         }
     }
@@ -168,7 +168,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
 
                     this.updateSelect2();
                     break;
-                case "value":
+                case "value": {
                     const matches = this.value.match(/\/\d+$/);
                     if (matches !== null) {
                         this.organization = this.organizations.find((organization) => {
@@ -176,6 +176,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                         });
                     }
                     break;
+                }
                 case "entryPointUrl":
                     JSONLD.initialize(this.entryPointUrl, (jsonld) => {
                         this.jsonld = jsonld;
@@ -258,7 +259,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
     /**
      * Returns the list of assigned libraries of the current user
      *
-     * @returns {Array}
+     * @returns {Array} list of orga objects
      */
     async getAssociatedOrganizations() {
         if (window.VPUPerson === undefined) {
@@ -319,7 +320,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
 
         await Promise.all(promises);
         return results;
-    };
+    }
 
     static get styles() {
         // language=css
