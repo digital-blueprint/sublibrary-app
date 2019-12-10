@@ -611,8 +611,11 @@ class VPUApp extends VPULitElement {
             return classMap({selected: this.activeView === name});
         });
 
-        // we hide the app until we are either fully logged in or logged out
-        const mainClassMap = classMap({hidden: (this._loginStatus == 'unknown' || this._loginStatus == 'logging-in')});
+        // We hide the app until we are either fully logged in or logged out
+        // At the same time when we hide the main app we show the main slot (e.g. a loading spinner)
+        const hidden = (this._loginStatus == 'unknown' || this._loginStatus == 'logging-in');
+        const mainClassMap = classMap({hidden: hidden});
+        const slotClassMap = classMap({hidden: !hidden});
 
         this.updatePageTitle();
 
@@ -627,6 +630,7 @@ class VPUApp extends VPULitElement {
         }
 
         return html`
+            <slot class="${slotClassMap}"></slot>
             <div class="${mainClassMap}">
             <div id="main">
                 <vpu-notification lang="${this.lang}"></vpu-notification>
