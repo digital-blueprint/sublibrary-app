@@ -107,7 +107,6 @@ export default {
         consts({
           environment: build,
           buildinfo: getBuildInfo(),
-          basePath: basePath,
         }),
         emitEJS({
           src: 'assets',

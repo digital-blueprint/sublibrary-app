@@ -8,7 +8,6 @@ import 'vpu-notification';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import buildinfo from 'consts:buildinfo';
-import basePath from 'consts:basePath';
 import {classMap} from 'lit-html/directives/class-map.js';
 // import * as errorreport from 'vpu-common/errorreport';
 import {Router} from './router.js';
@@ -42,7 +41,7 @@ const importNotify = async (promise) => {
 };
 
 
-class LibraryApp extends VPULitElement {
+class VPUApp extends VPULitElement {
     constructor() {
         super();
         this.lang = 'de';
@@ -54,20 +53,13 @@ class LibraryApp extends VPULitElement {
         this.metadata = {};
         this.topic = {};
         this.organizationId = '';
+        this.basePath = '';
 
         this._updateAuth = this._updateAuth.bind(this);
         this._loginStatus = 'unknown';
         this._subscriber = new events.EventSubscriber('vpu-auth-update', 'vpu-auth-update-request');
 
         this._attrObserver = new MutationObserver(this.onAttributeObserved);
-
-        this.fetchMetadata(basePath + 'vpu-library.topic.metadata.json');
-        this.initRouter();
-
-        // listen to the vpu-auth-profile event to switch to the person profile
-        window.addEventListener("vpu-auth-profile", () => {
-            this.switchComponent('person-profile');
-        });
     }
 
     onAttributeObserved(mutationsList, observer) {
@@ -113,13 +105,15 @@ class LibraryApp extends VPULitElement {
         let promises = [];
         for (const activity of result.activities) {
             const actURL = new URL(activity.path, new URL(topicURL, window.location).href).href;
-            promises.push([activity.visible === undefined || activity.visible, fetchOne(actURL)]);
+            promises.push([activity.visible === undefined || activity.visible, actURL, fetchOne(actURL)]);
         }
 
-        for (const [visible, p] of promises) {
+        for (const [visible, actURL, p] of promises) {
             try {
                 const activity = await p;
                 activity.visible = visible;
+                // Resolve module_src relative to the location of the json file
+                activity.module_src = new URL(activity.module_src, actURL).href;
                 metadata[activity.routing_name] = activity;
                 routes.push(activity.routing_name);
             } catch (error) {
@@ -190,7 +184,7 @@ class LibraryApp extends VPULitElement {
                 this.switchComponent(state.component);
             }
         }, {
-            baseUrl: basePath.replace(/\/$/, ""),
+            baseUrl: new URL(this.basePath, window.location).pathname.replace(/\/$/, ''),
         });
 
         this.router.setStateFromCurrentLocation();
@@ -199,6 +193,8 @@ class LibraryApp extends VPULitElement {
     static get properties() {
         return {
             lang: { type: String },
+            src: { type: String },
+            basePath: { type: String, attribute: 'base-path' },
             activeView: { type: String, attribute: false},
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             metadata: { type: Object, attribute: false },
@@ -221,6 +217,15 @@ class LibraryApp extends VPULitElement {
 
     connectedCallback() {
         super.connectedCallback();
+
+        if (this.src)
+            this.fetchMetadata(this.src);
+        this.initRouter();
+
+        // listen to the vpu-auth-profile event to switch to the person profile
+        window.addEventListener("vpu-auth-profile", () => {
+            this.switchComponent('person-profile');
+        });
 
         this._subscriber.subscribe(this._updateAuth);
     }
@@ -292,7 +297,7 @@ class LibraryApp extends VPULitElement {
             return;
         }
 
-        importNotify(import(basePath + metadata.module_src)).then(() => {
+        importNotify(import(metadata.module_src)).then(() => {
             this.updatePageTitle();
             this.subtitle = this.activeMetaDataText("short_name");
             this.description = this.activeMetaDataText("description");
@@ -692,5 +697,5 @@ class LibraryApp extends VPULitElement {
     }
 }
 
-commonUtils.initAssetBaseURL('vpu-library-app-src');
-commonUtils.defineCustomElement('vpu-library-app', LibraryApp);
+commonUtils.initAssetBaseURL('vpu-app-src');
+commonUtils.defineCustomElement('vpu-app', VPUApp);
