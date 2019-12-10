@@ -167,7 +167,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                     this.updateSelect2();
                     break;
                 case "value": {
-                    const matches = this.value.match(/\/\d+$/);
+                    const matches = this.value.match(/\/([^/]+)$/);
                     if (matches !== null) {
                         this.organization = this.organizations.find((organization) => {
                             return organization.id === matches[1];
