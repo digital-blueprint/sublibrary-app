@@ -339,12 +339,6 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             .select2-container--default .select2-selection--single .select2-selection__rendered {
                 color: inherit;
             }
-
-            .notification > img {
-                filter: invert(100%);
-                width: 24px;
-                color: blue;
-            }
         `;
     }
 
