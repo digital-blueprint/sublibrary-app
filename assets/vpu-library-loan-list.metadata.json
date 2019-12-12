@@ -11,8 +11,8 @@
     "en": "Loans"
   },
   "description": {
-    "de": "Zeigt die Bücher eines Instituts an",
-    "en": "Lists all loans of an organization"
+    "de": "Zeigt die Entlehnungen eines Instituts bis zum Vortag an",
+    "en": "Lists all loans of an organization until yesterday"
   }
 }
 

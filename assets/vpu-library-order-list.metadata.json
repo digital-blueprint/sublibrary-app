@@ -11,8 +11,8 @@
     "en": "Order list"
   },
   "description": {
-    "de": "Zeigt die bestellten Bücher eines Instituts an",
-    "en": "Lists all ordered books of an organization"
+    "de": "Zeigt die bestellten Bücher eines Instituts bis zum Vortag an",
+    "en": "Lists all ordered books of an organization until yesterday"
   }
 }
 

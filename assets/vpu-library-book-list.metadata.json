@@ -11,8 +11,8 @@
     "en": "Book list"
   },
   "description": {
-    "de": "Zeigt die Bücher eines Instituts an",
-    "en": "Lists all books of an organization"
+    "de": "Zeigt die Bücher eines Instituts bis zum Vortag an",
+    "en": "Lists all books of an organization until yesterday"
   }
 }
 
