@@ -17,7 +17,7 @@ import chai from 'chai';
 const pkg = require('./package.json');
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
 console.log("build: " + build);
-const basePath = (build === 'local') ? '/' : '/apps/library/';
+const basePath = (build === 'local' || build === 'production') ? '/' : '/apps/library/';
 
 const CHUNK_BLACKLIST = [
   'jszip'  // jszip is a node module by default and rollup chunking is confused by that and emits warnings
@@ -110,6 +110,7 @@ export default {
         }),
         emitEJS({
           src: 'assets',
+          include: ['**/*.ejs', '**/.*.ejs'],
           data: {
             geturl: (p) => {
               return url.resolve(basePath, p);
@@ -146,7 +147,6 @@ export default {
         copy({
             targets: [
                 {src: 'assets/silent-check-sso.html', dest:'dist'},
-                {src: 'assets/htaccess', dest: 'dist', rename: '.htaccess'},
                 {src: 'assets/htaccess-shared', dest: 'dist/shared/', rename: '.htaccess'},
                 {src: 'assets/*.css', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/*.ico', dest: 'dist/local/' + pkg.name},

@@ -53,3 +53,15 @@ deploy_dev:
     DEPLOY_HOST: mw01-dev.tugraz.at
     DEPLOY_KEY: "$DEPLOY_SSH_KEY"
   <<: *deploy_defaults
+
+deploy_production:
+  only:
+    refs:
+      - production
+  environment:
+    name: production
+    url: https://ibib.tugraz.at
+  variables:
+    DEPLOY_HOST: mw01-prod.tugraz.at
+    DEPLOY_KEY: "$DEPLOY_SSH_KEY"
+  <<: *deploy_defaults

@@ -1,2 +1,0 @@
-FallbackResource /apps/library/vpu-library.html
-Header set Cache-Control "must-revalidate, max-age=60"

@@ -52,6 +52,28 @@ host('dev')
     -> set('rsync_src', __DIR__ . '/dist')
     -> set('rsync_dest','{{release_path}}');
 
+host('production')
+    ->stage('production')
+    ->hostname('mw@mw01-prod.tugraz.at')
+    ->set('deploy_path', '/home/mw/prod_ibib/deploy')
+    -> set('rsync',[
+        'exclude'      => [
+            '.git',
+            'deploy.php',
+        ],
+        'exclude-file' => false,
+        'include'      => [],
+        'include-file' => false,
+        'filter'       => [],
+        'filter-file'  => false,
+        'filter-perdir'=> false,
+        'flags'        => 'rz',
+        'options'      => ['delete'],
+        'timeout'      => 60,
+    ])
+    -> set('rsync_src', __DIR__ . '/dist')
+    -> set('rsync_dest','{{release_path}}');
+
 // Demo build task
 task('build-demo', function () {
     runLocally("npm install");
@@ -64,11 +86,18 @@ task('build-dev', function () {
     runLocally("npm run build-dev");
 })->onStage('dev');
 
+//Production task
+task('build-production', function () {
+    runLocally("npm install");
+    runLocally("npm run build-prod");
+})->onStage('production');
+
 // Deploy task
 task('deploy', [
     'deploy:info',
     'build-demo',
     'build-dev',
+    'build-production',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',
