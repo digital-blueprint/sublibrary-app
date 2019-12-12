@@ -187,9 +187,7 @@ class LibraryShelving extends VPULibraryLitElement {
                                                         reload-button-title="${this.bookOffer ? i18n.t('shelving.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>
                 </div>
-                <div class="field">
-                    ${this.getExampleBookBarcodesHtml()}
-                </div>
+                ${this.getExampleBookBarcodesHtml()}
                 <div id="location-identifier-block">
                     <div class="field">
                         <label class="label">${i18n.t('location-identifier.headline')}</label>

@@ -248,9 +248,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                                                         reload-button-title="${this.bookOffer ? i18n.t('create-loan.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
                     </div>
                 </div>
-                <div class="field">
-                    ${this.getExampleBookBarcodesHtml()}
-                </div>
+                ${this.getExampleBookBarcodesHtml()}
                 <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                 <div id="create-loan-block">
                     <div class="field">
