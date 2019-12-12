@@ -27,6 +27,10 @@ class LibraryBookList extends VPULibraryLitElement {
         this.locationIdentifiers = [];
         this.locationIdentifierSelectId = 'vpu-library-book-list-location-identifier-select-' + commonUtils.makeId(24);
         this.$locationIdentifierSelect = null;
+        this.inventoryYear = '';
+        this.inventoryYears = [];
+        this.inventoryYearSelectId = 'vpu-library-book-list-inventory-year-select-' + commonUtils.makeId(24);
+        this.$inventoryYearSelect = null;
     }
 
     /**
@@ -40,6 +44,8 @@ class LibraryBookList extends VPULibraryLitElement {
             books: { type: Object, attribute: false },
             locationIdentifiers: { type: Array, attribute: false },
             locationIdentifier: { type: String, attribute: false },
+            inventoryYears: { type: Array, attribute: false },
+            inventoryYear: { type: String, attribute: false },
         };
     }
 
@@ -48,6 +54,7 @@ class LibraryBookList extends VPULibraryLitElement {
 
         this.updateComplete.then(()=>{
             this.initLocationIdentifierSelect();
+            this.initInventoryYearSelect();
 
             // show user interface when logged in person object is available
             this.callInitUserInterface();
@@ -66,18 +73,27 @@ class LibraryBookList extends VPULibraryLitElement {
 
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
-            if (propName === "lang") {
-                i18n.changeLanguage(this.lang);
-                this.updateLocationIdentifierSelect();
+            switch (propName) {
+                case "lang":
+                    i18n.changeLanguage(this.lang);
+                    this.updateLocationIdentifierSelect();
 
-                // we need to update the column titles
-                this.buildTable(false);
-            } else if (propName === "organizationId") {
-                this.loadTable();
-            } else if (propName === "locationIdentifiers") {
-                this.updateLocationIdentifierSelect();
-            } else if (propName === "locationIdentifier") {
-                this.buildTable(false);
+                    // we need to update the column titles
+                    this.buildTable(false);
+                    break;
+                case "organizationId":
+                    this.loadTable();
+                    break;
+                case "locationIdentifiers":
+                    this.updateLocationIdentifierSelect();
+                    break;
+                case "locationIdentifier":
+                case "inventoryYear":
+                    this.buildTable(false);
+                    break;
+                case "inventoryYears":
+                    this.updateInventoryYearSelect();
+                    break;
             }
         });
 
@@ -90,6 +106,10 @@ class LibraryBookList extends VPULibraryLitElement {
         // if (this.$locationIdentifierSelect !== null) {
         //     this.$locationIdentifierSelect.trigger('change.select2');
         // }
+    }
+
+    updateInventoryYearSelect() {
+        this.initInventoryYearSelect();
     }
 
     loadTable() {
@@ -135,11 +155,12 @@ class LibraryBookList extends VPULibraryLitElement {
             }).catch(error => errorUtils.handleFetchError(error, i18n.t('book-list.error-load-books')));
     }
 
-    buildTable(updateLocationIdentifiers = true) {
+    buildTable(updateFilterSelects = true) {
         const that = this;
         const $bookListBlock = this.$('#book-list-block');
         const $noBooksBlock = this.$('#no-books-block');
         let locationIdentifiers = [];
+        let inventoryYears = [];
 
         if (this.books.length > 0) {
             const vdtv1 = this._('#book-books-1');
@@ -163,10 +184,15 @@ class LibraryBookList extends VPULibraryLitElement {
 
                 const tbl = [];
                 this.books.forEach(function (bookOffer) {
-                    if (that.locationIdentifier === "" ||
-                        that.locationIdentifier === bookOffer.locationIdentifier) {
+                    const availabilityStarts = new Date(bookOffer.availabilityStarts);
+                    const inventoryYear = bookOffer.availabilityStarts !== null ?
+                        availabilityStarts.getFullYear().toString() : "";
+
+                    if ((that.locationIdentifier === "" ||
+                         that.locationIdentifier === bookOffer.locationIdentifier) &&
+                        (that.inventoryYear === "" ||
+                         that.inventoryYear === inventoryYear)) {
                         const datePublished = new Date(bookOffer.book.datePublished);
-                        const availabilityStarts = new Date(bookOffer.availabilityStarts);
 
                         const row = [
                             bookOffer.book.title,
@@ -183,10 +209,15 @@ class LibraryBookList extends VPULibraryLitElement {
                         tbl.push(row);
                     }
 
-                    if (updateLocationIdentifiers &&
-                        bookOffer.locationIdentifier !== "" &&
-                        !locationIdentifiers.includes(bookOffer.locationIdentifier)) {
-                        locationIdentifiers.push(bookOffer.locationIdentifier);
+                    if (updateFilterSelects) {
+                        if (bookOffer.locationIdentifier !== "" &&
+                            !locationIdentifiers.includes(bookOffer.locationIdentifier)) {
+                            locationIdentifiers.push(bookOffer.locationIdentifier);
+                        }
+                        if (inventoryYear !== "" &&
+                            !inventoryYears.includes(inventoryYear)) {
+                            inventoryYears.push(inventoryYear);
+                        }
                     }
                 });
                 vdtv1.set_columns(columns)
@@ -198,12 +229,19 @@ class LibraryBookList extends VPULibraryLitElement {
             $noBooksBlock.show();
         }
 
-        if (updateLocationIdentifiers) {
+        if (updateFilterSelects) {
             this.locationIdentifiers = locationIdentifiers.sort();
             this.locationIdentifier = "";
 
             if (this.$locationIdentifierSelect !== null) {
                 this.$locationIdentifierSelect.val("");
+            }
+
+            this.inventoryYears = inventoryYears.sort().reverse();
+            this.inventoryYear = "";
+
+            if (this.$inventoryYearSelect !== null) {
+                this.$inventoryYearSelect.val("");
             }
         }
     }
@@ -250,6 +288,44 @@ class LibraryBookList extends VPULibraryLitElement {
         });
     }
 
+    inventoryYearSelect2IsInitialized() {
+        return this.$inventoryYearSelect !== null && this.$inventoryYearSelect.hasClass("select2-hidden-accessible");
+    }
+
+    /**
+     * Initializes the inventory year Select2 selector
+     */
+    initInventoryYearSelect() {
+        let that = this;
+        this.$inventoryYearSelect = this.$('#' + this.inventoryYearSelectId);
+
+        // destroy previous instance of Select2
+        if (this.inventoryYearSelect2IsInitialized()) {
+            this.$inventoryYearSelect.select2("destroy");
+        }
+
+        this.$inventoryYearSelect.select2({
+            width: '100%',
+            allowClear: true,
+            language: this.lang === "de" ? select2LangDe() : select2LangEn(),
+            placeholder: i18n.t('book-list.inventory-year-select-placeholder'),
+            dropdownParent: this.$('#inventory-year-select-dropdown'),
+        }).on("select2:select", function (e) {
+            that.inventoryYear = e.params.data.id;
+        }).on("select2:clear", function () {
+            that.inventoryYear = "";
+        }).on("select2:open", function () {
+            // close the selector when clicked outside of it
+            that.$("#inventory-year-select-dropdown .select2-search__field").blur(() => {
+                // the delay is a workaround to prevent troubles
+                setTimeout(() => {
+                    that.$inventoryYearSelect.select2('close');
+                }, 250);
+            });
+            //
+        });
+    }
+
     static get styles() {
         // language=css
         return css`
@@ -270,6 +346,11 @@ class LibraryBookList extends VPULibraryLitElement {
             locationIdentifierItemTemplates.push(html`<option value="${item}">${item}</option>`);
         });
 
+        let inventoryYearItemTemplates = [];
+        this.inventoryYears.forEach((item) => {
+            inventoryYearItemTemplates.push(html`<option value="${item}">${item}</option>`);
+        });
+
         commonUtils.initAssetBaseURL('vpu-library-book-list-src');
         const select2CSS = commonUtils.getAssetURL(select2CSSPath);
         return html`
@@ -285,6 +366,16 @@ class LibraryBookList extends VPULibraryLitElement {
                                 ${locationIdentifierItemTemplates}
                             </select>
                             <div id="location-identifier-select-dropdown"></div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">${i18n.t('book-list.book-inventory-year')}</label>
+                        <div class="control">
+                            <select id="${this.inventoryYearSelectId}">
+                                <option value=""></option>
+                                ${inventoryYearItemTemplates}
+                            </select>
+                            <div id="inventory-year-select-dropdown"></div>
                         </div>
                     </div>
                     <div class="field">

@@ -73,6 +73,8 @@
     "book-publisher": "Publisher",
     "book-availability-date": "Availability date",
     "location-identifier-select-placeholder": "Please select a location to restrict the book list",
+    "book-inventory-year": "Availability year",
+    "inventory-year-select-placeholder": "Please select a availability year to restrict the book list",
     "error-load-books": "List of books could not be loaded"
   },
   "loan-list": {
