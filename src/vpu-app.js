@@ -13,6 +13,7 @@ import {classMap} from 'lit-html/directives/class-map.js';
 import {Router} from './router.js';
 import * as events from 'vpu-common/events.js';
 import './vpu-knowledge-base-organisation-select.js';
+import './build-info.js';
 import {send as notify} from 'vpu-notification';
 
 // errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
@@ -344,7 +345,6 @@ class VPUApp extends VPULitElement {
         return css`
             ${commonStyles.getThemeCSS()}
             ${commonStyles.getGeneralCSS()}
-            ${commonStyles.getTagCSS()}
 
             /* TU-Graz style override */
             :host {
@@ -605,7 +605,6 @@ class VPUApp extends VPULitElement {
 
     render() {
         const silentCheckSsoUri = commonUtils.getAssetURL('silent-check-sso.html');
-        const date = new Date(buildinfo.time);
 
         const getSelectClasses = (name => {
             return classMap({selected: this.activeView === name});
@@ -616,6 +615,8 @@ class VPUApp extends VPULitElement {
         const hidden = (this._loginStatus == 'unknown' || this._loginStatus == 'logging-in');
         const mainClassMap = classMap({hidden: hidden});
         const slotClassMap = classMap({hidden: !hidden});
+
+        const prodClassMap = classMap({hidden: buildinfo.env === 'production'});
 
         this.updatePageTitle();
 
@@ -688,12 +689,7 @@ class VPUApp extends VPULitElement {
                 </main>
 
                 <footer>
-                    <a href="${buildinfo.url}" style="float: right">
-                        <div class="tags has-addons" title="Build Time: ${date.toString()}">
-                            <span class="tag is-light">build</span>
-                            <span class="tag is-dark">${buildinfo.info} (${buildinfo.env})</span>
-                        </div>
-                    </a>
+                    <vpu-build-info style="float: right" class="${prodClassMap}"></vpu-build-info>
                 </footer>
             </div>
             </div>
