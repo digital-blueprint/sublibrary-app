@@ -199,7 +199,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         let response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'Accept': 'application/json',
+                'Accept': 'application/ld+json',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + window.VPUAuthToken
             },
