@@ -333,6 +333,7 @@ class LibraryBookList extends VPULibraryLitElement {
             ${commonStyles.getThemeCSS()}
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
+            ${commonStyles.getSelect2CSS()}
 
             #book-list-block, #permission-error-block, #no-books-block { display: none; }
             form, table {width: 100%}

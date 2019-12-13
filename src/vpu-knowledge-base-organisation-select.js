@@ -327,18 +327,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             ${commonStyles.getThemeCSS()}
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
-
-            .select2-dropdown {
-                border-radius: var(--vpu-border-radius);
-            }
-
-            .select2-container--default .select2-selection--single {
-                border-radius: var(--vpu-border-radius);
-            }
-
-            .select2-container--default .select2-selection--single .select2-selection__rendered {
-                color: inherit;
-            }
+            ${commonStyles.getSelect2CSS()}
         `;
     }
 
