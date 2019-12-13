@@ -171,6 +171,7 @@ class LibraryBookList extends VPULibraryLitElement {
                     {title: i18n.t('book-list.book-publication-year')},
                     {title: i18n.t('book-list.book-publisher')},
                     {title: i18n.t('book-list.book-availability-date')},
+                    null,
                     {title: i18n.t('book-list.book-barcode')},
                     {title: i18n.t('book-list.book-location')},
                     {title: i18n.t('book-list.book-location-identifier')},
