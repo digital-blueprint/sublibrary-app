@@ -383,7 +383,7 @@ class LibraryBookList extends VPULibraryLitElement {
                         <label class="label">${i18n.t('book-list.books')}</label>
                         <div class="control">
                             <vpu-data-table-view searching paging exportable export-name="${i18n.t('book-list.books')}"
-                                                 lang="${this.lang}" id="book-books-1" columns-count="8"></vpu-data-table-view>
+                                                 lang="${this.lang}" id="book-books-1"></vpu-data-table-view>
                         </div>
                     </div>
                 </div>

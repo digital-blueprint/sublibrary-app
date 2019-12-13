@@ -366,7 +366,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                     <label class="label">${i18n.t('renew-loan.loans')}</label>
                     <div class="control">
                         <vpu-data-table-view searching paging exportable export-name="${i18n.t('renew-loan.loans')}"
-                                             lang="${this.lang}" id="book-loans-1" columns-count="4" @click="${(e) => this.onDataTableClick(e)}"></vpu-data-table-view>
+                                             lang="${this.lang}" id="book-loans-1" @click="${(e) => this.onDataTableClick(e)}"></vpu-data-table-view>
                     </div>
                 </div>
                 <div id="no-loans-block" style="display: none;">
