@@ -9,6 +9,7 @@ import * as commonStyles from 'vpu-common/styles';
 import 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
 import './vpu-knowledge-base-organisation-select.js';
+import 'vpu-common/vpu-mini-spinner.js';
 
 class LibraryRenewLoan extends VPULibraryLitElement {
     constructor() {

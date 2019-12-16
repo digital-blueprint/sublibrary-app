@@ -8,6 +8,7 @@ import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import * as errorUtils from "vpu-common/error";
 import './vpu-knowledge-base-organisation-select.js';
+import 'vpu-common/vpu-mini-spinner.js';
 
 class LibraryReturnBook extends VPULibraryLitElement {
     constructor() {

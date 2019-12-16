@@ -11,6 +11,7 @@ import select2LangEn from './i18n/en/select2'
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import $ from "jquery";
 import './vpu-knowledge-base-organisation-select.js';
+import 'vpu-common/vpu-mini-spinner.js';
 
 select2(window, $);
 
