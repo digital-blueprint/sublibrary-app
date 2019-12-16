@@ -569,7 +569,6 @@ class VPUApp extends VPULitElement {
         for(const key of this.topic.attributes) {
             let value = sessionStorage.getItem('vpu-attr-' + key);
             if (value !== null) {
-                console.log("!!!", key, value);
                 elm.setAttribute(key, value);
             }
         }
