@@ -11,6 +11,9 @@
     "headline": "Book",
     "placeholder": "Please enter a barcode"
   },
+  "organization-select": {
+    "label": "Institute"
+  },
   "shelving": {
     "title": "Book shelving",
     "button-refresh-title": "Load shelving from {{name}} again"

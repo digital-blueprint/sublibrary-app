@@ -6,6 +6,7 @@ import 'vpu-library-book-offer-select';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import * as errorUtils from "vpu-common/error";
+import './vpu-knowledge-base-organisation-select.js';
 
 class LibraryCreateLoan extends VPULibraryLitElement {
     constructor() {
@@ -216,6 +217,10 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         }
     }
 
+    onOrgUnitCodeChanged(e) {
+        this.organizationId = e.detail.value;
+    }
+
     render() {
         const minDate = new Date().toISOString();
         let date = new Date();
@@ -224,6 +229,14 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
         return html`
             <form class="hidden">
+                <div class="field">
+                    <label class="label">${i18n.t('organization-select.label')}</label>
+                    <div class="control">
+                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                                                                value="${this.organizationId}"
+                                                                @change="${this.onOrgUnitCodeChanged}"></vpu-knowledge-base-organization-select>
+                    </div>
+                </div>
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">

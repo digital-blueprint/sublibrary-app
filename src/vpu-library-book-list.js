@@ -10,6 +10,7 @@ import select2LangDe from './i18n/de/select2'
 import select2LangEn from './i18n/en/select2'
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import $ from "jquery";
+import './vpu-knowledge-base-organisation-select.js';
 
 select2(window, $);
 
@@ -342,6 +343,10 @@ class LibraryBookList extends VPULibraryLitElement {
         `;
     }
 
+    onOrgUnitCodeChanged(e) {
+        this.organizationId = e.detail.value;
+    }
+
     render() {
         let locationIdentifierItemTemplates = [];
         this.locationIdentifiers.forEach((item) => {
@@ -358,6 +363,14 @@ class LibraryBookList extends VPULibraryLitElement {
         return html`
             <link rel="stylesheet" href="${select2CSS}">
             <form class="hidden">
+                <div class="field">
+                    <label class="label">${i18n.t('organization-select.label')}</label>
+                    <div class="control">
+                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                                                                value="${this.organizationId}"
+                                                                @change="${this.onOrgUnitCodeChanged}"></vpu-knowledge-base-organization-select>
+                    </div>
+                </div>
                 <vpu-mini-spinner id="books-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                 <div id="book-list-block">
                     <div class="field">

@@ -8,6 +8,7 @@ import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
+import './vpu-knowledge-base-organisation-select.js';
 
 class LibraryRenewLoan extends VPULibraryLitElement {
     constructor() {
@@ -346,9 +347,21 @@ class LibraryRenewLoan extends VPULibraryLitElement {
         `;
     }
 
+    onOrgUnitCodeChanged(e) {
+        this.organizationId = e.detail.value;
+    }
+
     render() {
         return html`
             <form class="hidden">
+                <div class="field">
+                    <label class="label">${i18n.t('organization-select.label')}</label>
+                    <div class="control">
+                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                                                                value="${this.organizationId}"
+                                                                @change="${this.onOrgUnitCodeChanged}"></vpu-knowledge-base-organization-select>
+                    </div>
+                </div>
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">

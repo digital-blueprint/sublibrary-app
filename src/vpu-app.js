@@ -12,7 +12,6 @@ import {classMap} from 'lit-html/directives/class-map.js';
 // import * as errorreport from 'vpu-common/errorreport';
 import {Router} from './router.js';
 import * as events from 'vpu-common/events.js';
-import './vpu-knowledge-base-organisation-select.js';
 import './build-info.js';
 import {send as notify} from 'vpu-notification';
 
@@ -53,7 +52,6 @@ class VPUApp extends VPULitElement {
         this.routes = [];
         this.metadata = {};
         this.topic = {};
-        this.organizationId = '';
         this.basePath = '';
 
         this._updateAuth = this._updateAuth.bind(this);
@@ -202,7 +200,6 @@ class VPUApp extends VPULitElement {
             topic: { type: Object, attribute: false },
             subtitle: { type: String, attribute: false },
             description: { type: String, attribute: false },
-            organizationId: { type: String, attribute: 'organization-id' },
             _loginStatus: { type: Boolean, attribute: false },
         };
     }
@@ -281,10 +278,6 @@ class VPUApp extends VPULitElement {
             this.subtitle = this.activeMetaDataText("short_name");
             this.description = this.activeMetaDataText("description");
         }
-    }
-
-    onOrgUnitCodeChanged(e) {
-        this.organizationId = e.detail.value;
     }
 
     switchComponent(componentTag) {
@@ -496,11 +489,6 @@ class VPUApp extends VPULitElement {
 
             a { transition: background-color 0.15s ease 0s, color 0.15s ease 0s; }
 
-            #institute-selector {
-                text-align: left;
-                display: inline-block;
-            }
-            
             .description {
                 font-family: 'Source Sans Pro';
                 text-align: left;
@@ -580,8 +568,10 @@ class VPUApp extends VPULitElement {
 
         for(const key of this.topic.attributes) {
             let value = sessionStorage.getItem('vpu-attr-' + key);
-            if (value !== null)
+            if (value !== null) {
+                console.log("!!!", key, value);
                 elm.setAttribute(key, value);
+            }
         }
 
         this._attrObserver.observe(elm, {attributes: true, attributeFilter: this.topic.attributes});
@@ -598,8 +588,6 @@ class VPUApp extends VPULitElement {
         const elm =  this._createActivityElement(act);
         elm.setAttribute("entry-point-url", this.entryPointUrl);
         elm.setAttribute("lang", this.lang);
-        // Remove this after the selector is in the activities
-        elm.setAttribute("organization-id", this.organizationId);
         return elm;
     }
 
@@ -663,13 +651,6 @@ class VPUApp extends VPULitElement {
 
                 <div id="headline">
                     <h1 class="title">${this.topicMetaDataText('name')}</h1>
-                    <div id="institute-selector">
-                        <vpu-knowledge-base-organization-select lang="${this.lang}"
-                                                                value="${this.organizationId}"
-                                                                @pre-init="${this.onOrgUnitCodeChanged.bind(this)}"
-                                                                @init="${this.onOrgUnitCodeChanged.bind(this)}"
-                                                                @change="${this.onOrgUnitCodeChanged.bind(this)}"></vpu-knowledge-base-organization-select>
-                    </div>
                 </div>
 
                 <aside>

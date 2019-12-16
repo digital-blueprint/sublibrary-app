@@ -11,6 +11,9 @@
     "headline": "Buch",
     "placeholder": "Bitte geben Sie einen Barcode ein"
   },
+  "organization-select": {
+    "label": "Institut"
+  },
   "shelving": {
     "title": "Buchaufstellung",
     "button-refresh-title": "Aufstellung von {{name}} erneut laden"

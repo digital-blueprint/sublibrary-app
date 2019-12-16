@@ -20,7 +20,6 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.jsonld = null;
         this.organizations = [];
-        this.organization = null;
         // For some reason using the same ID on the whole page twice breaks select2 (regardless if they are in different custom elements)
         this.selectId = 'select-organization-' + commonUtils.makeId(24);
         this.cache = { en: [], de: [] };
@@ -43,8 +42,6 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
         super.connectedCallback();
 
         this.updateComplete.then(()=> {
-            this.setFirstOrganization();
-
             window.addEventListener("vpu-auth-person-init", async () => {
                 this.cache = { en: [], de: [] };
                 this.updateSelect2();
@@ -69,22 +66,6 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             this.cache[this.lang] = await this.getAssociatedOrganizations();
         }
         this.organizations = this.cache[this.lang];
-
-        if (this.organization === null || this.organization === undefined) {
-            this.setFirstOrganization();
-        } else {
-            const old_organization = this.organization;
-            // get organization with all attributes
-            this.organization = this.organizations.find((organization) => {
-                return organization.id === this.organization.id;
-            });
-            this.setDataObject();
-            if (old_organization.name === '') {
-                this.fireEvent('init');
-            } else {
-                this.fireEvent('change');
-            }
-        }
     }
 
     async updateSelect2() {
@@ -102,57 +83,59 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
 
         await this.load_organizations();
 
+        const data = this.organizations.map((item) => {
+            return {'id': item.object["@id"], 'text': item.code + ' ' + item.name};
+        });
+
+        data.sort((a, b) => {
+            return a.text < b.text ? -1 : a.text > b.text ? 1 : 0;
+        });
+
         $select.select2({
             width: '100%',
             language: this.lang === "de" ? select2LangDe() : select2LangEn(),
             placeholderOption: i18n.t('select-organization.placeholder'),
             dropdownParent: this.$('#select-organization-dropdown'),
-            data: this.organizations.map((item) => {
-                return {'id': item.id, 'text': item.code + ' ' + item.name};
-            }),
-            sorter: (data) => {
-                return data.sort((a, b) => {
-                    return a.text < b.text ? -1 : a.text > b.text ? 1 : 0;
-                });
-            }
+            data: data
         }).on("select2:select", () => {
-            this.organization = this.organizations.find((item) => {
-                return item.id === $select.select2('data')[0].id;
-            });
-
-            this.setDataObject();
-            this.fireEvent("change");
+            const selectedId = $select.select2('data')[0].id;
+            this.value = selectedId;
         });
 
-        if (this.organization !== null)
-            $select.val(this.organization.id).trigger('change');
+        // If none is selected, default to the first one
+        if (!this.value.length && data.length) {
+            this.value = data[0].id;
+        }
+
+        // Apply the selection
+        $select.val(this.value).trigger('change');
 
         if (this.organizations.length === 0)
             $select.next().hide();
     }
 
-    setDataObject() {
-        if (!this.organization || !this.organization.object) {
-            return;
-        }
+    fireEvent() {
+        const organization = this.organizations.find((item) => {
+            return item.object["@id"] === this.value;
+        });
+
         const $this = $(this);
-        $this.attr("data-object", JSON.stringify(this.organization.object));
-        $this.data("object", this.organization.object);
-    }
 
-    fireEvent(eventName) {
-        if (!this.organization) {
+        if (organization === undefined) {
+            $this.attr("data-object", null);
+            $this.data("object", null);
             return;
         }
-        // console.log('fireEvent() eventName = ' + eventName + ' organization:');
-        // console.dir(this.organization);
 
-        const event = new CustomEvent(eventName, {
+        $this.attr("data-object", JSON.stringify(organization.object));
+        $this.data("object", organization.object);
+
+        const event = new CustomEvent('change', {
             bubbles: true,
             composed: true,
             detail: {
-                'value': this.organization.value,
-                'object': this.organization.object,
+                'value': organization.value,
+                'object': organization.object,
             }
         });
         this.dispatchEvent(event);
@@ -163,17 +146,11 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             switch (propName) {
                 case "lang":
                     i18n.changeLanguage(this.lang);
-
                     this.updateSelect2();
                     break;
                 case "value": {
-                    const matches = this.value.match(/\/([^/]+)$/);
-                    if (matches !== null) {
-                        this.organization = this.organizations.find((organization) => {
-                            return organization.id === matches[1];
-                        });
-                        this.updateSelect2();
-                    }
+                    this.updateSelect2();
+                    this.fireEvent();
                     break;
                 }
                 case "entryPointUrl":
@@ -212,47 +189,6 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
                     "alternateName": 'F' + orgUnitCode,
             }
         };
-    }
-
-    setFirstOrganization() {
-         if (window.VPUPerson === undefined) {
-             // console.log('setFirstOrganization(): window.VPUPerson === undefined');
-             return;
-         }
-
-         const functions = window.VPUPerson.functions;
-
-         if (functions === undefined) {
-             // console.log('setFirstOrganization(): functions === undefined');
-             return;
-         }
-
-        const organizationId = sessionStorage.getItem('vpu-organization-id');
-        if (organizationId !== null) {
-             this.organization = this.organizations.find((item) => {
-                 return item.value === organizationId;
-             });
-
-             this.setDataObject();
-             this.fireEvent("pre-init");
-
-             return;
-         }
-
-         const re = /^F_BIB:F:(\d+):(\d+)$/;
-         for (const item of functions) {
-             const matches = re.exec(item);
-
-             if (matches !== null) {
-                 const id = matches[2] + '-F' + matches[1];
-                 this.organization = this.getMinimalOrganization(id, matches[1]);
-                 this.setDataObject();
-                 this.fireEvent("pre-init");
-                 break;
-             }
-         }
-         // console.log('setFirstOrganization():');
-         // console.dir(this.organization);
     }
 
     /**

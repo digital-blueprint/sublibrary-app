@@ -5,6 +5,7 @@ import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
+import './vpu-knowledge-base-organisation-select.js';
 
 class LibraryOrderList extends VPULibraryLitElement {
     constructor() {
@@ -171,9 +172,21 @@ class LibraryOrderList extends VPULibraryLitElement {
         `;
     }
 
+    onOrgUnitCodeChanged(e) {
+        this.organizationId = e.detail.value;
+    }
+
     render() {
         return html`
             <form class="hidden">
+                <div class="field">
+                    <label class="label">${i18n.t('organization-select.label')}</label>
+                    <div class="control">
+                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                                                                value="${this.organizationId}"
+                                                                @change="${this.onOrgUnitCodeChanged}"></vpu-knowledge-base-organization-select>
+                    </div>
+                </div>
                 <vpu-mini-spinner id="books-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                 <div id="book-list-block" class="field">
                     <label class="label">${i18n.t('book-list.books')}</label>
