@@ -88,6 +88,11 @@ class LibraryShelving extends VPULibraryLitElement {
                 .then((result) => {new Suggestions(locationIdentifierInput, result['hydra:member']);});
             }).on('unselect', function (e) {
                 console.log("unselect");
+
+                that.bookOffer = null;
+                that.bookOfferId = "";
+                $(that).attr("book-offer-id", null);
+
                 $locationIdentifierBlock.hide();
             });
 
