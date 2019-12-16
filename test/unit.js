@@ -2,7 +2,7 @@ import {assert} from 'chai';
 
 import '../src/vpu-library-shelving';
 import '../src/vpu-library.js';
-import {Router} from '../src/router.js';
+import {Router} from '../src/app/router.js';
 
 suite('vpu-library-shelving basics', () => {
   let node;
