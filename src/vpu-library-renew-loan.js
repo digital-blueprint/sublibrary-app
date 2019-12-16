@@ -118,7 +118,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
         const $loansLoadingIndicator = this.$('#loans-loading');
         const $renewLoanBlock = this.$('#renew-loan-block');
 
-        if (this.person == null) {
+        if (this.person == null || this.organizationId === '' ) {
             return;
         }
 
