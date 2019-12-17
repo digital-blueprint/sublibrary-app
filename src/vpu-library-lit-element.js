@@ -66,5 +66,5 @@ export default class VPULibraryLitElement extends VPULitElementJQuery {
         //         </div>
         //     </div>
         // `;
-    };
+    }
 }

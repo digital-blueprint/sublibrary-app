@@ -205,7 +205,7 @@ class LibraryLoanList extends VPULibraryLitElement {
     }
 
     toggleOverdueOnly() {
-        this.overdueOnly = !this.overdueOnly
+        this.overdueOnly = !this.overdueOnly;
     }
 
     onOrgUnitCodeChanged(e) {

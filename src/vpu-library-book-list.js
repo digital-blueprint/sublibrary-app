@@ -6,8 +6,8 @@ import * as commonStyles from 'vpu-common/styles';
 import 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
 import select2 from 'select2';
-import select2LangDe from './i18n/de/select2'
-import select2LangEn from './i18n/en/select2'
+import select2LangDe from './i18n/de/select2';
+import select2LangEn from './i18n/en/select2';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import $ from "jquery";
 import './vpu-knowledge-base-organisation-select.js';

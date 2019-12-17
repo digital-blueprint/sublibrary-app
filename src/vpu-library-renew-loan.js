@@ -278,7 +278,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
 
         // check with button was clicked
         switch(type) {
-            case "renew":
+            case "renew": {
                 button.start();
                 const vdtv1 = this._('#book-loans-1');
                 const dateSelect = vdtv1.shadowRoot.querySelector(`input[data-date-id='${loanId}']`);
@@ -326,13 +326,15 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                     }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-renew-loan-summary')))
                     .finally(() => { button.stop(); });
                 break;
-            case "contact":
+            }
+            case "contact": {
                 const bookName = button.getAttribute("data-book-name");
                 const subject = i18n.t('renew-loan.contact-subject', {bookName: bookName});
 
                 // open mail client with new mail
                 location.href = `mailto:${this.person.email}?subject=${subject}`;
                 break;
+            }
         }
     }
 

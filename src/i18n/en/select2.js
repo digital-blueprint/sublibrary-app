@@ -47,4 +47,4 @@ export default function () {
             return 'Remove selection';
         }
     };
-};
+}
