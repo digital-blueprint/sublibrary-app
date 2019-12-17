@@ -1,4 +1,4 @@
-import {createI18nInstance} from './i18n.js';
+import {createI18nInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
 import VPULibraryLitElement from './vpu-library-lit-element';
 import 'vpu-person-select';
@@ -130,13 +130,13 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
         if (loans.length > 0) {
             this.status = {
-                "summary": 'create-loan.error-existing-loans-summary',
-                "body": 'create-loan.error-existing-loans-body',
+                "summary": i18nKey('create-loan.error-existing-loans-summary'),
+                "body": i18nKey('create-loan.error-existing-loans-body'),
             };
         } else {
             this.status = {
-                "summary": 'create-loan.info-no-existing-loans-summary',
-                "body": 'create-loan.info-no-existing-loans-body',
+                "summary": i18nKey('create-loan.info-no-existing-loans-summary'),
+                "body": i18nKey('create-loan.info-no-existing-loans-body'),
             };
             createLoanBlock.style.display = "block";
         }
@@ -212,8 +212,8 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
         if (response.ok) {
             this.status = {
-                "summary": 'create-loan.success-summary',
-                "body": 'create-loan.success-body',
+                "summary": i18nKey('create-loan.success-summary'),
+                "body": i18nKey('create-loan.success-body'),
             };
         } else {
             await errorUtils.handleFetchError(response);

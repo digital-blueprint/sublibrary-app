@@ -8,19 +8,15 @@
     "headline": "Person"
   },
   "library-book-offer-select": {
-    "headline": "Book",
-    "placeholder": "Please enter a barcode"
+    "headline": "Book"
   },
   "organization-select": {
     "label": "Institute"
   },
   "shelving": {
-    "title": "Book shelving",
     "button-refresh-title": "Load shelving from {{name}} again"
   },
   "create-loan": {
-    "title": "Loan",
-    "subtitle": "Allows to create loans for books",
     "info-no-existing-loans-summary": "No existing loans",
     "info-no-existing-loans-body": "No existing loans were found, a new one can be created.",
     "error-existing-loans-summary": "Existing loan was found!",
@@ -31,8 +27,6 @@
     "button-refresh-title": "Check loans of {{name}} again"
   },
   "return-book": {
-    "title": "Return",
-    "subtitle": "Allows to return books",
     "error-no-existing-loans-summary": "No existing loans",
     "error-no-existing-loans-body": "No existing loans were found!",
     "info-existing-loans-summary": "Existing loan was found!",
@@ -44,12 +38,7 @@
     "button-refresh-title": "Load loans of {{name}} again"
   },
   "renew-loan": {
-    "title": "Renew",
-    "subtitle": "Allows to renew loans",
     "no-loans": "No existing loans were found!",
-    "submit": "Renew loan",
-    "success-summary": "Loan renewed successfully",
-    "success-body": "The loan was renewed successfully.",
     "book": "Book",
     "error-load-loans-summary": "Error on loading loans",
     "end-date": "Return date",
@@ -96,12 +85,6 @@
     "delivery-date": "Delivery date",
     "order-status": "Status"
   },
-  "menu": {
-    "shelving": "Shelving",
-    "loan": "Loan",
-    "return": "Return",
-    "renew": "Renew"
-  },
   "location-identifier": {
     "headline": "Identifier for book placement",
     "placeholder": "Please enter the identifier to place the book",
@@ -117,8 +100,5 @@
   "error-summary": "An error occurred",
   "error-permission-message": "You need to be a library officer to use this function!",
   "error-login-message": "You need to be logged in to use this function!",
-  "title": "Library shelving",
-  "subtitle": "Allows the shelving of books in the library",
-  "more-information": "More information",
   "page-updated-needs-reload": "The application has been updated. Please reload the page."
 }

@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {createI18nInstance} from './i18n.js';
+import {createI18nInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
 import VPULibraryLitElement from "./vpu-library-lit-element";
 import 'vpu-language-select';
@@ -102,16 +102,16 @@ class LibraryReturnBook extends VPULibraryLitElement {
                         that.loadBorrower(that.loan.borrower);
 
                         that.status = {
-                            "summary": 'return-book.info-existing-loans-summary',
-                            "body": 'return-book.info-existing-loans-body',
+                            "summary": i18nKey('return-book.info-existing-loans-summary'),
+                            "body": i18nKey('return-book.info-existing-loans-body'),
                         };
 
                         $returnBookBlock.show();
                     } else {
 
                         that.status = {
-                            "summary": 'return-book.error-no-existing-loans-summary',
-                            "body": 'return-book.error-no-existing-loans-body',
+                            "summary": i18nKey('return-book.error-no-existing-loans-summary'),
+                            "body": i18nKey('return-book.error-no-existing-loans-body'),
                         };
                     }
                 }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
@@ -139,8 +139,8 @@ class LibraryReturnBook extends VPULibraryLitElement {
                         $bookOfferSelect[0].clear();
 
                         that.status = {
-                            "summary": 'return-book.success-summary',
-                            "body": 'return-book.success-body',
+                            "summary": i18nKey('return-book.success-summary'),
+                            "body": i18nKey('return-book.success-body'),
                         };
                     },
                     error: errorUtils.handleXhrError,

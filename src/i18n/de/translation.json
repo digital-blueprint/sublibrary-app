@@ -8,19 +8,15 @@
     "headline": "Person"
   },
   "library-book-offer-select": {
-    "headline": "Buch",
-    "placeholder": "Bitte geben Sie einen Barcode ein"
+    "headline": "Buch"
   },
   "organization-select": {
     "label": "Institut"
   },
   "shelving": {
-    "title": "Buchaufstellung",
     "button-refresh-title": "Aufstellung von {{name}} erneut laden"
   },
   "create-loan": {
-    "title": "Entlehung",
-    "subtitle": "Erlaubt das Entlehnen von Büchern",
     "info-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
     "info-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden, das Buch kann entlehnt werden.",
     "error-existing-loans-summary": "Bestehende Entlehnung!",
@@ -31,8 +27,6 @@
     "button-refresh-title": "Entlehnungen von {{name}} erneut überprüfen"
   },
   "return-book": {
-    "title": "Rückgabe",
-    "subtitle": "Erlaubt die Rückgabe von Büchern",
     "error-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
     "error-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden!",
     "info-existing-loans-summary": "Bestehende Entlehnung!",
@@ -44,12 +38,7 @@
     "button-refresh-title": "Entlehnung von {{name}} erneut laden"
   },
   "renew-loan": {
-    "title": "Verlängerung",
-    "subtitle": "Erlaubt das Verlängern von Entlehnungen",
     "no-loans": "Es wurden keine bestehenden Entlehnungen gefunden!",
-    "submit": "Entlehnung verlängern",
-    "success-summary": "Verlängerung erfolgreich",
-    "success-body": "Die Entlehnungen wurde erfolgreich verlängert.",
     "book": "Buch",
     "error-load-loans-summary": "Fehler beim Laden der Entlehnungen",
     "end-date": "Rückgabedatum",
@@ -96,12 +85,6 @@
     "delivery-date": "Lieferdatum",
     "order-status": "Status"
   },
-  "menu": {
-    "shelving": "Aufstellung",
-    "loan": "Entlehnung",
-    "return": "Rückgabe",
-    "renew": "Verlängern"
-  },
   "location-identifier": {
     "headline": "Identifikator zur Aufstellung",
     "placeholder": "Bitte geben Sie den Identifikator um das Buch aufzustellen ein",
@@ -117,8 +100,5 @@
   "error-summary": "Ein Fehler ist aufgetreten",
   "error-permission-message": "Sie müssen Bibliotheksbeauftragte/r sein um diese Funktion nutzen zu können!",
   "error-login-message": "Sie müssen eingeloggt sein um diese Funktion nutzen zu können!",
-  "title": "Bibliothek Buchaufstellung",
-  "subtitle": "Erlaubt das Aufstellen von Büchern in der Bibliothek",
-  "more-information": "Mehr Information",
   "page-updated-needs-reload": "Die Applikation wurde aktualisiert. Bitte laden Sie die Seite neu."
 }
