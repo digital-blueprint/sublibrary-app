@@ -12,12 +12,17 @@ import urlPlugin from "@rollup/plugin-url";
 import consts from 'rollup-plugin-consts';
 import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs'
+import babel from 'rollup-plugin-babel'
 import chai from 'chai';
 
 const pkg = require('./package.json');
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
 console.log("build: " + build);
 const basePath = (build === 'local' || build === 'production') ? '/' : '/apps/library/';
+
+// Disabled because we don't support (old) Edge right now and babel is slow.
+// But this should be a good starting point in case that changes.
+const USE_BABEL = false;
 
 const CHUNK_BLACKLIST = [
   'jszip'  // jszip is a node module by default and rollup chunking is confused by that and emits warnings
@@ -166,6 +171,28 @@ export default {
                 {src: 'node_modules/datatables.net-responsive-dt/css', dest: 'dist/local/vpu-data-table-view'},
                 {src: 'node_modules/datatables.net-buttons-dt/css', dest: 'dist/local/vpu-data-table-view'},
             ],
+        }),
+        USE_BABEL && babel({
+          exclude: 'node_modules/**',
+          babelHelpers: 'runtime',
+          babelrc: false,
+          presets: [[
+            '@babel/env', {
+              modules: false,
+              targets: {
+                firefox: "68",
+                chrome: "76",
+                safari: "13",
+                edge: "76"
+              }
+            }
+          ]],
+          plugins: [[
+            '@babel/plugin-transform-runtime', {
+              corejs: 3,
+              useESModules: true
+            }
+          ]]
         }),
         (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: 'dist', host: '127.0.0.1', port: 8001, historyApiFallback: '/' + pkg.name + '.html'}) : false
     ]
