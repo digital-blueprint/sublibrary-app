@@ -1,4 +1,4 @@
-import {i18n} from './i18n.js';
+import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import VPULibraryLitElement from "./vpu-library-lit-element";
 import * as commonUtils from 'vpu-common/utils';
@@ -7,6 +7,8 @@ import 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
 import './vpu-knowledge-base-organisation-select.js';
 import 'vpu-common/vpu-mini-spinner.js';
+
+const i18n = createI18nInstance();
 
 class LibraryLoanList extends VPULibraryLitElement {
     constructor() {

@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {i18n} from './i18n.js';
+import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {send as notify} from 'vpu-notification';
 import VPULibraryLitElement from "./vpu-library-lit-element";
@@ -11,6 +11,7 @@ import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import * as errorUtils from "vpu-common/error";
 import './vpu-knowledge-base-organisation-select.js';
 
+const i18n = createI18nInstance();
 
 class LibraryShelving extends VPULibraryLitElement {
     constructor() {

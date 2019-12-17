@@ -1,4 +1,3 @@
-import {i18n} from './i18n.js';
 import {css, html} from 'lit-element';
 import VPULibraryLitElement from "./vpu-library-lit-element";
 import * as commonUtils from 'vpu-common/utils';
@@ -30,16 +29,6 @@ class LibraryProfile extends VPULibraryLitElement {
         window.addEventListener("vpu-auth-person-init", () => {
             this._personId = window.VPUPersonId;
         });
-    }
-
-    update(changedProperties) {
-        changedProperties.forEach((oldValue, propName) => {
-            if (propName === "lang") {
-                i18n.changeLanguage(this.lang);
-            }
-        });
-
-        super.update(changedProperties);
     }
 
     static get styles() {

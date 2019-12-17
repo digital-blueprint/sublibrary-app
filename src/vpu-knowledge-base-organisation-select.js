@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import select2 from 'select2';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
-import {i18n} from './i18n.js';
+import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
@@ -12,6 +12,8 @@ import JSONLD from "vpu-common/jsonld";
 import {send as notify} from "vpu-common/notification";
 
 select2(window, $);
+
+const i18n = createI18nInstance();
 
 class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
     constructor() {
