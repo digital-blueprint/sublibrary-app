@@ -16,7 +16,7 @@ const i18n = createI18nInstance();
 class LibraryRenewLoan extends VPULibraryLitElement {
     constructor() {
         super();
-        this.lang = 'de';
+        this.lang = i18n.language;
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.personId = "";
         this.person = null;

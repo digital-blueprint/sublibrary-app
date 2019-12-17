@@ -1,15 +1,17 @@
+import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import VPULibraryLitElement from "./vpu-library-lit-element";
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import 'vpu-person-profile';
 
+const i18n = createI18nInstance();
 
 class LibraryProfile extends VPULibraryLitElement {
 
     constructor() {
         super();
-        this.lang = 'de';
+        this.lang = i18n.language;
         this._personId = window.VPUPersonId;
         this.entryPointUrl = commonUtils.getAPiUrl();
 
@@ -41,7 +43,7 @@ class LibraryProfile extends VPULibraryLitElement {
 
     render() {
         return html`
-            <vpu-person-profile value="${this._personId}" entry-point-url="${this.entryPointUrl}"" .lang="${this.lang}"></vpu-person-profile>
+            <vpu-person-profile value="${this._personId}" entry-point-url="${this.entryPointUrl}"" lang="${this.lang}"></vpu-person-profile>
         `;
     }
 }

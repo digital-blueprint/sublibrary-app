@@ -47,7 +47,7 @@ const importNotify = async (promise) => {
 class VPUApp extends VPULitElement {
     constructor() {
         super();
-        this.lang = 'de';
+        this.lang = i18n.language;
         this.activeView = '';
         this.entryPointUrl = commonUtils.getAPiUrl();
         this.subtitle = '';
