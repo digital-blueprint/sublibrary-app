@@ -94,7 +94,6 @@
     "placeholder": "Please select an organization",
     "load-error": "Error loading the organization"
   },
-  "page-title": "Library application",
   "success-summary": "Book lineup successful",
   "success-body": "The book lineup was successful.",
   "error-summary": "An error occurred",

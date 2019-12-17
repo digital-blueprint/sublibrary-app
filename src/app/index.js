@@ -316,7 +316,7 @@ class VPUApp extends VPULitElement {
     }
 
     updatePageTitle() {
-        document.title = `${i18n.t('page-title')} - ${this.activeMetaDataText("short_name")}`;
+        document.title = `${this.topicMetaDataText('name')} - ${this.activeMetaDataText("short_name")}`;
     }
 
     toggleMenu() {

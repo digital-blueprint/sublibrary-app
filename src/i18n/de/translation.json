@@ -94,7 +94,6 @@
     "placeholder": "Bitte wählen Sie ein Institute",
     "load-error": "Fehler beim Laden der Organisation"
   },
-  "page-title": "Bibliothek Applikation",
   "success-summary": "Buchaufstellung erfolgreich",
   "success-body": "Das Buch wurde erfolgreich aufgestellt.",
   "error-summary": "Ein Fehler ist aufgetreten",
