@@ -1,7 +1,9 @@
 import {html, LitElement, css} from 'lit-element';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
-import {i18n} from './i18n.js';
+import {createI18nInstance} from '../i18n.js';
+
+const i18n = createI18nInstance();
 
 class VPUTUGrazLogo extends LitElement {
 

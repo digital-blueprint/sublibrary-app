@@ -1,4 +1,4 @@
-import {i18n} from './i18n.js';
+import {createI18nInstance} from '../i18n.js';
 import {html, css} from 'lit-element';
 import VPULitElement from 'vpu-common/vpu-lit-element';
 import 'vpu-language-select';
@@ -18,6 +18,8 @@ import {send as notify} from 'vpu-notification';
 
 // errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
 
+
+const i18n = createI18nInstance();
 
 /**
  * In case the application gets updated future dynamic imports might fail.
