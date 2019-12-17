@@ -80,9 +80,6 @@ class LibraryRenewLoan extends VPULibraryLitElement {
             const $personSelect = that.$('vpu-person-select');
             const $renewLoanBlock = that.$('#renew-loan-block');
 
-            // show user interface when logged in person object is available
-            that.callInitUserInterface();
-
             // show loan list block if person was selected
             $personSelect.change(function () {
 

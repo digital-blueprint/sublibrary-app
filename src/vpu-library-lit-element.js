@@ -29,6 +29,15 @@ export default class VPULibraryLitElement extends VPULitElementJQuery {
         return true;
     }
 
+    connectedCallback() {
+        super.connectedCallback();
+
+        this.updateComplete.then(()=>{
+            // show user interface when logged in person object is available
+            this.callInitUserInterface();
+        });
+    }
+
     /**
      * Shows the user interface when logged in person object is available
      */

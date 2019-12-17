@@ -40,9 +40,6 @@ class LibraryLoanList extends VPULibraryLitElement {
         super.connectedCallback();
 
         this.updateComplete.then(()=>{
-            // show user interface when logged in person object is available
-            this.callInitUserInterface();
-
             // language=css
             const css = `
                 table.dataTable tbody tr.odd {

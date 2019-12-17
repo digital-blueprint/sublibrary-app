@@ -57,9 +57,6 @@ class LibraryReturnBook extends VPULibraryLitElement {
             const $returnBookBlock = that.$('#return-book-block');
             const $loansLoadingIndicator = that.$('#loans-loading');
 
-            // show user interface when logged in person object is available
-            that.callInitUserInterface();
-
             // show return book block if book offer was selected
             $bookOfferSelect.change(function () {
                 that.bookOffer = $(this).data("object");

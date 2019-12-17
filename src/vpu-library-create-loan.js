@@ -38,11 +38,6 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
     connectedCallback() {
         super.connectedCallback();
-
-        this.updateComplete.then(()=>{
-            // show user interface when logged in person object is available
-            this.callInitUserInterface();
-        });
     }
 
     update(changedProperties) {

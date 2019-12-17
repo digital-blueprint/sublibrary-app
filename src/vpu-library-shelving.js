@@ -51,9 +51,6 @@ class LibraryShelving extends VPULibraryLitElement {
             const locationIdentifierInput = that._('#location-identifier');
             const $locationIdentifierBlock = that.$('#location-identifier-block');
 
-            // show user interface when logged in person object is available
-            that.callInitUserInterface();
-
             // show location identifier block if book offer was selected
             $bookOfferSelect.change(function () {
                 console.log("change");
