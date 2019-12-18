@@ -34,6 +34,12 @@ class LibraryOrderList extends VPULibraryLitElement {
         };
     }
 
+    loginCallback() {
+        super.loginCallback();
+
+        this.loadTable();
+    }
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -72,6 +78,9 @@ class LibraryOrderList extends VPULibraryLitElement {
         $bookListBlock.hide();
         $noBooksBlock.hide();
 
+        if (!this.isLoggedIn())
+            return;
+
         if (this.organizationId === "") {
             return;
         }
@@ -89,6 +98,7 @@ class LibraryOrderList extends VPULibraryLitElement {
         this.abortController = new AbortController();
         const signal = this.abortController.signal;
 
+        console.assert(window.VPUAuthToken);
         // load list of books for person
         fetch(apiUrl, {
             headers: {

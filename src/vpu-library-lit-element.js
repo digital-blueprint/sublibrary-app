@@ -12,6 +12,10 @@ export default class VPULibraryLitElement extends VPULitElementJQuery {
             return false;
         }
 
+        // DOM hasn't been rendered yet
+        if (!this._('form'))
+            return false;
+
         // return if the init was already done (no need for another retry)
         if (!this._('form').classList.contains("hidden")) {
             return true;
@@ -38,6 +42,14 @@ export default class VPULibraryLitElement extends VPULitElementJQuery {
         });
     }
 
+    isLoggedIn() {
+        return this.initUserInterface();
+    }
+
+    loginCallback() {
+        // Implement in subclass
+    }
+
     /**
      * Shows the user interface when logged in person object is available
      */
@@ -49,6 +61,12 @@ export default class VPULibraryLitElement extends VPULitElementJQuery {
 
         // fallback in the case that the vpu-auth-person-init event was already dispatched
         // we need to call it in a different function so we can access "this" in initUserInterface()
-        commonUtils.pollFunc(() => { return this.initUserInterface(); }, 10000, 100);
+        commonUtils.pollFunc(() => {
+            if (this.initUserInterface()) {
+                this.loginCallback();
+                return true;
+            }
+            return false;
+        }, 10000, 100);
     }
 }

@@ -36,6 +36,12 @@ class LibraryLoanList extends VPULibraryLitElement {
         };
     }
 
+    loginCallback() {
+        super.loginCallback();
+
+        this.loadTable();
+    }
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -48,7 +54,6 @@ class LibraryLoanList extends VPULibraryLitElement {
             `;
 
             this._("vpu-data-table-view").setCSSStyle(css);
-            this.loadTable();
         });
     }
 
@@ -80,6 +85,9 @@ class LibraryLoanList extends VPULibraryLitElement {
         $loanListBlock.hide();
         $noLoansBlock.hide();
 
+        if (!this.isLoggedIn())
+            return;
+
         if (this.organizationId === "") {
             return;
         }
@@ -98,6 +106,7 @@ class LibraryLoanList extends VPULibraryLitElement {
         const signal = this.abortController.signal;
 
         // load list of loans for person
+        console.assert(window.VPUAuthToken);
         fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
@@ -181,10 +190,6 @@ class LibraryLoanList extends VPULibraryLitElement {
         } else {
             $noLoansBlock.show();
         }
-    }
-
-    onLanguageChanged(e) {
-        this.lang = e.detail.lang;
     }
 
     static get styles() {

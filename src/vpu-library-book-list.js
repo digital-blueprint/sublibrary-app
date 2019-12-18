@@ -53,6 +53,12 @@ class LibraryBookList extends VPULibraryLitElement {
         };
     }
 
+    loginCallback() {
+        super.loginCallback();
+
+        this.loadTable();
+    }
+
     connectedCallback() {
         super.connectedCallback();
 
@@ -119,6 +125,9 @@ class LibraryBookList extends VPULibraryLitElement {
         const $noBooksBlock = that.$('#no-books-block');
         $bookListBlock.hide();
         $noBooksBlock.hide();
+
+        if (!this.isLoggedIn())
+            return;
 
         if (this.organizationId === "") {
             return;
