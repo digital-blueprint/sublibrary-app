@@ -18,7 +18,23 @@ import chai from 'chai';
 const pkg = require('./package.json');
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
 console.log("build: " + build);
-const basePath = (build === 'local' || build === 'production') ? '/' : '/apps/library/';
+let basePath = '';
+switch (build) {
+  case 'local':
+    basePath = '/dist/';
+    break;
+  case 'production':
+    basePath = '/';
+    break;
+  case 'development':
+  case 'demo':
+  case 'test':
+    basePath = '/apps/library/';
+    break;
+  default:
+    console.error('Unknown build environment: ' + build);
+    process.exit(1);
+}
 
 // Disabled because we don't support (old) Edge right now and babel is slow.
 // But this should be a good starting point in case that changes.
@@ -194,6 +210,6 @@ export default {
             }
           ]]
         }),
-        (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: 'dist', host: '127.0.0.1', port: 8001, historyApiFallback: '/' + pkg.name + '.html'}) : false
+        (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: '.', host: '127.0.0.1', port: 8001, historyApiFallback: basePath + pkg.name + '.html'}) : false
     ]
 };
