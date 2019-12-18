@@ -38,6 +38,10 @@ class LibraryRenewLoan extends VPULibraryLitElement {
         };
     }
 
+    $(selector) {
+        return $(this._(selector));
+    }
+
     getLibrary() {
         //console.log('getLibrary() organizationId = ' + this.organizationId);
         // until the API understands this:

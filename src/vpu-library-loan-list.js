@@ -8,6 +8,7 @@ import * as errorUtils from "vpu-common/error";
 import './vpu-knowledge-base-organisation-select.js';
 import 'vpu-common/vpu-mini-spinner.js';
 import {classMap} from 'lit-html/directives/class-map.js';
+import $ from "jquery";
 
 const i18n = createI18nInstance();
 
@@ -35,6 +36,10 @@ class LibraryLoanList extends VPULibraryLitElement {
             loans: { type: Object, attribute: false },
             overdueOnly: { type: Boolean, attribute: false },
         };
+    }
+
+    $(selector) {
+        return $(this._(selector));
     }
 
     loginCallback() {

@@ -38,6 +38,10 @@ class LibraryBookList extends VPULibraryLitElement {
         this.$inventoryYearSelect = null;
     }
 
+    $(selector) {
+        return $(this._(selector));
+    }
+
     /**
      * See: https://lit-element.polymer-project.org/guide/properties#conversion-type
      */

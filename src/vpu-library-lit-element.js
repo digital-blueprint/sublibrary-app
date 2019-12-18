@@ -1,7 +1,11 @@
-import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
+import {LitElement} from "lit-element";
 import * as events from 'vpu-common/events.js';
 
-export default class VPULibraryLitElement extends VPULitElementJQuery {
+export default class VPULibraryLitElement extends LitElement {
+
+    _(selector) {
+        return this.shadowRoot === null ? this.querySelector(selector) : this.shadowRoot.querySelector(selector);
+    }
 
     hasLibraryPermissions() {
         return (window.VPUPerson && Array.isArray(window.VPUPerson.roles) && window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') !== -1);

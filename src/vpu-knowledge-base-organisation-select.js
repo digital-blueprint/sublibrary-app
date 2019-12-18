@@ -7,7 +7,7 @@ import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import select2LangDe from "vpu-person-select/src/i18n/de/select2";
 import select2LangEn from "vpu-person-select/src/i18n/en/select2";
-import VPULitElementJQuery from "vpu-common/vpu-lit-element-jquery";
+import VPULitElement from "vpu-common/vpu-lit-element";
 import JSONLD from "vpu-common/jsonld";
 import {send as notify} from "vpu-common/notification";
 
@@ -15,7 +15,7 @@ select2(window, $);
 
 const i18n = createI18nInstance();
 
-class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
+class VPUKnowledgeBaseOrganizationSelect extends VPULitElement {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -34,6 +34,10 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElementJQuery {
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             value: {type: String, reflect: true}
         };
+    }
+
+    $(selector) {
+        return $(this._(selector));
     }
 
     select2IsInitialized(elm) {

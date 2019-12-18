@@ -8,6 +8,7 @@ import * as errorUtils from "vpu-common/error";
 import './vpu-knowledge-base-organisation-select.js';
 import 'vpu-common/vpu-mini-spinner.js';
 import {classMap} from 'lit-html/directives/class-map.js';
+import $ from "jquery";
 
 const i18n = createI18nInstance();
 
@@ -21,6 +22,10 @@ class LibraryOrderList extends VPULibraryLitElement {
         this.books = [];
         this.organizationId = '';
         this.abortController = null;
+    }
+
+    $(selector) {
+        return $(this._(selector));
     }
 
     /**

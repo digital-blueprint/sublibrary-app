@@ -42,6 +42,10 @@ class LibraryShelving extends VPULibraryLitElement {
         return this.organizationId.includes('-') ? this.organizationId.split('-')[1] : '';
     }
 
+    $(selector) {
+        return $(this._(selector));
+    }
+
     connectedCallback() {
         super.connectedCallback();
         const that = this;
