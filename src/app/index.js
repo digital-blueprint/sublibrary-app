@@ -208,6 +208,10 @@ class VPUApp extends VPULitElement {
     }
 
     _updateAuth(login) {
+        if (login.status != this._loginStatus) {
+            console.log('Login status: ' + login.status);
+        }
+
         this._loginStatus = login.status;
 
         // Clear the session storage when the user logs out

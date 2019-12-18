@@ -1,5 +1,5 @@
 import VPULitElementJQuery from 'vpu-common/vpu-lit-element-jquery';
-import * as commonUtils from "vpu-common/utils";
+import * as events from 'vpu-common/events.js';
 
 export default class VPULibraryLitElement extends VPULitElementJQuery {
 
@@ -7,13 +7,27 @@ export default class VPULibraryLitElement extends VPULitElementJQuery {
         return (window.VPUPerson && Array.isArray(window.VPUPerson.roles) && window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') !== -1);
     }
 
+    _updateAuth() {
+        if (this.isLoggedIn() && !this._loginCalled) {
+            this._loginCalled = true;
+            this.loginCallback();
+        }
+    }
+
     connectedCallback() {
         super.connectedCallback();
 
-        this.updateComplete.then(()=>{
-            // show user interface when logged in person object is available
-            this.callInitUserInterface();
-        });
+        this._loginCalled = false;
+        this._subscriber = new events.EventSubscriber('vpu-auth-update', 'vpu-auth-update-request');
+        this._updateAuth = this._updateAuth.bind(this);
+        this._subscriber.subscribe(this._updateAuth);
+    }
+
+    disconnectedCallback() {
+        this._subscriber.unsubscribe(this._updateAuth);
+        delete this._subscriber;
+
+        super.disconnectedCallback();
     }
 
     isLoggedIn() {
@@ -23,20 +37,5 @@ export default class VPULibraryLitElement extends VPULitElementJQuery {
     loginCallback() {
         // Implement in subclass
         this.requestUpdate();
-    }
-
-    /**
-     * Shows the user interface when logged in person object is available
-     */
-    callInitUserInterface() {
-        // fallback in the case that the vpu-auth-person-init event was already dispatched
-        // we need to call it in a different function so we can access "this" in initUserInterface()
-        commonUtils.pollFunc(() => {
-            if (this.isLoggedIn()) {
-                this.loginCallback();
-                return true;
-            }
-            return false;
-        }, 10000, 100);
     }
 }
