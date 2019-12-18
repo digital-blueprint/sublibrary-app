@@ -1,6 +1,5 @@
 import {createI18nInstance} from '../i18n.js';
-import {html, css} from 'lit-element';
-import VPULitElement from 'vpu-common/vpu-lit-element';
+import {html, css, LitElement} from 'lit-element';
 import 'vpu-language-select';
 import 'vpu-common/vpu-button.js';
 import 'vpu-auth';
@@ -44,7 +43,7 @@ const importNotify = async (promise) => {
 };
 
 
-class VPUApp extends VPULitElement {
+class VPUApp extends LitElement {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -326,7 +325,7 @@ class VPUApp extends VPULitElement {
     }
 
     toggleMenu() {
-        const menu = this._("ul.menu");
+        const menu = this.shadowRoot.querySelector("ul.menu");
 
         if (menu === null) {
             return;
@@ -334,7 +333,7 @@ class VPUApp extends VPULitElement {
 
         menu.classList.toggle('hidden');
 
-        const chevron = this._("#menu-chevron-icon");
+        const chevron = this.shadowRoot.querySelector("#menu-chevron-icon");
         if (chevron !== null) {
             chevron.name = menu.classList.contains('hidden') ? 'chevron-down' : 'chevron-up';
         }

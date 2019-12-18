@@ -2,12 +2,11 @@ import $ from 'jquery';
 import select2 from 'select2';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import {createI18nInstance} from './i18n.js';
-import {css, html} from 'lit-element';
+import {css, html, LitElement} from 'lit-element';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import select2LangDe from "vpu-person-select/src/i18n/de/select2";
 import select2LangEn from "vpu-person-select/src/i18n/en/select2";
-import VPULitElement from "vpu-common/vpu-lit-element";
 import JSONLD from "vpu-common/jsonld";
 import {send as notify} from "vpu-common/notification";
 
@@ -15,7 +14,7 @@ select2(window, $);
 
 const i18n = createI18nInstance();
 
-class VPUKnowledgeBaseOrganizationSelect extends VPULitElement {
+class VPUKnowledgeBaseOrganizationSelect extends LitElement {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -37,7 +36,7 @@ class VPUKnowledgeBaseOrganizationSelect extends VPULitElement {
     }
 
     $(selector) {
-        return $(this._(selector));
+        return $(this.shadowRoot.querySelector(selector));
     }
 
     select2IsInitialized(elm) {
