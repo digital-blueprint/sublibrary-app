@@ -10,6 +10,7 @@ import * as commonStyles from 'vpu-common/styles';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import * as errorUtils from "vpu-common/error";
 import './vpu-knowledge-base-organisation-select.js';
+import {classMap} from 'lit-html/directives/class-map.js';
 
 const i18n = createI18nInstance();
 
@@ -164,7 +165,11 @@ class LibraryShelving extends VPULibraryLitElement {
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
 
-            #location-identifier-block, #permission-error-block { display: none; }
+            .hidden {
+                display: none;
+            }
+
+            #location-identifier-block { display: none; }
 
             #location-identifier-block input {
                 width: 100%;
@@ -183,7 +188,7 @@ class LibraryShelving extends VPULibraryLitElement {
         return html`
             <link rel="stylesheet" href="${suggestionsCSS}">
 
-            <form class="hidden">
+            <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions()})}">
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
@@ -218,10 +223,10 @@ class LibraryShelving extends VPULibraryLitElement {
                     </div>
                 </div>
             </form>
-            <div class="notification is-warning" id="login-error-block">
+            <div class="notification is-warning ${classMap({hidden: this.isLoggedIn()})}">
                 ${i18n.t('error-login-message')}
             </div>
-            <div class="notification is-danger" id="permission-error-block">
+            <div class="notification is-danger ${classMap({hidden: this.hasLibraryPermissions() || !this.isLoggedIn()})}">
                 ${i18n.t('error-permission-message')}
             </div>
         `;

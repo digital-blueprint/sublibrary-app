@@ -8,6 +8,7 @@ import * as commonStyles from 'vpu-common/styles';
 import * as errorUtils from "vpu-common/error";
 import './vpu-knowledge-base-organisation-select.js';
 import 'vpu-common/vpu-mini-spinner.js';
+import {classMap} from 'lit-html/directives/class-map.js';
 
 const i18n = createI18nInstance();
 
@@ -57,7 +58,11 @@ class LibraryCreateLoan extends VPULibraryLitElement {
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
 
-            #create-loan-block, #permission-error-block { display: none; }
+            .hidden {
+                display: none;
+            }
+
+            #create-loan-block { display: none; }
         `;
     }
 
@@ -226,7 +231,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         const loanDate = date.toISOString();
 
         return html`
-            <form class="hidden">
+            <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions()})}">
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
@@ -284,10 +289,10 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                     </div>
                 `: ``}
             </form>
-            <div class="notification is-warning" id="login-error-block">
+            <div class="notification is-warning ${classMap({hidden: this.isLoggedIn()})}">
                 ${i18n.t('error-login-message')}
             </div>
-            <div class="notification is-danger" id="permission-error-block">
+            <div class="notification is-danger ${classMap({hidden: this.hasLibraryPermissions() || !this.isLoggedIn()})}">
                 ${i18n.t('error-permission-message')}
             </div>
         `;

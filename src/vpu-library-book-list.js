@@ -12,6 +12,7 @@ import select2CSSPath from 'select2/dist/css/select2.min.css';
 import $ from "jquery";
 import './vpu-knowledge-base-organisation-select.js';
 import 'vpu-common/vpu-mini-spinner.js';
+import {classMap} from 'lit-html/directives/class-map.js';
 
 select2(window, $);
 
@@ -345,7 +346,11 @@ class LibraryBookList extends VPULibraryLitElement {
             ${commonStyles.getNotificationCSS()}
             ${commonStyles.getSelect2CSS()}
 
-            #book-list-block, #permission-error-block, #no-books-block { display: none; }
+            .hidden {
+                display: none;
+            }
+
+            #book-list-block, #no-books-block { display: none; }
             form, table {width: 100%}
 
             #no-books-block { font-weight: bold; }
@@ -371,7 +376,7 @@ class LibraryBookList extends VPULibraryLitElement {
         const select2CSS = commonUtils.getAssetURL(select2CSSPath);
         return html`
             <link rel="stylesheet" href="${select2CSS}">
-            <form class="hidden">
+            <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions()})}">
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
@@ -414,10 +419,10 @@ class LibraryBookList extends VPULibraryLitElement {
                     ${i18n.t('book-list.no-books')}
                 </div>
             </form>
-            <div class="notification is-warning" id="login-error-block">
+            <div class="notification is-warning ${classMap({hidden: this.isLoggedIn()})}">
                 ${i18n.t('error-login-message')}
             </div>
-            <div class="notification is-danger" id="permission-error-block">
+            <div class="notification is-danger ${classMap({hidden: this.hasLibraryPermissions() || !this.isLoggedIn()})}">
                 ${i18n.t('error-permission-message')}
             </div>
         `;
