@@ -188,7 +188,6 @@ class LibraryBookList extends VPULibraryLitElement {
                     {title: i18n.t('book-list.book-availability-date')},
                     null,
                     {title: i18n.t('book-list.book-barcode')},
-                    {title: i18n.t('book-list.book-location')},
                     {title: i18n.t('book-list.book-location-identifier')},
                 ];
 
@@ -218,7 +217,6 @@ class LibraryBookList extends VPULibraryLitElement {
                             bookOffer.availabilityStarts !== null ? availabilityStarts.toLocaleDateString("de-AT") : "",
                             bookOffer.availabilityStarts,
                             bookOffer.barcode,
-                            bookOffer.location,
                             bookOffer.locationIdentifier,
                         ];
 
