@@ -95,7 +95,7 @@
     "load-error": "Fehler beim Laden der Organisation"
   },
   "success-summary": "Buchaufstellung erfolgreich",
-  "success-body": "Das Buch wurde erfolgreich aufgestellt.",
+  "success-body": "Das Buch \"{{name}}\" wurde erfolgreich aufgestellt.",
   "error-summary": "Ein Fehler ist aufgetreten",
   "error-permission-message": "Sie müssen Bibliotheksbeauftragte/r sein um diese Funktion nutzen zu können!",
   "error-login-message": "Sie müssen eingeloggt sein um diese Funktion nutzen zu können!",

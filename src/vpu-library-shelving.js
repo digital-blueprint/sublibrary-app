@@ -132,7 +132,7 @@ class LibraryShelving extends VPULibraryLitElement {
                     success: function(data) {
                         notify({
                             "summary": i18n.t('success-summary'),
-                            "body": i18n.t('success-body'),
+                            "body": i18n.t('success-body', {name: that.bookOffer.name || ""}),
                             "type": "success",
                             "timeout": 5,
                         });
