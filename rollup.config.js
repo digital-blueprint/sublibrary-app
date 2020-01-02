@@ -212,14 +212,8 @@ export default {
           babelHelpers: 'runtime',
           babelrc: false,
           presets: [[
-            '@babel/env', {
-              modules: false,
-              targets: {
-                firefox: "68",
-                chrome: "76",
-                safari: "13",
-                edge: "76"
-              }
+            '@babel/preset-modules', {
+              loose: true
             }
           ]],
           plugins: [[
@@ -227,7 +221,9 @@ export default {
               corejs: 3,
               useESModules: true
             }
-          ]]
+          ],
+          '@babel/plugin-syntax-dynamic-import',
+          '@babel/plugin-syntax-import-meta']
         }),
         (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: '.', host: '127.0.0.1', port: 8001, historyApiFallback: basePath + pkg.name + '.html'}) : false
     ]
