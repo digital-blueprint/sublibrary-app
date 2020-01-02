@@ -287,7 +287,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                 </div>
                 ${ this.status ? html`
                     <br>
-                    <div class="notification is-info">
+                    <div class="notification is-danger">
                         <h4>${i18n.t(this.status.summary)}</h4>
                         ${i18n.t(this.status.body)}
                     </div>
