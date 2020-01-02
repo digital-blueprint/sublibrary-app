@@ -3,16 +3,16 @@
   "module_src": "vpu-library-renew-loan.js",
   "routing_name": "renew-loan",
   "name": {
-    "de": "Bilbliothek Buchverlängerung",
-    "en": "Library book loan renewal"
+    "de": "Bilbliothek Leihfrist verlängern",
+    "en": "Library extend loan period"
   },
   "short_name": {
-    "de": "Verlängerung",
-    "en": "Renew book"
+    "de": "Leihfrist verlängern",
+    "en": "Extend loan period"
   },
   "description": {
-    "de": "Erlaubt das Verlängern von Buchentlehnungen",
-    "en": "Allows to renew book loans"
+    "de": "Erlaubt das Verlängern der Leihfrist von Buchentlehnungen",
+    "en": "Allows to extend book loan period"
   }
 }
 

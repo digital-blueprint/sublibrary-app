@@ -3,12 +3,12 @@
   "module_src": "vpu-library-create-loan.js",
   "routing_name": "create-loan",
   "name": {
-    "de": "Bilbliothek Buchentlehnung",
-    "en": "Library book loan"
+    "de": "Bilbliothek Buch entlehnen",
+    "en": "Library borrow book"
   },
   "short_name": {
-    "de": "Buchentlehnung",
-    "en": "Book loan"
+    "de": "Buch entlehnen",
+    "en": "Borrow book"
   },
   "description": {
     "de": "Erlaubt das Entlehnen von Büchern aus der Bibliothek",
