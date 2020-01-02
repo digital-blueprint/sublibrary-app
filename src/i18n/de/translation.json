@@ -60,11 +60,11 @@
     "book-author": "Autor",
     "book-barcode": "Barcode",
     "book-location": "Ort",
-    "book-location-identifier": "Aufstellungsort",
+    "book-location-identifier": "Aufstellung",
     "book-publication-year": "Erscheinungsjahr",
     "book-publisher": "Verlag",
     "book-availability-date": "Inventarisierungsdatum",
-    "location-identifier-select-placeholder": "Bitte wählen Sie einen Aufstellungsort aus um die Büchsterliste einzuschränken",
+    "location-identifier-select-placeholder": "Bitte wählen Sie eine Aufstellung aus um die Büchsterliste einzuschränken",
     "book-inventory-year": "Inventarisierungsjahr",
     "inventory-year-select-placeholder": "Bitte wählen Sie ein Inventarisierungsjahr aus um die Büchsterliste einzuschränken",
     "error-load-books": "Liste der Bücher konnte nicht geladen werden"
