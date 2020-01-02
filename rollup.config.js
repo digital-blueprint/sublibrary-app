@@ -171,7 +171,7 @@ export default {
                 {src: 'assets/htaccess-shared', dest: 'dist/shared/', rename: '.htaccess'},
                 {src: 'assets/*.css', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/*.ico', dest: 'dist/local/' + pkg.name},
-                {src: 'assets/fonts/*', dest: 'dist/local/' + pkg.name + '/fonts'},
+                {src: 'node_modules/source-sans-pro/WOFF2/TTF/*', dest: 'dist/local/' + pkg.name + '/fonts'},
                 {src: 'node_modules/vpu-common/vpu-spinner.js', dest: 'dist/local/' + pkg.name, rename: 'spinner.js'},
                 {src: 'assets/icon-*.png', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/manifest.json', dest: 'dist', rename: pkg.name + '.manifest.json'},
