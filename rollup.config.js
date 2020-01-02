@@ -182,7 +182,7 @@ export default {
         replace({
             "process.env.BUILD": '"' + build + '"',
         }),
-        (build !== 'local' && build !== 'test') ? terser() : false,
+        (build !== 'local' && build !== 'test') ? terser({output: {comments: false}}) : false,
         copy({
             targets: [
                 {src: 'assets/silent-check-sso.html', dest:'dist'},
