@@ -211,6 +211,10 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         });
 
         if (response.ok) {
+            // clear book offer select to hide "loan" button
+            const bookOfferSelect = this._('vpu-library-book-offer-select');
+            bookOfferSelect.clear();
+
             this.status = {
                 "summary": i18nKey('create-loan.success-summary'),
                 "body": i18nKey('create-loan.success-body'),
