@@ -19,17 +19,27 @@ const pkg = require('./package.json');
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
 console.log("build: " + build);
 let basePath = '';
+let entryPointURL = '';
 switch (build) {
   case 'local':
     basePath = '/dist/';
+    entryPointURL = 'http://127.0.0.1:8000';
+    break;
+  case 'development':
+    basePath = '/apps/library/';
+    entryPointURL = 'https://mw-dev.tugraz.at';
+    break;
+  case 'demo':
+    basePath = '/apps/library/';
+    entryPointURL = 'https://api-demo.tugraz.at';
     break;
   case 'production':
     basePath = '/';
+    entryPointURL = 'https://api.tugraz.at';
     break;
-  case 'development':
-  case 'demo':
   case 'test':
     basePath = '/apps/library/';
+    entryPointURL = '';
     break;
   default:
     console.error('Unknown build environment: ' + build);
@@ -135,7 +145,8 @@ export default {
           data: {
             geturl: (p) => {
               return url.resolve(basePath, p);
-            }
+            },
+            entryPointURL: entryPointURL
           }
         }),
 

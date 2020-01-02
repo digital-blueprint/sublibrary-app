@@ -51,9 +51,12 @@
             font-display: swap;
         }
     </style>
+
+    <!-- Preloading/Preconnecting -->
+    <link rel="preconnect" href="<%= entryPointURL %>">
 </head>
 
 <body>
-<vpu-app lang="de" src="<%= geturl('vpu-library.topic.metadata.json') %>" base-path="<%= geturl('') %>"><vpu-spinner></vpu-spinner></vpu-app>
+<vpu-app lang="de" src="<%= geturl('vpu-library.topic.metadata.json') %>" entry-point-url="<%= entryPointURL %>" base-path="<%= geturl('') %>"><vpu-spinner></vpu-spinner></vpu-app>
 </body>
 </html>
