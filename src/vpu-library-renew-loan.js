@@ -385,7 +385,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                                            reload-button-title="${this.person ? i18n.t('renew-loan.button-refresh-title', {personName: this.person.name}): ""}"></vpu-person-select>
                     </div>
                 </div>
-                <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
+                <vpu-mini-spinner id="loans-loading" text="${i18n.t('renew-loan.mini-spinner-text')}" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                 <div id="renew-loan-block" class="field">
                     <label class="label">${i18n.t('renew-loan.loans')}</label>
                     <div class="control">

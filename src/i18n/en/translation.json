@@ -22,6 +22,7 @@
     "error-existing-loans-summary": "Existing loan was found!",
     "error-existing-loans-body": "Existing loan was found, a new one cannot be created!",
     "submit": "Loan book",
+    "mini-spinner-text": "Loading loans...",
     "success-summary": "Book loan creation successful",
     "success-body": "The book loan creation successful.",
     "button-refresh-title": "Check loans of {{name}} again"
@@ -32,6 +33,7 @@
     "info-existing-loans-summary": "Existing loan was found!",
     "info-existing-loans-body": "Existing loan was found, it can be returned!",
     "submit": "Return book",
+    "mini-spinner-text": "Loading loans...",
     "success-summary": "Book returned successfully",
     "success-body": "The book was returned successfully.",
     "borrower": "Borrower",
@@ -44,6 +46,7 @@
     "end-date": "Return date",
     "loans": "Loans",
     "renew-loan": "Renew loan",
+    "mini-spinner-text": "Loading loans...",
     "error-renew-loan-summary": "Renewal failed",
     "info-renew-loan-success-summary": "Renewal successfull",
     "info-renew-loan-success-body": "The renewal of the loan was successful.",
@@ -55,6 +58,7 @@
   },
   "book-list": {
     "no-books": "There are no books.",
+    "mini-spinner-text": "Loading books...",
     "books": "Books",
     "book-title": "Title",
     "book-author": "Author",
@@ -71,6 +75,7 @@
   },
   "loan-list": {
     "no-loans": "There are no books.",
+    "mini-spinner-text": "Loading loans...",
     "loans": "Loans",
     "overdue-only": "Show overdue loans only",
     "borrower-name": "Borrower",
@@ -81,6 +86,7 @@
   },
   "order-list": {
     "error-load-orders": "List of orders could not be loaded",
+    "mini-spinner-text": "Loading order...",
     "order-date": "Order date",
     "delivery-date": "Delivery date",
     "order-status": "Status"

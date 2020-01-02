@@ -269,7 +269,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                     </div>
                 </div>
 
-                <vpu-mini-spinner id="loans-loading" style="font-size: 2em; display: none;"></vpu-mini-spinner>
+                <vpu-mini-spinner id="loans-loading" text="${i18n.t('create-loan.mini-spinner-text')}" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                 <div id="create-loan-block">
                     <div class="field">
                         <label class="label">${i18n.t('renew-loan.end-date')}</label>

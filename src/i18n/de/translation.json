@@ -22,6 +22,7 @@
     "error-existing-loans-summary": "Bestehende Entlehnung!",
     "error-existing-loans-body": "Es wurden eine bestehende Entlehnung gefunden, das Buch kann nicht entlehnt werden!",
     "submit": "Buch entlehnen",
+    "mini-spinner-text": "Entlehnungen werden geladen...",
     "success-summary": "Buchentlehnung erfolgreich",
     "success-body": "Das Buch wurde erfolgreich entlehnt.",
     "button-refresh-title": "Entlehnungen von {{name}} erneut überprüfen"
@@ -32,6 +33,7 @@
     "info-existing-loans-summary": "Bestehende Entlehnung!",
     "info-existing-loans-body": "Es wurden eine bestehende Entlehnung gefunden, das Buch kann zurückgegeben werden!",
     "submit": "Buch zurückgeben",
+    "mini-spinner-text": "Entlehnungen werden geladen...",
     "success-summary": "Buchentrückgabe erfolgreich",
     "success-body": "Das Buch wurde erfolgreich zurückgegeben.",
     "borrower": "Entlehner",
@@ -44,6 +46,7 @@
     "end-date": "Rückgabedatum",
     "loans": "Entlehnungen",
     "renew-loan": "Entlehnung verlängern",
+    "mini-spinner-text": "Entlehnungen werden geladen...",
     "error-renew-loan-summary": "Fehler beim Verlängern",
     "info-renew-loan-success-summary": "Verlängern erfolgreich",
     "info-renew-loan-success-body": "Das Verlängern der Entlehnung war erfolgreich.",
@@ -55,6 +58,7 @@
   },
   "book-list": {
     "no-books": "Es sind keine Bücher vorhanden.",
+    "mini-spinner-text": "Bücher werden geladen...",
     "books": "Bücher",
     "book-title": "Titel",
     "book-author": "Autor",
@@ -71,6 +75,7 @@
   },
   "loan-list": {
     "no-loans": "Es sind keine Entlehnungen vorhanden.",
+    "mini-spinner-text": "Entlehnungen werden geladen...",
     "loans": "Entlehnungen",
     "overdue-only": "Nur überfällige Entlehnungen anzeigen",
     "borrower-name": "Entlehner",
@@ -81,6 +86,7 @@
   },
   "order-list": {
     "error-load-orders": "Liste der Bestellungen konnte nicht geladen werden",
+    "mini-spinner-text": "Bestellungen werden geladen...",
     "order-date": "Bestelldatum",
     "delivery-date": "Lieferdatum",
     "order-status": "Status"
