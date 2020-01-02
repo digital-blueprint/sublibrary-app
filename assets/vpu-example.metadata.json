@@ -10,7 +10,7 @@
     "en": "Book loan"
   },
   "description": {
-    "de": "Erlaubt das Entlehnen von Büchern aus der Bibliothek",
+    "de": "Buchentlehnung für Institutsbibliothek",
     "en": "Allows to loan books from the library"
   },
   "icons": [
