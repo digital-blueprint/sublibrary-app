@@ -16,7 +16,41 @@
     <script type="module" id="vpu-app-src" src="<%= geturl('vpu-library.js') %>"></script>
 
     <!-- Font related CSS -->
-    <link rel="stylesheet" type="text/css" href="<%= geturl('local/vpu-library/library.css') %>">
+    <style>
+        body {
+            font-family: 'Source Sans Pro', 'Calibri', 'Arial', 'sans-serif';
+            font-weight: 300;
+            margin: 0;
+        }
+
+        @font-face {
+            font-family: 'Source Sans Pro';
+            font-weight: 300;
+            src: url('<%= geturl('local/vpu-library/fonts/SourceSansPro-Light.ttf.woff2') %>') format('woff2');
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Source Sans Pro';
+            font-weight: 400;
+            src: url('<%= geturl('local/vpu-library/fonts/SourceSansPro-Regular.ttf.woff2') %>') format('woff2');
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Source Sans Pro';
+            font-weight: 600;
+            src: url('<%= geturl('local/vpu-library/fonts/SourceSansPro-Semibold.ttf.woff2') %>') format('woff2');
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Source Sans Pro';
+            font-weight: 700;
+            src: url('<%= geturl('local/vpu-library/fonts/SourceSansPro-Bold.ttf.woff2') %>') format('woff2');
+            font-display: swap;
+        }
+    </style>
 </head>
 
 <body>
