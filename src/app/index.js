@@ -349,7 +349,7 @@ class VPUApp extends LitElement {
             :host {
                 --vpu-override-info-bg-color: #245b78;
                 --vpu-override-danger-bg-color: #e4154b;
-                --vpu-override-warning-bg-color: #f4a300;
+                --vpu-override-warning-bg-color: #71523b;
                 --vpu-override-warning-text-color: #fff;
                 --vpu-override-success-bg-color: #259207;
             }
