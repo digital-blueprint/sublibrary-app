@@ -132,11 +132,13 @@ class LibraryCreateLoan extends VPULibraryLitElement {
             this.status = {
                 "summary": i18nKey('create-loan.error-existing-loans-summary'),
                 "body": i18nKey('create-loan.error-existing-loans-body'),
+                "type": "danger"
             };
         } else {
             this.status = {
                 "summary": i18nKey('create-loan.info-no-existing-loans-summary'),
                 "body": i18nKey('create-loan.info-no-existing-loans-body'),
+                "type": "info"
             };
             createLoanBlock.style.display = "block";
         }
@@ -187,6 +189,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
             this.status = {
                 "summary": i18n.t('error-summary'),
                 "body": i18n.t('renew-loan.error-renew-loan-date-in-past'),
+                "type": "danger"
             };
 
             return;
@@ -218,6 +221,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
             this.status = {
                 "summary": i18nKey('create-loan.success-summary'),
                 "body": i18nKey('create-loan.success-body'),
+                "type": "info"
             };
         } else {
             await errorUtils.handleFetchError(response);
@@ -287,7 +291,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                 </div>
                 ${ this.status ? html`
                     <br>
-                    <div class="notification is-danger">
+                    <div class="notification is-${this.status.type}">
                         <h4>${i18n.t(this.status.summary)}</h4>
                         ${i18n.t(this.status.body)}
                     </div>
