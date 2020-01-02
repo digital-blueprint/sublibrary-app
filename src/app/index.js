@@ -367,9 +367,9 @@ class VPUApp extends LitElement {
             header {
                 grid-area: header;
                 display: grid;
-                grid-template-columns: 50% auto;
+                grid-template-columns: 50% 0.9px auto;
                 grid-template-rows: 60px 60px;
-                grid-template-areas: "hd1-left hd1-right" "hd2-left hd2-right";
+                grid-template-areas: "hd1-left hd1-middle hd1-right" "hd2-left . hd2-right";
                 width: 100%;
                 max-width: 1060px;
                 margin: 0 auto;
@@ -386,8 +386,13 @@ class VPUApp extends LitElement {
                 justify-content: center;
                 grid-area: hd1-left;
                 text-align: right;
-                border-right: black solid 1px;
                 padding-right: 20px;
+            }
+
+            header .hd1-middle {
+                grid-area: hd1-middle;
+                background-color: #000;
+                background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 60%, rgba(0,0,0,0) 100%);
             }
 
             header .hd1-right {
@@ -479,7 +484,7 @@ class VPUApp extends LitElement {
 
                 header {
                     grid-template-rows: 40px;
-                    grid-template-areas: "hd1-left hd1-right";
+                    grid-template-areas: "hd1-left hd1-middle hd1-right";
                 }
 
                 header .hd2-left, header .hd2-right {
@@ -600,6 +605,8 @@ class VPUApp extends LitElement {
                 <header>
                     <div class="hd1-left">
                         <vpu-language-select @vpu-language-changed=${this.onLanguageChanged.bind(this)}></vpu-language-select>
+                    </div>
+                    <div class="hd1-middle">
                     </div>
                     <div class="hd1-right">
                         <vpu-auth lang="${this.lang}" show-profile keycloak-config='{"clientId": "${commonUtils.setting('keyCloakClientId')}", "silentCheckSsoRedirectUri": "${silentCheckSsoUri}"}' load-person try-login></vpu-auth>
