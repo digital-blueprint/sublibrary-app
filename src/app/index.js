@@ -193,7 +193,7 @@ class VPUApp extends LitElement {
 
     static get properties() {
         return {
-            lang: { type: String },
+            lang: { type: String, reflect: true },
             src: { type: String },
             basePath: { type: String, attribute: 'base-path' },
             activeView: { type: String, attribute: false},
@@ -261,6 +261,8 @@ class VPUApp extends LitElement {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === "lang") {
+                // For screen readers
+                document.documentElement.setAttribute("lang", this.lang);
                 i18n.changeLanguage(this.lang);
             }
         });
