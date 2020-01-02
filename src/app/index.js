@@ -613,7 +613,7 @@ class VPUApp extends LitElement {
                     </div>
                     <div class="hd2-left">
                         <div class="header">
-                            <a href="https://www.tugraz.at/" title="TU Graz Home" target="_blank">TU Graz<br>Graz University of Technology</a>
+                            <a href="https://www.tugraz.at/" title="TU Graz Home" target="_blank" rel="noopener">TU Graz<br>Graz University of Technology</a>
                         </div>
                     </div>
                     <div class="hd2-right">

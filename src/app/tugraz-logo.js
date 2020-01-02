@@ -67,7 +67,7 @@ class VPUTUGrazLogo extends LitElement {
 
     render() {
         return html`
-            <a href="https://www.tugraz.at" title="TU Graz Home" target="_blank">
+            <a href="https://www.tugraz.at" title="TU Graz Home" target="_blank" rel="noopener">
                 <div id="claim">
                     <div class="int-header-logo-claim-single">${i18n.t('logo.word1')}</div>
                     <div class="int-header-logo-claim-single">${i18n.t('logo.word2')}</div>
