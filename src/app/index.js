@@ -345,15 +345,6 @@ class VPUApp extends LitElement {
             ${commonStyles.getThemeCSS()}
             ${commonStyles.getGeneralCSS()}
 
-            /* TU-Graz style override */
-            :host {
-                --vpu-override-info-bg-color: #245b78;
-                --vpu-override-danger-bg-color: #e4154b;
-                --vpu-override-warning-bg-color: #71523b;
-                --vpu-override-warning-text-color: #fff;
-                --vpu-override-success-bg-color: #259207;
-            }
-
             .hidden {display: none}
 
             h1.title {margin-bottom: 0}

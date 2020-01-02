@@ -55,6 +55,15 @@
             src: url('<%= geturl('local/vpu-library/fonts/SourceSansPro-Bold.ttf.woff2') %>') format('woff2');
             font-display: block;
         }
+
+        /* TU-Graz style override */
+        html {
+            --vpu-override-info-bg-color: #245b78;
+            --vpu-override-danger-bg-color: #e4154b;
+            --vpu-override-warning-bg-color: #71523b;
+            --vpu-override-warning-text-color: #fff;
+            --vpu-override-success-bg-color: #259207;
+        }
     </style>
 
     <!-- Preloading/Preconnecting -->
