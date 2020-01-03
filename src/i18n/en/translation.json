@@ -60,6 +60,7 @@
     "no-books": "There are no books.",
     "mini-spinner-text": "Loading books...",
     "books": "Books",
+    "export-name": "Books {{organizationCode}}",
     "book-title": "Title",
     "book-author": "Author",
     "book-barcode": "Barcode",
@@ -77,6 +78,7 @@
     "no-loans": "There are no books.",
     "mini-spinner-text": "Loading loans...",
     "loans": "Loans",
+    "export-name": "Loans {{organizationCode}}",
     "overdue-only": "Show overdue loans only",
     "borrower-name": "Borrower",
     "start-date": "Start date",
@@ -85,6 +87,7 @@
     "error-load-loans": "List of loans could not be loaded"
   },
   "order-list": {
+    "export-name": "Orders {{organizationCode}}",
     "error-load-orders": "List of orders could not be loaded",
     "mini-spinner-text": "Loading order...",
     "order-date": "Order date",

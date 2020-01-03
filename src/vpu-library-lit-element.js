@@ -42,4 +42,24 @@ export default class VPULibraryLitElement extends LitElement {
         // Implement in subclass
         this.requestUpdate();
     }
+
+    getOrganization() {
+        const organizationSelect = this._("vpu-knowledge-base-organization-select");
+
+        if (organizationSelect) {
+            const objectText = organizationSelect.getAttribute("data-object");
+
+            if (objectText !== null) {
+                return JSON.parse(objectText);
+            }
+        }
+
+        return null;
+    }
+
+    getOrganizationCode() {
+        const organization = this.getOrganization();
+
+        return organization !== null ? organization.alternateName : "";
+    }
 }

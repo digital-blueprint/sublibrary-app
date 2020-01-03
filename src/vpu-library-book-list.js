@@ -27,6 +27,7 @@ class LibraryBookList extends VPULibraryLitElement {
         this.person = null;
         this.books = [];
         this.organizationId = '';
+        this.organization = null;
         this.abortController = null;
         this.locationIdentifier = '';
         this.locationIdentifiers = [];
@@ -55,6 +56,7 @@ class LibraryBookList extends VPULibraryLitElement {
             locationIdentifier: { type: String, attribute: false },
             inventoryYears: { type: Array, attribute: false },
             inventoryYear: { type: String, attribute: false },
+            organization: { type: Object, attribute: false },
         };
     }
 
@@ -412,7 +414,7 @@ class LibraryBookList extends VPULibraryLitElement {
                     <div class="field">
                         <label class="label">${i18n.t('book-list.books')}</label>
                         <div class="control">
-                            <vpu-data-table-view searching paging exportable export-name="${i18n.t('book-list.books')}"
+                            <vpu-data-table-view searching paging exportable export-name="${i18n.t('book-list.export-name', {organizationCode: this.getOrganizationCode()})}"
                                                  lang="${this.lang}" id="book-books-1"></vpu-data-table-view>
                         </div>
                     </div>

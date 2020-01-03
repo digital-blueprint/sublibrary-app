@@ -60,6 +60,7 @@
     "no-books": "Es sind keine Bücher vorhanden.",
     "mini-spinner-text": "Bücher werden geladen...",
     "books": "Bücher",
+    "export-name": "Buchliste {{organizationCode}}",
     "book-title": "Titel",
     "book-author": "Autor",
     "book-barcode": "Barcode",
@@ -77,6 +78,7 @@
     "no-loans": "Es sind keine Entlehnungen vorhanden.",
     "mini-spinner-text": "Entlehnungen werden geladen...",
     "loans": "Entlehnungen",
+    "export-name": "Entlehnungen {{organizationCode}}",
     "overdue-only": "Nur überfällige Entlehnungen anzeigen",
     "borrower-name": "Entlehner",
     "start-date": "Entlehndatum",
@@ -85,6 +87,7 @@
     "error-load-loans": "Liste der Entlehnungen konnte nicht geladen werden"
   },
   "order-list": {
+    "export-name": "Buchbestellungen {{organizationCode}}",
     "error-load-orders": "Liste der Bestellungen konnte nicht geladen werden",
     "mini-spinner-text": "Bestellungen werden geladen...",
     "order-date": "Bestelldatum",
