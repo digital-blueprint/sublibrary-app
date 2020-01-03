@@ -132,8 +132,7 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
             return;
         }
 
-        $this.attr("data-object", JSON.stringify(organization.object));
-        $this.data("object", organization.object);
+        this.setDataObject(organization);
 
         const event = new CustomEvent('change', {
             bubbles: true,
@@ -144,6 +143,12 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
             }
         });
         this.dispatchEvent(event);
+    }
+
+    setDataObject(organization) {
+        const $this = $(this);
+        $this.attr("data-object", JSON.stringify(organization.object));
+        $this.data("object", organization.object);
     }
 
     update(changedProperties) {
@@ -233,8 +238,10 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
                 })
                     .then(response => response.json())
                     .then(org => {
+                        let organization;
+
                         if (org['@type'] !== 'hydra:Error') {
-                            const organization = {
+                            organization = {
                                 id: org.identifier,
                                 code: org.alternateName,
                                 name: org.name,
@@ -242,10 +249,8 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
                                 value: org['@id'],
                                 object: org,
                             };
-                            results.push(organization);
                         } else {
-                            const organization = this.getMinimalOrganization(identifier, matches[1]);
-                            results.push(organization);
+                            organization = this.getMinimalOrganization(identifier, matches[1]);
                             notify({
                                 "summary": i18n.t('select-organization.load-error'),
                                 "icon": "sad",
@@ -253,12 +258,19 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
                                 "type": "danger",
                             });
                         }
+
+                        results.push(organization);
+
+                        if (organization.value === this.value) {
+                            this.setDataObject(organization);
+                        }
                     })
                 );
             }
         }
 
         await Promise.all(promises);
+
         return results;
     }
 
