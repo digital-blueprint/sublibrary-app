@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import url from 'url';
 import glob from 'glob';
 import resolve from 'rollup-plugin-node-resolve';
@@ -14,6 +15,18 @@ import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs'
 import babel from 'rollup-plugin-babel'
 import chai from 'chai';
+import selfsigned from 'selfsigned';
+
+// -------------------------------
+
+// Disabled because we don't support (old) Edge right now and babel is slow.
+// But this should be a good starting point in case that changes.
+const USE_BABEL = false;
+
+// Some new web APIs are only available when HTTPS is active
+const USE_HTTPS = false;
+
+// -------------------------------
 
 const pkg = require('./package.json');
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
@@ -52,9 +65,7 @@ switch (build) {
     process.exit(1);
 }
 
-// Disabled because we don't support (old) Edge right now and babel is slow.
-// But this should be a good starting point in case that changes.
-const USE_BABEL = false;
+
 
 const CHUNK_BLACKLIST = [
   'jszip'  // jszip is a node module by default and rollup chunking is confused by that and emits warnings
@@ -76,6 +87,25 @@ function getManualChunks(pkg) {
     delete manualChunks[name];
   }
   return manualChunks;
+}
+
+/**
+ * Creates a server certificate and caches it in the .cert directory
+ */
+function generateTLSConfig() {
+  fs.mkdirSync('.cert', {recursive: true});
+
+  if (!fs.existsSync('.cert/server.key') || !fs.existsSync('.cert/server.cert')) {
+    const attrs = [{name: 'commonName', value: 'vpu-dev.localhost'}];
+    const pems = selfsigned.generate(attrs, {algorithm: 'sha256', days: 9999});
+    fs.writeFileSync('.cert/server.key', pems.private);
+    fs.writeFileSync('.cert/server.cert', pems.cert);
+  }
+
+  return {
+    key: fs.readFileSync('.cert/server.key'),
+    cert: fs.readFileSync('.cert/server.cert')
+  }
 }
 
 function getBuildInfo() {
@@ -226,6 +256,12 @@ export default {
           '@babel/plugin-syntax-dynamic-import',
           '@babel/plugin-syntax-import-meta']
         }),
-        (process.env.ROLLUP_WATCH === 'true') ? serve({contentBase: '.', host: '127.0.0.1', port: 8001, historyApiFallback: basePath + pkg.name + '.html'}) : false
+        (process.env.ROLLUP_WATCH === 'true') ? serve({
+          contentBase: '.',
+          host: '127.0.0.1',
+          port: 8001,
+          historyApiFallback: basePath + pkg.name + '.html',
+          https: USE_HTTPS ? generateTLSConfig() : false,
+        }) : false
     ]
 };
