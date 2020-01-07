@@ -30,6 +30,12 @@
     <!-- Prevent Chrome/Edge from suggesting to translate the page -->
     <meta name="google" content="notranslate">
 
+    <!-- Preload fonts -->
+    <link rel="preload" href="<%= geturl('local/vpu-library/fonts/SourceSansPro-Light.otf.woff2') %>" as="font" type="font/woff2">
+    <link rel="preload" href="<%= geturl('local/vpu-library/fonts/SourceSansPro-Regular.otf.woff2') %>" as="font" type="font/woff2">
+    <link rel="preload" href="<%= geturl('local/vpu-library/fonts/SourceSansPro-Semibold.otf.woff2') %>" as="font" type="font/woff2">
+    <link rel="preload" href="<%= geturl('local/vpu-library/fonts/SourceSansPro-Bold.otf.woff2') %>" as="font" type="font/woff2">
+
     <!-- Font related CSS -->
     <style>
         body {
