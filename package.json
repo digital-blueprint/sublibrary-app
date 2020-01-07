@@ -37,7 +37,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-terser": "^5.1.3",
-    "source-sans-pro": "^3.6.0",
+    "source-sans-pro": "^2.45.0",
     "vpu-auth": "file:./vendor/auth",
     "vpu-common": "file:./vendor/common",
     "vpu-data-table-view": "file:./vendor/datatableview",
