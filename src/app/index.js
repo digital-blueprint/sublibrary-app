@@ -470,7 +470,6 @@ class VPUApp extends LitElement {
             a { transition: background-color 0.15s ease 0s, color 0.15s ease 0s; }
 
             .description {
-                font-family: 'Source Sans Pro';
                 text-align: left;
                 margin-bottom: 1rem;
             }
