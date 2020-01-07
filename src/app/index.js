@@ -367,7 +367,7 @@ class VPUApp extends LitElement {
             header {
                 grid-area: header;
                 display: grid;
-                grid-template-columns: 50% 0.9px auto;
+                grid-template-columns: 50% 1px auto;
                 grid-template-rows: 60px 60px;
                 grid-template-areas: "hd1-left hd1-middle hd1-right" "hd2-left . hd2-right";
                 width: 100%;
