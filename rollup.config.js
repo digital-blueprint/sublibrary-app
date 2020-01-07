@@ -153,7 +153,8 @@ export default {
               return url.resolve(basePath, p);
             },
             entryPointURL: entryPointURL,
-            keyCloakBaseURL: keyCloakBaseURL
+            keyCloakBaseURL: keyCloakBaseURL,
+            environment: build
           }
         }),
 

@@ -8,6 +8,13 @@
     <link rel="shortcut icon" type="image/x-icon" href="<%= geturl('local/vpu-library/favicon.ico') %>">
     <link rel="icon" type="image/svg+xml" href="<%= geturl('local/vpu-library/favicon.svg') %>" sizes="any">
 
+    <!-- XXX: Disable adoptedStyleSheets so that lit-element doesn't use it and we can edit CSS in the Chrome dev tools -->
+<% if (environment === "local") { -%>
+    <script>
+        delete Document.prototype.adoptedStyleSheets;
+    </script>
+<% } -%>
+
     <!-- PWA manfiest file -->
     <link rel="manifest" href="<%= geturl('vpu-library.manifest.json') %>">
 
