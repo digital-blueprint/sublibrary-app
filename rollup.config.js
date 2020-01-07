@@ -23,7 +23,9 @@ import selfsigned from 'selfsigned';
 // But this should be a good starting point in case that changes.
 const USE_BABEL = false;
 
-// Some new web APIs are only available when HTTPS is active
+// Some new web APIs are only available when HTTPS is active.
+// Note that this only works with a Non-HTTPS API endpoint with Chrome,
+// Firefox will emti CORS errors, see https://bugzilla.mozilla.org/show_bug.cgi?id=1488740
 const USE_HTTPS = false;
 
 // -------------------------------
