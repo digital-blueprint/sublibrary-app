@@ -349,7 +349,10 @@ class VPUApp extends LitElement {
 
             .hidden {display: none}
 
-            h1.title {margin-bottom: 0}
+            h1.title {
+                margin-bottom: 0;
+                font-weight: 300;
+            }
 
             #main {
                 display: grid;
@@ -392,7 +395,7 @@ class VPUApp extends LitElement {
             header .hd1-middle {
                 grid-area: hd1-middle;
                 background-color: #000;
-                background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 60%, rgba(0,0,0,0) 100%);
+                background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 90%);
             }
 
             header .hd1-right {
@@ -442,7 +445,7 @@ class VPUApp extends LitElement {
 
             .menu a {
                 padding: 0.3em;
-                font-weight: 400;
+                font-weight: 300;
                 color: #000;
                 display: block;
             }
@@ -451,7 +454,11 @@ class VPUApp extends LitElement {
                 color: #E4154B;
             }
 
-            .menu a.selected { color: white; background-color: black; }
+            .menu a.selected {
+                color: var(--vpu-light);
+                background-color: var(--vpu-dark);
+                text-shadow: 0px 0px 0.1px var(--vpu-light);
+            }
 
             aside .subtitle {
                 display: none;
