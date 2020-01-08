@@ -84,7 +84,8 @@
     "start-date": "Entlehndatum",
     "due-date": "Fällig am",
     "return-date": "Rückgegeben am",
-    "error-load-loans": "Liste der Entlehnungen konnte nicht geladen werden"
+    "error-load-loans": "Liste der Entlehnungen konnte nicht geladen werden",
+    "error-load-loan": "Entlehnung konnte nicht geladen werden"
   },
   "order-list": {
     "export-name": "Buchbestellungen {{organizationCode}}",

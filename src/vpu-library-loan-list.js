@@ -9,6 +9,7 @@ import './vpu-knowledge-base-organisation-select.js';
 import 'vpu-common/vpu-mini-spinner.js';
 import {classMap} from 'lit-html/directives/class-map.js';
 import $ from "jquery";
+import {send as notify} from "vpu-common/notification";
 
 const i18n = createI18nInstance();
 
@@ -150,6 +151,7 @@ class LibraryLoanList extends VPULibraryLitElement {
                     null,
                     {title: i18n.t('loan-list.return-date')},
                     null,
+                    '',
                 ];
 
                 // sorting will be done by hidden columns
@@ -160,6 +162,7 @@ class LibraryLoanList extends VPULibraryLitElement {
                     {targets: [7], visible: false},
                     {targets: [8], orderData: [9]},
                     {targets: [9], visible: false},
+                    {targets: [10], sortable: false},
                 ];
 
                 const currentDate = new Date();
@@ -185,6 +188,11 @@ class LibraryLoanList extends VPULibraryLitElement {
                         loan.endTime,
                         loan.returnTime !== null ? returnTime.toLocaleDateString("de-AT") : "",
                         loan.returnTime,
+                        `<div class="button-col">
+                            <vpu-button data-id="${loan['@id']}" data-type="contact" data-book-name="${loan.object.name}"
+                                        value="${i18n.t('renew-loan.contact-value')}" name="send" type="is-small"
+                                        title="${i18n.t('renew-loan.contact-title', {personName: loan.borrower.name})}" no-spinner-on-click></vpu-button>
+                        </div>`
                     ];
                     tbl.push(row);
                 });
@@ -224,6 +232,69 @@ class LibraryLoanList extends VPULibraryLitElement {
         this.organizationId = e.detail.value;
     }
 
+    /**
+     * Handles all clicks on the data table
+     *
+     * @param e
+     */
+    onDataTableClick(e) {
+        const path = e.composedPath();
+        let button, buttonIndex = -1;
+
+        // search for the vpu-button
+        path.some((item, index) => {
+            if (item.nodeName === "VPU-BUTTON") {
+                button = item;
+                buttonIndex = index;
+
+                return true;
+            }
+        });
+
+        // if the button was not found it wasn't clicked
+        if (buttonIndex === -1) {
+            return;
+        }
+
+        e.preventDefault();
+
+        if (button.hasAttribute("disabled")) {
+            return;
+        }
+
+        const type = button.getAttribute("data-type");
+        const loanId = button.getAttribute("data-id");
+
+        // check with button was clicked
+        switch(type) {
+            case "contact": {
+                button.start();
+                const apiUrl = this.entryPointUrl + loanId;
+
+                // we need to load the loan because we cannot get the borrower's email address via Alma Analytics
+                fetch(apiUrl, {
+                    headers: {
+                        'Content-Type': 'application/ld+json',
+                        'Authorization': 'Bearer ' + window.VPUAuthToken,
+                    },
+                })
+                    .then(result => {
+                        button.stop();
+                        if (!result.ok) throw result;
+                        return result.json();
+                    })
+                    .then(loan => {
+                        const bookName = button.getAttribute("data-book-name");
+                        const subject = i18n.t('renew-loan.contact-subject', {bookName: bookName});
+
+                        // open mail client with new mail
+                        location.href = `mailto:${loan.borrower.email}?subject=${subject}`;
+                    }).catch(error => errorUtils.handleFetchError(error, i18n.t('loan-list.error-load-loan')));
+                break;
+            }
+        }
+    }
+
     render() {
         return html`
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions()})}">
@@ -247,7 +318,7 @@ class LibraryLoanList extends VPULibraryLitElement {
                         <label class="label">${i18n.t('loan-list.loans')}</label>
                         <div class="control">
                             <vpu-data-table-view searching paging exportable export-name="${i18n.t('loan-list.export-name', {organizationCode: this.getOrganizationCode()})}"
-                                                 lang="${this.lang}" id="loan-loans-1"></vpu-data-table-view>
+                                                 lang="${this.lang}" id="loan-loans-1" @click="${(e) => this.onDataTableClick(e)}"></vpu-data-table-view>
                         </div>
                     </div>
                 </div>

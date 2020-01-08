@@ -84,7 +84,8 @@
     "start-date": "Start date",
     "due-date": "Due date",
     "return-date": "Return date",
-    "error-load-loans": "List of loans could not be loaded"
+    "error-load-loans": "List of loans could not be loaded",
+    "error-load-loan": "Loan could not be loaded"
   },
   "order-list": {
     "export-name": "Orders {{organizationCode}}",
