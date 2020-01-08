@@ -578,9 +578,22 @@ class VPUApp extends LitElement {
 
         // We hide the app until we are either fully logged in or logged out
         // At the same time when we hide the main app we show the main slot (e.g. a loading spinner)
-        const hidden = (this._loginStatus == 'unknown' || this._loginStatus == 'logging-in');
-        const mainClassMap = classMap({hidden: hidden});
-        const slotClassMap = classMap({hidden: !hidden});
+        const appHidden = (this._loginStatus == 'unknown' || this._loginStatus == 'logging-in');
+        const mainClassMap = classMap({hidden: appHidden});
+        const slotClassMap = classMap({hidden: !appHidden});
+
+        // XXX: Safari doesn't like CSS being applied to slots or via HTML,
+        // so we have to set things manually after we are rendered and we want to show the app
+        if (!appHidden) {
+            const slot = this.shadowRoot.querySelector("slot");
+            if (!slot) {
+                this.updateComplete.then(() => {
+                    this.shadowRoot.querySelector("slot").style.display = "none";
+                });
+            } else {
+                slot.style.display = "none";
+            }
+        }
 
         const prodClassMap = classMap({hidden: buildinfo.env === 'production'});
 
