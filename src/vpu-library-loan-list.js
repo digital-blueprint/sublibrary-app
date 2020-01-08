@@ -9,7 +9,6 @@ import './vpu-knowledge-base-organisation-select.js';
 import 'vpu-common/vpu-mini-spinner.js';
 import {classMap} from 'lit-html/directives/class-map.js';
 import $ from "jquery";
-import {send as notify} from "vpu-common/notification";
 
 const i18n = createI18nInstance();
 
