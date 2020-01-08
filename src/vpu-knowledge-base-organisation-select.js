@@ -45,6 +45,7 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
 
     connectedCallback() {
         super.connectedCallback();
+        this.updateSelect2();
 
         this.updateComplete.then(()=> {
             window.addEventListener("vpu-auth-person-init", async () => {
@@ -86,6 +87,17 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
             $select.select2('destroy');
         }
 
+        // Show an empty select until we load the organizations
+        if (this.organizations.length === 0) {
+            $select.select2({
+                width: '100%',
+                language: this.lang === "de" ? select2LangDe() : select2LangEn(),
+                placeholder: i18n.t('select-organization.loading'),
+                data: [],
+                disabled: true
+            });
+        }
+
         await this.load_organizations();
 
         const data = this.organizations.map((item) => {
@@ -99,9 +111,10 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
         $select.select2({
             width: '100%',
             language: this.lang === "de" ? select2LangDe() : select2LangEn(),
-            placeholderOption: i18n.t('select-organization.placeholder'),
+            placeholder: i18n.t('select-organization.placeholder'),
             dropdownParent: this.$('#select-organization-dropdown'),
-            data: data
+            data: data,
+            disabled: false
         }).on("select2:select", () => {
             const selectedId = $select.select2('data')[0].id;
             this.value = selectedId;
@@ -114,9 +127,6 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
 
         // Apply the selection
         $select.val(this.value).trigger('change');
-
-        if (this.organizations.length === 0)
-            $select.next().hide();
     }
 
     fireEvent() {
