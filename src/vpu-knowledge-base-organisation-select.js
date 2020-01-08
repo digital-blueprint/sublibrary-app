@@ -74,6 +74,10 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
         this.organizations = this.cache[this.lang];
     }
 
+    _needsLoading() {
+        return this.cache[this.lang].length === 0;
+    }
+
     async updateSelect2() {
         await this.updateComplete;
 
@@ -88,7 +92,7 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
         }
 
         // Show an empty select until we load the organizations
-        if (this.organizations.length === 0) {
+        if (this._needsLoading()) {
             $select.select2({
                 width: '100%',
                 language: this.lang === "de" ? select2LangDe() : select2LangEn(),
