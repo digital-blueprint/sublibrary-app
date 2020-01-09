@@ -3,12 +3,12 @@
   "module_src": "vpu-library-return-book.js",
   "routing_name": "return-book",
   "name": {
-    "de": "Bilbliothek Buch zurückgeben",
-    "en": "Library book return"
+    "de": "Bibliothek Buch zurückgeben",
+    "en": "Return a library book"
   },
   "short_name": {
     "de": "Buch zurückgeben",
-    "en": "Book return"
+    "en": "Return book"
   },
   "description": {
     "de": "Erlaubt die Rückgabe von Büchern",
