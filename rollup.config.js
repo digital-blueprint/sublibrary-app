@@ -50,7 +50,7 @@ switch (build) {
   case 'demo':
     basePath = '/apps/library/';
     entryPointURL = 'https://api-demo.tugraz.at';
-    keyCloakBaseURL = 'https://auth-dev.tugraz.at/auth';
+    keyCloakBaseURL = 'https://auth-test.tugraz.at/auth';
     break;
   case 'production':
     basePath = '/';
