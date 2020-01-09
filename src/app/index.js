@@ -484,6 +484,7 @@ class VPUApp extends LitElement {
             .description {
                 text-align: left;
                 margin-bottom: 1rem;
+                display: none;
             }
 
             @media (max-width: 680px) {

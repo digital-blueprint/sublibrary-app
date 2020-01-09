@@ -295,8 +295,17 @@ class LibraryLoanList extends VPULibraryLitElement {
     }
 
     render() {
+        const dateStringYesterday = () => {
+            const now = new Date();
+            now.setDate(now.getDate() - 1);
+            return now.toLocaleDateString(this.lang);
+        };
+
         return html`
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions()})}">
+                <div class="field">
+                    ${i18n.t('loan-list.current-state')}: ${dateStringYesterday()}
+                </div>
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">

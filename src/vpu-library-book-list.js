@@ -376,11 +376,20 @@ class LibraryBookList extends VPULibraryLitElement {
             inventoryYearItemTemplates.push(html`<option value="${item}">${item}</option>`);
         });
 
+        const dateStringYesterday = () => {
+            const now = new Date();
+            now.setDate(now.getDate() - 1);
+            return now.toLocaleDateString(this.lang);
+        };
+
         commonUtils.initAssetBaseURL('vpu-library-book-list-src');
         const select2CSS = commonUtils.getAssetURL(select2CSSPath);
         return html`
             <link rel="stylesheet" href="${select2CSS}">
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions()})}">
+                <div class="field">
+                    ${i18n.t('book-list.current-state')}: ${dateStringYesterday()}
+                </div>
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">

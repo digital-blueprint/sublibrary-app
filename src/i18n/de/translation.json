@@ -72,7 +72,8 @@
     "location-identifier-select-placeholder": "Bitte wählen Sie eine Aufstellung aus um die Büchsterliste einzuschränken",
     "book-inventory-year": "Inventarisierungsjahr",
     "inventory-year-select-placeholder": "Bitte wählen Sie ein Inventarisierungsjahr aus um die Büchsterliste einzuschränken",
-    "error-load-books": "Liste der Bücher konnte nicht geladen werden"
+    "error-load-books": "Liste der Bücher konnte nicht geladen werden",
+    "current-state": "Stand"
   },
   "loan-list": {
     "no-loans": "Es sind keine Entlehnungen vorhanden.",
@@ -85,7 +86,8 @@
     "due-date": "Fällig am",
     "return-date": "Rückgegeben am",
     "error-load-loans": "Liste der Entlehnungen konnte nicht geladen werden",
-    "error-load-loan": "Entlehnung konnte nicht geladen werden"
+    "error-load-loan": "Entlehnung konnte nicht geladen werden",
+    "current-state": "Stand"
   },
   "order-list": {
     "export-name": "Buchbestellungen {{organizationCode}}",
@@ -93,7 +95,8 @@
     "mini-spinner-text": "Bestellungen werden geladen...",
     "order-date": "Bestelldatum",
     "delivery-date": "Lieferdatum",
-    "order-status": "Status"
+    "order-status": "Status",
+    "current-state": "Stand"
   },
   "location-identifier": {
     "headline": "Identifikator zur Aufstellung",

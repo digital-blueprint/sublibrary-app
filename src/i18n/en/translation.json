@@ -72,7 +72,8 @@
     "location-identifier-select-placeholder": "Please select a location to restrict the book list",
     "book-inventory-year": "Availability year",
     "inventory-year-select-placeholder": "Please select a availability year to restrict the book list",
-    "error-load-books": "List of books could not be loaded"
+    "error-load-books": "List of books could not be loaded",
+    "current-state": "State"
   },
   "loan-list": {
     "no-loans": "There are no books.",
@@ -85,7 +86,8 @@
     "due-date": "Due date",
     "return-date": "Return date",
     "error-load-loans": "List of loans could not be loaded",
-    "error-load-loan": "Loan could not be loaded"
+    "error-load-loan": "Loan could not be loaded",
+    "current-state": "State"
   },
   "order-list": {
     "export-name": "Orders {{organizationCode}}",
@@ -93,7 +95,8 @@
     "mini-spinner-text": "Loading order...",
     "order-date": "Order date",
     "delivery-date": "Delivery date",
-    "order-status": "Status"
+    "order-status": "Status",
+    "current-state": "State"
   },
   "location-identifier": {
     "headline": "Identifier for book placement",
