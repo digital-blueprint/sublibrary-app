@@ -14,6 +14,7 @@ import * as events from 'vpu-common/events.js';
 import './build-info.js';
 import './tugraz-logo.js';
 import {send as notify} from 'vpu-notification';
+import environment from 'consts:environment';
 
 // errorreport.init({release: 'vpi-library-app@' + buildinfo.info});
 
@@ -115,6 +116,10 @@ class VPUApp extends LitElement {
                 activity.visible = visible;
                 // Resolve module_src relative to the location of the json file
                 activity.module_src = new URL(activity.module_src, actURL).href;
+                if (activity.routing_name === 'order-list' && environment === 'production') {
+                    console.warn('NOTE: order-list disabled in production!');
+                    continue;
+                }
                 metadata[activity.routing_name] = activity;
                 routes.push(activity.routing_name);
             } catch (error) {
