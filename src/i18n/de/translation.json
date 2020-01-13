@@ -63,6 +63,7 @@
     "export-name": "Buchliste {{organizationCode}}",
     "book-title": "Titel",
     "book-author": "Autor",
+    "book-isbn": "ISBN",
     "book-barcode": "Barcode",
     "book-location": "Ort",
     "book-location-identifier": "Aufstellung",
@@ -96,6 +97,8 @@
     "order-date": "Bestelldatum",
     "delivery-date": "Lieferdatum",
     "order-status": "Status",
+    "order-number": "Bestellnummer",
+    "receiving -note": "Eingangsnotiz",
     "current-state": "Stand"
   },
   "location-identifier": {

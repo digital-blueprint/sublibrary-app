@@ -127,35 +127,31 @@ class LibraryOrderList extends VPULibraryLitElement {
                         const columns = [
                             {title: i18n.t('book-list.book-title')},
                             {title: i18n.t('book-list.book-author')},
+                            {title: i18n.t('book-list.book-isbn')},
                             {title: i18n.t('order-list.order-date')},
                             null,
-                            {title: i18n.t('order-list.delivery-date')},
-                            null,
-                            {title: i18n.t('order-list.order-status')},
+                            {title: i18n.t('order-list.order-number')},
+                            {title: i18n.t('order-list.receiving -note')},
                         ];
 
                         // sorting will be done by hidden columns
                         const columnDefs = [
-                            {targets: [2], orderData: [3]},
-                            {targets: [3], visible: false},
-                            {targets: [4], orderData: [5]},
-                            {targets: [5], visible: false},
+                            {targets: [3], orderData: [4]},
+                            {targets: [4], visible: false},
                         ];
 
                         const tbl = [];
                         that.books.forEach(function(bookOrder) {
                             const orderDate = new Date(bookOrder.orderDate);
-                            const availableFromString = bookOrder.orderedItem.orderDelivery.deliveryStatus.availableFrom || "";
-                            const availableFrom = new Date(availableFromString);
 
                             const row = [
                                 bookOrder.orderedItem.orderedItem.title,
                                 bookOrder.orderedItem.orderedItem.author,
+                                bookOrder.orderedItem.orderedItem.isbn,
                                 orderDate.toLocaleDateString("de-AT"),
                                 bookOrder.orderDate,
-                                availableFromString !== "" ? availableFrom.toLocaleDateString("de-AT") : "",
-                                availableFromString,
-                                bookOrder.orderStatus
+                                bookOrder.orderNumber,
+                                bookOrder.receivingNote,
                             ];
                             tbl.push(row);
                         });
