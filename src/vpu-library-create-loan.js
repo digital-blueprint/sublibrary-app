@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import {createI18nInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
 import VPULibraryLitElement from './vpu-library-lit-element';
@@ -160,6 +161,9 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         this.personId = personId;
         this.person = person;
 
+        //Remove the disabled attribute from the loan book button
+        $(this._("#send")).prop("disabled", false);
+
         // fire a change event
         this.dispatchEvent(new CustomEvent('change', {
             detail: {
@@ -285,7 +289,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                              <vpu-button id="send"
                                          @click=${this.onSubmitClicked}
                                          value="${i18n.t('create-loan.submit')}"
-                                         type=""></vpu-button>
+                                         type="" disabled></vpu-button>
                         </div>
                     </div>
                 </div>
