@@ -35,31 +35,37 @@ const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : '
 console.log("build: " + build);
 let basePath = '';
 let entryPointURL = '';
+let keyCloakServer = '';
 let keyCloakBaseURL = '';
 switch (build) {
   case 'local':
     basePath = '/dist/';
     entryPointURL = 'http://127.0.0.1:8000';
-    keyCloakBaseURL = 'https://auth-dev.tugraz.at/auth';
+    keyCloakServer = 'auth-dev.tugraz.at';
+    keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
     break;
   case 'development':
     basePath = '/apps/library/';
     entryPointURL = 'https://mw-dev.tugraz.at';
-    keyCloakBaseURL = 'https://auth-dev.tugraz.at/auth';
+    keyCloakServer = 'auth-dev.tugraz.at';
+    keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
     break;
   case 'demo':
     basePath = '/apps/library/';
     entryPointURL = 'https://api-demo.tugraz.at';
-    keyCloakBaseURL = 'https://auth-test.tugraz.at/auth';
+    keyCloakServer = 'auth-test.tugraz.at';
+    keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
     break;
   case 'production':
     basePath = '/';
     entryPointURL = 'https://api.tugraz.at';
-    keyCloakBaseURL = 'https://auth.tugraz.at/auth';
+    keyCloakServer = 'auth.tugraz.at';
+    keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
     break;
   case 'test':
     basePath = '/apps/library/';
     entryPointURL = '';
+    keyCloakServer = '';
     keyCloakBaseURL = '';
     break;
   default:
@@ -185,6 +191,7 @@ export default {
               return url.resolve(basePath, p);
             },
             entryPointURL: entryPointURL,
+            keyCloakServer: keyCloakServer,
             keyCloakBaseURL: keyCloakBaseURL,
             environment: build
           }
@@ -264,6 +271,9 @@ export default {
           port: 8001,
           historyApiFallback: basePath + pkg.name + '.html',
           https: USE_HTTPS ? generateTLSConfig() : false,
+          headers: {
+              'Content-Security-Policy': `default-src 'self' 'unsafe-inline' ${keyCloakServer} ${entryPointURL}; img-src *`
+          },
         }) : false
     ]
 };
