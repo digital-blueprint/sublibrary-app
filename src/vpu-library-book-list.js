@@ -162,14 +162,17 @@ class LibraryBookList extends VPULibraryLitElement {
             signal: signal,
         })
             .then(result => {
-                $booksLoadingIndicator.hide();
                 if (!result.ok) throw result;
                 return result.json();
             })
             .then(result => {
                 that.books = result['hydra:member'];
                 that.buildTable();
-            }).catch(error => errorUtils.handleFetchError(error, i18n.t('book-list.error-load-books')));
+                $booksLoadingIndicator.hide();
+            }).catch(error => {
+                errorUtils.handleFetchError(error, i18n.t('book-list.error-load-books'));
+                $booksLoadingIndicator.hide();
+            });
     }
 
     buildTable(updateFilterSelects = true) {

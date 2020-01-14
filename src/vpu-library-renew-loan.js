@@ -146,7 +146,6 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                 },
             })
                 .then(result => {
-                    $loansLoadingIndicator.hide();
                     if (!result.ok) throw result;
                     return result.json();
                 })
@@ -206,7 +205,11 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                     } else {
                         $noLoansBlock.show();
                     }
-                }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
+                    $loansLoadingIndicator.hide();
+                }).catch(error => {
+                    errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary'));
+                    $loansLoadingIndicator.hide();
+                });
 
             return true;
         }, 10000, 100);

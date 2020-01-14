@@ -114,7 +114,6 @@ class LibraryOrderList extends VPULibraryLitElement {
             signal: signal,
         })
             .then(result => {
-                $booksLoadingIndicator.hide();
                 if (!result.ok) throw result;
                 return result.json();
             })
@@ -163,7 +162,12 @@ class LibraryOrderList extends VPULibraryLitElement {
                 } else {
                     $noBooksBlock.show();
                 }
-            }).catch(error => errorUtils.handleFetchError(error, i18n.t('order-list.error-load-orders')));
+
+                $booksLoadingIndicator.hide();
+            }).catch(error => {
+                errorUtils.handleFetchError(error, i18n.t('order-list.error-load-orders'));
+                $booksLoadingIndicator.hide();
+            });
     }
 
     onLanguageChanged(e) {

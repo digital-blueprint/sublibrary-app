@@ -121,14 +121,17 @@ class LibraryLoanList extends VPULibraryLitElement {
             signal: signal,
         })
             .then(result => {
-                $loansLoadingIndicator.hide();
                 if (!result.ok) throw result;
                 return result.json();
             })
             .then(result => {
                 that.loans = result['hydra:member'];
                 that.buildTable();
-            }).catch(error => errorUtils.handleFetchError(error, i18n.t('loan-list.error-load-loans')));
+                $loansLoadingIndicator.hide();
+            }).catch(error => {
+                errorUtils.handleFetchError(error, i18n.t('loan-list.error-load-loans'));
+                $loansLoadingIndicator.hide();
+            });
     }
 
     buildTable() {
