@@ -361,7 +361,7 @@ class VPUApp extends LitElement {
 
             #main {
                 display: grid;
-                grid-template-columns: minmax(180px, 17%) auto;
+                grid-template-columns: minmax(180px, 17%) minmax(0, auto);
                 grid-template-rows: 120px auto auto 40px;
                 grid-template-areas: "header header" "headline headline" "sidebar main" "footer footer";
                 max-width: 1400px;
@@ -489,7 +489,7 @@ class VPUApp extends LitElement {
 
             @media (max-width: 680px) {
                 #main {
-                    grid-template-columns: auto;
+                    grid-template-columns: minmax(0, auto);
                     grid-template-rows: 40px auto auto auto 40px;
                     grid-template-areas: "header" "headline" "sidebar" "main" "footer";
                 }
