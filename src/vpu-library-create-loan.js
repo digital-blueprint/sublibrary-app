@@ -23,6 +23,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         this.person = null;
         this.status = null;
         this.organizationId = '';
+        this.sendButtonDisabled = true;
     }
 
     static get properties() {
@@ -34,6 +35,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
             personId: { type: String, attribute: 'person-id', reflect: true},
             status: { type: Object },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
+            sendButtonDisabled: { type: Boolean, attribute: false },
         };
     }
 
@@ -156,6 +158,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         const select = e.target;
         const person = JSON.parse(select.dataset.object);
         const personId = person["@id"];
+        this.sendButtonDisabled = false;
 
         this.personId = personId;
         this.person = person;
@@ -285,6 +288,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
                              <vpu-button id="send"
                                          @click=${this.onSubmitClicked}
                                          value="${i18n.t('create-loan.submit')}"
+                                         ?disabled="${this.sendButtonDisabled}"
                                          type=""></vpu-button>
                         </div>
                     </div>
