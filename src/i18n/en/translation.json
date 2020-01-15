@@ -98,6 +98,7 @@
     "delivery-date": "Delivery date",
     "order-status": "Status",
     "order-number": "Order  number",
+    "book-price": "Price",
     "receiving -note": "Receiving -note",
     "current-state": "State"
   },

@@ -1,4 +1,5 @@
 import {createI18nInstance} from './i18n.js';
+import {numberFormat} from 'vpu-common/i18next.js';
 import {css, html} from 'lit-element';
 import VPULibraryLitElement from "./vpu-library-lit-element";
 import * as commonUtils from 'vpu-common/utils';
@@ -130,6 +131,7 @@ class LibraryOrderList extends VPULibraryLitElement {
                             {title: i18n.t('order-list.order-date')},
                             null,
                             {title: i18n.t('order-list.order-number')},
+                            {title: i18n.t('order-list.book-price')},
                             {title: i18n.t('order-list.receiving -note')},
                         ];
 
@@ -137,11 +139,16 @@ class LibraryOrderList extends VPULibraryLitElement {
                         const columnDefs = [
                             {targets: [3], orderData: [4]},
                             {targets: [4], visible: false},
+                            {targets: [6], orderData: [7]},
+                            {targets: [7], visible: false},
                         ];
 
                         const tbl = [];
                         that.books.forEach(function(bookOrder) {
                             const orderDate = new Date(bookOrder.orderDate);
+                            let priceString = bookOrder.orderedItem.price > 0 ?
+                                numberFormat(i18n, bookOrder.orderedItem.price) + " " + bookOrder.orderedItem.priceCurrency :
+                                bookOrder.orderedItem.price;
 
                             const row = [
                                 bookOrder.orderedItem.orderedItem.title,
@@ -150,6 +157,8 @@ class LibraryOrderList extends VPULibraryLitElement {
                                 orderDate.toLocaleDateString("de-AT"),
                                 bookOrder.orderDate,
                                 bookOrder.orderNumber,
+                                priceString,
+                                bookOrder.orderedItem.price,
                                 bookOrder.receivingNote,
                             ];
                             tbl.push(row);
