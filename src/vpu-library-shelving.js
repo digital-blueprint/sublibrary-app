@@ -68,6 +68,8 @@ class LibraryShelving extends VPULibraryLitElement {
 
                 $locationIdentifierBlock.show();
 
+                $locationIdentifierBlock.addClass("animated faster fadeIn");
+
                 const apiUrl = that.entryPointUrl + that.bookOfferId + "/location_identifiers";
 
                 // set book-offer-id of the custom element
@@ -168,6 +170,7 @@ class LibraryShelving extends VPULibraryLitElement {
             ${commonStyles.getThemeCSS()}
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
+            ${commonStyles.getAnimationCSS()}
 
             .hidden {
                 display: none;
