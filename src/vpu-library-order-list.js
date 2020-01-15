@@ -132,6 +132,7 @@ class LibraryOrderList extends VPULibraryLitElement {
                             null,
                             {title: i18n.t('order-list.order-number')},
                             {title: i18n.t('order-list.book-price')},
+                            null,
                             {title: i18n.t('order-list.receiving -note')},
                         ];
 
