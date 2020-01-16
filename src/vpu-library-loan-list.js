@@ -60,6 +60,7 @@ class LibraryLoanList extends VPULibraryLitElement {
             `;
 
             this._("vpu-data-table-view").setCSSStyle(css);
+            this.loadTable();
         });
     }
 
