@@ -85,6 +85,14 @@ class LibraryLoanList extends VPULibraryLitElement {
         super.update(changedProperties);
     }
 
+    disconnectedCallback() {
+        if (this.abortController !== null) {
+            this.abortController.abort();
+        }
+
+        super.disconnectedCallback();
+    }
+
     loadTable() {
         const that = this;
         const $loanListBlock = that.$('#loan-list-block');

@@ -78,6 +78,14 @@ class LibraryOrderList extends VPULibraryLitElement {
         super.update(changedProperties);
     }
 
+    disconnectedCallback() {
+        if (this.abortController !== null) {
+            this.abortController.abort();
+        }
+
+        super.disconnectedCallback();
+    }
+
     loadTable() {
         const that = this;
         const $bookListBlock = that.$('#book-list-block');
