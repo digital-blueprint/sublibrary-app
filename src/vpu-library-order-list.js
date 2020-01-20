@@ -23,6 +23,10 @@ class LibraryOrderList extends VPULibraryLitElement {
         this.books = [];
         this.organizationId = '';
         this.abortController = null;
+
+        let now = new Date();
+        now.setDate(now.getDate() - 1);
+        this.analyticsUpdateDate = now.toLocaleDateString(this.lang);
     }
 
     $(selector) {
@@ -38,6 +42,7 @@ class LibraryOrderList extends VPULibraryLitElement {
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
             books: { type: Object, attribute: false },
+            analyticsUpdateDate: { type: Object, attribute: false },
         };
     }
 
@@ -124,6 +129,13 @@ class LibraryOrderList extends VPULibraryLitElement {
         })
             .then(result => {
                 if (!result.ok) throw result;
+
+                if (result.headers.has('x-analytics-update-date')) {
+                    const date = new Date(result.headers.get('x-analytics-update-date'));
+                    this.analyticsUpdateDate = date.toLocaleDateString(this.lang) + " " +
+                            date.toLocaleTimeString(this.lang);
+                }
+
                 return result.json();
             })
             .then(result => {
@@ -213,17 +225,10 @@ class LibraryOrderList extends VPULibraryLitElement {
     }
 
     render() {
-
-        const dateStringYesterday = () => {
-            const now = new Date();
-            now.setDate(now.getDate() - 1);
-            return now.toLocaleDateString(this.lang);
-        };
-
         return html`
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions()})}">
                 <div class="field">
-                    ${i18n.t('order-list.current-state')}: ${dateStringYesterday()}
+                    ${i18n.t('order-list.current-state')}: ${this.analyticsUpdateDate}
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>

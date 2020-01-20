@@ -37,6 +37,10 @@ class LibraryBookList extends VPULibraryLitElement {
         this.inventoryYears = [];
         this.inventoryYearSelectId = 'vpu-library-book-list-inventory-year-select-' + commonUtils.makeId(24);
         this.$inventoryYearSelect = null;
+
+        let now = new Date();
+        now.setDate(now.getDate() - 1);
+        this.analyticsUpdateDate = now.toLocaleDateString(this.lang);
     }
 
     $(selector) {
@@ -57,6 +61,7 @@ class LibraryBookList extends VPULibraryLitElement {
             inventoryYears: { type: Array, attribute: false },
             inventoryYear: { type: String, attribute: false },
             organization: { type: Object, attribute: false },
+            analyticsUpdateDate: { type: Object, attribute: false },
         };
     }
 
@@ -171,6 +176,13 @@ class LibraryBookList extends VPULibraryLitElement {
         })
             .then(result => {
                 if (!result.ok) throw result;
+
+                if (result.headers.has('x-analytics-update-date')) {
+                    const date = new Date(result.headers.get('x-analytics-update-date'));
+                    this.analyticsUpdateDate = date.toLocaleDateString(this.lang) + " " +
+                        date.toLocaleTimeString(this.lang);
+                }
+
                 return result.json();
             })
             .then(result => {
@@ -387,19 +399,13 @@ class LibraryBookList extends VPULibraryLitElement {
             inventoryYearItemTemplates.push(html`<option value="${item}">${item}</option>`);
         });
 
-        const dateStringYesterday = () => {
-            const now = new Date();
-            now.setDate(now.getDate() - 1);
-            return now.toLocaleDateString(this.lang);
-        };
-
         commonUtils.initAssetBaseURL('vpu-library-book-list-src');
         const select2CSS = commonUtils.getAssetURL(select2CSSPath);
         return html`
             <link rel="stylesheet" href="${select2CSS}">
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions()})}">
                 <div class="field">
-                    ${i18n.t('book-list.current-state')}: ${dateStringYesterday()}
+                    ${i18n.t('book-list.current-state')}: ${this.analyticsUpdateDate}
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>

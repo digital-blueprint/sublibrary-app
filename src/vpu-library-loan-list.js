@@ -23,6 +23,10 @@ class LibraryLoanList extends VPULibraryLitElement {
         this.organizationId = '';
         this.abortController = null;
         this.overdueOnly = false;
+
+        let now = new Date();
+        now.setDate(now.getDate() - 1);
+        this.analyticsUpdateDate = now.toLocaleDateString(this.lang);
     }
 
     /**
@@ -35,6 +39,7 @@ class LibraryLoanList extends VPULibraryLitElement {
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
             loans: { type: Object, attribute: false },
             overdueOnly: { type: Boolean, attribute: false },
+            analyticsUpdateDate: { type: Object, attribute: false },
         };
     }
 
@@ -131,6 +136,13 @@ class LibraryLoanList extends VPULibraryLitElement {
         })
             .then(result => {
                 if (!result.ok) throw result;
+
+                if (result.headers.has('x-analytics-update-date')) {
+                    const date = new Date(result.headers.get('x-analytics-update-date'));
+                    this.analyticsUpdateDate = date.toLocaleDateString(this.lang) + " " +
+                        date.toLocaleTimeString(this.lang);
+                }
+
                 return result.json();
             })
             .then(result => {
@@ -307,16 +319,10 @@ class LibraryLoanList extends VPULibraryLitElement {
     }
 
     render() {
-        const dateStringYesterday = () => {
-            const now = new Date();
-            now.setDate(now.getDate() - 1);
-            return now.toLocaleDateString(this.lang);
-        };
-
         return html`
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions()})}">
                 <div class="field">
-                    ${i18n.t('loan-list.current-state')}: ${dateStringYesterday()}
+                    ${i18n.t('loan-list.current-state')}: ${this.analyticsUpdateDate}
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
