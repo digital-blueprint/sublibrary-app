@@ -53,16 +53,11 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
                 this.updateSelect2();
             });
 
-            // close the selector on blur of the web component
-            $(this).blur(() => {
-                // the 500ms delay is a workaround to actually get an item selected when clicking on it,
-                // because the blur gets also fired when clicking in the selector
-                setTimeout(() => {
-                    const $select = this.$('#' + this.selectId);
-                    if (this.select2IsInitialized($select)) {
-                        $select.select2('close');
-                    }
-                }, 500);
+            // Close the popup when clicking outside of select2
+            document.addEventListener('click', (ev) => {
+                if (!ev.composedPath().includes(this)) {
+                    this._closeSelect2();
+                }
             });
         });
     }
@@ -76,6 +71,14 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
 
     _needsLoading() {
         return this.cache[this.lang] === undefined;
+    }
+
+    _closeSelect2() {
+        const $select = this.$('#' + this.selectId);
+        console.assert($select.length, "select2 missing");
+        if (this.select2IsInitialized($select)) {
+            $select.select2('close');
+        }
     }
 
     _clearSelect2() {
