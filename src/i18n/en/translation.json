@@ -100,7 +100,8 @@
     "order-number": "Order  number",
     "book-price": "Price",
     "receiving -note": "Receiving -note",
-    "current-state": "State"
+    "current-state": "State",
+    "sum-of-column": "Sum of column"
   },
   "location-identifier": {
     "headline": "Identifier for book placement",

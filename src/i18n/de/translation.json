@@ -100,7 +100,8 @@
     "order-number": "Bestellnummer",
     "book-price": "Preis",
     "receiving -note": "Eingangsnotiz",
-    "current-state": "Stand"
+    "current-state": "Stand",
+    "sum-of-column": "Summe der Spalte"
   },
   "location-identifier": {
     "headline": "Identifikator zur Aufstellung",

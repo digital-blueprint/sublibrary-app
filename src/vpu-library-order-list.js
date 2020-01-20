@@ -166,7 +166,9 @@ class LibraryOrderList extends VPULibraryLitElement {
                         });
                         vdtv1.set_columns(columns)
                             .set_columnDefs(columnDefs)
-                            .set_datatable(tbl);
+                            .set_datatable(tbl)
+                            .on('draw', this.table_draw.bind(that))
+                            .draw();
                     }
                     $bookListBlock.show();
                 } else {
@@ -204,6 +206,18 @@ class LibraryOrderList extends VPULibraryLitElement {
         this.organizationId = e.detail.value;
     }
 
+    table_draw() {
+        const table = this.shadowRoot.querySelector('#book-books-1');
+        const value = table.columnReduce(6, function (a, b) {
+            let a1 = 0;
+            if (typeof a === 'string') { a1 = a.replace(',', '.').replace(' EUR', '') * 1; } else { a1 = a * 1; }
+            let b1 = 0;
+            if (typeof b === 'string') { b1 = b.replace(',', '.').replace(' EUR', '') * 1; } else { b1 = b * 1; }
+            return a1 + b1;
+        });
+        this.shadowRoot.querySelector('#sum').value = value.toFixed(2).replace('.', ',') + ' EUR';
+    }
+
     render() {
 
         const dateStringYesterday = () => {
@@ -229,8 +243,13 @@ class LibraryOrderList extends VPULibraryLitElement {
                 <div id="book-list-block" class="field">
                     <label class="label">${i18n.t('book-list.books')}</label>
                     <div class="control">
-                        <vpu-data-table-view searching paging exportable export-name="${i18n.t('order-list.export-name', {organizationCode: this.getOrganizationCode()})}"
-                                             lang="${this.lang}" id="book-books-1"></vpu-data-table-view>
+                        <vpu-data-table-view searching paging column-searching 
+                                exportable export-name="${i18n.t('order-list.export-name', {organizationCode: this.getOrganizationCode()})}"
+                                lang="${this.lang}" id="book-books-1"></vpu-data-table-view>
+                        <div>
+                            <label for="sum">${i18n.t('order-list.sum-of-column')} <b>${i18n.t('order-list.book-price')}</b></label>
+                            <input type="text" id="sum" value="0">
+                        </div>
                     </div>
                 </div>
                 <div id="no-books-block">
