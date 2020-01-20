@@ -23,7 +23,7 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
         this.organizations = [];
         // For some reason using the same ID on the whole page twice breaks select2 (regardless if they are in different custom elements)
         this.selectId = 'select-organization-' + commonUtils.makeId(24);
-        this.cache = { en: [], de: [] };
+        this.cache = {};
         this.value = '';
     }
 
@@ -49,7 +49,7 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
 
         this.updateComplete.then(()=> {
             window.addEventListener("vpu-auth-person-init", async () => {
-                this.cache = { en: [], de: [] };
+                this.cache = {};
                 this.updateSelect2();
             });
 
@@ -68,19 +68,17 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
     }
 
     async load_organizations() {
-        if (this.cache[this.lang].length === 0) {
-            this.cache[this.lang] = await this.getAssociatedOrganizations();
+        if (this.cache[this.lang] === undefined) {
+            this.cache[this.lang] = this.getAssociatedOrganizations();
         }
-        this.organizations = this.cache[this.lang];
+        this.organizations = await this.cache[this.lang];
     }
 
     _needsLoading() {
-        return this.cache[this.lang].length === 0;
+        return this.cache[this.lang] === undefined;
     }
 
-    async updateSelect2() {
-        await this.updateComplete;
-
+    _clearSelect2() {
         const $select = this.$('#' + this.selectId);
         console.assert($select.length, "select2 missing");
 
@@ -90,9 +88,18 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
             $select.empty().trigger('change');
             $select.select2('destroy');
         }
+    }
+
+    async updateSelect2() {
+        await this.updateComplete;
+
+        const $select = this.$('#' + this.selectId);
+        console.assert($select.length, "select2 missing");
 
         // Show an empty select until we load the organizations
         if (this._needsLoading()) {
+            this._clearSelect2();
+
             $select.select2({
                 width: '100%',
                 language: this.lang === "de" ? select2LangDe() : select2LangEn(),
@@ -103,6 +110,8 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
         }
 
         await this.load_organizations();
+
+        this._clearSelect2();
 
         const data = this.organizations.map((item) => {
             return {'id': item.object["@id"], 'text': item.code + ' ' + item.name};
