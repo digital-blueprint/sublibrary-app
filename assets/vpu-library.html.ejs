@@ -36,6 +36,46 @@
     <link rel="preload" href="<%= geturl('local/vpu-library/fonts/SourceSansPro-Semibold.otf.woff2') %>" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="<%= geturl('local/vpu-library/fonts/SourceSansPro-Bold.otf.woff2') %>" as="font" type="font/woff2" crossorigin>
 
+<% if (environment === "local" || environment === "development") { -%>
+    <!-- Matomo -->
+    <script type="text/javascript">
+        var _paq = window._paq || [];
+        _paq.push(['setCustomVariable', 1, "GitCommit", "<%= buildinfo.info %>", "visit"]);
+        _paq.push(['enableHeartBeatTimer']);
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+
+        (function() {
+            var u="https://analytics.tugraz.at/";
+            _paq.push(['setTrackerUrl', u+'piwik.php']);
+            _paq.push(['setSiteId', '130']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+        })();
+
+        // track changed locations
+        window.addEventListener('locationchanged', function(e) {
+            _paq.push(['setReferrerUrl', e.detail.referrerUrl]);
+            _paq.push(['setCustomUrl', location.href]);
+            // _paq.push(['setDocumentTitle', '']);
+            _paq.push(['trackPageView']);
+
+            // make Matomo aware of newly added content
+            var content = document.getElementById('content');
+            _paq.push(['MediaAnalytics::scanForMedia', content]);
+            _paq.push(['FormAnalytics::scanForForms', content]);
+            _paq.push(['trackContentImpressionsWithinNode', content]);
+            _paq.push(['enableLinkTracking']);
+        });
+
+        // track errors
+        window.addEventListener('error', function(e) {
+            _paq.push(['trackEvent', 'Error', e.error.stack]);
+        });
+    </script>
+    <!-- End Matomo Code -->
+<% } -%>
+
     <!-- Font related CSS -->
     <style>
         body {

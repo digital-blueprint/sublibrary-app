@@ -193,7 +193,8 @@ export default {
             entryPointURL: entryPointURL,
             keyCloakServer: keyCloakServer,
             keyCloakBaseURL: keyCloakBaseURL,
-            environment: build
+            environment: build,
+            buildinfo: getBuildInfo()
           }
         }),
 
@@ -272,7 +273,7 @@ export default {
           historyApiFallback: basePath + pkg.name + '.html',
           https: USE_HTTPS ? generateTLSConfig() : false,
           headers: {
-              'Content-Security-Policy': `default-src 'self' 'unsafe-inline' ${keyCloakServer} ${entryPointURL}; img-src *`
+              'Content-Security-Policy': `default-src 'self' 'unsafe-inline' analytics.tugraz.at ${keyCloakServer} ${entryPointURL}; img-src *`
           },
         }) : false
     ]

@@ -30,6 +30,7 @@ export class Router {
 
         window.addEventListener('popstate', (event) => {
             this.setStateFromCurrentLocation();
+            this.dispatchLocationChanged();
         });
     }
 
@@ -42,7 +43,9 @@ export class Router {
             const newPathname = this.getPathname(page);
             // In case of a router redirect, set the new location
             if (newPathname !== oldPathName) {
+                const referrerUrl = location.href;
                 window.history.replaceState({}, '', newPathname);
+                this.dispatchLocationChanged(referrerUrl);
             }
             this.setState(page);
         }).catch((e) => {
@@ -62,7 +65,9 @@ export class Router {
             const oldPathname = location.pathname;
             if (newPathname === oldPathname)
                 return;
+            const referrerUrl = location.href;
             window.history.pushState({}, '', newPathname);
+            this.dispatchLocationChanged(referrerUrl);
         });
     }
 
@@ -75,8 +80,10 @@ export class Router {
         this.router.resolve({pathname: pathname}).then(page => {
             if (location.pathname === pathname)
                 return;
+            const referrerUrl = location.href;
             window.history.pushState({}, '', pathname);
             this.setState(page);
+            this.dispatchLocationChanged(referrerUrl);
         }).catch((err) => {
             throw new Error(`Route not found: ${pathname}: ${err}`);
         });
@@ -96,5 +103,15 @@ export class Router {
             partialState = {};
         let combined = {...currentState, ...partialState};
         return generateUrls(this.router)(this.routeName, combined);
+    }
+
+    dispatchLocationChanged(referrerUrl = "") {
+        // fire a locationchanged event
+        window.dispatchEvent(new CustomEvent('locationchanged', {
+            detail: {
+                referrerUrl: referrerUrl,
+            },
+            bubbles: true
+        }));
     }
 }
