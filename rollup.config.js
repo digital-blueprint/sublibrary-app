@@ -37,6 +37,8 @@ let basePath = '';
 let entryPointURL = '';
 let keyCloakServer = '';
 let keyCloakBaseURL = '';
+let matomoSiteId = 131;
+
 switch (build) {
   case 'local':
     basePath = '/dist/';
@@ -61,6 +63,7 @@ switch (build) {
     entryPointURL = 'https://api.tugraz.at';
     keyCloakServer = 'auth.tugraz.at';
     keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
+    matomoSiteId = 130;
     break;
   case 'test':
     basePath = '/apps/library/';
@@ -194,6 +197,7 @@ export default {
             keyCloakServer: keyCloakServer,
             keyCloakBaseURL: keyCloakBaseURL,
             environment: build,
+            matomoSiteId: matomoSiteId,
             buildinfo: getBuildInfo()
           }
         }),
