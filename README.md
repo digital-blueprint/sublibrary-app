@@ -2,23 +2,6 @@
 
 [GitLab Repository](https://gitlab.tugraz.at/VPU/Apps/Library)
 
-## Shelving Web Component
-
-### Usage
-
-```html
-<vpu-library-shelving></vpu-library-shelving>
-```
-
-### Attributes
-
-- `lang` (optional, default: `de`): set to `de` or `en` for German or English
-    - example `<vpu-library-shelving lang="de"></vpu-library-shelving>`
-- `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
-    - example `<vpu-library-shelving entry-point-url="http://127.0.0.1:8000"></vpu-library-shelving>`
-- `institute-id` (optional, default: empty string): set to the schema.org url with `institute id`-`institute code`
-    - example `<vpu-library-shelving institute-id="/organizations/knowledge_base_organizations/1263-F2190"></vpu-library-shelving>`
-
 ## Local development
 
 ```bash
@@ -57,3 +40,23 @@ Build bundle for the demo server
 ```bash
 npm run build-demo
 ```
+
+## Browser versions
+
+These browser versions should work with the application.
+
+- Firefox 67+ (2019-05)
+- Chrome 67+ (2018-05)
+- Edge 79+ (2020-01)
+- Safari 11.1+ (2018-04)
+- Opera 64+ (2019-10)
+- iOS Safari 12+/iOS 12+ (2018-09)
+
+We use a row of newer features:
+
+- https://caniuse.com/#feat=custom-elementsv1
+- https://caniuse.com/#feat=es6-module-dynamic-import
+- https://caniuse.com/#feat=shadowdomv1
+- https://caniuse.com/#feat=mdn-javascript_statements_import_meta
+- https://caniuse.com/#feat=es6-module
+- https://caniuse.com/#feat=async-functions
