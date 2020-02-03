@@ -19,10 +19,6 @@ import selfsigned from 'selfsigned';
 
 // -------------------------------
 
-// Disabled because we don't support (old) Edge right now and babel is slow.
-// But this should be a good starting point in case that changes.
-const USE_BABEL = false;
-
 // Some new web APIs are only available when HTTPS is active.
 // Note that this only works with a Non-HTTPS API endpoint with Chrome,
 // Firefox will emit CORS errors, see https://bugzilla.mozilla.org/show_bug.cgi?id=1488740
@@ -38,6 +34,8 @@ let entryPointURL = '';
 let keyCloakServer = '';
 let keyCloakBaseURL = '';
 let matomoSiteId = 131;
+let useTerser = true;
+let useBabel = true;
 
 switch (build) {
   case 'local':
@@ -45,6 +43,7 @@ switch (build) {
     entryPointURL = 'http://127.0.0.1:8000';
     keyCloakServer = 'auth-dev.tugraz.at';
     keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
+    useTerser = false;
     break;
   case 'development':
     basePath = '/apps/library/';
@@ -70,6 +69,7 @@ switch (build) {
     entryPointURL = '';
     keyCloakServer = '';
     keyCloakBaseURL = '';
+    useTerser = false;
     break;
   default:
     console.error('Unknown build environment: ' + build);
@@ -227,7 +227,7 @@ export default {
         replace({
             "process.env.BUILD": '"' + build + '"',
         }),
-        (build !== 'local' && build !== 'test') ? terser({output: {comments: false}}) : false,
+        useTerser ? terser({output: {comments: false}}) : false,
         copy({
             targets: [
                 {src: 'assets/silent-check-sso.html', dest:'dist'},
@@ -252,7 +252,7 @@ export default {
                 {src: 'node_modules/datatables.net-buttons-dt/css', dest: 'dist/local/vpu-data-table-view'},
             ],
         }),
-        USE_BABEL && babel({
+        useBabel && babel({
           exclude: 'node_modules/**',
           babelHelpers: 'runtime',
           babelrc: false,
