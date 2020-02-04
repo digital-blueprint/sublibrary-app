@@ -386,7 +386,7 @@ class VPUApp extends LitElement {
             aside { grid-area: sidebar; margin: 30px 15px; }
             #headline { grid-area: headline; margin: 15px; text-align: center; }
             main { grid-area: main; margin: 30px 15px; }
-            footer { grid-area: footer; margin: 30px; }
+            footer { grid-area: footer; margin: 30px; text-align: right; }
 
             header .hd1-left {
                 display: flex;
@@ -440,12 +440,45 @@ class VPUApp extends LitElement {
                 display: inline;
             }
 
-            aside ul.menu {
+            aside ul.menu, footer ul.menu {
                 list-style: none;
             }
 
             ul.menu li.close {
                 display: none;
+            }
+
+            footer ul.menu li {
+                display: inline-block;
+                margin-left: 5px;
+            }
+
+            footer ul.menu li.build-info {
+                position: relative;
+                top: 5px;
+            }
+
+            footer .menu a {
+                border-bottom: 1px solid rgba(0,0,0,0.3);
+                padding: 0;
+            }
+
+            /* We don't allown inline-svg */
+            /*
+            footer .int-link-external::after {
+                content: "\\00a0\\00a0\\00a0\\00a0";
+                background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3Ardf%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%225.6842mm%22%20width%3D%225.6873mm%22%20version%3D%221.1%22%20xmlns%3Acc%3D%22http%3A%2F%2Fcreativecommons.org%2Fns%23%22%20xmlns%3Adc%3D%22http%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2F%22%20viewBox%3D%220%200%2020.151879%2020.141083%22%3E%3Cg%20transform%3D%22translate(-258.5%20-425.15)%22%3E%3Cpath%20style%3D%22stroke-linejoin%3Around%3Bstroke%3A%23000%3Bstroke-linecap%3Around%3Bstroke-width%3A1.2%3Bfill%3Anone%22%20d%3D%22m266.7%20429.59h-7.5029v15.002h15.002v-7.4634%22%2F%3E%3Cpath%20style%3D%22stroke-linejoin%3Around%3Bstroke%3A%23000%3Bstroke-linecap%3Around%3Bstroke-width%3A1.2%3Bfill%3Anone%22%20d%3D%22m262.94%20440.86%2015.002-15.002%22%2F%3E%3Cpath%20style%3D%22stroke-linejoin%3Around%3Bstroke%3A%23000%3Bstroke-linecap%3Around%3Bstroke-width%3A1.2%3Bfill%3Anone%22%20d%3D%22m270.44%20425.86h7.499v7.499%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+                background-size:contain;
+                background-repeat: no-repeat;
+                background-position:center center;
+                margin: 0 0.5% 0 1.5%;
+                font-size:94%;
+            } 
+            */
+
+            footer .menu a:hover {
+                color: #fff;
+                background-color: #000;
             }
 
             .menu a {
@@ -663,7 +696,10 @@ class VPUApp extends LitElement {
                 </main>
 
                 <footer>
-                    <vpu-build-info style="float: right" class="${prodClassMap}"></vpu-build-info>
+                    <ul class="menu">
+                        <li><a target="_blank" class="int-link-external" href="https://datenschutz.tugraz.at/erklaerung/">${i18n.t('privacy-policy')}</a></li>
+                        <li class="${prodClassMap} build-info"><vpu-build-info></vpu-build-info></li>
+                    </ul>
                 </footer>
             </div>
             </div>
