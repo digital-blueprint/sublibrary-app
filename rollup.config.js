@@ -237,10 +237,10 @@ export default {
                 {src: 'assets/*.svg', dest: 'dist/local/' + pkg.name},
                 {src: 'node_modules/source-sans-pro/WOFF2/OTF/*', dest: 'dist/local/' + pkg.name + '/fonts'},
                 {src: 'node_modules/vpu-common/vpu-spinner.js', dest: 'dist/local/' + pkg.name, rename: 'spinner.js'},
+                {src: 'assets/browser-check.js', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/icon-*.png', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/manifest.json', dest: 'dist', rename: pkg.name + '.manifest.json'},
                 {src: 'assets/*.metadata.json', dest: 'dist'},
-                {src: 'assets/nomodule.js', dest: 'dist/local/' + pkg.name},
                 {src: 'node_modules/vpu-common/assets/icons/*.svg', dest: 'dist/local/vpu-common/icons'},
             ],
         }),
@@ -277,7 +277,7 @@ export default {
           historyApiFallback: basePath + pkg.name + '.html',
           https: USE_HTTPS ? generateTLSConfig() : false,
           headers: {
-              'Content-Security-Policy': `default-src 'self' 'unsafe-inline' analytics.tugraz.at ${keyCloakServer} ${entryPointURL}; img-src *`
+              'Content-Security-Policy': `default-src 'self' 'unsafe-eval' 'unsafe-inline' analytics.tugraz.at ${keyCloakServer} ${entryPointURL}; img-src *`
           },
         }) : false
     ]

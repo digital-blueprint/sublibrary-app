@@ -18,9 +18,6 @@
     <!-- PWA manfiest file -->
     <link rel="manifest" href="<%= geturl('vpu-library.manifest.json') %>">
 
-    <!-- IE11 error handling -->
-    <script nomodule src="<%= geturl('local/vpu-library/nomodule.js') %>"></script>
-
     <!-- Loading spinner -->
     <script type="module" src="<%= geturl('local/vpu-library/spinner.js') %>"></script>
 
@@ -129,5 +126,9 @@
 
 <body>
 <vpu-app lang="de" src="<%= geturl('vpu-library.topic.metadata.json') %>" entry-point-url="<%= entryPointURL %>" base-path="<%= geturl('') %>"><vpu-spinner></vpu-spinner></vpu-app>
+
+<!-- Error handling for too old browsers -->
+<script src="<%= geturl('local/vpu-library/browser-check.js') %>" defer></script>
+<noscript>Diese Applikation benötigt Javascript / This application requires Javascript</noscript>
 </body>
 </html>
