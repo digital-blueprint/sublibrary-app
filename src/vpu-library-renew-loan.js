@@ -288,7 +288,10 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                 const vdtv1 = this._('#book-loans-1');
                 const dateSelect = vdtv1.shadowRoot.querySelector(`input[data-date-id='${loanId}']`);
                 const timeSelect = vdtv1.shadowRoot.querySelector(`input[data-time-id='${loanId}']`);
-                const date = new Date(dateSelect.value + " " + timeSelect.value);
+                let isoString = dateSelect.value;
+                if (timeSelect.value)
+                    isoString += 'T' + timeSelect.value;
+                const date = new Date(isoString);
 
                 // check if selected date is in the past
                 if (date < (new Date())) {

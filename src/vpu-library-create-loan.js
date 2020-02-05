@@ -185,7 +185,10 @@ class LibraryCreateLoan extends VPULibraryLitElement {
     async onSubmitClickedInternal(e) {
         const dateSelect = this._("input[type='date']");
         const timeSelect = this._("input[type='time']");
-        const date = new Date(dateSelect.value + " " + timeSelect.value);
+        let isoString = dateSelect.value;
+        if (timeSelect.value)
+            isoString += 'T' + timeSelect.value;
+        const date = new Date(isoString);
 
         // check if selected date is in the past
         if (date < (new Date())) {
