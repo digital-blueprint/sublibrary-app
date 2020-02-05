@@ -70,7 +70,7 @@
 
         // track errors
         window.addEventListener('error', function(e) {
-            _paq.push(['trackEvent', 'Error', e.error.stack]);
+            _paq.push(['trackEvent', 'Error', e.error.message + '\n' + e.error.stack]);
         });
     </script>
     <!-- End Matomo Code -->
