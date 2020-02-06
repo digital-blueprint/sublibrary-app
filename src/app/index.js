@@ -698,7 +698,7 @@ class VPUApp extends LitElement {
                 <footer>
                     <ul class="menu">
                         <li><a target="_blank" class="int-link-external" href="https://datenschutz.tugraz.at/erklaerung/">${i18n.t('privacy-policy')}</a></li>
-                        <li class="${prodClassMap} build-info"><vpu-build-info></vpu-build-info></li>
+                        <li class="build-info"><vpu-build-info class="${prodClassMap}"></vpu-build-info></li>
                     </ul>
                 </footer>
             </div>
