@@ -362,10 +362,11 @@ class VPUApp extends LitElement {
             #main {
                 display: grid;
                 grid-template-columns: minmax(180px, 17%) minmax(0, auto);
-                grid-template-rows: 120px auto auto 40px;
+                grid-template-rows: min-content min-content 1fr min-content;
                 grid-template-areas: "header header" "headline headline" "sidebar main" "footer footer";
                 max-width: 1400px;
                 margin: auto;
+                min-height: 100vh;
             }
 
             #main-logo {
@@ -448,19 +449,20 @@ class VPUApp extends LitElement {
                 display: none;
             }
 
-            footer ul.menu li {
-                display: inline-block;
-                margin-left: 5px;
+            footer {
+                display: grid;
+                grid-gap: 1em;
+                grid-template-columns: 1fr max-content max-content;
             }
 
-            footer ul.menu li.build-info {
-                position: relative;
-                top: 5px;
-            }
-
-            footer .menu a {
+            footer a {
                 border-bottom: 1px solid rgba(0,0,0,0.3);
                 padding: 0;
+            }
+
+            footer a:hover {
+                color: #fff;
+                background-color: #000;
             }
 
             /* We don't allown inline-svg */
@@ -475,11 +477,6 @@ class VPUApp extends LitElement {
                 font-size:94%;
             } 
             */
-
-            footer .menu a:hover {
-                color: #fff;
-                background-color: #000;
-            }
 
             .menu a {
                 padding: 0.3em;
@@ -522,7 +519,7 @@ class VPUApp extends LitElement {
             @media (max-width: 680px) {
                 #main {
                     grid-template-columns: minmax(0, auto);
-                    grid-template-rows: 40px auto auto auto 40px;
+                    grid-template-rows: min-content min-content min-content 1fr min-content;
                     grid-template-areas: "header" "headline" "sidebar" "main" "footer";
                 }
 
@@ -696,10 +693,9 @@ class VPUApp extends LitElement {
                 </main>
 
                 <footer>
-                    <ul class="menu">
-                        <li><a target="_blank" class="int-link-external" href="https://datenschutz.tugraz.at/erklaerung/">${i18n.t('privacy-policy')}</a></li>
-                        <li class="build-info"><vpu-build-info class="${prodClassMap}"></vpu-build-info></li>
-                    </ul>
+                    <div></div>
+                    <a target="_blank" rel="noopener" class="int-link-external" href="https://datenschutz.tugraz.at/erklaerung/">${i18n.t('privacy-policy')}</a>
+                    <vpu-build-info class="${prodClassMap}"></vpu-build-info>
                 </footer>
             </div>
             </div>
