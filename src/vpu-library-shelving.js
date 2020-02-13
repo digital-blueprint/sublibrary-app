@@ -9,7 +9,7 @@ import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import * as errorUtils from "vpu-common/error";
-import './vpu-knowledge-base-organisation-select.js';
+import './vpu-organization-select.js';
 import {classMap} from 'lit-html/directives/class-map.js';
 
 const i18n = createI18nInstance();
@@ -37,7 +37,7 @@ class LibraryShelving extends VPULibraryLitElement {
     getLibrary() {
         //console.log('getLibrary() organizationId = ' + this.organizationId);
         // until the API understands this:
-        //this.organizationId == '/organizations/knowledge_base_organizations/1263-F2190';
+        //this.organizationId == '/organizations/1263-F2190';
         // extracting the orgUnitCode (F2190) is done here:
         return this.organizationId.includes('-') ? this.organizationId.split('-')[1] : '';
     }

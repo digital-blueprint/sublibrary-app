@@ -10,7 +10,7 @@ import select2LangDe from './i18n/de/select2';
 import select2LangEn from './i18n/en/select2';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import $ from "jquery";
-import './vpu-knowledge-base-organisation-select.js';
+import './vpu-organization-select.js';
 import 'vpu-common/vpu-mini-spinner.js';
 import {classMap} from 'lit-html/directives/class-map.js';
 

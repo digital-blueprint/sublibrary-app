@@ -14,7 +14,7 @@ select2(window, $);
 
 const i18n = createI18nInstance();
 
-class VPUKnowledgeBaseOrganizationSelect extends LitElement {
+class VPUOrganizationSelect extends LitElement {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -207,17 +207,17 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
                 code: 'F' + orgUnitCode,
             name: '',
             url: '',
-            value: '/organizations/knowledge_base_organizations/' + id,
+            value: '/organizations/' + id,
             object: {
                 "@context": {
                     "@vocab": this.entryPointUrl + "/docs.jsonld#",
                         "hydra": "http://www.w3.org/ns/hydra/core#",
-                        "identifier": "KnowledgeBaseOrganization/identifier",
+                        "identifier": "Organization/identifier",
                         "name": "https://schema.org/name",
                         "alternateName": "https://schema.org/alternateName",
                         "url": "https://schema.org/url"
                 },
-                "@id": "/organizations/knowledge_base_organizations/" + id,
+                "@id": "/organizations/" + id,
                     "@type": "http://schema.org/Organization",
                     "identifier": id,
                     "name": '',
@@ -253,7 +253,7 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
 
             if (matches !== null) {
                 const identifier = matches[2] + '-F' + matches[1];
-                const apiUrl = this.entryPointUrl + '/organizations/knowledge_base_organizations/' + identifier + '?lang=' + this.lang;
+                const apiUrl = this.entryPointUrl + '/organizations/' + identifier + '?lang=' + this.lang;
 
                 // load organisations
                 promises.push(fetch(apiUrl, {
@@ -328,4 +328,4 @@ class VPUKnowledgeBaseOrganizationSelect extends LitElement {
     }
 }
 
-commonUtils.defineCustomElement('vpu-knowledge-base-organization-select', VPUKnowledgeBaseOrganizationSelect);
+commonUtils.defineCustomElement('vpu-knowledge-base-organization-select', VPUOrganizationSelect);

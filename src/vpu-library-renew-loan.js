@@ -8,7 +8,7 @@ import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
-import './vpu-knowledge-base-organisation-select.js';
+import './vpu-organization-select.js';
 import 'vpu-common/vpu-mini-spinner.js';
 import {classMap} from 'lit-html/directives/class-map.js';
 
@@ -45,7 +45,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
     getLibrary() {
         //console.log('getLibrary() organizationId = ' + this.organizationId);
         // until the API understands this:
-        //this.organizationId == '/organizations/knowledge_base_organizations/1263-F2190';
+        //this.organizationId == '/organizations/1263-F2190';
         // extracting the orgUnitCode (F2190) is done here:
         return this.organizationId.includes('-') ? this.organizationId.split('-')[1] : '';
     }

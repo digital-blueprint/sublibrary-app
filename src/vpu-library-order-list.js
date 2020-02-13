@@ -6,7 +6,7 @@ import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
-import './vpu-knowledge-base-organisation-select.js';
+import './vpu-organization-select.js';
 import 'vpu-common/vpu-mini-spinner.js';
 import {classMap} from 'lit-html/directives/class-map.js';
 import $ from "jquery";
