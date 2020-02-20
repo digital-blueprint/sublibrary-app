@@ -214,6 +214,7 @@ class LibraryBookList extends VPULibraryLitElement {
                     null,
                     {title: i18n.t('book-list.book-barcode')},
                     {title: i18n.t('book-list.book-location-identifier')},
+                    {title: i18n.t('book-list.book-description')},
                 ];
 
                 // sorting will be done by hidden columns
@@ -243,6 +244,7 @@ class LibraryBookList extends VPULibraryLitElement {
                             bookOffer.availabilityStarts,
                             bookOffer.barcode,
                             bookOffer.locationIdentifier,
+                            bookOffer.description,
                         ];
 
                         tbl.push(row);

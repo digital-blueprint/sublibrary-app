@@ -67,6 +67,7 @@
     "book-barcode": "Barcode",
     "book-location": "Ort",
     "book-location-identifier": "Aufstellung",
+    "book-description": "Beschreibung",
     "book-publication-year": "Erscheinungsjahr",
     "book-publisher": "Verlag",
     "book-availability-date": "Inventarisierungsdatum",
