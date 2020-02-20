@@ -31,6 +31,16 @@ Example book barcodes: `+F58330104`, `+F58019101`, `+F53498803`
 
 Run `npm run watch-dev` to build the `dist/bundle.js` constantly and upload the `dist` folder to the server.
 
+## Roll back a release
+
+```bash
+COMPOSER_VENDOR_DIR=_temp composer require "deployer/deployer" "deployer/recipes"
+# Check if the config is pointing to the server you want
+./_temp/bin/dep config:hosts production
+# Do the rollback
+./_temp/bin/dep rollback production
+```
+
 ## Demo system
 
 <https://frontend-demo.tugraz.at/apps/library>
