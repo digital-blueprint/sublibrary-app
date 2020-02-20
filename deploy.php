@@ -30,8 +30,8 @@ host('demo')
     -> set('rsync_src', __DIR__ . '/dist')
     -> set('rsync_dest','{{release_path}}');
 
-host('dev')
-    ->stage('dev')
+host('development')
+    ->stage('development')
     ->hostname('mw@mw01-dev.tugraz.at')
     ->set('deploy_path', '/home/mw/dev/deploy/apps/library')
     -> set('rsync',[
@@ -81,10 +81,10 @@ task('build-demo', function () {
 })->onStage('demo');
 
 // Demo dev task
-task('build-dev', function () {
+task('build-development', function () {
     runLocally("npm install");
     runLocally("npm run build-dev");
-})->onStage('dev');
+})->onStage('development');
 
 //Production task
 task('build-production', function () {
@@ -96,7 +96,7 @@ task('build-production', function () {
 task('deploy', [
     'deploy:info',
     'build-demo',
-    'build-dev',
+    'build-development',
     'build-production',
     'deploy:prepare',
     'deploy:lock',

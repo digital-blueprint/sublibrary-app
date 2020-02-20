@@ -40,12 +40,12 @@ deploy_demo:
     DEPLOY_KEY: "$DEPLOY_SSH_KEY"
   <<: *deploy_defaults
 
-deploy_dev:
+deploy_development:
   only:
     refs:
       - master
   environment:
-    name: dev
+    name: development
     url: https://mw-frontend-dev.tugraz.at
   variables:
     DEPLOY_HOST: mw01-dev.tugraz.at
