@@ -159,15 +159,16 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                             const minDate = new Date().toISOString();
                             const columns = [
                                 {title: i18n.t('renew-loan.book') },
+                                {title: i18n.t('book-list.book-description')},
                                 {title: i18n.t('renew-loan.end-date') },
                                 null,
                                 ''
                             ];
                             const vdtv1_columnDefs = [
-                                {targets: [2], visible: false},
-                                {targets: [1], orderData: [2]},
-                                {targets: [2, 3], searchable: false},
-                                {targets: [3], sortable: false}
+                                {targets: [3], visible: false},
+                                {targets: [2], orderData: [3]},
+                                {targets: [3, 4], searchable: false},
+                                {targets: [4], sortable: false}
                             ];
                             const orgUnitCode = that.getLibrary();
                             const tbl = [];
@@ -178,6 +179,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
 
                                 const row = [
                                     loan.object.name,
+                                    loan.object.description,
                                     `<div class="date-col">
                                             <input data-date-id="${loan['@id']}"
                                                    type="date" min="${commonUtils.dateToInputDateString(minDate)}"
