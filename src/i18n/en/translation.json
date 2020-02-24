@@ -83,6 +83,7 @@
     "loans": "Loans",
     "export-name": "Loans {{organizationCode}}",
     "overdue-only": "Show overdue loans only",
+    "open-only": "Show open loans only",
     "borrower-name": "Borrower",
     "start-date": "Start date",
     "due-date": "Due date",

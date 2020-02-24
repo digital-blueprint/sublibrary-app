@@ -83,6 +83,7 @@
     "loans": "Entlehnungen",
     "export-name": "Entlehnungen {{organizationCode}}",
     "overdue-only": "Nur überfällige Entlehnungen anzeigen",
+    "open-only": "Nur offene Entlehnungen anzeigen",
     "borrower-name": "Entlehner",
     "start-date": "Entlehndatum",
     "due-date": "Fällig am",

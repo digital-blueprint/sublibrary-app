@@ -23,6 +23,7 @@ class LibraryLoanList extends VPULibraryLitElement {
         this.organizationId = '';
         this.abortController = null;
         this.overdueOnly = false;
+        this.openOnly = false;
 
         let now = new Date();
         now.setDate(now.getDate() - 1);
@@ -39,6 +40,7 @@ class LibraryLoanList extends VPULibraryLitElement {
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
             loans: { type: Object, attribute: false },
             overdueOnly: { type: Boolean, attribute: false },
+            openOnly: { type: Boolean, attribute: false },
             analyticsUpdateDate: { type: Object, attribute: false },
         };
     }
@@ -82,6 +84,7 @@ class LibraryLoanList extends VPULibraryLitElement {
                     this.loadTable();
                     break;
                 case "overdueOnly":
+                case "openOnly":
                     this.buildTable();
                     break;
             }
@@ -197,6 +200,10 @@ class LibraryLoanList extends VPULibraryLitElement {
                     const endTime = new Date(loan.endTime);
                     const returnTime = new Date(loan.returnTime);
 
+                    if (that.openOnly && loan.returnTime !== null) {
+                        return;
+                    }
+
                     if (that.overdueOnly && (currentDate < endTime || loan.returnTime !== null)) {
                         return;
                     }
@@ -251,6 +258,10 @@ class LibraryLoanList extends VPULibraryLitElement {
 
     toggleOverdueOnly() {
         this.overdueOnly = !this.overdueOnly;
+    }
+
+    toggleOpenOnly() {
+        this.openOnly = !this.openOnly;
     }
 
     onOrgUnitCodeChanged(e) {
@@ -336,6 +347,12 @@ class LibraryLoanList extends VPULibraryLitElement {
                 </div>
                 <vpu-mini-spinner id="loans-loading" text="${i18n.t('loan-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></vpu-mini-spinner>
                 <div id="loan-list-block">
+                    <div class="field">
+                        <label class="label">
+                            <input type="checkbox" .checked=${this.openOnly} @click=${this.toggleOpenOnly} .disabled=${this.overdueOnly}>
+                            ${i18n.t('loan-list.open-only')}
+                        </label>
+                    </div>
                     <div class="field">
                         <label class="label">
                             <input type="checkbox" .checked=${this.overdueOnly} @click=${this.toggleOverdueOnly}>
