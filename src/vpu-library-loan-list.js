@@ -177,6 +177,7 @@ class LibraryLoanList extends VPULibraryLitElement {
                     null,
                     {title: i18n.t('loan-list.return-date')},
                     null,
+                    {title: i18n.t('book-list.book-location-identifier')},
                     {title: i18n.t('book-list.book-description')},
                     '',
                 ];
@@ -189,7 +190,7 @@ class LibraryLoanList extends VPULibraryLitElement {
                     {targets: [7], visible: false},
                     {targets: [8], orderData: [9]},
                     {targets: [9], visible: false},
-                    {targets: [11], sortable: false},
+                    {targets: [12], sortable: false},
                 ];
 
                 const currentDate = new Date();
@@ -219,6 +220,7 @@ class LibraryLoanList extends VPULibraryLitElement {
                         loan.endTime,
                         loan.returnTime !== null ? returnTime.toLocaleDateString("de-AT") : "",
                         loan.returnTime,
+                        loan.object.locationIdentifier,
                         loan.object.description,
                         `<div class="button-col">
                             <vpu-button data-id="${loan['@id']}" data-type="contact" data-book-name="${loan.object.name}"
