@@ -37,6 +37,7 @@
     "success-summary": "Buchentrückgabe erfolgreich",
     "success-body": "Das Buch wurde erfolgreich zurückgegeben.",
     "borrower": "Entlehner",
+    "user-name-unknown": "Unbekannt",
     "button-refresh-title": "Entlehnung von {{name}} erneut laden"
   },
   "renew-loan": {

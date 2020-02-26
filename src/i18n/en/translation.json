@@ -37,6 +37,7 @@
     "success-summary": "Book returned successfully",
     "success-body": "The book was returned successfully.",
     "borrower": "Borrower",
+    "user-name-unknown": "Unknown",
     "button-refresh-title": "Load loans of {{name}} again"
   },
   "renew-loan": {

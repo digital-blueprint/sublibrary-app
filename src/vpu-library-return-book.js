@@ -179,7 +179,13 @@ class LibraryReturnBook extends VPULibraryLitElement {
 
     loadBorrower(personId) {
         this.borrower = null;
-        this.borrowerName = "";
+        this.borrowerName = i18n.t('return-book.user-name-unknown');
+
+        // this happens if no person was found in LDAP by AlmaUserId
+        if (personId == null) {
+            return;
+        }
+
         const apiUrl = this.entryPointUrl + personId;
 
         // load person
