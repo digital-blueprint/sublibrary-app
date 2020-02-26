@@ -85,6 +85,7 @@
     "overdue-only": "Show overdue loans only",
     "open-only": "Show open loans only",
     "borrower-name": "Borrower",
+    "book-author": "Author/Publisher",
     "start-date": "Start date",
     "due-date": "Due date",
     "return-date": "Return date",

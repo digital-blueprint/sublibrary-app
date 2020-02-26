@@ -168,7 +168,7 @@ class LibraryLoanList extends VPULibraryLitElement {
             if (vdtv1 !== null) {
                 const columns = [
                     {title: i18n.t('book-list.book-title')},
-                    {title: i18n.t('book-list.book-author')},
+                    {title: i18n.t('loan-list.book-author')},
                     {title: i18n.t('book-list.book-barcode')},
                     {title: i18n.t('loan-list.borrower-name')},
                     {title: i18n.t('loan-list.start-date')},
@@ -183,6 +183,7 @@ class LibraryLoanList extends VPULibraryLitElement {
                 ];
 
                 // sorting will be done by hidden columns
+                // responsivePriority see https://datatables.net/extensions/responsive/priority
                 const columnDefs = [
                     {targets: [4], orderData: [5]},
                     {targets: [5], visible: false},
@@ -190,6 +191,7 @@ class LibraryLoanList extends VPULibraryLitElement {
                     {targets: [7], visible: false},
                     {targets: [8], orderData: [9]},
                     {targets: [9], visible: false},
+                    {targets: [11], responsivePriority: 10001},
                     {targets: [12], sortable: false},
                 ];
 

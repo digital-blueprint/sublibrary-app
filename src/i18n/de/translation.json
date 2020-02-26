@@ -85,6 +85,7 @@
     "overdue-only": "Nur überfällige Entlehnungen anzeigen",
     "open-only": "Nur offene Entlehnungen anzeigen",
     "borrower-name": "Entlehner",
+    "book-author": "Autor/Herausgeber",
     "start-date": "Entlehndatum",
     "due-date": "Fällig am",
     "return-date": "Rückgegeben am",
