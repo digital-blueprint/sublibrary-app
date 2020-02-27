@@ -226,7 +226,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
             this.status = {
                 "summary": i18nKey('create-loan.success-summary'),
-                "body": i18nKey('create-loan.success-body'),
+                "body": i18n.t('create-loan.success-body', {personName: this.person.name}),
                 "type": "info"
             };
         } else {

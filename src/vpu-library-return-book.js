@@ -142,7 +142,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
 
                         that.status = {
                             "summary": i18nKey('return-book.success-summary'),
-                            "body": i18nKey('return-book.success-body'),
+                            "body": i18n.t('return-book.success-body', {personName: that.borrowerName}),
                         };
                     },
                     error: errorUtils.handleXhrError,

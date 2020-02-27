@@ -34,8 +34,8 @@
     "info-existing-loans-body": "Es wurden eine bestehende Entlehnung gefunden, das Buch kann zurückgegeben werden!",
     "submit": "Buch zurückgeben",
     "mini-spinner-text": "Entlehnungen werden geladen...",
-    "success-summary": "Buchentrückgabe erfolgreich",
-    "success-body": "Das Buch wurde erfolgreich zurückgegeben.",
+    "success-summary": "Buchrückgabe erfolgreich",
+    "success-body": "Das Buch von {{personName}} wurde erfolgreich zurückgegeben.",
     "borrower": "Entlehner",
     "user-name-unknown": "Unbekannt",
     "button-refresh-title": "Entlehnung von {{name}} erneut laden"
