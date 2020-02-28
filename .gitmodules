@@ -25,3 +25,6 @@
 [submodule "vendor/person-profile"]
 	path = vendor/person-profile
 	url = git@gitlab.tugraz.at:VPU/WebComponents/PersonProfile.git
+[submodule "vendor/e2e-test"]
+	path = vendor/e2e-test
+	url = ../../WebComponents/E2ETest.git
