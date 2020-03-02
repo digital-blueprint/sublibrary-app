@@ -2,6 +2,8 @@
 
 [GitLab Repository](https://gitlab.tugraz.at/VPU/Apps/Library)
 
+![overview](docs/overview.svg)
+
 ## Local development
 
 ```bash

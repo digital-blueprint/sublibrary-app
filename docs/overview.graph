@@ -1,0 +1,28 @@
+graph main {
+    layout=fdp
+    node [fontname="sans-serif",color="royalblue"]
+    graph [fontname="sans-serif",style="rounded",color="gray70",K=0.6]
+
+    subgraph cluster1 {
+        label = "Ex Libris"
+        "ALMA API"
+        "ALMA Analytics"
+    }
+  
+    subgraph cluster2 {
+        label = "TU Graz"
+        "API Gateway"
+        "Keycloak"
+        "IBIB App" [style="filled",fillcolor="gray90"]
+    }
+
+    "ALMA Analytics" -- "API Gateway"
+    "ALMA API" -- "ALMA Analytics"
+    "ALMA API" -- "API Gateway"
+    "API Gateway" -- "IBIB App"
+    "Keycloak" -- "IBIB App"
+    "Keycloak" -- "API Gateway"
+
+    "User" -- "IBIB App"
+    "User" -- "Keycloak"
+}
