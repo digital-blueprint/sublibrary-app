@@ -12,6 +12,8 @@ graph main {
     subgraph cluster2 {
         label = "TU Graz"
         "API Gateway"
+        "LDAP"
+        "TUG online"
         "Keycloak"
         "IBIB App" [style="filled",fillcolor="gray90"]
     }
@@ -19,10 +21,13 @@ graph main {
     "ALMA Analytics" -- "API Gateway"
     "ALMA API" -- "ALMA Analytics"
     "ALMA API" -- "API Gateway"
+    "API Gateway" -- "LDAP"
     "API Gateway" -- "IBIB App"
+    "API Gateway" -- "TUG online"
     "Keycloak" -- "IBIB App"
     "Keycloak" -- "API Gateway"
+    "Keycloak" -- "LDAP"
 
-    "User" -- "IBIB App"
-    "User" -- "Keycloak"
+    "User web browser" -- "IBIB App"
+    "User web browser" -- "Keycloak"
 }
