@@ -38,7 +38,8 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-terser": "^5.2.0",
-    "selfsigned": "^1.10.7"
+    "selfsigned": "^1.10.7",
+    "e2e-test": "file:./vendor/e2e-test"
   },
   "dependencies": {
     "i18next": "^19.1.0",
@@ -73,6 +74,7 @@
     "watch-dev": "rollup -c --watch --environment BUILD:development",
     "test": "npm run build-test && karma start --singleRun",
     "lint": "eslint .",
+    "e2e-test": "./node_modules/.bin/wdio ./e2e-test/config/remote-wsl.conf.js",
     "license-checker": "license-checker --production --onlyAllow 'MIT;BSD-3-Clause;ISC;Apache-2.0;BSD-2-Clause' --excludePackages 'vpu-auth@1.0.0;vpu-common@1.0.1;vpu-data-table-view@1.0.0;vpu-knowledge-base-web-page-element-view@1.0.0;vpu-library@1.0.0;vpu-language-select@1.0.0;vpu-library-book-offer-select@1.0.0;vpu-notification@1.0.0;vpu-person-profile@1.0.0;vpu-person-select@1.0.0'"
   }
 }
