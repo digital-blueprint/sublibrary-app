@@ -1,6 +1,6 @@
 import assert from 'assert';
 import VPUAppPage from '../pageObjects/vpu-app.page';
-import KeycloakAuthPage from '../../e2e-test-submodule/pageObjects/keycloak-auth.page';
+import KeycloakAuthPage from '../../vendor/e2e-test/pageObjects/keycloak-auth.page';
 
 describe('authentication', () => {
 	

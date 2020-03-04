@@ -1,4 +1,4 @@
-const { config } = require('../../e2e-test-submodule/config/base.conf.js');
+const { config } = require('../../vendor/e2e-test/config/base.conf.js');
 
 var browserstack = require('browserstack-local');
 

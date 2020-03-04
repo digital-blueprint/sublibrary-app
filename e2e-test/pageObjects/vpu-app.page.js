@@ -1,6 +1,6 @@
-import Page from '../../e2e-test-submodule/pageObjects/page';
-import LanguageSelect from '../../e2e-test-submodule/components/language-select.component';
-import VPUAuth from '../../e2e-test-submodule/components/vpu-auth.component';
+import Page from '../../vendor/e2e-test/pageObjects/page';
+import LanguageSelect from '../../vendor/e2e-test/components/language-select.component';
+import VPUAuth from '../../vendor/e2e-test/components/vpu-auth.component';
 
 class VPUAppPage extends Page {
 
