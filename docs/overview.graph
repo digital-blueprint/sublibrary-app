@@ -1,7 +1,7 @@
 graph main {
-    layout=fdp
+    layout=dot
     node [fontname="sans-serif",color="royalblue"]
-    graph [fontname="sans-serif",style="rounded",color="gray70",K=0.6]
+    graph [fontname="sans-serif",style="rounded",color="gray70"]
 
     subgraph cluster1 {
         label = "Ex Libris"
