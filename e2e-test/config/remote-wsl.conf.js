@@ -7,7 +7,7 @@ exports.config = Object.assign(config, {
     password: 'test2',
 
     //Use 'cat /etc/resolv.conf' to get the ip of the host
-    hostname: '172.28.128.1',
+    hostname: '172.23.48.1',
 
     port: 4444,
 
@@ -24,7 +24,7 @@ exports.config = Object.assign(config, {
     }],
 
     specs: [
-        './e2e-test/specs/library-login.spec.js'
+        './e2e-test/specs/change-language-fail.spec.js'
     ],
 
     baseUrl: 'http://localhost:8001',
@@ -32,7 +32,8 @@ exports.config = Object.assign(config, {
     framework: 'mocha',
     mochaOpts: {
 		ui: 'bdd',
-        require: ['./e2e-test/babel-require.js']
+        require: ['./e2e-test/babel-require.js'],
+        timeout: 100000
 	},
     
     reporters: ['spec'],

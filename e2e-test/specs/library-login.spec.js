@@ -7,7 +7,7 @@ describe('authentication', () => {
 	it('should do a login of the user', () => {
 		
 		VPUAppPage.open();
-		
+        
         VPUAppPage.vpuAuthComponent.clickLoginButton();
 
         KeycloakAuthPage.login(browser.config.username, browser.config.password);

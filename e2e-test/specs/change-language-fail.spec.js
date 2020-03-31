@@ -11,6 +11,6 @@ describe('language selector', () => {
 		
         browser.pause(5000);
         
-        assert.strictEqual(VPUAppPage.languageSelectComponent.language, 'DE');
+        assert.strictEqual(VPUAppPage.languageSelectComponent.language, 'ES');
     });
 });
