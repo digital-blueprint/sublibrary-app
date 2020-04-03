@@ -153,6 +153,7 @@ class LibraryOrderList extends VPULibraryLitElement {
                             {title: i18n.t('order-list.order-number')},
                             {title: i18n.t('order-list.book-price')},
                             null,
+                            {title: i18n.t('order-list.order-status')},
                             {title: i18n.t('order-list.receiving -note')},
                         ];
 
@@ -180,6 +181,7 @@ class LibraryOrderList extends VPULibraryLitElement {
                                 bookOrder.orderNumber,
                                 priceString,
                                 bookOrder.orderedItem.price,
+                                i18n.t('order-list.status-name-' + bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus.name),
                                 bookOrder.receivingNote,
                             ];
                             tbl.push(row);
