@@ -170,7 +170,7 @@ class LibraryOrderList extends VPULibraryLitElement {
                             const orderDate = new Date(bookOrder.orderDate);
                             let priceString = bookOrder.orderedItem.price > 0 ?
                                 numberFormat(i18n, bookOrder.orderedItem.price) + " " + bookOrder.orderedItem.priceCurrency :
-                                bookOrder.orderedItem.price;
+                                "";
 
                             const row = [
                                 bookOrder.orderedItem.orderedItem.title,
