@@ -1,4 +1,4 @@
-image: registry.gitlab.tugraz.at/vpu/apps/library/main:v1
+image: registry.gitlab.tugraz.at/vpu/apps/library/main:v2
 
 before_script:
   - "sed -i 's|git@gitlab.tugraz.at:VPU|../..|g' .gitmodules"
