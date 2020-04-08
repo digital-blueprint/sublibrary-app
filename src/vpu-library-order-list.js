@@ -153,6 +153,7 @@ class LibraryOrderList extends VPULibraryLitElement {
                             {title: i18n.t('order-list.order-number')},
                             {title: i18n.t('order-list.book-price')},
                             null,
+                            {title: i18n.t('order-list.order-status')},
                             {title: i18n.t('order-list.receiving -note')},
                         ];
 
@@ -169,7 +170,7 @@ class LibraryOrderList extends VPULibraryLitElement {
                             const orderDate = new Date(bookOrder.orderDate);
                             let priceString = bookOrder.orderedItem.price > 0 ?
                                 numberFormat(i18n, bookOrder.orderedItem.price) + " " + bookOrder.orderedItem.priceCurrency :
-                                bookOrder.orderedItem.price;
+                                "";
 
                             const row = [
                                 bookOrder.orderedItem.orderedItem.title,
@@ -180,6 +181,7 @@ class LibraryOrderList extends VPULibraryLitElement {
                                 bookOrder.orderNumber,
                                 priceString,
                                 bookOrder.orderedItem.price,
+                                i18n.t('order-list.status-name-' + bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus.name),
                                 bookOrder.receivingNote,
                             ];
                             tbl.push(row);
@@ -228,7 +230,7 @@ class LibraryOrderList extends VPULibraryLitElement {
 
     table_draw() {
         const table = this.shadowRoot.querySelector('#book-books-1');
-        const value = table.columnReduce(6, function (a, b) {
+        const value = table.columnReduce(7, function (a, b) {
             let a1 = 0;
             if (typeof a === 'string') { a1 = a.replace(',', '.').replace(' EUR', '') * 1; } else { a1 = a * 1; }
             let b1 = 0;
