@@ -24,7 +24,7 @@ exports.config = Object.assign(config, {
     }],
 
     specs: [
-        './e2e-test/specs/change-language-fail.spec.js'
+        './e2e-test/specs/change-language.spec.js'
     ],
 
     baseUrl: 'http://localhost:8001',
