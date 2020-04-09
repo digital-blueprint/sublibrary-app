@@ -149,7 +149,6 @@ export default {
       'src/vpu-library-book-list.js',
       'src/vpu-library-loan-list.js',
       'src/vpu-library-order-list.js',
-      'src/vpu-library-profile.js',
     ] : glob.sync('test/**/*.js'),
     output: {
       dir: 'dist',
