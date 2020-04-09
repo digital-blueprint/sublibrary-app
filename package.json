@@ -58,7 +58,8 @@
     "vpu-library-book-offer-select": "file:./vendor/library-book-offer-select",
     "vpu-notification": "file:./vendor/notification",
     "vpu-person-profile": "file:./vendor/person-profile",
-    "vpu-person-select": "file:./vendor/person-select"
+    "vpu-person-select": "file:./vendor/person-select",
+    "vpu-app-shell": "file:./vendor/app-shell"
   },
   "scripts": {
     "clean": "rm dist/* -R",

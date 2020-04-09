@@ -28,3 +28,6 @@
 [submodule "vendor/e2e-test"]
 	path = vendor/e2e-test
 	url = git@gitlab.tugraz.at:VPU/WebComponents/E2ETest.git
+[submodule "vendor/app-shell"]
+	path = vendor/app-shell
+	url = git@gitlab.tugraz.at:VPU/Apps/AppShell.git
