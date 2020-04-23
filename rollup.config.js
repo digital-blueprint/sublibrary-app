@@ -2,8 +2,8 @@ import path from 'path';
 import fs from 'fs';
 import url from 'url';
 import glob from 'glob';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import copy from 'rollup-plugin-copy';
 import {terser} from "rollup-plugin-terser";
 import json from '@rollup/plugin-json';
@@ -80,7 +80,8 @@ switch (build) {
 
 const CHUNK_BLACKLIST = [
   'jszip',  // jszip is a node module by default and rollup chunking is confused by that and emits warnings
-  'source-sans-pro'
+  'source-sans-pro',
+  '@open-wc/scoped-elements',
 ];
 
 /**
@@ -157,7 +158,7 @@ export default {
       format: 'esm',
       sourcemap: true
     },
-    //manualChunks: getManualChunks(pkg),
+    manualChunks: getManualChunks(pkg),
     onwarn: function (warning, warn) {
         // ignore "suggestions" warning re "use strict"
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
