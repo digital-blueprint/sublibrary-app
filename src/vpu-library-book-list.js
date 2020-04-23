@@ -1,24 +1,25 @@
 import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
+import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import VPULibraryLitElement from "./vpu-library-lit-element";
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
-import 'vpu-data-table-view';
+import {DataTableView} from 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
+import {MiniSpinner} from "vpu-common";
 import select2 from 'select2';
 import select2LangDe from './i18n/de/select2';
 import select2LangEn from './i18n/en/select2';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import $ from "jquery";
-import './vpu-organization-select.js';
-import 'vpu-common/vpu-mini-spinner.js';
+import {OrganizationSelect} from './organization-select.js';
 import {classMap} from 'lit-html/directives/class-map.js';
 
 select2(window, $);
 
 const i18n = createI18nInstance();
 
-class LibraryBookList extends VPULibraryLitElement {
+class LibraryBookList extends ScopedElementsMixin(VPULibraryLitElement) {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -41,6 +42,14 @@ class LibraryBookList extends VPULibraryLitElement {
         let now = new Date();
         now.setDate(now.getDate() - 1);
         this.analyticsUpdateDate = now.toLocaleDateString(this.lang);
+    }
+
+    static get scopedElements() {
+        return {
+            'vpu-knowledge-base-organization-select': OrganizationSelect,
+            'vpu-data-table-view': DataTableView,
+            'vpu-mini-spinner': MiniSpinner,
+        };
     }
 
     $(selector) {
@@ -85,7 +94,7 @@ class LibraryBookList extends VPULibraryLitElement {
                 }
             `;
 
-            this._("vpu-data-table-view").setCSSStyle(css);
+            this._(this.getScopedTagName("vpu-data-table-view")).setCSSStyle(css);
             this.loadTable();
         });
     }

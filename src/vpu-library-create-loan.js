@@ -1,18 +1,19 @@
 import {createI18nInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
+import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import VPULibraryLitElement from './vpu-library-lit-element';
-import 'vpu-person-select';
-import 'vpu-library-book-offer-select';
+import {PersonSelect} from 'vpu-person-select';
+import {LibraryBookOfferSelect} from 'vpu-library-book-offer-select';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import * as errorUtils from "vpu-common/error";
-import './vpu-organization-select.js';
-import 'vpu-common/vpu-mini-spinner.js';
+import {OrganizationSelect} from './organization-select.js';
+import {MiniSpinner, Button} from 'vpu-common';
 import {classMap} from 'lit-html/directives/class-map.js';
 
 const i18n = createI18nInstance();
 
-class LibraryCreateLoan extends VPULibraryLitElement {
+class LibraryCreateLoan extends ScopedElementsMixin(VPULibraryLitElement) {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -24,6 +25,16 @@ class LibraryCreateLoan extends VPULibraryLitElement {
         this.status = null;
         this.organizationId = '';
         this.sendButtonDisabled = true;
+    }
+
+    static get scopedElements() {
+        return {
+            'vpu-knowledge-base-organization-select': OrganizationSelect,
+            'vpu-person-select': PersonSelect,
+            'vpu-library-book-offer-select': LibraryBookOfferSelect,
+            'vpu-mini-spinner': MiniSpinner,
+            'vpu-button': Button,
+        };
     }
 
     static get properties() {
@@ -221,7 +232,7 @@ class LibraryCreateLoan extends VPULibraryLitElement {
 
         if (response.ok) {
             // clear book offer select to hide "loan" button
-            const bookOfferSelect = this._('vpu-library-book-offer-select');
+            const bookOfferSelect = this._(this.getScopedTagName('vpu-library-book-offer-select'));
             bookOfferSelect.clear();
 
             this.status = {

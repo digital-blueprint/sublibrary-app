@@ -1,20 +1,21 @@
 import $ from 'jquery';
 import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
-import {send as notify} from 'vpu-notification';
+import {ScopedElementsMixin} from '@open-wc/scoped-elements';
+import {send as notify} from 'vpu-common/notification';
 import VPULibraryLitElement from "./vpu-library-lit-element";
-import 'vpu-person-select';
+import {PersonSelect} from 'vpu-person-select';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
-import 'vpu-data-table-view';
+import {DataTableView} from 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
-import './vpu-organization-select.js';
-import 'vpu-common/vpu-mini-spinner.js';
+import {OrganizationSelect} from './organization-select.js';
+import {MiniSpinner, Button} from 'vpu-common';
 import {classMap} from 'lit-html/directives/class-map.js';
 
 const i18n = createI18nInstance();
 
-class LibraryRenewLoan extends VPULibraryLitElement {
+class LibraryRenewLoan extends ScopedElementsMixin(VPULibraryLitElement) {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -23,6 +24,16 @@ class LibraryRenewLoan extends VPULibraryLitElement {
         this.person = null;
         this.loans = [];
         this.organizationId = '';
+    }
+
+    static get scopedElements() {
+        return {
+            'vpu-knowledge-base-organization-select': OrganizationSelect,
+            'vpu-person-select': PersonSelect,
+            'vpu-mini-spinner': MiniSpinner,
+            'vpu-button': Button,
+            'vpu-data-table-view': DataTableView,
+        };
     }
 
     /**
@@ -81,8 +92,8 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                 }
             `;
 
-            this._("vpu-data-table-view").setCSSStyle(css);
-            const $personSelect = that.$('vpu-person-select');
+            this._(this.getScopedTagName("vpu-data-table-view")).setCSSStyle(css);
+            const $personSelect = that.$(this.getScopedTagName('vpu-person-select'));
             const $renewLoanBlock = that.$('#renew-loan-block');
 
             // show loan list block if person was selected
@@ -176,6 +187,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                                 if (loan.object.library !== orgUnitCode) {
                                     return;
                                 }
+                                let button = that.getScopedTagName("vpu-button");
 
                                 const row = [
                                     loan.object.name,
@@ -189,12 +201,12 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                                         </div>`,
                                     loan.endTime,
                                     `<div class="button-col">
-                                            <vpu-button data-id="${loan['@id']}" data-type="renew"
+                                            <${button} data-id="${loan['@id']}" data-type="renew"
                                                         value="Ok" name="send" type="is-small"
-                                                        title="${i18n.t('renew-loan.renew-loan')}" no-spinner-on-click></vpu-button>
-                                            <vpu-button data-id="${loan['@id']}" data-type="contact" data-book-name="${loan.object.name}"
+                                                        title="${i18n.t('renew-loan.renew-loan')}" no-spinner-on-click></${button}>
+                                            <${button} data-id="${loan['@id']}" data-type="contact" data-book-name="${loan.object.name}"
                                                         value="${i18n.t('renew-loan.contact-value')}" name="send" type="is-small"
-                                                        title="${i18n.t('renew-loan.contact-title', {personName: that.person.name})}" no-spinner-on-click></vpu-button>
+                                                        title="${i18n.t('renew-loan.contact-title', {personName: that.person.name})}" no-spinner-on-click></${button}>
                                         </div>`
                                 ];
                                 tbl.push(row);
@@ -236,7 +248,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
                 */
 
                 // we need to update the book list because of the localization of the "Contact" button
-                this.$('vpu-person-select').change();
+                this.$(this.getScopedTagName('vpu-person-select')).change();
             } else if (propName === "organizationId") {
 
                 this.loadTable();
@@ -261,7 +273,7 @@ class LibraryRenewLoan extends VPULibraryLitElement {
 
         // search for the vpu-button
         path.some((item, index) => {
-            if (item.nodeName === "VPU-BUTTON") {
+            if (item.nodeName.toUpperCase() === this.getScopedTagName("vpu-button").toUpperCase()) {
                 button = item;
                 buttonIndex = index;
 

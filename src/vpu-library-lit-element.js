@@ -43,8 +43,15 @@ export default class VPULibraryLitElement extends LitElement {
         this.requestUpdate();
     }
 
+    getScopedTagName(tagName) {
+        if (this.constructor.getScopedTagName) {
+            return this.constructor.getScopedTagName(tagName);
+        }
+        return tagName;
+    }
+
     getOrganization() {
-        const organizationSelect = this._("vpu-knowledge-base-organization-select");
+        const organizationSelect = this._(this.getScopedTagName("vpu-knowledge-base-organization-select"));
 
         if (organizationSelect) {
             const objectText = organizationSelect.getAttribute("data-object");

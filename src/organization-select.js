@@ -14,7 +14,7 @@ select2(window, $);
 
 const i18n = createI18nInstance();
 
-class VPUOrganizationSelect extends LitElement {
+export class OrganizationSelect extends LitElement {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -327,5 +327,3 @@ class VPUOrganizationSelect extends LitElement {
         `;
     }
 }
-
-commonUtils.defineCustomElement('vpu-knowledge-base-organization-select', VPUOrganizationSelect);

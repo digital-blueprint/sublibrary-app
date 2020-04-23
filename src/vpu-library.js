@@ -1,4 +1,7 @@
-import 'vpu-app-shell';
+import {AppShell} from 'vpu-app-shell';
+import * as commonUtils from 'vpu-common/utils';
+
+commonUtils.defineCustomElement('vpu-app-library', AppShell);
 
 console.log("# Example book barcodes\n\n" +
 "## F1490\n+F20313804, +F24048209, +F24084706\n\n" +

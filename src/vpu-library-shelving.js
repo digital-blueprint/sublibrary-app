@@ -1,20 +1,22 @@
 import $ from 'jquery';
 import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
-import {send as notify} from 'vpu-notification';
+import {ScopedElementsMixin} from '@open-wc/scoped-elements';
+import {send as notify} from 'vpu-common/notification';
 import VPULibraryLitElement from "./vpu-library-lit-element";
 import Suggestions from 'suggestions';
-import 'vpu-library-book-offer-select';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import * as errorUtils from "vpu-common/error";
-import './vpu-organization-select.js';
+import {Button} from "vpu-common";
+import {OrganizationSelect} from './organization-select.js';
 import {classMap} from 'lit-html/directives/class-map.js';
+import {LibraryBookOfferSelect} from 'vpu-library-book-offer-select';
 
 const i18n = createI18nInstance();
 
-class LibraryShelving extends VPULibraryLitElement {
+class LibraryShelving extends ScopedElementsMixin(VPULibraryLitElement) {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -22,6 +24,14 @@ class LibraryShelving extends VPULibraryLitElement {
         this.bookOfferId = "";
         this.bookOffer = null;
         this.organizationId = '';
+    }
+
+    static get scopedElements() {
+        return {
+            'vpu-knowledge-base-organization-select': OrganizationSelect,
+            'vpu-library-book-offer-select': LibraryBookOfferSelect,
+            'vpu-button': Button,
+        };
     }
 
     static get properties() {
@@ -51,7 +61,7 @@ class LibraryShelving extends VPULibraryLitElement {
         const that = this;
 
         this.updateComplete.then(()=>{
-            const $bookOfferSelect = that.$('vpu-library-book-offer-select');
+            const $bookOfferSelect = that.$(this.getScopedTagName('vpu-library-book-offer-select'));
             const $locationIdentifierInput = that.$('#location-identifier');
             const locationIdentifierInput = that._('#location-identifier');
             const $locationIdentifierBlock = that.$('#location-identifier-block');

@@ -42,6 +42,7 @@
     "e2e-test": "file:./vendor/e2e-test"
   },
   "dependencies": {
+    "@open-wc/scoped-elements": "^1.0.9",
     "i18next": "^19.1.0",
     "jquery": "^3.4.1",
     "lit-element": "^2.2.1",
@@ -50,6 +51,7 @@
     "source-sans-pro": "^2.45.0",
     "suggestions": "^1.7.0",
     "universal-router": "^8.3.0",
+    "vpu-app-shell": "file:./vendor/app-shell",
     "vpu-auth": "file:./vendor/auth",
     "vpu-common": "file:./vendor/common",
     "vpu-data-table-view": "file:./vendor/datatableview",
@@ -58,8 +60,7 @@
     "vpu-library-book-offer-select": "file:./vendor/library-book-offer-select",
     "vpu-notification": "file:./vendor/notification",
     "vpu-person-profile": "file:./vendor/person-profile",
-    "vpu-person-select": "file:./vendor/person-select",
-    "vpu-app-shell": "file:./vendor/app-shell"
+    "vpu-person-select": "file:./vendor/person-select"
   },
   "scripts": {
     "clean": "rm dist/* -R",

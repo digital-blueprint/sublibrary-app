@@ -1,18 +1,19 @@
 import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
+import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import VPULibraryLitElement from "./vpu-library-lit-element";
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
-import 'vpu-data-table-view';
+import {DataTableView} from 'vpu-data-table-view';
 import * as errorUtils from "vpu-common/error";
-import './vpu-organization-select.js';
-import 'vpu-common/vpu-mini-spinner.js';
+import {OrganizationSelect} from './organization-select.js';
+import {MiniSpinner, Button} from 'vpu-common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import $ from "jquery";
 
 const i18n = createI18nInstance();
 
-class LibraryLoanList extends VPULibraryLitElement {
+class LibraryLoanList extends ScopedElementsMixin(VPULibraryLitElement) {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -28,6 +29,15 @@ class LibraryLoanList extends VPULibraryLitElement {
         let now = new Date();
         now.setDate(now.getDate() - 1);
         this.analyticsUpdateDate = now.toLocaleDateString(this.lang);
+    }
+
+    static get scopedElements() {
+        return {
+            'vpu-knowledge-base-organization-select': OrganizationSelect,
+            'vpu-mini-spinner': MiniSpinner,
+            'vpu-button': Button,
+            'vpu-data-table-view': DataTableView,
+        };
     }
 
     /**
@@ -66,7 +76,7 @@ class LibraryLoanList extends VPULibraryLitElement {
                 }
             `;
 
-            this._("vpu-data-table-view").setCSSStyle(css);
+            this._(this.getScopedTagName("vpu-data-table-view")).setCSSStyle(css);
             this.loadTable();
         });
     }
@@ -211,6 +221,8 @@ class LibraryLoanList extends VPULibraryLitElement {
                         return;
                     }
 
+
+                    let button = that.getScopedTagName('vpu-button');
                     const row = [
                         loan.object.book.title,
                         loan.object.book.author,
@@ -225,9 +237,9 @@ class LibraryLoanList extends VPULibraryLitElement {
                         loan.object.locationIdentifier,
                         loan.object.description,
                         `<div class="button-col">
-                            <vpu-button data-id="${loan['@id']}" data-type="contact" data-book-name="${loan.object.name}"
+                            <${button} data-id="${loan['@id']}" data-type="contact" data-book-name="${loan.object.name}"
                                         value="${i18n.t('renew-loan.contact-value')}" name="send" type="is-small"
-                                        title="${i18n.t('renew-loan.contact-title', {personName: loan.borrower.name})}" no-spinner-on-click></vpu-button>
+                                        title="${i18n.t('renew-loan.contact-title', {personName: loan.borrower.name})}" no-spinner-on-click></${button}>
                         </div>`
                     ];
                     tbl.push(row);
@@ -283,7 +295,7 @@ class LibraryLoanList extends VPULibraryLitElement {
 
         // search for the vpu-button
         path.some((item, index) => {
-            if (item.nodeName === "VPU-BUTTON") {
+            if (item.nodeName.toUpperCase() === this.getScopedTagName("vpu-button").toUpperCase()) {
                 button = item;
                 buttonIndex = index;
 

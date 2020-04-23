@@ -1,19 +1,19 @@
 import $ from 'jquery';
 import {createI18nInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
+import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import VPULibraryLitElement from "./vpu-library-lit-element";
-import 'vpu-language-select';
-import 'vpu-library-book-offer-select';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import * as errorUtils from "vpu-common/error";
-import './vpu-organization-select.js';
-import 'vpu-common/vpu-mini-spinner.js';
+import {OrganizationSelect} from './organization-select.js';
+import {MiniSpinner, Button} from 'vpu-common';
 import {classMap} from 'lit-html/directives/class-map.js';
+import  {LibraryBookOfferSelect} from 'vpu-library-book-offer-select';
 
 const i18n = createI18nInstance();
 
-class LibraryReturnBook extends VPULibraryLitElement {
+class LibraryReturnBook extends ScopedElementsMixin(VPULibraryLitElement) {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -26,6 +26,15 @@ class LibraryReturnBook extends VPULibraryLitElement {
         this.borrowerName = "";
         this.status = null;
         this.organizationId = '';
+    }
+
+    static get scopedElements() {
+        return {
+            'vpu-knowledge-base-organization-select': OrganizationSelect,
+            'vpu-library-book-offer-select': LibraryBookOfferSelect,
+            'vpu-mini-spinner': MiniSpinner,
+            'vpu-button': Button,
+        };
     }
 
     static get properties() {
@@ -58,7 +67,7 @@ class LibraryReturnBook extends VPULibraryLitElement {
         const that = this;
 
         this.updateComplete.then(()=>{
-            const $bookOfferSelect = that.$('vpu-library-book-offer-select');
+            const $bookOfferSelect = that.$(this.getScopedTagName('vpu-library-book-offer-select'));
             const $returnBookBlock = that.$('#return-book-block');
             const $loansLoadingIndicator = that.$('#loans-loading');
 
