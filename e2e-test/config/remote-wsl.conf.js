@@ -1,7 +1,7 @@
 const { config } = require('../../vendor/e2e-test/config/base.conf.js');
 
 exports.config = Object.assign(config, {
-
+    
     username: 'test1',
 
     password: 'test2',
@@ -24,7 +24,7 @@ exports.config = Object.assign(config, {
     }],
 
     specs: [
-        './e2e-test/specs/change-language.spec.js'
+        './e2e-test/specs/tests/library-loan-list.spec.js'
     ],
 
     baseUrl: 'http://localhost:8001',

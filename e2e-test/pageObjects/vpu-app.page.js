@@ -9,7 +9,7 @@ class VPUAppPage extends Page {
 	}
 	
 	get vpuApp() {
-		return browser.$('vpu-app');
+		return browser.$('vpu-app-library');
 	}
 	
 	get languageSelectComponent() {
@@ -17,7 +17,7 @@ class VPUAppPage extends Page {
 	}
 
 	get vpuAuthComponent() {
-		return new VPUAuth(this.vpuApp.shadow$('vpu-auth'));
+		return new VPUAuth(this.vpuApp.shadow$('[show-profile]'));
 	}
 
 }
