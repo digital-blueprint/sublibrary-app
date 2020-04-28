@@ -2,12 +2,12 @@ const { config } = require('../../vendor/e2e-test/config/base.conf.js');
 
 exports.config = Object.assign(config, {
     
-    username: 'test1',
+    username: process.env.TUGrazTestUsername,
 
-    password: 'test2',
+    password: process.env.TUGrazTestPassword,
 
     //Use 'cat /etc/resolv.conf' to get the ip of the host
-    hostname: '172.23.48.1',
+    hostname: '172.19.32.1',
 
     port: 4444,
 
@@ -24,7 +24,7 @@ exports.config = Object.assign(config, {
     }],
 
     specs: [
-        './e2e-test/specs/tests/library-loan-list.spec.js'
+        './e2e-test/specs/tests/library-create-loan.spec.js'
     ],
 
     baseUrl: 'http://localhost:8001',
@@ -33,8 +33,8 @@ exports.config = Object.assign(config, {
     mochaOpts: {
 		ui: 'bdd',
         require: ['./e2e-test/babel-require.js'],
-        timeout: 100000
-	},
+        timeout: 200000
+    },
     
     reporters: ['spec'],
 

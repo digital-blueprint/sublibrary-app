@@ -26,21 +26,24 @@ describe('shelving', () => {
         const createLoanTab = VPUAppPage.vpuApp.shadow$('vpu-library-create-loan');
 
         createLoanTab.waitForExist();
+        
+        const tabForm = createLoanTab.shadow$('form');
 
-        browser.pause(8000);
+        //Wait for the form to be shown
+        browser.waitUntil(function(){
+            return tabForm.getAttribute('class') !== 'hidden';
+        }, 60000, 'The form has not been shown');
 
-        const personSelect = createLoanTab.shadow$('[show-birth-date]');
+        const personSelect = createLoanTab.$(function(){
+            return Array.from(this.shadowRoot.querySelectorAll('*')).filter(el => el.tagName.toLowerCase().startsWith('vpu-person-select'));
+        });
 
-        personSelect.waitForExist();
-
-        const bookOfferSelect = createLoanTab.shadow$('[organization-id]');
-
-        bookOfferSelect.waitForExist();
+        const bookOfferSelect = createLoanTab.$(function(){
+            return Array.from(this.shadowRoot.querySelectorAll('*')).filter(el => el.tagName.toLowerCase().startsWith('vpu-library-book-offer-select'));
+        });
 
         //Enter person name
-        const select2Person = personSelect.shadow$('[name="person"]');
-        
-        select2Person.waitForExist();
+        const select2Person = personSelect.shadow$('select');
 
         browser.execute(function (select2Person) {
             select2Person.focus();
@@ -50,14 +53,14 @@ describe('shelving', () => {
 
         browser.keys('David Jernej');
 
-        browser.pause(12000);
+        const select2PersonResult = personSelect.shadow$('#person-select-dropdown').$('.select2-results__option--highlighted');
+
+        select2PersonResult.waitForExist(30000);
 
         browser.keys(['Enter']);
 
         //Enter book name
-        const select2Book = bookOfferSelect.shadow$('[name="book-offer"]');
-
-        select2Book.waitForExist();
+        const select2Book = bookOfferSelect.shadow$('select');
 
         browser.execute(function (select2Book) {
             select2Book.focus();
@@ -67,34 +70,41 @@ describe('shelving', () => {
 
         browser.keys('F4637604');
 
-        browser.pause(8000);
+        const select2BookResult = bookOfferSelect.shadow$('#library-book-offer-select-dropdown').$('.select2-results__option--highlighted');
+
+        select2BookResult.waitForExist(30000);
 
         browser.keys(['Enter']);
 
-        browser.pause(8000);
+        //Loading
+        const spinner = createLoanTab.$(function(){
+            return Array.from(this.shadowRoot.querySelectorAll('*')).filter(el => el.tagName.toLowerCase().startsWith('vpu-mini-spinner'));
+        });
+
+        browser.waitUntil(function(){
+            return spinner.getCSSProperty('display').value !== 'block';
+        }, 30000, 'The loading spinner is still visible');
 
         //Notification
         const notificationHeading = createLoanTab.shadow$('h4');
-        
-        notificationHeading.waitForExist();
 
         if (notificationHeading.getText() === 'Bestehende Entlehnung!') {
             assert.ok(true);
         }
         else {
             //Send
-            const sendButton = createLoanTab.shadow$('[value="Buch entlehnen"]');
-
-            sendButton.waitForExist();
+            const sendButton = createLoanTab.$(function(){
+                return Array.from(this.shadowRoot.querySelectorAll('*')).filter(el => el.tagName.toLowerCase().startsWith('vpu-button'));
+            }).shadow$('button');
 
             sendButton.click(true);
-            
-            browser.pause(20000);
 
             //Notification
-            const notificationHeading = createLoanTab.shadow$('h4');
+            const notificationHeading = createLoanTab.shadow$('form').$('h4=Buchentlehnung erfolgreich');
 
-            assert.strictEqual(notificationHeading.getText(),'Buchentlehnung erfolgreich');
+            notificationHeading.waitForExist(30000, false, 'The notification does not exist');
+
+            assert.ok(true);
         }
     });
 });
