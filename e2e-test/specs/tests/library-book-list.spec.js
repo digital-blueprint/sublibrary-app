@@ -33,6 +33,8 @@ describe('book-list', () => {
 
         const bookListTabLink = VPUAppPage.vpuApp.shadow$('[href="/dist/de/book-list"]');
 
+        bookListTabLink.waitForExist();
+
         bookListTabLink.click(true);
 
         const bookListTab = VPUAppPage.vpuApp.shadow$('vpu-library-book-list');
@@ -102,6 +104,8 @@ describe('book-list', () => {
         //LOGIN END
 
         const bookListTabLink = VPUAppPage.vpuApp.shadow$('[href="/dist/de/book-list"]');
+
+        bookListTabLink.waitForExist();
 
         bookListTabLink.click(true);
 

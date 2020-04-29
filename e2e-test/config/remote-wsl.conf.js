@@ -24,7 +24,7 @@ exports.config = Object.assign(config, {
     }],
 
     specs: [
-        './e2e-test/specs/tests/library-book-list.spec.js'
+        './e2e-test/specs/tests/library-order-list.spec.js'
     ],
 
     baseUrl: 'http://localhost:8001',

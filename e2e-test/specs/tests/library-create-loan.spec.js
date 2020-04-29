@@ -21,6 +21,8 @@ describe('create-loan', () => {
         //Open tab
         const createLoanTabLink = VPUAppPage.vpuApp.shadow$('[href="/dist/de/create-loan"]');
 
+        createLoanTabLink.waitForExist();
+
         createLoanTabLink.click(true);
 
         const createLoanTab = VPUAppPage.vpuApp.shadow$('vpu-library-create-loan');
@@ -125,6 +127,8 @@ describe('create-loan', () => {
 
         //Open tab
         const createLoanTabLink = VPUAppPage.vpuApp.shadow$('[href="/dist/de/create-loan"]');
+
+        createLoanTabLink.waitForExist();
 
         createLoanTabLink.click(true);
 

@@ -21,6 +21,8 @@ describe('renew-loan', () => {
         //Open tab
         const renewLoanTabLink = VPUAppPage.vpuApp.shadow$('[href="/dist/de/renew-loan"]');
 
+        renewLoanTabLink.waitForExist();
+
         renewLoanTabLink.click(true);
 
         const renewLoanTab = VPUAppPage.vpuApp.shadow$('vpu-library-renew-loan');
@@ -124,6 +126,8 @@ describe('renew-loan', () => {
 
         //Open tab
         const renewLoanTabLink = VPUAppPage.vpuApp.shadow$('[href="/dist/de/renew-loan"]');
+
+        renewLoanTabLink.waitForExist();
 
         renewLoanTabLink.click(true);
 

@@ -21,6 +21,8 @@ describe('return-book', () => {
         //Open tab
         const returnBookTabLink = VPUAppPage.vpuApp.shadow$('[href="/dist/de/return-book"]');
 
+        returnBookTabLink.waitForExist();
+
         returnBookTabLink.click(true);
 
         const returnBookTab = VPUAppPage.vpuApp.shadow$('vpu-library-return-book');
@@ -106,6 +108,8 @@ describe('return-book', () => {
 
         //Open tab
         const returnBookTabLink = VPUAppPage.vpuApp.shadow$('[href="/dist/de/return-book"]');
+
+        returnBookTabLink.waitForExist();
 
         returnBookTabLink.click(true);
 

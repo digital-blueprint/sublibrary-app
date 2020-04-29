@@ -21,6 +21,8 @@ describe('shelving', () => {
         //Open tab
         const shelvingTabLink = VPUAppPage.vpuApp.shadow$('[href="/dist/de/shelving"]');
 
+        shelvingTabLink.waitForExist();
+
         shelvingTabLink.click(true);
 
         const shelvingTab = VPUAppPage.vpuApp.shadow$('vpu-library-shelving');
@@ -91,6 +93,8 @@ describe('shelving', () => {
 
         //Open tab
         const shelvingTabLink = VPUAppPage.vpuApp.shadow$('[href="/dist/de/shelving"]');
+
+        shelvingTabLink.waitForExist();
 
         shelvingTabLink.click(true);
 
