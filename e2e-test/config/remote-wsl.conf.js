@@ -24,7 +24,7 @@ exports.config = Object.assign(config, {
     }],
 
     specs: [
-        './e2e-test/specs/tests/library-create-loan.spec.js'
+        './e2e-test/specs/tests/library-book-list.spec.js'
     ],
 
     baseUrl: 'http://localhost:8001',
@@ -36,6 +36,5 @@ exports.config = Object.assign(config, {
         timeout: 200000
     },
     
-    reporters: ['spec'],
-
+    reporters: ['spec']
 });

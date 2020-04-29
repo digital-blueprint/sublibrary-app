@@ -2,9 +2,9 @@ import assert from 'assert';
 import VPUAppPage from '../../pageObjects/vpu-app.page';
 import KeycloakAuthPage from '../../../vendor/e2e-test/pageObjects/keycloak-auth.page';
 
-describe('shelving', () => {
+describe('create-loan', () => {
 	
-	it('should create a loan with the barcode +F4637604 at the institute #F1450 for David Jernej', () => {
+	it('should create a loan with the barcode +F4637604 at the institute #F1450 for "David Jernej"', () => {
         
         //LOGIN
 
@@ -82,7 +82,7 @@ describe('shelving', () => {
         });
 
         browser.waitUntil(function(){
-            return spinner.getCSSProperty('display').value !== 'block';
+            return spinner.getCSSProperty('display').value === 'none';
         }, 30000, 'The loading spinner is still visible');
 
         //Notification
@@ -106,5 +106,58 @@ describe('shelving', () => {
 
             assert.ok(true);
         }
+    });
+
+    //Negative Test
+    it('should fail finding the person "David Jernejjjjjj" while creating a loan', () => {
+
+        browser.reloadSession();
+
+        //LOGIN
+
+        VPUAppPage.open();
+
+        VPUAppPage.vpuAuthComponent.clickLoginButton();
+
+        KeycloakAuthPage.login(browser.config.username, browser.config.password);
+
+        VPUAppPage.vpuApp.waitForExist();
+
+        //Open tab
+        const createLoanTabLink = VPUAppPage.vpuApp.shadow$('[href="/dist/de/create-loan"]');
+
+        createLoanTabLink.click(true);
+
+        const createLoanTab = VPUAppPage.vpuApp.shadow$('vpu-library-create-loan');
+
+        createLoanTab.waitForExist();
+
+        const tabForm = createLoanTab.shadow$('form');
+
+        //Wait for the form to be shown
+        browser.waitUntil(function(){
+            return tabForm.getAttribute('class') !== 'hidden';
+        }, 60000, 'The form has not been shown');
+
+        const personSelect = createLoanTab.$(function(){
+            return Array.from(this.shadowRoot.querySelectorAll('*')).filter(el => el.tagName.toLowerCase().startsWith('vpu-person-select'));
+        });
+
+        //Enter person name
+        const select2Person = personSelect.shadow$('select');
+
+        browser.execute(function (select2Person) {
+            select2Person.focus();
+        }, select2Person);
+
+        browser.keys(['Enter']);
+
+        browser.keys('David Jernejjjjjj');
+
+        const select2PersonResult = personSelect.shadow$('#person-select-dropdown').$('.select2-results__message');
+
+        select2PersonResult.waitForExist(30000);
+
+        assert.strictEqual(select2PersonResult.getText(), 'Keine Übereinstimmungen gefunden');
     });
 });
