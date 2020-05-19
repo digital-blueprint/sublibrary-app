@@ -33,6 +33,7 @@ let basePath = '';
 let entryPointURL = '';
 let keyCloakServer = '';
 let keyCloakBaseURL = '';
+let keyCloakClientId = '';
 let matomoSiteId = 131;
 let useTerser = true;
 let useBabel = true;
@@ -43,6 +44,7 @@ switch (build) {
     entryPointURL = 'http://127.0.0.1:8000';
     keyCloakServer = 'auth-dev.tugraz.at';
     keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
+    keyCloakClientId = 'auth-dev-mw-frontend-local';
     useTerser = false;
     break;
   case 'development':
@@ -50,18 +52,21 @@ switch (build) {
     entryPointURL = 'https://mw-dev.tugraz.at';
     keyCloakServer = 'auth-dev.tugraz.at';
     keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
+    keyCloakClientId = 'auth-dev-mw-frontend';
     break;
   case 'demo':
     basePath = '/apps/library/';
     entryPointURL = 'https://api-demo.tugraz.at';
     keyCloakServer = 'auth-test.tugraz.at';
     keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
+    keyCloakClientId = 'ibib-demo_tugraz_at-IBIB';
     break;
   case 'production':
     basePath = '/';
     entryPointURL = 'https://api.tugraz.at';
     keyCloakServer = 'auth.tugraz.at';
     keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
+    keyCloakClientId = 'ibib_tugraz_at-IBIB';
     matomoSiteId = 130;
     break;
   case 'test':
@@ -69,6 +74,7 @@ switch (build) {
     entryPointURL = '';
     keyCloakServer = '';
     keyCloakBaseURL = '';
+    keyCloakClientId = '';
     useTerser = false;
     break;
   default:
@@ -202,6 +208,7 @@ export default {
             entryPointURL: entryPointURL,
             keyCloakServer: keyCloakServer,
             keyCloakBaseURL: keyCloakBaseURL,
+            keyCloakClientId: keyCloakClientId,
             environment: build,
             matomoSiteId: matomoSiteId,
             buildinfo: getBuildInfo()
