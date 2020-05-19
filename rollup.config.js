@@ -153,7 +153,7 @@ function getBuildInfo() {
 
 export default {
     input: (build != 'test') ? [
-      'src/vpu-library.js',
+      'src/' + pkg.name + '.js',
       'src/vpu-library-shelving.js',
       'src/vpu-library-create-loan.js',
       'src/vpu-library-return-book.js',
@@ -202,16 +202,20 @@ export default {
           src: 'assets',
           include: ['**/*.ejs', '**/.*.ejs'],
           data: {
-            geturl: (p) => {
+            getUrl: (p) => {
               return url.resolve(basePath, p);
             },
+            getPrivateUrl: (p) => {
+                return url.resolve(`${basePath}local/${pkg.name}/`, p);
+            },
+            name: pkg.name,
             entryPointURL: entryPointURL,
             keyCloakServer: keyCloakServer,
             keyCloakBaseURL: keyCloakBaseURL,
             keyCloakClientId: keyCloakClientId,
             environment: build,
             matomoSiteId: matomoSiteId,
-            buildinfo: getBuildInfo()
+            buildInfo: getBuildInfo()
           }
         }),
 
