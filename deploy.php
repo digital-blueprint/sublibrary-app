@@ -7,72 +7,40 @@ require 'recipe/rsync.php';
 // Global config
 set('allow_anonymous_stats', false);
 
+set('rsync',[
+    'exclude'      => [
+        '.git',
+        'deploy.php',
+    ],
+    'exclude-file' => false,
+    'include'      => [],
+    'include-file' => false,
+    'filter'       => [],
+    'filter-file'  => false,
+    'filter-perdir'=> false,
+    'flags'        => 'rz',
+    'options'      => ['delete'],
+    'timeout'      => 60,
+]);
+
+set('rsync_src', __DIR__ . '/dist');
+set('rsync_dest','{{release_path}}');
+
 // Hosts
 host('demo')
     ->stage('demo')
     ->hostname('mw@mw01-dev.tugraz.at')
-    ->set('deploy_path', '/home/mw/demo/deploy/apps/library')
-    -> set('rsync',[
-        'exclude'      => [
-            '.git',
-            'deploy.php',
-        ],
-        'exclude-file' => false,
-        'include'      => [],
-        'include-file' => false,
-        'filter'       => [],
-        'filter-file'  => false,
-        'filter-perdir'=> false,
-        'flags'        => 'rz',
-        'options'      => ['delete'],
-        'timeout'      => 60,
-    ])
-    -> set('rsync_src', __DIR__ . '/dist')
-    -> set('rsync_dest','{{release_path}}');
+    ->set('deploy_path', '/home/mw/demo/deploy/apps/library');
 
 host('development')
     ->stage('development')
     ->hostname('mw@mw01-dev.tugraz.at')
-    ->set('deploy_path', '/home/mw/dev/deploy/apps/library')
-    -> set('rsync',[
-        'exclude'      => [
-            '.git',
-            'deploy.php',
-        ],
-        'exclude-file' => false,
-        'include'      => [],
-        'include-file' => false,
-        'filter'       => [],
-        'filter-file'  => false,
-        'filter-perdir'=> false,
-        'flags'        => 'rz',
-        'options'      => ['delete'],
-        'timeout'      => 60,
-    ])
-    -> set('rsync_src', __DIR__ . '/dist')
-    -> set('rsync_dest','{{release_path}}');
+    ->set('deploy_path', '/home/mw/dev/deploy/apps/library');
 
 host('production')
     ->stage('production')
     ->hostname('mw@mw01-prod.tugraz.at')
-    ->set('deploy_path', '/home/mw/prod_ibib/deploy')
-    -> set('rsync',[
-        'exclude'      => [
-            '.git',
-            'deploy.php',
-        ],
-        'exclude-file' => false,
-        'include'      => [],
-        'include-file' => false,
-        'filter'       => [],
-        'filter-file'  => false,
-        'filter-perdir'=> false,
-        'flags'        => 'rz',
-        'options'      => ['delete'],
-        'timeout'      => 60,
-    ])
-    -> set('rsync_src', __DIR__ . '/dist')
-    -> set('rsync_dest','{{release_path}}');
+    ->set('deploy_path', '/home/mw/prod_ibib/deploy');
 
 // Demo build task
 task('build-demo', function () {
