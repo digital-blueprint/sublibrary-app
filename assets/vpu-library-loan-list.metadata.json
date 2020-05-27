@@ -3,8 +3,8 @@
   "module_src": "vpu-library-loan-list.js",
   "routing_name": "loan-list",
   "name": {
-    "de": "Bilbliothek Entlehnungen anzeigen",
-    "en": "Library show current loans"
+    "de": "Entlehnungen anzeigen",
+    "en": "Show current loans"
   },
   "short_name": {
     "de": "Entlehnungen anzeigen",

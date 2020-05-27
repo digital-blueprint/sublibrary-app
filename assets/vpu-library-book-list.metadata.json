@@ -3,7 +3,7 @@
   "module_src": "vpu-library-book-list.js",
   "routing_name": "book-list",
   "name": {
-    "de": "Bilbliothek Institutsbücher anzeigen",
+    "de": "Institutsbücher anzeigen",
     "en": "Show sublibrary book list"
   },
   "short_name": {

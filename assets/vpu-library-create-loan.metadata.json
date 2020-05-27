@@ -3,8 +3,8 @@
   "module_src": "vpu-library-create-loan.js",
   "routing_name": "create-loan",
   "name": {
-    "de": "Bilbliothek Buch entlehnen",
-    "en": "Library borrow book"
+    "de": "Buch entlehnen",
+    "en": "Borrow book"
   },
   "short_name": {
     "de": "Buch entlehnen",

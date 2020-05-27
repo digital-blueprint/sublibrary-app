@@ -3,8 +3,8 @@
   "module_src": "vpu-library-renew-loan.js",
   "routing_name": "renew-loan",
   "name": {
-    "de": "Bilbliothek Leihfrist verlängern",
-    "en": "Library extend loan period"
+    "de": "Leihfrist verlängern",
+    "en": "Extend loan period"
   },
   "short_name": {
     "de": "Leihfrist verlängern",

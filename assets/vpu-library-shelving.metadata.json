@@ -3,8 +3,8 @@
   "module_src": "vpu-library-shelving.js",
   "routing_name": "shelving",
   "name": {
-    "de": "Bilbliothek Aufstellung vergeben",
-    "en": "Library Assign Call number"
+    "de": "Aufstellung vergeben",
+    "en": "Assign Call number"
   },
   "short_name": {
     "de": "Aufstellung vergeben",

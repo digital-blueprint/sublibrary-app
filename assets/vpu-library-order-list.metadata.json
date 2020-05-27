@@ -3,8 +3,8 @@
   "module_src": "vpu-library-order-list.js",
   "routing_name": "order-list",
   "name": {
-    "de": "Bilbliothek Buchbestellungen anzeigen",
-    "en": "Library show current book orders"
+    "de": "Buchbestellungen anzeigen",
+    "en": "Show current book orders"
   },
   "short_name": {
     "de": "Buchbestellungen anzeigen",
