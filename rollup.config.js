@@ -13,8 +13,7 @@ import urlPlugin from "@rollup/plugin-url";
 import consts from 'rollup-plugin-consts';
 import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs'
-import babel from 'rollup-plugin-babel'
-import chai from 'chai';
+import babel from '@rollup/plugin-babel'
 import selfsigned from 'selfsigned';
 
 // -------------------------------
@@ -226,10 +225,7 @@ export default {
           }
         }),
         commonjs({
-            include: 'node_modules/**',
-            namedExports: {
-              'chai': Object.keys(chai),
-            }
+            include: 'node_modules/**'
         }),
         json(),
         urlPlugin({
