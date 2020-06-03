@@ -1,4 +1,4 @@
-# VPU Library Application
+# Library Application
 
 [GitLab Repository](https://gitlab.tugraz.at/VPU/Apps/Library)
 
