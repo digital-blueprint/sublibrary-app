@@ -11,6 +11,7 @@ import replace from "@rollup/plugin-replace";
 import serve from 'rollup-plugin-serve';
 import urlPlugin from "@rollup/plugin-url";
 import consts from 'rollup-plugin-consts';
+import license from 'rollup-plugin-license';
 import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs'
 import babel from '@rollup/plugin-babel'
@@ -38,6 +39,7 @@ let keyCloakClientId = '';
 let matomoSiteId = 131;
 let useTerser = !watch || watchFull;
 let useBabel = !watch || watchFull;
+let checkLicenses = !watch || watchFull;
 
 switch (build) {
   case 'local':
@@ -197,6 +199,23 @@ export default {
             moduleDirectory: path.join(process.cwd(), 'node_modules')
           }
         }),
+        checkLicenses && license({
+            banner: {
+                commentStyle: 'ignored',
+                content: `
+License: <%= pkg.license %>
+Dependencies:
+<% _.forEach(dependencies, function (dependency) { if (dependency.name) { %>
+<%= dependency.name %>: <%= dependency.license %><% }}) %>
+`},
+          thirdParty: {
+            allow: {
+              test: '(MIT OR BSD-3-Clause OR Apache-2.0 OR LGPL-2.1-or-later OR ISC )',
+              failOnUnlicensed: true,
+              failOnViolation: true,
+            },
+          },
+        }),
         commonjs({
             include: 'node_modules/**'
         }),
@@ -213,7 +232,7 @@ export default {
         replace({
             "process.env.BUILD": '"' + build + '"',
         }),
-        useTerser ? terser({output: {comments: false}}) : false,
+        useTerser ? terser() : false,
         copy({
             targets: [
                 {src: 'assets/silent-check-sso.html', dest:'dist'},
