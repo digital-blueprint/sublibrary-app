@@ -142,6 +142,7 @@ export default {
       format: 'esm',
       sourcemap: true
     },
+    preserveEntrySignatures: false,
     onwarn: function (warning, warn) {
         // ignore "suggestions" warning re "use strict"
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
