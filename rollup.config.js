@@ -27,6 +27,8 @@ const USE_HTTPS = false;
 
 const pkg = require('./package.json');
 const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
+const watch = process.env.ROLLUP_WATCH === 'true';
+const watchFull = process.env.WATCH_FULL !== undefined;
 console.log("build: " + build);
 let basePath = '';
 let entryPointURL = '';
@@ -34,8 +36,8 @@ let keyCloakServer = '';
 let keyCloakBaseURL = '';
 let keyCloakClientId = '';
 let matomoSiteId = 131;
-let useTerser = true;
-let useBabel = true;
+let useTerser = !watch || watchFull;
+let useBabel = !watch || watchFull;
 
 switch (build) {
   case 'local':
@@ -44,7 +46,6 @@ switch (build) {
     keyCloakServer = 'auth-dev.tugraz.at';
     keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
     keyCloakClientId = 'auth-dev-mw-frontend-local';
-    useTerser = false;
     break;
   case 'development':
     basePath = '/apps/library/';
@@ -74,7 +75,6 @@ switch (build) {
     keyCloakServer = '';
     keyCloakBaseURL = '';
     keyCloakClientId = '';
-    useTerser = false;
     break;
   default:
     console.error('Unknown build environment: ' + build);
@@ -289,7 +289,7 @@ export default {
           '@babel/plugin-syntax-dynamic-import',
           '@babel/plugin-syntax-import-meta']
         }),
-        (process.env.ROLLUP_WATCH === 'true') ? serve({
+        watch ? serve({
           contentBase: '.',
           host: '127.0.0.1',
           port: 8001,
