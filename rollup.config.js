@@ -266,12 +266,18 @@ export default {
             ],
         }),
         useBabel && babel({
-          exclude: 'node_modules/**',
+          include: [
+              'src/**',
+          ],
           babelHelpers: 'runtime',
           babelrc: false,
           presets: [[
-            '@babel/preset-modules', {
-              loose: true
+            '@babel/preset-env', {
+              loose: true,
+              bugfixes: true,
+              targets: {
+                esmodules: true
+              }
             }
           ]],
           plugins: [[
