@@ -81,32 +81,6 @@ switch (build) {
     process.exit(1);
 }
 
-
-
-const CHUNK_BLACKLIST = [
-  'jszip',  // jszip is a node module by default and rollup chunking is confused by that and emits warnings
-  'source-sans-pro',
-  '@open-wc/scoped-elements',
-];
-
-/**
- * Returns a list of chunks used for splitting up the bundle.
- * We recursively use every dependency and ever internal dev dependency (starting with 'vpu-').
- */
-function getManualChunks(pkg) {
-  let manualChunks = Object.keys(pkg.dependencies).reduce(function (acc, item) { acc[item] = [item]; return acc;}, {});
-  const vpu = Object.keys(pkg.devDependencies).reduce(function (acc, item) { if (item.startsWith('vpu-')) acc[item] = [item]; return acc;}, {});
-  for (const vpuName in vpu) {
-    const subPkg = require('./node_modules/' + vpuName + '/package.json');
-    manualChunks = Object.assign(manualChunks, getManualChunks(subPkg));
-  }
-  manualChunks = Object.assign(manualChunks, vpu);
-  for(const name of CHUNK_BLACKLIST) {
-    delete manualChunks[name];
-  }
-  return manualChunks;
-}
-
 /**
  * Creates a server certificate and caches it in the .cert directory
  */
@@ -168,7 +142,6 @@ export default {
       format: 'esm',
       sourcemap: true
     },
-    manualChunks: getManualChunks(pkg),
     onwarn: function (warning, warn) {
         // ignore "suggestions" warning re "use strict"
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE') {
@@ -217,7 +190,6 @@ export default {
             buildInfo: getBuildInfo()
           }
         }),
-
         resolve({
           customResolveOptions: {
             // ignore node_modules from vendored packages
