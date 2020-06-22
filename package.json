@@ -19,7 +19,6 @@
     "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
     "chokidar": "^3.4.0",
-    "e2e-test": "file:./vendor/e2e-test",
     "eslint": "^7.2.0",
     "eslint-plugin-jsdoc": "^27.0.7",
     "glob": "^7.1.6",
