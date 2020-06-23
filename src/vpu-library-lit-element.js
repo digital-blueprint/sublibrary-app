@@ -1,5 +1,5 @@
 import {LitElement} from "lit-element";
-import * as events from 'vpu-common/events.js';
+import {EventBus} from 'vpu-common';
 
 export default class VPULibraryLitElement extends LitElement {
 
@@ -20,16 +20,16 @@ export default class VPULibraryLitElement extends LitElement {
 
     connectedCallback() {
         super.connectedCallback();
+        this._bus = new EventBus();
 
         this._loginCalled = false;
-        this._subscriber = new events.EventSubscriber('vpu-auth-update', 'vpu-auth-update-request');
+
         this._updateAuth = this._updateAuth.bind(this);
-        this._subscriber.subscribe(this._updateAuth);
+        this._bus.subscribe('auth-update', this._updateAuth);
     }
 
     disconnectedCallback() {
-        this._subscriber.unsubscribe(this._updateAuth);
-        delete this._subscriber;
+        this._bus.close();
 
         super.disconnectedCallback();
     }
