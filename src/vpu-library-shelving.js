@@ -9,7 +9,7 @@ import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import * as errorUtils from "vpu-common/error";
-import {Button} from "vpu-common";
+import {Button, MiniSpinner} from "vpu-common";
 import {OrganizationSelect} from './organization-select.js';
 import {classMap} from 'lit-html/directives/class-map.js';
 import {LibraryBookOfferSelect} from 'vpu-library-book-offer-select';
@@ -31,6 +31,7 @@ class LibraryShelving extends ScopedElementsMixin(VPULibraryLitElement) {
             'vpu-knowledge-base-organization-select': OrganizationSelect,
             'vpu-library-book-offer-select': LibraryBookOfferSelect,
             'vpu-button': Button,
+            'vpu-mini-spinner': MiniSpinner,
         };
     }
 
@@ -202,7 +203,7 @@ class LibraryShelving extends ScopedElementsMixin(VPULibraryLitElement) {
         return html`
             <link rel="stylesheet" href="${suggestionsCSS}">
 
-            <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions()})}">
+            <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading()})}">
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
@@ -237,11 +238,14 @@ class LibraryShelving extends ScopedElementsMixin(VPULibraryLitElement) {
                     </div>
                 </div>
             </form>
-            <div class="notification is-warning ${classMap({hidden: this.isLoggedIn()})}">
+            <div class="notification is-warning ${classMap({hidden: this.isLoggedIn() || this.isLoading()})}">
                 ${i18n.t('error-login-message')}
             </div>
-            <div class="notification is-danger ${classMap({hidden: this.hasLibraryPermissions() || !this.isLoggedIn()})}">
+            <div class="notification is-danger ${classMap({hidden: this.hasLibraryPermissions() || !this.isLoggedIn() || this.isLoading()})}">
                 ${i18n.t('error-permission-message')}
+            </div>
+            <div class="${classMap({hidden: !this.isLoading()})}">
+                <vpu-mini-spinner></vpu-mini-spinner>
             </div>
         `;
     }

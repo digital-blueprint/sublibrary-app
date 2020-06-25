@@ -11,7 +11,17 @@ export default class VPULibraryLitElement extends LitElement {
         return (window.VPUPerson && Array.isArray(window.VPUPerson.roles) && window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') !== -1);
     }
 
-    _updateAuth() {
+
+
+    _updateAuth(e) {
+        this._loginStatus = e.status;
+        // Every time isLoggedIn()/isLoading() return something different we request a re-render
+        let newLoginState = [this.isLoggedIn(), this.isLoading()];
+        if (this._loginState.toString() !== newLoginState.toString()) {
+            this.requestUpdate();
+        }
+        this._loginState = newLoginState;
+
         if (this.isLoggedIn() && !this._loginCalled) {
             this._loginCalled = true;
             this.loginCallback();
@@ -20,12 +30,12 @@ export default class VPULibraryLitElement extends LitElement {
 
     connectedCallback() {
         super.connectedCallback();
-        this._bus = new EventBus();
 
+        this._loginStatus = '';
+        this._loginState = [];
         this._loginCalled = false;
-
-        this._updateAuth = this._updateAuth.bind(this);
-        this._bus.subscribe('auth-update', this._updateAuth);
+        this._bus = new EventBus();
+        this._bus.subscribe('auth-update', this._updateAuth.bind(this));
     }
 
     disconnectedCallback() {
@@ -38,9 +48,14 @@ export default class VPULibraryLitElement extends LitElement {
         return (window.VPUPerson !== undefined && window.VPUPerson !== null);
     }
 
+    isLoading() {
+        if (this._loginStatus === "logged-out")
+            return false;
+        return (!this.isLoggedIn() && window.VPUAuthToken !== undefined);
+    }
+
     loginCallback() {
         // Implement in subclass
-        this.requestUpdate();
     }
 
     getScopedTagName(tagName) {

@@ -256,7 +256,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(VPULibraryLitElement) {
         const loanDate = date.toISOString();
 
         return html`
-            <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions()})}">
+            <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading()})}">
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
@@ -315,11 +315,14 @@ class LibraryCreateLoan extends ScopedElementsMixin(VPULibraryLitElement) {
                     </div>
                 `: ``}
             </form>
-            <div class="notification is-warning ${classMap({hidden: this.isLoggedIn()})}">
+            <div class="notification is-warning ${classMap({hidden: this.isLoggedIn() || this.isLoading()})}">
                 ${i18n.t('error-login-message')}
             </div>
-            <div class="notification is-danger ${classMap({hidden: this.hasLibraryPermissions() || !this.isLoggedIn()})}">
+            <div class="notification is-danger ${classMap({hidden: this.hasLibraryPermissions() || !this.isLoggedIn() || this.isLoading()})}">
                 ${i18n.t('error-permission-message')}
+            </div>
+            <div class="${classMap({hidden: !this.isLoading()})}">
+                <vpu-mini-spinner></vpu-mini-spinner>
             </div>
         `;
     }
