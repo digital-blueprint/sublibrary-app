@@ -1,7 +1,7 @@
 import {createI18nInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
-import VPULibraryLitElement from './vpu-library-lit-element';
+import {LibraryElement} from './library-element.js';
 import {PersonSelect} from 'vpu-person-select';
 import {LibraryBookOfferSelect} from 'vpu-library-book-offer-select';
 import * as commonUtils from 'vpu-common/utils';
@@ -13,7 +13,7 @@ import {classMap} from 'lit-html/directives/class-map.js';
 
 const i18n = createI18nInstance();
 
-class LibraryCreateLoan extends ScopedElementsMixin(VPULibraryLitElement) {
+class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.lang = i18n.language;

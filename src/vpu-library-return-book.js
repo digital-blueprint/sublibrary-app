@@ -2,7 +2,7 @@ import $ from 'jquery';
 import {createI18nInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
-import VPULibraryLitElement from "./vpu-library-lit-element";
+import {LibraryElement} from "./library-element.js";
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import * as errorUtils from "vpu-common/error";
@@ -13,7 +13,7 @@ import  {LibraryBookOfferSelect} from 'vpu-library-book-offer-select';
 
 const i18n = createI18nInstance();
 
-class LibraryReturnBook extends ScopedElementsMixin(VPULibraryLitElement) {
+class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.lang = i18n.language;

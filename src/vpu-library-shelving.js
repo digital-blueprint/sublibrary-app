@@ -3,7 +3,7 @@ import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {send as notify} from 'vpu-common/notification';
-import VPULibraryLitElement from "./vpu-library-lit-element";
+import {LibraryElement} from "./library-element.js";
 import Suggestions from 'suggestions';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
@@ -16,7 +16,7 @@ import {LibraryBookOfferSelect} from 'vpu-library-book-offer-select';
 
 const i18n = createI18nInstance();
 
-class LibraryShelving extends ScopedElementsMixin(VPULibraryLitElement) {
+class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.lang = i18n.language;

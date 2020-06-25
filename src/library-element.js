@@ -1,7 +1,7 @@
 import {LitElement} from "lit-element";
 import {EventBus} from 'vpu-common';
 
-export default class VPULibraryLitElement extends LitElement {
+export class LibraryElement extends LitElement {
 
     _(selector) {
         return this.shadowRoot === null ? this.querySelector(selector) : this.shadowRoot.querySelector(selector);

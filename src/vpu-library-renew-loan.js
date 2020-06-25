@@ -3,7 +3,7 @@ import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {send as notify} from 'vpu-common/notification';
-import VPULibraryLitElement from "./vpu-library-lit-element";
+import {LibraryElement} from "./library-element.js";
 import {PersonSelect} from 'vpu-person-select';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
@@ -15,7 +15,7 @@ import {classMap} from 'lit-html/directives/class-map.js';
 
 const i18n = createI18nInstance();
 
-class LibraryRenewLoan extends ScopedElementsMixin(VPULibraryLitElement) {
+class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.lang = i18n.language;

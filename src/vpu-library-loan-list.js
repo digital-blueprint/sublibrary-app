@@ -1,7 +1,7 @@
 import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
-import VPULibraryLitElement from "./vpu-library-lit-element";
+import {LibraryElement} from "./library-element.js";
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import {DataTableView} from 'vpu-data-table-view';
@@ -13,7 +13,7 @@ import $ from "jquery";
 
 const i18n = createI18nInstance();
 
-class LibraryLoanList extends ScopedElementsMixin(VPULibraryLitElement) {
+class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.lang = i18n.language;
