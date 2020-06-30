@@ -98,7 +98,10 @@
     "book-price": "Preis",
     "receiving -note": "Eingangsnotiz",
     "current-state": "Stand",
-    "sum-of-column": "Summe der Spalte"
+    "sum-of-column": "Summe der Spalte",
+    "status-name-active": "offen",
+    "status-name-cancelled": "storniert",
+    "status-name-closed": "abgeschlossen"
   },
   "location-identifier": {
     "headline": "Identifikator zur Aufstellung",

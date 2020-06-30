@@ -98,7 +98,10 @@
     "book-price": "Price",
     "receiving -note": "Receiving -note",
     "current-state": "State",
-    "sum-of-column": "Sum of column"
+    "sum-of-column": "Sum of column",
+    "status-name-active": "active",
+    "status-name-cancelled": "cancelled",
+    "status-name-closed": "closed"
   },
   "location-identifier": {
     "headline": "Identifier for book placement",

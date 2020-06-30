@@ -14,6 +14,26 @@ import $ from "jquery";
 
 const i18n = createI18nInstance();
 
+
+/**
+ * Returns a translated label for the given status
+ *
+ * @param {string} status
+ * @returns {string} A status label for the actve language
+ */
+function getEventStatusName(status) {
+    if (status === 'active') {
+        return i18n.t('order-list.status-name-active');
+    } else if (status === 'cancelled') {
+        return i18n.t('order-list.status-name-cancelled');
+    } else if (status === 'closed') {
+        return i18n.t('order-list.status-name-closed');
+    } else {
+        return status;
+    }
+}
+
+
 class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
@@ -190,7 +210,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                                 bookOrder.orderNumber,
                                 priceString,
                                 bookOrder.orderedItem.price,
-                                i18n.t('order-list.status-name-' + bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus.name),
+                                getEventStatusName(bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus.name),
                                 bookOrder.receivingNote,
                             ];
                             tbl.push(row);
