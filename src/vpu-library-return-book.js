@@ -9,7 +9,7 @@ import * as errorUtils from "vpu-common/error";
 import {OrganizationSelect} from './organization-select.js';
 import {MiniSpinner, Button} from 'vpu-common';
 import {classMap} from 'lit-html/directives/class-map.js';
-import  {LibraryBookOfferSelect} from 'vpu-library-book-offer-select';
+import  {LibraryBookOfferSelect} from './library-book-offer-select.js';
 
 const i18n = createI18nInstance();
 

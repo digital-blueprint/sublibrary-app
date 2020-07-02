@@ -11,6 +11,11 @@
   "shelving": {
     "button-refresh-title": "Load shelving from {{name}} again"
   },
+  "library-book-offer-select": {
+    "headline": "Library book",
+    "placeholder": "Please enter a barcode",
+    "error-summary": "An error occurred"
+  },
   "create-loan": {
     "info-no-existing-loans-summary": "No existing loans",
     "info-no-existing-loans-body": "No existing loans were found, a new one can be created.",

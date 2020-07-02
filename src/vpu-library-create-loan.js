@@ -3,7 +3,7 @@ import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from './library-element.js';
 import {PersonSelect} from 'vpu-person-select';
-import {LibraryBookOfferSelect} from 'vpu-library-book-offer-select';
+import {LibraryBookOfferSelect} from './library-book-offer-select.js';
 import * as commonUtils from 'vpu-common/utils';
 import * as commonStyles from 'vpu-common/styles';
 import * as errorUtils from "vpu-common/error";

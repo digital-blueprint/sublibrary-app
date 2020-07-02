@@ -11,6 +11,11 @@
   "shelving": {
     "button-refresh-title": "Aufstellung von {{name}} erneut laden"
   },
+  "library-book-offer-select": {
+    "headline": "Bibliothek Buch",
+    "placeholder": "Bitte geben Sie einen Barcode ein",
+    "error-summary": "Ein Fehler ist aufgetreten"
+  },
   "create-loan": {
     "info-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
     "info-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden, das Buch kann entlehnt werden.",
