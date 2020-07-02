@@ -28,7 +28,6 @@
     "karma-chrome-launcher": "^3.1.0",
     "karma-firefox-launcher": "^1.3.0",
     "karma-mocha": "^2.0.1",
-    "license-checker": "^25.0.1",
     "mocha": "^8.0.1",
     "puppeteer": "^2.1.1",
     "rollup": "^2.18.0",
@@ -70,7 +69,6 @@
     "watch-local": "npm run watch",
     "watch-full": "rollup -c --watch --environment WATCH_FULL",
     "test": "rollup -c --environment BUILD:test && karma start --singleRun",
-    "lint": "eslint .",
-    "license-checker": "license-checker --production --onlyAllow 'MIT;BSD-3-Clause;ISC;Apache-2.0;BSD-2-Clause' --excludePackages 'vpu-auth@1.0.0;vpu-common@1.0.1;vpu-data-table-view@1.0.0;vpu-knowledge-base-web-page-element-view@1.0.0;vpu-library@1.0.0;vpu-language-select@1.0.0;vpu-notification@1.0.0;vpu-person-profile@1.0.0;vpu-person-select@1.0.0'"
+    "lint": "eslint ."
   }
 }
