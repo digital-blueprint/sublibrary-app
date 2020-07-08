@@ -54,7 +54,7 @@
     "vpu-auth": "file:./vendor/toolkit/packages/auth",
     "vpu-common": "file:./vendor/toolkit/packages/common",
     "vpu-data-table-view": "file:./vendor/toolkit/packages/data-table-view",
-    "vpu-knowledge-base-web-page-element-view": "file:./vendor/kb-wpe-view",
+    "vpu-knowledge-base-web-page-element-view": "file:./vendor/toolkit/packages/knowledge-base-web-page-element-view",
     "vpu-language-select": "file:./vendor/toolkit/packages/language-select",
     "vpu-notification": "file:./vendor/toolkit/packages/notification",
     "vpu-person-profile": "file:./vendor/toolkit/packages/person-profile",
