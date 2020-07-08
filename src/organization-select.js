@@ -311,7 +311,6 @@ export class OrganizationSelect extends LitElement {
     }
 
     render() {
-        commonUtils.initAssetBaseURL('vpu-select-organization-src');
         const select2CSS = commonUtils.getAssetURL(select2CSSPath);
         return html`
             <link rel="stylesheet" href="${select2CSS}">

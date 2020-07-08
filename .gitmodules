@@ -1,27 +1,3 @@
-[submodule "vendor/auth"]
-	path = vendor/auth
-	url = git@gitlab.tugraz.at:VPU/WebComponents/Auth.git
-[submodule "vendor/common"]
-	path = vendor/common
-	url = git@gitlab.tugraz.at:VPU/WebComponents/Common.git
-[submodule "vendor/person-select"]
-	path = vendor/person-select
-	url = git@gitlab.tugraz.at:VPU/WebComponents/PersonSelect.git
-[submodule "vendor/notification"]
-	path = vendor/notification
-	url = git@gitlab.tugraz.at:VPU/WebComponents/Notification.git
-[submodule "vendor/kb-wpe-view"]
-	path = vendor/kb-wpe-view
-	url = git@gitlab.tugraz.at:VPU/WebComponents/KnowledgeBaseWebPageElementView.git
-[submodule "vendor/language-select"]
-	path = vendor/language-select
-	url = git@gitlab.tugraz.at:VPU/WebComponents/LanguageSelect.git
-[submodule "vendor/datatableview"]
-	path = vendor/datatableview
-	url = git@gitlab.tugraz.at:VPU/WebComponents/datatableview.git
-[submodule "vendor/person-profile"]
-	path = vendor/person-profile
-	url = git@gitlab.tugraz.at:VPU/WebComponents/PersonProfile.git
-[submodule "vendor/app-shell"]
-	path = vendor/app-shell
-	url = git@gitlab.tugraz.at:VPU/Apps/AppShell.git
+[submodule "vendor/toolkit"]
+	path = vendor/toolkit
+	url = git@gitlab.tugraz.at:VPU/WebComponents/toolkit.git

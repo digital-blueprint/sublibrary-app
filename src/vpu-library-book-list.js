@@ -410,7 +410,6 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             inventoryYearItemTemplates.push(html`<option value="${item}">${item}</option>`);
         });
 
-        commonUtils.initAssetBaseURL('vpu-library-book-list-src');
         const select2CSS = commonUtils.getAssetURL(select2CSSPath);
         return html`
             <link rel="stylesheet" href="${select2CSS}">
