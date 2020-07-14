@@ -9,17 +9,17 @@
 ```bash
 # get the source
 git clone git@gitlab.tugraz.at:dbp/apps/library.git
-cd Library
+cd library
 git submodule update --init
 
-# install dependencies (make sure you have npm version 4+ installed, so symlinks to the git submodules are created automatically)
-npm install
+# install dependencies
+yarn install
 
 # constantly build dist/bundle.js and run a local web-server on port 8001 
-npm run watch-local
+yarn run watch-local
 
 # run tests
-npm test
+yarn test
 ```
 
 Jump to <http://localhost:8001> and you should get a Single Sign On login page.
@@ -31,7 +31,7 @@ Example book barcodes: `+F58330104`, `+F58019101`, `+F53498803`
 
 <https://mw-frontend-dev.tugraz.at/apps/library>
 
-Run `npm run watch-dev` to build the `dist/bundle.js` constantly and upload the `dist` folder to the server.
+Run `yarn run watch-dev` to build the `dist/bundle.js` constantly and upload the `dist` folder to the server.
 
 ## Roll back a release
 
@@ -50,7 +50,7 @@ COMPOSER_VENDOR_DIR=_temp composer require "deployer/deployer" "deployer/recipes
 Build bundle for the demo server
 
 ```bash
-npm run build-demo
+yarn run build-demo
 ```
 
 ## Browser versions
