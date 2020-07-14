@@ -2,12 +2,12 @@ import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
-import * as commonUtils from 'vpu-common/utils';
-import * as commonStyles from 'vpu-common/styles';
-import {DataTableView} from 'vpu-data-table-view';
-import * as errorUtils from "vpu-common/error";
+import * as commonUtils from 'dbp-common/utils';
+import * as commonStyles from 'dbp-common/styles';
+import {DataTableView} from 'dbp-data-table-view';
+import * as errorUtils from "dbp-common/error";
 import {OrganizationSelect} from './organization-select.js';
-import {MiniSpinner, Button} from 'vpu-common';
+import {MiniSpinner, Button} from 'dbp-common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import $ from "jquery";
 
@@ -33,10 +33,10 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'vpu-knowledge-base-organization-select': OrganizationSelect,
-            'vpu-mini-spinner': MiniSpinner,
-            'vpu-button': Button,
-            'vpu-data-table-view': DataTableView,
+            'dbp-knowledge-base-organization-select': OrganizationSelect,
+            'dbp-mini-spinner': MiniSpinner,
+            'dbp-button': Button,
+            'dbp-data-table-view': DataTableView,
         };
     }
 
@@ -76,7 +76,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 }
             `;
 
-            this._(this.getScopedTagName("vpu-data-table-view")).setCSSStyle(css);
+            this._(this.getScopedTagName("dbp-data-table-view")).setCSSStyle(css);
             this.loadTable();
         });
     }
@@ -139,11 +139,11 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         const signal = this.abortController.signal;
 
         // load list of loans for person
-        console.assert(window.VPUAuthToken);
+        console.assert(window.DBPAuthToken);
         fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + window.VPUAuthToken,
+                'Authorization': 'Bearer ' + window.DBPAuthToken,
             },
             signal: signal,
         })
@@ -222,7 +222,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                     }
 
 
-                    let button = that.getScopedTagName('vpu-button');
+                    let button = that.getScopedTagName('dbp-button');
                     const row = [
                         loan.object.book.title,
                         loan.object.book.author,
@@ -293,9 +293,9 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         const path = e.composedPath();
         let button, buttonIndex = -1;
 
-        // search for the vpu-button
+        // search for the dbp-button
         path.some((item, index) => {
-            if (item.nodeName.toUpperCase() === this.getScopedTagName("vpu-button").toUpperCase()) {
+            if (item.nodeName.toUpperCase() === this.getScopedTagName("dbp-button").toUpperCase()) {
                 button = item;
                 buttonIndex = index;
 
@@ -327,7 +327,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 fetch(apiUrl, {
                     headers: {
                         'Content-Type': 'application/ld+json',
-                        'Authorization': 'Bearer ' + window.VPUAuthToken,
+                        'Authorization': 'Bearer ' + window.DBPAuthToken,
                     },
                 })
                     .then(result => {
@@ -356,12 +356,12 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select lang="${this.lang}"
                                                                 value="${this.organizationId}"
-                                                                @change="${this.onOrgUnitCodeChanged}"></vpu-knowledge-base-organization-select>
+                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
                 </div>
-                <vpu-mini-spinner id="loans-loading" text="${i18n.t('loan-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></vpu-mini-spinner>
+                <dbp-mini-spinner id="loans-loading" text="${i18n.t('loan-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
                 <div id="loan-list-block">
                     <div class="field">
                         <label class="label">
@@ -378,8 +378,8 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                     <div class="field">
                         <label class="label">${i18n.t('loan-list.loans')}</label>
                         <div class="control">
-                            <vpu-data-table-view searching paging exportable export-name="${i18n.t('loan-list.export-name', {organizationCode: this.getOrganizationCode()})}"
-                                                 lang="${this.lang}" id="loan-loans-1" @click="${(e) => this.onDataTableClick(e)}"></vpu-data-table-view>
+                            <dbp-data-table-view searching paging exportable export-name="${i18n.t('loan-list.export-name', {organizationCode: this.getOrganizationCode()})}"
+                                                 lang="${this.lang}" id="loan-loans-1" @click="${(e) => this.onDataTableClick(e)}"></dbp-data-table-view>
                         </div>
                     </div>
                 </div>
@@ -394,10 +394,10 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 ${i18n.t('error-permission-message')}
             </div>
             <div class="${classMap({hidden: !this.isLoading()})}">
-                <vpu-mini-spinner></vpu-mini-spinner>
+                <dbp-mini-spinner></dbp-mini-spinner>
             </div>
         `;
     }
 }
 
-commonUtils.defineCustomElement('vpu-library-loan-list', LibraryLoanList);
+commonUtils.defineCustomElement('dbp-library-loan-list', LibraryLoanList);

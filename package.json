@@ -1,7 +1,7 @@
 {
-  "name": "vpu-library",
+  "name": "dbp-library",
   "version": "1.0.0",
-  "main": "src/vpu-library.js",
+  "main": "src/dbp-library.js",
   "license": "LGPL-2.1-or-later",
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -50,15 +50,15 @@
     "source-sans-pro": "^2.45.0",
     "suggestions": "^1.7.0",
     "universal-router": "^9.0.1",
-    "vpu-app-shell": "file:./vendor/toolkit/packages/app-shell",
-    "vpu-auth": "file:./vendor/toolkit/packages/auth",
-    "vpu-common": "file:./vendor/toolkit/packages/common",
-    "vpu-data-table-view": "file:./vendor/toolkit/packages/data-table-view",
-    "vpu-knowledge-base-web-page-element-view": "file:./vendor/toolkit/packages/knowledge-base-web-page-element-view",
-    "vpu-language-select": "file:./vendor/toolkit/packages/language-select",
-    "vpu-notification": "file:./vendor/toolkit/packages/notification",
-    "vpu-person-profile": "file:./vendor/toolkit/packages/person-profile",
-    "vpu-person-select": "file:./vendor/toolkit/packages/person-select"
+    "dbp-app-shell": "file:./vendor/toolkit/packages/app-shell",
+    "dbp-auth": "file:./vendor/toolkit/packages/auth",
+    "dbp-common": "file:./vendor/toolkit/packages/common",
+    "dbp-data-table-view": "file:./vendor/toolkit/packages/data-table-view",
+    "dbp-knowledge-base-web-page-element-view": "file:./vendor/toolkit/packages/knowledge-base-web-page-element-view",
+    "dbp-language-select": "file:./vendor/toolkit/packages/language-select",
+    "dbp-notification": "file:./vendor/toolkit/packages/notification",
+    "dbp-person-profile": "file:./vendor/toolkit/packages/person-profile",
+    "dbp-person-select": "file:./vendor/toolkit/packages/person-select"
   },
   "scripts": {
     "build-dev": "rollup -c --environment BUILD:development",

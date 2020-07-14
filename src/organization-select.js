@@ -3,12 +3,12 @@ import select2 from 'select2';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import {createI18nInstance} from './i18n.js';
 import {css, html, LitElement} from 'lit-element';
-import * as commonUtils from 'vpu-common/utils';
-import * as commonStyles from 'vpu-common/styles';
-import select2LangDe from "vpu-person-select/src/i18n/de/select2";
-import select2LangEn from "vpu-person-select/src/i18n/en/select2";
-import JSONLD from "vpu-common/jsonld";
-import {send as notify} from "vpu-common/notification";
+import * as commonUtils from 'dbp-common/utils';
+import * as commonStyles from 'dbp-common/styles';
+import select2LangDe from "dbp-person-select/src/i18n/de/select2";
+import select2LangEn from "dbp-person-select/src/i18n/en/select2";
+import JSONLD from "dbp-common/jsonld";
+import {send as notify} from "dbp-common/notification";
 
 select2(window, $);
 
@@ -48,7 +48,7 @@ export class OrganizationSelect extends LitElement {
         this.updateSelect2();
 
         this.updateComplete.then(()=> {
-            window.addEventListener("vpu-auth-person-init", async () => {
+            window.addEventListener("dbp-auth-person-init", async () => {
                 this.cache = {};
                 this.updateSelect2();
             });
@@ -233,11 +233,11 @@ export class OrganizationSelect extends LitElement {
      * @returns {Array} list of orga objects
      */
     async getAssociatedOrganizations() {
-        if (window.VPUPerson === undefined) {
+        if (window.DBPPerson === undefined) {
             return [];
         }
 
-        const functions = window.VPUPerson.functions;
+        const functions = window.DBPPerson.functions;
 
         if (functions === undefined) {
             return [];
@@ -259,7 +259,7 @@ export class OrganizationSelect extends LitElement {
                 promises.push(fetch(apiUrl, {
                     headers: {
                         'Content-Type': 'application/ld+json',
-                        'Authorization': 'Bearer ' + window.VPUAuthToken,
+                        'Authorization': 'Bearer ' + window.DBPAuthToken,
                     },
                 })
                     .then(response => response.json())

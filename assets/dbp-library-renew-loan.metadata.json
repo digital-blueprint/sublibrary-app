@@ -1,6 +1,6 @@
 {
-  "element": "vpu-library-renew-loan",
-  "module_src": "vpu-library-renew-loan.js",
+  "element": "dbp-library-renew-loan",
+  "module_src": "dbp-library-renew-loan.js",
   "routing_name": "renew-loan",
   "name": {
     "de": "Leihfrist verlängern",

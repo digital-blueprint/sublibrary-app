@@ -1,13 +1,13 @@
 import {assert} from 'chai';
 
-import '../src/vpu-library-shelving';
-import '../src/vpu-library.js';
+import '../src/dbp-library-shelving';
+import '../src/dbp-library.js';
 
-suite('vpu-library-shelving basics', () => {
+suite('dbp-library-shelving basics', () => {
   let node;
 
   suiteSetup(async () => {
-    node = document.createElement('vpu-library-shelving');
+    node = document.createElement('dbp-library-shelving');
     document.body.appendChild(node);
     await node.updateComplete;
   });
@@ -21,11 +21,11 @@ suite('vpu-library-shelving basics', () => {
   });
 });
 
-suite('vpu-library-app basics', () => {
+suite('dbp-library-app basics', () => {
   let node;
 
   suiteSetup(async () => {
-    node = document.createElement('vpu-app');
+    node = document.createElement('dbp-app');
     document.body.appendChild(node);
     await node.updateComplete;
   });

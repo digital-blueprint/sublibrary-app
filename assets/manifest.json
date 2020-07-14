@@ -1,15 +1,15 @@
 {
   "short_name": "Library",
   "name": "TUGraz Library",
-  "start_url": "./vpu-library.html",
+  "start_url": "./dbp-library.html",
   "icons": [
     {
-      "src": "local/vpu-library/icon-192.png",
+      "src": "local/dbp-library/icon-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "local/vpu-library/icon-512.png",
+      "src": "local/dbp-library/icon-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

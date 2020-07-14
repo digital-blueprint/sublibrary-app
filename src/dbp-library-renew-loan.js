@@ -2,15 +2,15 @@ import $ from 'jquery';
 import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
-import {send as notify} from 'vpu-common/notification';
+import {send as notify} from 'dbp-common/notification';
 import {LibraryElement} from "./library-element.js";
-import {PersonSelect} from 'vpu-person-select';
-import * as commonUtils from 'vpu-common/utils';
-import * as commonStyles from 'vpu-common/styles';
-import {DataTableView} from 'vpu-data-table-view';
-import * as errorUtils from "vpu-common/error";
+import {PersonSelect} from 'dbp-person-select';
+import * as commonUtils from 'dbp-common/utils';
+import * as commonStyles from 'dbp-common/styles';
+import {DataTableView} from 'dbp-data-table-view';
+import * as errorUtils from "dbp-common/error";
 import {OrganizationSelect} from './organization-select.js';
-import {MiniSpinner, Button} from 'vpu-common';
+import {MiniSpinner, Button} from 'dbp-common';
 import {classMap} from 'lit-html/directives/class-map.js';
 
 const i18n = createI18nInstance();
@@ -28,11 +28,11 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'vpu-knowledge-base-organization-select': OrganizationSelect,
-            'vpu-person-select': PersonSelect,
-            'vpu-mini-spinner': MiniSpinner,
-            'vpu-button': Button,
-            'vpu-data-table-view': DataTableView,
+            'dbp-knowledge-base-organization-select': OrganizationSelect,
+            'dbp-person-select': PersonSelect,
+            'dbp-mini-spinner': MiniSpinner,
+            'dbp-button': Button,
+            'dbp-data-table-view': DataTableView,
         };
     }
 
@@ -81,7 +81,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 }
 
                 table.dataTable thead th, table.dataTable thead td { padding: 10px; }
-                .button-col > vpu-button {
+                .button-col > dbp-button {
                     margin-right: 5px;
                     margin-bottom: 5px;
                     display: inline-block;
@@ -92,8 +92,8 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 }
             `;
 
-            this._(this.getScopedTagName("vpu-data-table-view")).setCSSStyle(css);
-            const $personSelect = that.$(this.getScopedTagName('vpu-person-select'));
+            this._(this.getScopedTagName("dbp-data-table-view")).setCSSStyle(css);
+            const $personSelect = that.$(this.getScopedTagName('dbp-person-select'));
             const $renewLoanBlock = that.$('#renew-loan-block');
 
             // show loan list block if person was selected
@@ -153,7 +153,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
             fetch(apiUrl, {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    'Authorization': 'Bearer ' + window.VPUAuthToken,
+                    'Authorization': 'Bearer ' + window.DBPAuthToken,
                 },
             })
                 .then(result => {
@@ -187,7 +187,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                 if (loan.object.library !== orgUnitCode) {
                                     return;
                                 }
-                                let button = that.getScopedTagName("vpu-button");
+                                let button = that.getScopedTagName("dbp-button");
 
                                 const row = [
                                     loan.object.name,
@@ -248,7 +248,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 */
 
                 // we need to update the book list because of the localization of the "Contact" button
-                this.$(this.getScopedTagName('vpu-person-select')).change();
+                this.$(this.getScopedTagName('dbp-person-select')).change();
             } else if (propName === "organizationId") {
 
                 this.loadTable();
@@ -271,9 +271,9 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         const path = e.composedPath();
         let button, buttonIndex = -1;
 
-        // search for the vpu-button
+        // search for the dbp-button
         path.some((item, index) => {
-            if (item.nodeName.toUpperCase() === this.getScopedTagName("vpu-button").toUpperCase()) {
+            if (item.nodeName.toUpperCase() === this.getScopedTagName("dbp-button").toUpperCase()) {
                 button = item;
                 buttonIndex = index;
 
@@ -329,7 +329,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                     body: JSON.stringify(data),
                     headers: {
                         'Content-Type': 'application/ld+json',
-                        'Authorization': 'Bearer ' + window.VPUAuthToken,
+                        'Authorization': 'Bearer ' + window.DBPAuthToken,
                     },
                 })
                     .then(result => {
@@ -388,29 +388,29 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select lang="${this.lang}"
                                                                 value="${this.organizationId}"
-                                                                @change="${this.onOrgUnitCodeChanged}"></vpu-knowledge-base-organization-select>
+                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">
-                        <vpu-person-select entry-point-url="${this.entryPointUrl}"
+                        <dbp-person-select entry-point-url="${this.entryPointUrl}"
                                            lang="${this.lang}"
                                            value="${this.personId}"
                                            organization-id="${this.organizationId}"
                                            show-reload-button
                                            show-birth-date
-                                           reload-button-title="${this.person ? i18n.t('renew-loan.button-refresh-title', {personName: this.person.name}): ""}"></vpu-person-select>
+                                           reload-button-title="${this.person ? i18n.t('renew-loan.button-refresh-title', {personName: this.person.name}): ""}"></dbp-person-select>
                     </div>
                 </div>
-                <vpu-mini-spinner id="loans-loading" text="${i18n.t('renew-loan.mini-spinner-text')}" style="font-size: 2em; display: none;"></vpu-mini-spinner>
+                <dbp-mini-spinner id="loans-loading" text="${i18n.t('renew-loan.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
                 <div id="renew-loan-block" class="field">
                     <label class="label">${i18n.t('renew-loan.loans')}</label>
                     <div class="control">
-                        <vpu-data-table-view searching paging exportable export-name="${i18n.t('renew-loan.loans')}"
-                                             lang="${this.lang}" id="book-loans-1" @click="${(e) => this.onDataTableClick(e)}"></vpu-data-table-view>
+                        <dbp-data-table-view searching paging exportable export-name="${i18n.t('renew-loan.loans')}"
+                                             lang="${this.lang}" id="book-loans-1" @click="${(e) => this.onDataTableClick(e)}"></dbp-data-table-view>
                     </div>
                 </div>
                 <div id="no-loans-block" style="display: none;">
@@ -424,10 +424,10 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 ${i18n.t('error-permission-message')}
             </div>
             <div class="${classMap({hidden: !this.isLoading()})}">
-                <vpu-mini-spinner></vpu-mini-spinner>
+                <dbp-mini-spinner></dbp-mini-spinner>
             </div>
         `;
     }
 }
 
-commonUtils.defineCustomElement('vpu-library-renew-loan', LibraryRenewLoan);
+commonUtils.defineCustomElement('dbp-library-renew-loan', LibraryRenewLoan);

@@ -3,14 +3,14 @@ import {findObjectInApiResults} from './utils.js';
 import select2 from 'select2';
 import select2LangDe from './i18n/de/select2-book-offer';
 import select2LangEn from './i18n/en/select2-book-offer';
-import JSONLD from 'vpu-common/jsonld';
+import JSONLD from 'dbp-common/jsonld';
 import {css, html, LitElement} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {createI18nInstance} from './i18n.js';
-import {Icon} from "vpu-common";
-import * as commonUtils from "vpu-common/utils";
-import * as commonStyles from 'vpu-common/styles';
-import * as errorUtils from "vpu-common/error";
+import {Icon} from "dbp-common";
+import * as commonUtils from "dbp-common/utils";
+import * as commonStyles from 'dbp-common/styles';
+import * as errorUtils from "dbp-common/error";
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 
 
@@ -39,7 +39,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
 
     static get scopedElements() {
         return {
-          'vpu-icon': Icon,
+          'dbp-icon': Icon,
         };
     }
 
@@ -163,7 +163,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
                 url: apiUrl,
                 contentType: "application/ld+json",
                 beforeSend: function (jqXHR) {
-                    jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
+                    jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.DBPAuthToken);
                 },
                 data: function (params) {
                     let barcode = params.term.trim();
@@ -231,7 +231,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
             fetch(apiUrl, {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    'Authorization': 'Bearer ' + window.VPUAuthToken,
+                    'Authorization': 'Bearer ' + window.DBPAuthToken,
                 },
             })
             .then(result => {
@@ -337,12 +337,12 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
                 align-items: center;
                 justify-content: center;
                 border: 1px solid #aaa;
-                -moz-border-radius-topright: var(--vpu-border-radius);
-                -moz-border-radius-bottomright: var(--vpu-border-radius);
+                -moz-border-radius-topright: var(--dbp-border-radius);
+                -moz-border-radius-bottomright: var(--dbp-border-radius);
                 line-height: 100%;
             }
 
-            .field .button.control vpu-icon {
+            .field .button.control dbp-icon {
                 top: 0;
             }
         `;
@@ -370,7 +370,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
                        @click="${this.reloadClick}"
                        style="display: ${this.showReloadButton ? "flex" : "none"}"
                        title="${this.reloadButtonTitle}">
-                        <vpu-icon name="reload"></vpu-icon>
+                        <dbp-icon name="reload"></dbp-icon>
                     </a>
                 </div>
                 <div id="library-book-offer-select-dropdown"></div>

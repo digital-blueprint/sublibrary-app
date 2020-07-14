@@ -1,6 +1,6 @@
 {
-  "element": "vpu-library-loan-list",
-  "module_src": "vpu-library-loan-list.js",
+  "element": "dbp-library-loan-list",
+  "module_src": "dbp-library-loan-list.js",
   "routing_name": "loan-list",
   "name": {
     "de": "Entlehnungen anzeigen",

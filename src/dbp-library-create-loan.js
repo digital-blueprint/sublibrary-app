@@ -2,13 +2,13 @@ import {createI18nInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from './library-element.js';
-import {PersonSelect} from 'vpu-person-select';
+import {PersonSelect} from 'dbp-person-select';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
-import * as commonUtils from 'vpu-common/utils';
-import * as commonStyles from 'vpu-common/styles';
-import * as errorUtils from "vpu-common/error";
+import * as commonUtils from 'dbp-common/utils';
+import * as commonStyles from 'dbp-common/styles';
+import * as errorUtils from "dbp-common/error";
 import {OrganizationSelect} from './organization-select.js';
-import {MiniSpinner, Button} from 'vpu-common';
+import {MiniSpinner, Button} from 'dbp-common';
 import {classMap} from 'lit-html/directives/class-map.js';
 
 const i18n = createI18nInstance();
@@ -29,11 +29,11 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'vpu-knowledge-base-organization-select': OrganizationSelect,
-            'vpu-person-select': PersonSelect,
-            'vpu-library-book-offer-select': LibraryBookOfferSelect,
-            'vpu-mini-spinner': MiniSpinner,
-            'vpu-button': Button,
+            'dbp-knowledge-base-organization-select': OrganizationSelect,
+            'dbp-person-select': PersonSelect,
+            'dbp-library-book-offer-select': LibraryBookOfferSelect,
+            'dbp-mini-spinner': MiniSpinner,
+            'dbp-button': Button,
         };
     }
 
@@ -124,7 +124,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             result = await fetch(apiUrl, {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    'Authorization': 'Bearer ' + window.VPUAuthToken,
+                    'Authorization': 'Bearer ' + window.DBPAuthToken,
                 },
             });
 
@@ -225,14 +225,14 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             headers: {
                 'Accept': 'application/ld+json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + window.VPUAuthToken
+                'Authorization': 'Bearer ' + window.DBPAuthToken
             },
             body: JSON.stringify(data),
         });
 
         if (response.ok) {
             // clear book offer select to hide "loan" button
-            const bookOfferSelect = this._(this.getScopedTagName('vpu-library-book-offer-select'));
+            const bookOfferSelect = this._(this.getScopedTagName('dbp-library-book-offer-select'));
             bookOfferSelect.clear();
 
             this.status = {
@@ -260,37 +260,37 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select lang="${this.lang}"
                                                                 value="${this.organizationId}"
-                                                                @change="${this.onOrgUnitCodeChanged}"></vpu-knowledge-base-organization-select>
+                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">
-                        <vpu-person-select entry-point-url="${this.entryPointUrl}"
+                        <dbp-person-select entry-point-url="${this.entryPointUrl}"
                                            @change=${this.onPersonSelectChanged}
                                            lang="${this.lang}"
                                            value="${this.personId}"
                                            show-birth-date>
-                        </vpu-person-select>
+                        </dbp-person-select>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                         <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}"
+                         <dbp-library-book-offer-select entry-point-url="${this.entryPointUrl}"
                                                         @change=${this.onBookSelectChanged}
                                                         @unselect=${this.onBookSelectChanged}
                                                         lang="${this.lang}"
                                                         value="${this.bookOfferId}"
                                                         organization-id="${this.organizationId}"
                                                         show-reload-button
-                                                        reload-button-title="${this.bookOffer ? i18n.t('create-loan.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
+                                                        reload-button-title="${this.bookOffer ? i18n.t('create-loan.button-refresh-title', {name: this.bookOffer.name}): ""}"></dbp-library-book-offer-select>
                     </div>
                 </div>
 
-                <vpu-mini-spinner id="loans-loading" text="${i18n.t('create-loan.mini-spinner-text')}" style="font-size: 2em; display: none;"></vpu-mini-spinner>
+                <dbp-mini-spinner id="loans-loading" text="${i18n.t('create-loan.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
                 <div id="create-loan-block">
                     <div class="field">
                         <label class="label">${i18n.t('renew-loan.end-date')}</label>
@@ -299,11 +299,11 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                     </div>
                     <div class="field">
                         <div class="control">
-                             <vpu-button id="send"
+                             <dbp-button id="send"
                                          @click=${this.onSubmitClicked}
                                          value="${i18n.t('create-loan.submit')}"
                                          ?disabled="${this.sendButtonDisabled}"
-                                         type=""></vpu-button>
+                                         type=""></dbp-button>
                         </div>
                     </div>
                 </div>
@@ -322,10 +322,10 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 ${i18n.t('error-permission-message')}
             </div>
             <div class="${classMap({hidden: !this.isLoading()})}">
-                <vpu-mini-spinner></vpu-mini-spinner>
+                <dbp-mini-spinner></dbp-mini-spinner>
             </div>
         `;
     }
 }
 
-commonUtils.defineCustomElement('vpu-library-create-loan', LibraryCreateLoan);
+commonUtils.defineCustomElement('dbp-library-create-loan', LibraryCreateLoan);

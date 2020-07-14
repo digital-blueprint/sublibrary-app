@@ -1,6 +1,6 @@
 {
-  "element": "vpu-library-order-list",
-  "module_src": "vpu-library-order-list.js",
+  "element": "dbp-library-order-list",
+  "module_src": "dbp-library-order-list.js",
   "routing_name": "order-list",
   "name": {
     "de": "Buchbestellungen anzeigen",

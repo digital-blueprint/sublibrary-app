@@ -91,7 +91,7 @@ function generateTLSConfig() {
   fs.mkdirSync('.cert', {recursive: true});
 
   if (!fs.existsSync('.cert/server.key') || !fs.existsSync('.cert/server.cert')) {
-    const attrs = [{name: 'commonName', value: 'vpu-dev.localhost'}];
+    const attrs = [{name: 'commonName', value: 'dbp-dev.localhost'}];
     const pems = selfsigned.generate(attrs, {algorithm: 'sha256', days: 9999});
     fs.writeFileSync('.cert/server.key', pems.private);
     fs.writeFileSync('.cert/server.cert', pems.cert);
@@ -130,13 +130,13 @@ function getBuildInfo() {
 export default {
     input: (build != 'test') ? [
       'src/' + pkg.name + '.js',
-      'src/vpu-library-shelving.js',
-      'src/vpu-library-create-loan.js',
-      'src/vpu-library-return-book.js',
-      'src/vpu-library-renew-loan.js',
-      'src/vpu-library-book-list.js',
-      'src/vpu-library-loan-list.js',
-      'src/vpu-library-order-list.js',
+      'src/dbp-library-shelving.js',
+      'src/dbp-library-create-loan.js',
+      'src/dbp-library-return-book.js',
+      'src/dbp-library-renew-loan.js',
+      'src/dbp-library-book-list.js',
+      'src/dbp-library-loan-list.js',
+      'src/dbp-library-order-list.js',
     ] : glob.sync('test/**/*.js'),
     output: {
       dir: 'dist',
@@ -242,20 +242,20 @@ Dependencies:
                 {src: 'assets/*.ico', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/*.svg', dest: 'dist/local/' + pkg.name},
                 {src: 'node_modules/source-sans-pro/WOFF2/OTF/*', dest: 'dist/local/' + pkg.name + '/fonts'},
-                {src: 'node_modules/vpu-common/src/spinner.js', dest: 'dist/local/' + pkg.name, rename: 'spinner.js'},
-                {src: 'node_modules/vpu-common/misc/browser-check.js', dest: 'dist/local/' + pkg.name, rename: 'browser-check.js'},
+                {src: 'node_modules/dbp-common/src/spinner.js', dest: 'dist/local/' + pkg.name, rename: 'spinner.js'},
+                {src: 'node_modules/dbp-common/misc/browser-check.js', dest: 'dist/local/' + pkg.name, rename: 'browser-check.js'},
                 {src: 'assets/icon-*.png', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/manifest.json', dest: 'dist', rename: pkg.name + '.manifest.json'},
                 {src: 'assets/*.metadata.json', dest: 'dist'},
-                {src: 'node_modules/vpu-common/assets/icons/*.svg', dest: 'dist/local/vpu-common/icons'},
+                {src: 'node_modules/dbp-common/assets/icons/*.svg', dest: 'dist/local/dbp-common/icons'},
             ],
         }),
         copy({
             targets: [
-                {src: 'node_modules/datatables.net-dt/css', dest: 'dist/local/vpu-data-table-view/'},
-                {src: 'node_modules/datatables.net-dt/images', dest: 'dist/local/vpu-data-table-view/'},
-                {src: 'node_modules/datatables.net-responsive-dt/css', dest: 'dist/local/vpu-data-table-view'},
-                {src: 'node_modules/datatables.net-buttons-dt/css', dest: 'dist/local/vpu-data-table-view'},
+                {src: 'node_modules/datatables.net-dt/css', dest: 'dist/local/dbp-data-table-view/'},
+                {src: 'node_modules/datatables.net-dt/images', dest: 'dist/local/dbp-data-table-view/'},
+                {src: 'node_modules/datatables.net-responsive-dt/css', dest: 'dist/local/dbp-data-table-view'},
+                {src: 'node_modules/datatables.net-buttons-dt/css', dest: 'dist/local/dbp-data-table-view'},
             ],
         }),
         useBabel && babel({

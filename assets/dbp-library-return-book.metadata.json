@@ -1,6 +1,6 @@
 {
-  "element": "vpu-library-return-book",
-  "module_src": "vpu-library-return-book.js",
+  "element": "dbp-library-return-book",
+  "module_src": "dbp-library-return-book.js",
   "routing_name": "return-book",
   "name": {
     "de": "Buch zurückgeben",

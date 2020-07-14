@@ -2,14 +2,14 @@ import $ from 'jquery';
 import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
-import {send as notify} from 'vpu-common/notification';
+import {send as notify} from 'dbp-common/notification';
 import {LibraryElement} from "./library-element.js";
 import Suggestions from 'suggestions';
-import * as commonUtils from 'vpu-common/utils';
-import * as commonStyles from 'vpu-common/styles';
+import * as commonUtils from 'dbp-common/utils';
+import * as commonStyles from 'dbp-common/styles';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
-import * as errorUtils from "vpu-common/error";
-import {Button, MiniSpinner} from "vpu-common";
+import * as errorUtils from "dbp-common/error";
+import {Button, MiniSpinner} from "dbp-common";
 import {OrganizationSelect} from './organization-select.js';
 import {classMap} from 'lit-html/directives/class-map.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
@@ -28,10 +28,10 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'vpu-knowledge-base-organization-select': OrganizationSelect,
-            'vpu-library-book-offer-select': LibraryBookOfferSelect,
-            'vpu-button': Button,
-            'vpu-mini-spinner': MiniSpinner,
+            'dbp-knowledge-base-organization-select': OrganizationSelect,
+            'dbp-library-book-offer-select': LibraryBookOfferSelect,
+            'dbp-button': Button,
+            'dbp-mini-spinner': MiniSpinner,
         };
     }
 
@@ -62,7 +62,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         const that = this;
 
         this.updateComplete.then(()=>{
-            const $bookOfferSelect = that.$(this.getScopedTagName('vpu-library-book-offer-select'));
+            const $bookOfferSelect = that.$(this.getScopedTagName('dbp-library-book-offer-select'));
             const $locationIdentifierInput = that.$('#location-identifier');
             const locationIdentifierInput = that._('#location-identifier');
             const $locationIdentifierBlock = that.$('#location-identifier-block');
@@ -96,7 +96,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 fetch(apiUrl, {
                     headers: {
                         'Content-Type': 'application/ld+json',
-                        'Authorization': 'Bearer ' + window.VPUAuthToken,
+                        'Authorization': 'Bearer ' + window.DBPAuthToken,
                     },
                 })
                 .then(response => response.json())
@@ -137,7 +137,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                     type: 'PUT',
                     contentType: 'application/json',
                     beforeSend: function( jqXHR ) {
-                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
+                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.DBPAuthToken);
                     },
                     data: JSON.stringify(data),
                     success: function(data) {
@@ -188,7 +188,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
 
             #location-identifier-block input {
                 width: 100%;
-                border-radius: var(--vpu-border-radius);
+                border-radius: var(--dbp-border-radius);
             }
         `;
     }
@@ -207,20 +207,20 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select lang="${this.lang}"
                                                                 value="${this.organizationId}"
-                                                                @change="${this.onOrgUnitCodeChanged}"></vpu-knowledge-base-organization-select>
+                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                         <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}"
+                         <dbp-library-book-offer-select entry-point-url="${this.entryPointUrl}"
                                                         lang="${this.lang}"
                                                         value="${this.bookOfferId}"
                                                         organization-id="${this.organizationId}"
                                                         show-reload-button
-                                                        reload-button-title="${this.bookOffer ? i18n.t('shelving.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
+                                                        reload-button-title="${this.bookOffer ? i18n.t('shelving.button-refresh-title', {name: this.bookOffer.name}): ""}"></dbp-library-book-offer-select>
                     </div>
                 </div>
 
@@ -233,7 +233,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                     </div>
                     <div class="field">
                         <div class="control">
-                             <vpu-button id="send" disabled="disabled" value="${i18n.t('location-identifier.submit')}" type=""></vpu-button>
+                             <dbp-button id="send" disabled="disabled" value="${i18n.t('location-identifier.submit')}" type=""></dbp-button>
                         </div>
                     </div>
                 </div>
@@ -245,10 +245,10 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 ${i18n.t('error-permission-message')}
             </div>
             <div class="${classMap({hidden: !this.isLoading()})}">
-                <vpu-mini-spinner></vpu-mini-spinner>
+                <dbp-mini-spinner></dbp-mini-spinner>
             </div>
         `;
     }
 }
 
-commonUtils.defineCustomElement('vpu-library-shelving', LibraryShelving);
+commonUtils.defineCustomElement('dbp-library-shelving', LibraryShelving);

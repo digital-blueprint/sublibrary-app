@@ -2,11 +2,11 @@ import {createI18nInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
-import * as commonUtils from 'vpu-common/utils';
-import * as commonStyles from 'vpu-common/styles';
-import {DataTableView} from 'vpu-data-table-view';
-import * as errorUtils from "vpu-common/error";
-import {MiniSpinner} from "vpu-common";
+import * as commonUtils from 'dbp-common/utils';
+import * as commonStyles from 'dbp-common/styles';
+import {DataTableView} from 'dbp-data-table-view';
+import * as errorUtils from "dbp-common/error";
+import {MiniSpinner} from "dbp-common";
 import select2 from 'select2';
 import select2LangDe from './i18n/de/select2';
 import select2LangEn from './i18n/en/select2';
@@ -32,11 +32,11 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         this.abortController = null;
         this.locationIdentifier = '';
         this.locationIdentifiers = [];
-        this.locationIdentifierSelectId = 'vpu-library-book-list-location-identifier-select-' + commonUtils.makeId(24);
+        this.locationIdentifierSelectId = 'dbp-library-book-list-location-identifier-select-' + commonUtils.makeId(24);
         this.$locationIdentifierSelect = null;
         this.inventoryYear = '';
         this.inventoryYears = [];
-        this.inventoryYearSelectId = 'vpu-library-book-list-inventory-year-select-' + commonUtils.makeId(24);
+        this.inventoryYearSelectId = 'dbp-library-book-list-inventory-year-select-' + commonUtils.makeId(24);
         this.$inventoryYearSelect = null;
 
         let now = new Date();
@@ -46,9 +46,9 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'vpu-knowledge-base-organization-select': OrganizationSelect,
-            'vpu-data-table-view': DataTableView,
-            'vpu-mini-spinner': MiniSpinner,
+            'dbp-knowledge-base-organization-select': OrganizationSelect,
+            'dbp-data-table-view': DataTableView,
+            'dbp-mini-spinner': MiniSpinner,
         };
     }
 
@@ -94,7 +94,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 }
             `;
 
-            this._(this.getScopedTagName("vpu-data-table-view")).setCSSStyle(css);
+            this._(this.getScopedTagName("dbp-data-table-view")).setCSSStyle(css);
             this.loadTable();
         });
     }
@@ -179,7 +179,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + window.VPUAuthToken,
+                'Authorization': 'Bearer ' + window.DBPAuthToken,
             },
             signal: signal,
         })
@@ -420,12 +420,12 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select lang="${this.lang}"
                                                                 value="${this.organizationId}"
-                                                                @change="${this.onOrgUnitCodeChanged}"></vpu-knowledge-base-organization-select>
+                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
                 </div>
-                <vpu-mini-spinner id="books-loading" text="${i18n.t('book-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></vpu-mini-spinner>
+                <dbp-mini-spinner id="books-loading" text="${i18n.t('book-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
                 <div id="book-list-block">
                     <div class="field">
                         <label class="label">${i18n.t('book-list.book-location-identifier')}</label>
@@ -450,8 +450,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                     <div class="field">
                         <label class="label">${i18n.t('book-list.books')}</label>
                         <div class="control">
-                            <vpu-data-table-view searching paging exportable export-name="${i18n.t('book-list.export-name', {organizationCode: this.getOrganizationCode()})}"
-                                                 lang="${this.lang}" id="book-books-1"></vpu-data-table-view>
+                            <dbp-data-table-view searching paging exportable export-name="${i18n.t('book-list.export-name', {organizationCode: this.getOrganizationCode()})}"
+                                                 lang="${this.lang}" id="book-books-1"></dbp-data-table-view>
                         </div>
                     </div>
                 </div>
@@ -466,10 +466,10 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 ${i18n.t('error-permission-message')}
             </div>
             <div class="${classMap({hidden: !this.isLoading()})}">
-                <vpu-mini-spinner></vpu-mini-spinner>
+                <dbp-mini-spinner></dbp-mini-spinner>
             </div>
         `;
     }
 }
 
-commonUtils.defineCustomElement('vpu-library-book-list', LibraryBookList);
+commonUtils.defineCustomElement('dbp-library-book-list', LibraryBookList);

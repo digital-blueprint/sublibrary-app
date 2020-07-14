@@ -1,5 +1,5 @@
 import {LitElement} from "lit-element";
-import {EventBus} from 'vpu-common';
+import {EventBus} from 'dbp-common';
 
 export class LibraryElement extends LitElement {
 
@@ -8,7 +8,7 @@ export class LibraryElement extends LitElement {
     }
 
     hasLibraryPermissions() {
-        return (window.VPUPerson && Array.isArray(window.VPUPerson.roles) && window.VPUPerson.roles.indexOf('ROLE_F_BIB_F') !== -1);
+        return (window.DBPPerson && Array.isArray(window.DBPPerson.roles) && window.DBPPerson.roles.indexOf('ROLE_F_BIB_F') !== -1);
     }
 
 
@@ -45,13 +45,13 @@ export class LibraryElement extends LitElement {
     }
 
     isLoggedIn() {
-        return (window.VPUPerson !== undefined && window.VPUPerson !== null);
+        return (window.DBPPerson !== undefined && window.DBPPerson !== null);
     }
 
     isLoading() {
         if (this._loginStatus === "logged-out")
             return false;
-        return (!this.isLoggedIn() && window.VPUAuthToken !== undefined);
+        return (!this.isLoggedIn() && window.DBPAuthToken !== undefined);
     }
 
     loginCallback() {
@@ -66,7 +66,7 @@ export class LibraryElement extends LitElement {
     }
 
     getOrganization() {
-        const organizationSelect = this._(this.getScopedTagName("vpu-knowledge-base-organization-select"));
+        const organizationSelect = this._(this.getScopedTagName("dbp-knowledge-base-organization-select"));
 
         if (organizationSelect) {
             const objectText = organizationSelect.getAttribute("data-object");

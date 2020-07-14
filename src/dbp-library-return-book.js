@@ -3,11 +3,11 @@ import {createI18nInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
-import * as commonUtils from 'vpu-common/utils';
-import * as commonStyles from 'vpu-common/styles';
-import * as errorUtils from "vpu-common/error";
+import * as commonUtils from 'dbp-common/utils';
+import * as commonStyles from 'dbp-common/styles';
+import * as errorUtils from "dbp-common/error";
 import {OrganizationSelect} from './organization-select.js';
-import {MiniSpinner, Button} from 'vpu-common';
+import {MiniSpinner, Button} from 'dbp-common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import  {LibraryBookOfferSelect} from './library-book-offer-select.js';
 
@@ -30,10 +30,10 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'vpu-knowledge-base-organization-select': OrganizationSelect,
-            'vpu-library-book-offer-select': LibraryBookOfferSelect,
-            'vpu-mini-spinner': MiniSpinner,
-            'vpu-button': Button,
+            'dbp-knowledge-base-organization-select': OrganizationSelect,
+            'dbp-library-book-offer-select': LibraryBookOfferSelect,
+            'dbp-mini-spinner': MiniSpinner,
+            'dbp-button': Button,
         };
     }
 
@@ -67,7 +67,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         const that = this;
 
         this.updateComplete.then(()=>{
-            const $bookOfferSelect = that.$(this.getScopedTagName('vpu-library-book-offer-select'));
+            const $bookOfferSelect = that.$(this.getScopedTagName('dbp-library-book-offer-select'));
             const $returnBookBlock = that.$('#return-book-block');
             const $loansLoadingIndicator = that.$('#loans-loading');
 
@@ -95,7 +95,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 fetch(apiUrl, {
                     headers: {
                         'Content-Type': 'application/ld+json',
-                        'Authorization': 'Bearer ' + window.VPUAuthToken,
+                        'Authorization': 'Bearer ' + window.DBPAuthToken,
                     },
                 })
                 .then(result => {
@@ -136,14 +136,14 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 console.log("send");
                 const apiUrl = that.entryPointUrl + that.bookOfferId + "/return" +
                     "?library=" + that.getLibrary();
-                console.log('vpu-library-return-book: #send.click() apiUrl = ' + apiUrl);
+                console.log('dbp-library-return-book: #send.click() apiUrl = ' + apiUrl);
 
                 $.ajax({
                     url: apiUrl,
                     type: 'POST',
                     contentType: 'application/json',
                     beforeSend: function( jqXHR ) {
-                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.VPUAuthToken);
+                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.DBPAuthToken);
                     },
                     data: "{}",
                     success: function(data) {
@@ -201,7 +201,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + window.VPUAuthToken,
+                'Authorization': 'Bearer ' + window.DBPAuthToken,
             },
         })
             .then(response => response.json())
@@ -237,26 +237,26 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select lang="${this.lang}"
                                                                 value="${this.organizationId}"
-                                                                @change="${this.onOrgUnitCodeChanged}"></vpu-knowledge-base-organization-select>
+                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                         <vpu-library-book-offer-select entry-point-url="${this.entryPointUrl}"
+                         <dbp-library-book-offer-select entry-point-url="${this.entryPointUrl}"
                                                         @change=${this.onBookSelectChanged}
                                                         @unselect=${this.onBookSelectChanged}
                                                         lang="${this.lang}"
                                                         value="${this.bookOfferId}"
                                                         organization-id="${this.organizationId}"
                                                         show-reload-button
-                                                        reload-button-title="${this.bookOffer ? i18n.t('return-book.button-refresh-title', {name: this.bookOffer.name}): ""}"></vpu-library-book-offer-select>
+                                                        reload-button-title="${this.bookOffer ? i18n.t('return-book.button-refresh-title', {name: this.bookOffer.name}): ""}"></dbp-library-book-offer-select>
                     </div>
                 </div>
 
-                <vpu-mini-spinner id="loans-loading" text="${i18n.t('return-book.mini-spinner-text')}" style="font-size: 2em; display: none;"></vpu-mini-spinner>
+                <dbp-mini-spinner id="loans-loading" text="${i18n.t('return-book.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
                 <div id="return-book-block">
                     <div class="field">
                         <label class="label">${i18n.t('return-book.borrower')}</label>
@@ -266,7 +266,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                     </div>
                     <div class="field">
                         <div class="control">
-                             <vpu-button id="send" disabled="disabled" value="${i18n.t('return-book.submit')}" type=""></vpu-button>
+                             <dbp-button id="send" disabled="disabled" value="${i18n.t('return-book.submit')}" type=""></dbp-button>
                         </div>
                     </div>
                 </div>
@@ -286,10 +286,10 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 ${i18n.t('error-permission-message')}
             </div>
             <div class="${classMap({hidden: !this.isLoading()})}">
-                <vpu-mini-spinner></vpu-mini-spinner>
+                <dbp-mini-spinner></dbp-mini-spinner>
             </div>
         `;
     }
 }
 
-commonUtils.defineCustomElement('vpu-library-return-book', LibraryReturnBook);
+commonUtils.defineCustomElement('dbp-library-return-book', LibraryReturnBook);

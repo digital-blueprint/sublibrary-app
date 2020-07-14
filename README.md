@@ -1,6 +1,6 @@
 # Library Application
 
-[GitLab Repository](https://gitlab.tugraz.at/VPU/Apps/Library)
+[GitLab Repository](https://gitlab.tugraz.at/dbp/apps/library)
 
 ![overview](docs/overview.svg)
 
@@ -8,7 +8,7 @@
 
 ```bash
 # get the source
-git clone git@gitlab.tugraz.at:VPU/Apps/Library.git
+git clone git@gitlab.tugraz.at:dbp/apps/library.git
 cd Library
 git submodule update --init
 

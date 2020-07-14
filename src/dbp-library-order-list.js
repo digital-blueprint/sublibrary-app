@@ -1,14 +1,14 @@
 import {createI18nInstance} from './i18n.js';
-import {numberFormat} from 'vpu-common/i18next.js';
+import {numberFormat} from 'dbp-common/i18next.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
-import * as commonUtils from 'vpu-common/utils';
-import * as commonStyles from 'vpu-common/styles';
-import {DataTableView} from 'vpu-data-table-view';
-import * as errorUtils from "vpu-common/error";
+import * as commonUtils from 'dbp-common/utils';
+import * as commonStyles from 'dbp-common/styles';
+import {DataTableView} from 'dbp-data-table-view';
+import * as errorUtils from "dbp-common/error";
 import {OrganizationSelect} from './organization-select.js';
-import {MiniSpinner} from 'vpu-common';
+import {MiniSpinner} from 'dbp-common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import $ from "jquery";
 
@@ -52,9 +52,9 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'vpu-knowledge-base-organization-select': OrganizationSelect,
-            'vpu-data-table-view': DataTableView,
-            'vpu-mini-spinner': MiniSpinner,
+            'dbp-knowledge-base-organization-select': OrganizationSelect,
+            'dbp-data-table-view': DataTableView,
+            'dbp-mini-spinner': MiniSpinner,
         };
     }
 
@@ -92,7 +92,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 }
             `;
 
-            this._(this.getScopedTagName("vpu-data-table-view")).setCSSStyle(css);
+            this._(this.getScopedTagName("dbp-data-table-view")).setCSSStyle(css);
             this.loadTable();
         });
     }
@@ -147,12 +147,12 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         this.abortController = new AbortController();
         const signal = this.abortController.signal;
 
-        console.assert(window.VPUAuthToken);
+        console.assert(window.DBPAuthToken);
         // load list of books for person
         fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + window.VPUAuthToken,
+                'Authorization': 'Bearer ' + window.DBPAuthToken,
             },
             signal: signal,
         })
@@ -278,18 +278,18 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <vpu-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select lang="${this.lang}"
                                                                 value="${this.organizationId}"
-                                                                @change="${this.onOrgUnitCodeChanged}"></vpu-knowledge-base-organization-select>
+                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
                 </div>
-                <vpu-mini-spinner id="books-loading" text="${i18n.t('order-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></vpu-mini-spinner>
+                <dbp-mini-spinner id="books-loading" text="${i18n.t('order-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
                 <div id="book-list-block" class="field">
                     <label class="label">${i18n.t('book-list.books')}</label>
                     <div class="control">
-                        <vpu-data-table-view searching paging column-searching 
+                        <dbp-data-table-view searching paging column-searching 
                                 exportable export-name="${i18n.t('order-list.export-name', {organizationCode: this.getOrganizationCode()})}"
-                                lang="${this.lang}" id="book-books-1"></vpu-data-table-view>
+                                lang="${this.lang}" id="book-books-1"></dbp-data-table-view>
                         <div>
                             <label for="sum">${i18n.t('order-list.sum-of-column')} <b>${i18n.t('order-list.book-price')}</b></label>
                             <input type="text" id="sum" value="0">
@@ -307,10 +307,10 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 ${i18n.t('error-permission-message')}
             </div>
             <div class="${classMap({hidden: !this.isLoading()})}">
-                <vpu-mini-spinner></vpu-mini-spinner>
+                <dbp-mini-spinner></dbp-mini-spinner>
             </div>
         `;
     }
 }
 
-commonUtils.defineCustomElement('vpu-library-order-list', LibraryOrderList);
+commonUtils.defineCustomElement('dbp-library-order-list', LibraryOrderList);

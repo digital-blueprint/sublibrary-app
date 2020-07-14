@@ -1,6 +1,6 @@
 {
-  "element": "vpu-library-shelving",
-  "module_src": "vpu-library-shelving.js",
+  "element": "dbp-library-shelving",
+  "module_src": "dbp-library-shelving.js",
   "routing_name": "shelving",
   "name": {
     "de": "Aufstellung vergeben",

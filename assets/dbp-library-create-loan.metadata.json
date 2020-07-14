@@ -1,6 +1,6 @@
 {
-  "element": "vpu-library-create-loan",
-  "module_src": "vpu-library-create-loan.js",
+  "element": "dbp-library-create-loan",
+  "module_src": "dbp-library-create-loan.js",
   "routing_name": "create-loan",
   "name": {
     "de": "Buch entlehnen",
