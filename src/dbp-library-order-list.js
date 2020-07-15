@@ -287,7 +287,8 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 <div id="book-list-block" class="field">
                     <label class="label">${i18n.t('book-list.books')}</label>
                     <div class="control">
-                        <dbp-data-table-view searching paging column-searching 
+                        <dbp-data-table-view searching paging column-searching
+                                default-order='[3, "desc"]'
                                 exportable export-name="${i18n.t('order-list.export-name', {organizationCode: this.getOrganizationCode()})}"
                                 lang="${this.lang}" id="book-books-1"></dbp-data-table-view>
                         <div>
