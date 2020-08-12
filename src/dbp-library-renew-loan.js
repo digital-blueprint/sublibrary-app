@@ -129,7 +129,8 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     loadTable() {
         const that = this;
 
-        const apiUrl = this.entryPointUrl + this.personId + "/library-book-loans";
+        //const apiUrl = this.entryPointUrl + this.personId + "/library-book-loans";
+        const apiUrl = this.entryPointUrl + "/loans/library_book_loans?name=" + this.personId.replace('/people/', '');
 
         const $noLoansBlock = this.$('#no-loans-block');
         const $loansLoadingIndicator = this.$('#loans-loading');

@@ -125,7 +125,8 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
             return;
         }
 
-        const apiUrl = this.entryPointUrl + this.organizationId + "/library-book-loans";
+        // const apiUrl = this.entryPointUrl + this.organizationId + "/library-book-loans";
+        const apiUrl = this.entryPointUrl + "/loans/library_book_loans?organization=" + this.organizationId.replace('/organizations/', '');
         const $loansLoadingIndicator = this.$('#loans-loading');
 
         $loansLoadingIndicator.show();
