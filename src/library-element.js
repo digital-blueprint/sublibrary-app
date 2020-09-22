@@ -8,10 +8,14 @@ export class LibraryElement extends LitElement {
     }
 
     hasLibraryPermissions() {
-        return (window.DBPPerson && Array.isArray(window.DBPPerson.roles) && window.DBPPerson.roles.indexOf('ROLE_F_BIB_F') !== -1);
+        if (!window.DBPPerson || !Array.isArray(window.DBPPerson.roles))
+            return false;
+
+        let roles = window.DBPPerson.roles;
+        // Remove ROLE_F_BIB_F once https://gitlab.tugraz.at/dbp/middleware/api/-/commit/e06e503a3fbe61ec328cf3f246140fb30f52a07e
+        // is deployed
+        return (roles.indexOf('ROLE_F_BIB_F') !== -1 || roles.indexOf('ROLE_LIBRARY_MANAGER') !== -1);
     }
-
-
 
     _updateAuth(e) {
         this._loginStatus = e.status;
