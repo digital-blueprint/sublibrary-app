@@ -4,6 +4,11 @@
 
 ![overview](docs/overview.svg)
 
+## Prerequisites
+
+- You need library officer permissions to be allowed to use the application
+- You need the [API server](https://gitlab.tugraz.at/dbp/middleware/api) running or access the [official api server](https://api.tugraz.at/)
+
 ## Local development
 
 ```bash
