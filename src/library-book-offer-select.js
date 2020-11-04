@@ -78,20 +78,24 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
             that.$select = that.$('#' + that.selectId);
             that.$select.disabled = true;
 
-            // close the selector on blur of the web component
-            $(that).blur(() => {
-                // the 500ms delay is a workaround to actually get an item selected when clicking on it,
-                // because the blur gets also fired when clicking in the selector
-                setTimeout(() => {
-                    if (this.select2IsInitialized()) {
-                        that.$select.select2('close');
-                    }
-                }, 500);
+            // Close the popup when clicking outside of select2
+            document.addEventListener('click', (ev) => {
+                if (!ev.composedPath().includes(this)) {
+                    this._closeSelect2();
+                }
             });
 
             // try an init when user-interface is loaded
             that.initJSONLD();
         });
+    }
+
+    _closeSelect2() {
+        const $select = this.$('#' + this.selectId);
+        console.assert($select.length, "select2 missing");
+        if (this.select2IsInitialized($select)) {
+            $select.select2('close');
+        }
     }
 
     initJSONLD(ignorePreset = false) {
