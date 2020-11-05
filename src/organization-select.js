@@ -112,7 +112,9 @@ export class OrganizationSelect extends LitElement {
             });
         }
 
+        this.removeAttribute("data-organizations-loaded");
         await this.load_organizations();
+        this.setAttribute("data-organizations-loaded", "");
 
         this._clearSelect2();
 
