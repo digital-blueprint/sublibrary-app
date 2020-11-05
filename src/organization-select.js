@@ -50,7 +50,8 @@ export class OrganizationSelect extends LitElement {
         this.updateComplete.then(()=> {
             window.addEventListener("dbp-auth-person-init", async () => {
                 this.cache = {};
-                this.updateSelect2();
+                await this.updateSelect2();
+                this.setAttribute("data-auth-person-init-finished", "");
             });
 
             // Close the popup when clicking outside of select2
