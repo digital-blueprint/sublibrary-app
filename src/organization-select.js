@@ -134,8 +134,7 @@ export class OrganizationSelect extends LitElement {
             data: data,
             disabled: false
         }).on("select2:select", () => {
-            const selectedId = $select.select2('data')[0].id;
-            this.value = selectedId;
+            this.value = $select.select2('data')[0].id;
         });
 
         // If none is selected, default to the first one
