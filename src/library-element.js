@@ -1,5 +1,5 @@
 import {LitElement} from "lit-element";
-import {EventBus} from 'dbp-common';
+import {EventBus} from '@dbp-toolkit/common';
 
 export class LibraryElement extends LitElement {
 

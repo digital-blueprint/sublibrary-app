@@ -3,11 +3,11 @@ import {createI18nInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
-import * as commonUtils from 'dbp-common/utils';
-import * as commonStyles from 'dbp-common/styles';
-import * as errorUtils from "dbp-common/error";
+import * as commonUtils from '@dbp-toolkit/common/utils';
+import * as commonStyles from '@dbp-toolkit/common/styles';
+import * as errorUtils from "@dbp-toolkit/common/error";
 import {OrganizationSelect} from './organization-select.js';
-import {MiniSpinner, Button} from 'dbp-common';
+import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import  {LibraryBookOfferSelect} from './library-book-offer-select.js';
 

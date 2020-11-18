@@ -1,14 +1,14 @@
 import {createI18nInstance} from './i18n.js';
-import {numberFormat} from 'dbp-common/i18next.js';
+import {numberFormat} from '@dbp-toolkit/common/i18next.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
-import * as commonUtils from 'dbp-common/utils';
-import * as commonStyles from 'dbp-common/styles';
-import {DataTableView} from 'dbp-data-table-view';
-import * as errorUtils from "dbp-common/error";
+import * as commonUtils from '@dbp-toolkit/common/utils';
+import * as commonStyles from '@dbp-toolkit/common/styles';
+import {DataTableView} from '@dbp-toolkit/data-table-view';
+import * as errorUtils from "@dbp-toolkit/common/error";
 import {OrganizationSelect} from './organization-select.js';
-import {MiniSpinner} from 'dbp-common';
+import {MiniSpinner} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import $ from "jquery";
 
