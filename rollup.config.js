@@ -57,7 +57,7 @@ switch (build) {
     entryPointURL = 'https://mw-dev.tugraz.at';
     keyCloakServer = 'auth-dev.tugraz.at';
     keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
-    keyCloakClientId = 'auth-dev-mw-frontend';
+    keyCloakClientId = 'ibib-dev_tugraz_at-IBIB';
     break;
   case 'demo':
     basePath = '/apps/library/';
