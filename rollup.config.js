@@ -16,6 +16,7 @@ import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs'
 import babel from '@rollup/plugin-babel'
 import selfsigned from 'selfsigned';
+import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 
 // -------------------------------
 
@@ -256,15 +257,29 @@ Dependencies:
                 {src: 'node_modules/datatables.net-buttons-dt/css', dest: 'dist/local/@dbp-toolkit/data-table-view'},
             ],
         }),
-        useBabel && babel({
-          include: [
-              'src/**',
-          ],
-          babelHelpers: 'runtime',
+        getBabelOutputPlugin({
+            compact: false,
+            presets: [[
+                '@babel/preset-env', {
+                  loose: true,
+                  modules: false,
+                  shippedProposals: true,
+                  bugfixes: true,
+                  targets: {
+                    esmodules: true
+                  }
+                }
+            ]]
+          }),
+        useBabel && 0 && babel({
+          include: ['**'],
+          exclude: ['**/*core-js*/**'],
+          babelHelpers: 'bundled',
           babelrc: false,
           presets: [[
             '@babel/preset-env', {
               loose: true,
+              shippedProposals: true,
               bugfixes: true,
               targets: {
                 esmodules: true
