@@ -266,7 +266,6 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
             if (typeof b === 'string') { b1 = b.replace(',', '.').replace(' EUR', '') * 1; } else { b1 = b * 1; }
             return a1 + b1;
         });
-        this.shadowRoot.querySelector('#sum').value = value.toFixed(2).replace('.', ',') + ' EUR';
     }
 
     render() {
@@ -291,10 +290,6 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                                 default-order='[3, "desc"]'
                                 exportable export-name="${i18n.t('order-list.export-name', {organizationCode: this.getOrganizationCode()})}"
                                 lang="${this.lang}" id="book-books-1"></dbp-data-table-view>
-                        <div>
-                            <label for="sum">${i18n.t('order-list.sum-of-column')} <b>${i18n.t('order-list.book-price')}</b></label>
-                            <input type="text" id="sum" value="0">
-                        </div>
                     </div>
                 </div>
                 <div id="no-books-block">
