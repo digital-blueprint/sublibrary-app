@@ -118,6 +118,16 @@
     "loading": "Loading...",
     "load-error": "Error loading the organization"
   },
+  "budget": {
+    "load-error": "Failed to load budget values",
+    "budget-key-values": "Budget",
+    "mini-spinner-text": "Budget will be loaded...",
+    "taa": "Allocated credit (including carryover from previous year)",
+    "taa-tcb": "Sum of billing charges",
+    "tcb": "Current balances",
+    "tcb-tab": "Debited credit (open orders)",
+    "tab": "Available balance"
+  },
   "success-summary": "Book lineup successful",
   "success-body": "The book lineup for \"{{name}}\" was successful.",
   "error-summary": "An error occurred",

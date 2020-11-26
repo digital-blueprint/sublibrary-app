@@ -1,0 +1,17 @@
+{
+  "element": "dbp-library-budget",
+  "module_src": "dbp-library-budget.js",
+  "routing_name": "budget",
+  "name": {
+    "de": "Institutsbudgetzahlen anzeigen",
+    "en": "Show institute budget"
+  },
+  "short_name": {
+    "de": "Institutsbudgetzahlen anzeigen",
+    "en": "Show institute budget"
+  },
+  "description": {
+    "de": "Zeigt die Budgetzahlen eines Instituts an",
+    "en": "Shows the budget of an institute"
+  }
+}

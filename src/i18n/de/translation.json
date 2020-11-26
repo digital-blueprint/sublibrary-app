@@ -118,6 +118,16 @@
     "loading": "Wird geladen...",
     "load-error": "Fehler beim Laden der Organisation"
   },
+  "budget": {
+    "load-error": "Fehler beim Laden der Budgetwerte",
+    "budget-key-values": "Budgetzahlen",
+    "mini-spinner-text": "Budgetzahlen werden geladen...",
+    "taa": "Zugewiesenes Guthaben (inkl. Übertrag vom Vorjahr)",
+    "taa-tcb": "Summe Rechnungsbelastungen",
+    "tcb": "Aktuelles Guthaben",
+    "tcb-tab": "Belastetes Guthaben (offene Bestellungen)",
+    "tab": "Verfügbares Guthaben"
+  },
   "success-summary": "Buchaufstellung erfolgreich",
   "success-body": "Das Buch \"{{name}}\" wurde erfolgreich aufgestellt.",
   "error-summary": "Ein Fehler ist aufgetreten",

@@ -139,6 +139,7 @@ export default {
       'src/dbp-library-book-list.js',
       'src/dbp-library-loan-list.js',
       'src/dbp-library-order-list.js',
+      'src/dbp-library-budget.js',
     ] : glob.sync('test/**/*.js'),
     output: {
       dir: 'dist',
