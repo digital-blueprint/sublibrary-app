@@ -9,7 +9,6 @@ import * as errorUtils from "@dbp-toolkit/common/error";
 import {OrganizationSelect} from './organization-select.js';
 import {MiniSpinner} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
-import $ from "jquery";
 
 const i18n = createI18nInstance();
 
@@ -40,10 +39,6 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
             'dbp-knowledge-base-organization-select': OrganizationSelect,
             'dbp-mini-spinner': MiniSpinner,
         };
-    }
-
-    $(selector) {
-        return $(this._(selector));
     }
 
     /**
