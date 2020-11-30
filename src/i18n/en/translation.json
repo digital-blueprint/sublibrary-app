@@ -126,7 +126,8 @@
     "taa-tcb": "Sum of billing charges",
     "tcb": "Current balances",
     "tcb-tab": "Debited credit (open orders)",
-    "tab": "Available balance"
+    "tab": "Available balance",
+    "no-budget": "There are no budget values for this institute!"
   },
   "success-summary": "Book lineup successful",
   "success-body": "The book lineup for \"{{name}}\" was successful.",

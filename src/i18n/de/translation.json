@@ -126,7 +126,8 @@
     "taa-tcb": "Summe Rechnungsbelastungen",
     "tcb": "Aktuelles Guthaben",
     "tcb-tab": "Belastetes Guthaben (offene Bestellungen)",
-    "tab": "Verfügbares Guthaben"
+    "tab": "Verfügbares Guthaben",
+    "no-budget": "Für dieses Institut existieren keine Budgetzahlen!"
   },
   "success-summary": "Buchaufstellung erfolgreich",
   "success-body": "Das Buch \"{{name}}\" wurde erfolgreich aufgestellt.",

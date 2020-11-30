@@ -13,6 +13,13 @@ import $ from "jquery";
 
 const i18n = createI18nInstance();
 
+const pageStatus = {
+    'none': 0,
+    'loading': 1,
+    'showBudget': 2,
+    'noBudget': 3,
+};
+
 class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
@@ -21,6 +28,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
         this.monetaryAmounts = [];
         this.organizationId = '';
         this.abortController = null;
+        this.pageStatus = pageStatus.none;
 
         let now = new Date();
         now.setDate(now.getDate() - 1);
@@ -48,6 +56,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
             analyticsUpdateDate: { type: Object, attribute: false },
             monetaryAmounts: { type: Array, attribute: false },
+            pageStatus: { type: Boolean, attribute: false },
         };
     }
 
@@ -85,23 +94,15 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     }
 
     loadBudget() {
-        const that = this;
-        const $budgetBlock = that.$('#budget-block');
-        $budgetBlock.hide();
-
-        if (!this.isLoggedIn())
-            return;
-
-        if (this.organizationId === "") {
+        if (!this.isLoggedIn() || this.organizationId === "") {
             return;
         }
 
+        const that = this;
+        this.pageStatus = pageStatus.loading;
         const parts = this.organizationId.split('/');
         const organizationIdentifier = parts[parts.length - 1];
         const apiUrl = this.entryPointUrl + "/library_budget_monetary_amounts?organization=" + organizationIdentifier;
-        const $budgetLoadingIndicator = this.$('#budget-loading');
-
-        $budgetLoadingIndicator.show();
 
         // abort previous list fetch if it is still running
         if (this.abortController !== null) {
@@ -138,11 +139,14 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
                 });
 
                 that.monetaryAmounts = monetaryAmounts;
-                $budgetLoadingIndicator.hide();
-                $budgetBlock.show();
+                that.pageStatus = pageStatus.showBudget;
             }).catch(error => {
-                errorUtils.handleFetchError(error, i18n.t('budget.load-error'));
-                $budgetLoadingIndicator.hide();
+                if (error.status === 404) {
+                    that.pageStatus = pageStatus.noBudget;
+                } else {
+                    that.pageStatus = pageStatus.none;
+                    errorUtils.handleFetchError(error, i18n.t('budget.load-error'));
+                }
             });
     }
 
@@ -156,9 +160,6 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
             ${commonStyles.getThemeCSS()}
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
-
-            .hidden {display: none;}
-            #budget-block { display: none; }
 
             table th {
                 padding: 8px;
@@ -193,8 +194,8 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
                 </div>
-                <dbp-mini-spinner id="budget-loading" text="${i18n.t('budget.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
-                <div id="budget-block" class="field">
+                <dbp-mini-spinner class="${classMap({hidden: this.pageStatus !== pageStatus.loading})}" text="${i18n.t('budget.mini-spinner-text')}" style="font-size: 2em;"></dbp-mini-spinner>
+                <div class="field ${classMap({hidden: this.pageStatus !== pageStatus.showBudget})}">
                     <label class="label">${i18n.t('budget.budget-key-values')}</label>
                     <div class="control">
                         <table>
@@ -205,6 +206,9 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
                             ${this.getMonetaryAmountRow('tcb-tab')}
                         </table>
                     </div>
+                </div>
+                <div class="field ${classMap({hidden: this.pageStatus !== pageStatus.noBudget})}">
+                    ${i18n.t('budget.no-budget')}
                 </div>
             </div>
             <div class="notification is-warning ${classMap({hidden: this.isLoggedIn() || this.isLoading()})}">
