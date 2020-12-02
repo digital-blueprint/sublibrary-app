@@ -241,7 +241,7 @@ Dependencies:
                 {src: 'assets/*.css', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/*.ico', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/*.svg', dest: 'dist/local/' + pkg.name},
-                {src: 'node_modules/source-sans-pro/WOFF2/OTF/*', dest: 'dist/local/' + pkg.name + '/fonts'},
+                {src: 'node_modules/@dbp-toolkit/font-source-sans-pro/files/*', dest: 'dist/local/' + pkg.name + '/fonts/source-sans-pro'},
                 {src: 'node_modules/@dbp-toolkit/common/src/spinner.js', dest: 'dist/local/' + pkg.name, rename: 'spinner.js'},
                 {src: 'node_modules/@dbp-toolkit/common/misc/browser-check.js', dest: 'dist/local/' + pkg.name, rename: 'browser-check.js'},
                 {src: 'assets/icon-*.png', dest: 'dist/local/' + pkg.name},
