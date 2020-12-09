@@ -183,6 +183,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
                     };
                 },
                 processResults: function (data) {
+                    that.$('#library-book-offer-select-dropdown').addClass('select2-bug');
                     that.lastResult = data;
                     const results = that.jsonld.transformMembers(data, localContext);
 
@@ -193,6 +194,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
                 error: errorUtils.handleXhrError
             }
         }).on("select2:select", function (e) {
+            that.$('#library-book-offer-select-dropdown').removeClass('select2-bug');
             const identifier = e.params.data.id;
             that.object = findObjectInApiResults(identifier, that.lastResult);
 
@@ -348,6 +350,11 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
 
             .field .button.control dbp-icon {
                 top: 0;
+            }
+
+            /* https://github.com/select2/select2/issues/5457 */
+            .select2-bug .loading-results {
+                display: none !important;
             }
         `;
     }
