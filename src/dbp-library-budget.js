@@ -170,7 +170,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
         return this.monetaryAmounts[name] ? html`
             <tr>
                 <th>${i18n.t('budget.' + name)}</th>
-                <td>${numberFormat(i18n, this.monetaryAmounts[name].value)} ${this.monetaryAmounts[name].currency}</td>
+                <td>${numberFormat(i18n, this.monetaryAmounts[name].value, { style: 'currency', currency: this.monetaryAmounts[name].currency })}</td>
             </tr>
         ` : ``;
     }
@@ -196,9 +196,9 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
                         <table>
                             ${this.getMonetaryAmountRow('taa')}
                             ${this.getMonetaryAmountRow('taa-tcb')}
-                            ${this.getMonetaryAmountRow('tab')}
                             ${this.getMonetaryAmountRow('tcb')}
                             ${this.getMonetaryAmountRow('tcb-tab')}
+                            ${this.getMonetaryAmountRow('tab')}
                         </table>
                     </div>
                 </div>
