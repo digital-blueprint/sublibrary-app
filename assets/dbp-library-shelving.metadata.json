@@ -13,6 +13,7 @@
   "description": {
     "de": "Erlaubt das Aufstellen von Büchern in der Bibliothek",
     "en": "Allows the assigning of Call numbers to books in the library"
-  }
+  },
+  "subscribe": "lang:lang,entry-point-url:global-entry-point-url"
 }
 

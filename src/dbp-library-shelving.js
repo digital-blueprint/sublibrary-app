@@ -36,13 +36,13 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     }
 
     static get properties() {
-        return {
+        return Object.assign({
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             bookOfferId: { type: String, attribute: 'book-offer-id', reflect: true},
             bookOffer: { type: Object, attribute: false },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
-        };
+        }, super.properties);
     }
 
     getLibrary() {

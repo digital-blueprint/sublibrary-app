@@ -132,6 +132,7 @@ function getBuildInfo() {
 export default {
     input: (build != 'test') ? [
       'src/' + pkg.name + '.js',
+      'vendor/toolkit/packages/provider/src/dbp-provider.js',
       'src/dbp-library-shelving.js',
       'src/dbp-library-create-loan.js',
       'src/dbp-library-return-book.js',
