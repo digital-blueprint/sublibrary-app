@@ -2925,14 +2925,14 @@ i18next-scanner@^3.0.0:
     vinyl "^2.2.0"
     vinyl-fs "^3.0.1"
 
-i18next@*, i18next@^19.5.3:
+i18next@*:
   version "19.8.3"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-19.8.3.tgz#10df7222db8c23389b13bceb9ba67a5e20a0241e"
   integrity sha512-eVrqAw2gGGYYJaJMYw4VM1FNFawLD4b84IsoTZMVXeWHaxAM2gyTa34j2Sip15UkBz/LrSxdFJj0Jhlrz7EvHA==
   dependencies:
     "@babel/runtime" "^7.12.0"
 
-i18next@^19.8.4:
+i18next@^19.5.3, i18next@^19.8.4:
   version "19.8.4"
   resolved "https://registry.yarnpkg.com/i18next/-/i18next-19.8.4.tgz#447718f2a26319b8debdbcc6fbc1a9761be7316b"
   integrity sha512-FfVPNWv+felJObeZ6DSXZkj9QM1Ivvh7NcFCgA8XPtJWHz0iXVa9BUy+QY8EPrCLE+vWgDfV/sc96BgXVo6HAA==
@@ -4849,9 +4849,9 @@ strip-json-comments@3.1.1, strip-json-comments@^3.1.0, strip-json-comments@^3.1.
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
 suggestions@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/suggestions/-/suggestions-1.7.0.tgz#63965229c8082e72cfeb08ad426a6f725ab036ba"
-  integrity sha512-Px+gellrEQUkgM3Lc0Umnz4JIammE0CLcp+7lbNQH/wqnD0u/N1bOXytNOR3Ap1dIZDHE8lYMuwd60jMO6BPDw==
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/suggestions/-/suggestions-1.7.1.tgz#2fefcbde8967353056d1d6eaed891b46d98a7e5c"
+  integrity sha512-gl5YPAhPYl07JZ5obiD9nTZsg4SyZswAQU/NNtnYiSnFkI3+ZHuXAiEsYm7AaZ71E0LXSFaGVaulGSWN3Gd71A==
   dependencies:
     fuzzy "^0.1.1"
     xtend "^4.0.0"
