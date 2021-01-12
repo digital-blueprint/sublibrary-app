@@ -13,6 +13,7 @@
   "description": {
     "de": "Zeigt die Entlehnungen eines Instituts bis zum Vortag an",
     "en": "Lists all loans of an organization until yesterday"
-  }
+  },
+  "subscribe": "lang:lang,entry-point-url:global-entry-point-url"
 }
 

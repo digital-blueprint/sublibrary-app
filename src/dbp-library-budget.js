@@ -45,14 +45,14 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
      * See: https://lit-element.polymer-project.org/guide/properties#conversion-type
      */
     static get properties() {
-        return {
+        return this.getProperties({
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
             analyticsUpdateDate: { type: Object, attribute: false },
             monetaryAmounts: { type: Array, attribute: false },
             pageStatus: { type: Boolean, attribute: false },
-        };
+        });
     }
 
     loginCallback() {
@@ -184,7 +184,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>

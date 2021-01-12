@@ -66,13 +66,13 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
      * See: https://lit-element.polymer-project.org/guide/properties#conversion-type
      */
     static get properties() {
-        return {
+        return this.getProperties({
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
             books: { type: Object, attribute: false },
             analyticsUpdateDate: { type: Object, attribute: false },
-        };
+        });
     }
 
     loginCallback() {
@@ -277,7 +277,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
@@ -289,7 +289,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                         <dbp-data-table-view searching paging column-searching
                                 default-order='[3, "desc"]'
                                 exportable export-name="${i18n.t('order-list.export-name', {organizationCode: this.getOrganizationCode()})}"
-                                lang="${this.lang}" id="book-books-1"></dbp-data-table-view>
+                                subscribe="lang:lang" id="book-books-1"></dbp-data-table-view>
                     </div>
                 </div>
                 <div id="no-books-block">

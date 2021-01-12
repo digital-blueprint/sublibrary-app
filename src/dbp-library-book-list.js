@@ -60,7 +60,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
      * See: https://lit-element.polymer-project.org/guide/properties#conversion-type
      */
     static get properties() {
-        return {
+        return this.getProperties({
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
@@ -71,7 +71,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             inventoryYear: { type: String, attribute: false },
             organization: { type: Object, attribute: false },
             analyticsUpdateDate: { type: Object, attribute: false },
-        };
+        });
     }
 
     loginCallback() {
@@ -420,7 +420,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
@@ -451,7 +451,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                         <label class="label">${i18n.t('book-list.books')}</label>
                         <div class="control">
                             <dbp-data-table-view searching paging exportable export-name="${i18n.t('book-list.export-name', {organizationCode: this.getOrganizationCode()})}"
-                                                 lang="${this.lang}" id="book-books-1"></dbp-data-table-view>
+                                                 subscribe="lang:lang" id="book-books-1"></dbp-data-table-view>
                         </div>
                     </div>
                 </div>

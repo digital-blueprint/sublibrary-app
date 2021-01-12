@@ -40,13 +40,13 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
      * See: https://lit-element.polymer-project.org/guide/properties#conversion-type
      */
     static get properties() {
-        return {
+        return this.getProperties({
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             personId: { type: String, attribute: 'person-id', reflect: true},
             loans: { type: Object, attribute: false },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
-        };
+        });
     }
 
     $(selector) {
@@ -388,7 +388,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
@@ -396,8 +396,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">
-                        <dbp-person-select entry-point-url="${this.entryPointUrl}"
-                                           lang="${this.lang}"
+                        <dbp-person-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
                                            value="${this.personId}"
                                            organization-id="${this.organizationId}"
                                            show-reload-button
@@ -410,7 +409,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                     <label class="label">${i18n.t('renew-loan.loans')}</label>
                     <div class="control">
                         <dbp-data-table-view searching paging exportable export-name="${i18n.t('renew-loan.loans')}"
-                                             lang="${this.lang}" id="book-loans-1" @click="${(e) => this.onDataTableClick(e)}"></dbp-data-table-view>
+                                             subscribe="lang:lang" id="book-loans-1" @click="${(e) => this.onDataTableClick(e)}"></dbp-data-table-view>
                     </div>
                 </div>
                 <div id="no-loans-block" style="display: none;">

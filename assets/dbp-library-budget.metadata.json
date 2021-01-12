@@ -13,5 +13,6 @@
   "description": {
     "de": "Zeigt die Budgetzahlen eines Instituts an",
     "en": "Shows the budget of an institute"
-  }
+  },
+  "subscribe": "lang:lang,entry-point-url:global-entry-point-url"
 }

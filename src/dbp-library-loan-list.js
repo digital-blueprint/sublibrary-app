@@ -44,7 +44,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
      * See: https://lit-element.polymer-project.org/guide/properties#conversion-type
      */
     static get properties() {
-        return {
+        return this.getProperties({
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
@@ -52,7 +52,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
             overdueOnly: { type: Boolean, attribute: false },
             openOnly: { type: Boolean, attribute: false },
             analyticsUpdateDate: { type: Object, attribute: false },
-        };
+        });
     }
 
     $(selector) {
@@ -356,7 +356,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
@@ -379,7 +379,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                         <label class="label">${i18n.t('loan-list.loans')}</label>
                         <div class="control">
                             <dbp-data-table-view searching paging exportable export-name="${i18n.t('loan-list.export-name', {organizationCode: this.getOrganizationCode()})}"
-                                                 lang="${this.lang}" id="loan-loans-1" @click="${(e) => this.onDataTableClick(e)}"></dbp-data-table-view>
+                                                 subscribe="lang:lang" id="loan-loans-1" @click="${(e) => this.onDataTableClick(e)}"></dbp-data-table-view>
                         </div>
                     </div>
                 </div>

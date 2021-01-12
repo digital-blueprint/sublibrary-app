@@ -36,13 +36,13 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     }
 
     static get properties() {
-        return Object.assign({
+        return this.getProperties({
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             bookOfferId: { type: String, attribute: 'book-offer-id', reflect: true},
             bookOffer: { type: Object, attribute: false },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
-        }, super.properties);
+        });
     }
 
     getLibrary() {
@@ -207,7 +207,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
@@ -215,8 +215,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                         <dbp-library-book-offer-select entry-point-url="${this.entryPointUrl}"
-                                                        lang="${this.lang}"
+                         <dbp-library-book-offer-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
                                                         value="${this.bookOfferId}"
                                                         organization-id="${this.organizationId}"
                                                         show-reload-button

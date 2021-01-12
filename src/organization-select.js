@@ -2,19 +2,20 @@ import $ from 'jquery';
 import select2 from 'select2';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import {createI18nInstance} from './i18n.js';
-import {css, html, LitElement} from 'lit-element';
+import {css, html} from 'lit-element';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import select2LangDe from "@dbp-toolkit/person-select/src/i18n/de/select2";
 import select2LangEn from "@dbp-toolkit/person-select/src/i18n/en/select2";
 import JSONLD from "@dbp-toolkit/common/jsonld";
 import {send as notify} from "@dbp-toolkit/common/notification";
+import {AdapterLitElement} from "@dbp-toolkit/provider/src/adapter-lit-element";
 
 select2(window, $);
 
 const i18n = createI18nInstance();
 
-export class OrganizationSelect extends LitElement {
+export class OrganizationSelect extends AdapterLitElement {
     constructor() {
         super();
         this.lang = i18n.language;
@@ -28,11 +29,11 @@ export class OrganizationSelect extends LitElement {
     }
 
     static get properties() {
-        return {
+        return this.getProperties({
             lang: {type: String},
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             value: {type: String, reflect: true}
-        };
+        });
     }
 
     $(selector) {

@@ -13,6 +13,7 @@
   "description": {
     "de": "Erlaubt das Verlängern der Leihfrist von Buchentlehnungen",
     "en": "Allows to extend book loan period"
-  }
+  },
+  "subscribe": "lang:lang,entry-point-url:global-entry-point-url"
 }
 

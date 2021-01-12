@@ -4,7 +4,7 @@ import select2 from 'select2';
 import select2LangDe from './i18n/de/select2-book-offer';
 import select2LangEn from './i18n/en/select2-book-offer';
 import JSONLD from '@dbp-toolkit/common/jsonld';
-import {css, html, LitElement} from 'lit-element';
+import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {createI18nInstance} from './i18n.js';
 import {Icon} from "@dbp-toolkit/common";
@@ -12,13 +12,14 @@ import * as commonUtils from "@dbp-toolkit/common/utils";
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import * as errorUtils from "@dbp-toolkit/common/error";
 import select2CSSPath from 'select2/dist/css/select2.min.css';
+import {AdapterLitElement} from "@dbp-toolkit/provider/src/adapter-lit-element";
 
 
 select2(window, $);
 
 const i18n = createI18nInstance();
 
-export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
+export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElement) {
 
     constructor() {
         super();
@@ -48,7 +49,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
     }
 
     static get properties() {
-        return {
+        return this.getProperties({
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             value: { type: String },
@@ -56,7 +57,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(LitElement) {
             showReloadButton: { type: Boolean, attribute: 'show-reload-button' },
             reloadButtonTitle: { type: String, attribute: 'reload-button-title' },
             organizationId: { type: String, attribute: 'organization-id' },
-        };
+        });
     }
 
     close() {

@@ -38,7 +38,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     }
 
     static get properties() {
-        return {
+        return this.getProperties({
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             bookOfferId: { type: String, attribute: 'book-offer-id', reflect: true},
@@ -47,7 +47,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
             borrowerName: { type: String, attribute: false },
             status: { type: Object , attribute: false },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
-        };
+        });
     }
 
     $(selector) {
@@ -237,7 +237,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select lang="${this.lang}"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
@@ -245,10 +245,9 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                         <dbp-library-book-offer-select entry-point-url="${this.entryPointUrl}"
+                         <dbp-library-book-offer-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
                                                         @change=${this.onBookSelectChanged}
                                                         @unselect=${this.onBookSelectChanged}
-                                                        lang="${this.lang}"
                                                         value="${this.bookOfferId}"
                                                         organization-id="${this.organizationId}"
                                                         show-reload-button
