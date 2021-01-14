@@ -8,7 +8,6 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import select2LangDe from "@dbp-toolkit/person-select/src/i18n/de/select2";
 import select2LangEn from "@dbp-toolkit/person-select/src/i18n/en/select2";
 import JSONLD from "@dbp-toolkit/common/jsonld";
-import {send as notify} from "@dbp-toolkit/common/notification";
 import {AdapterLitElement} from "@dbp-toolkit/provider/src/adapter-lit-element";
 
 select2(window, $);
@@ -204,32 +203,6 @@ export class OrganizationSelect extends AdapterLitElement {
         super.update(changedProperties);
     }
 
-    getMinimalOrganization(id, orgUnitCode) {
-        return {
-            id: id,
-                code: 'F' + orgUnitCode,
-            name: '',
-            url: '',
-            value: '/organizations/' + id,
-            object: {
-                "@context": {
-                    "@vocab": this.entryPointUrl + "/docs.jsonld#",
-                        "hydra": "http://www.w3.org/ns/hydra/core#",
-                        "identifier": "Organization/identifier",
-                        "name": "https://schema.org/name",
-                        "alternateName": "https://schema.org/alternateName",
-                        "url": "https://schema.org/url"
-                },
-                "@id": "/organizations/" + id,
-                    "@type": "http://schema.org/Organization",
-                    "identifier": id,
-                    "name": '',
-                    "url": '',
-                    "alternateName": 'F' + orgUnitCode,
-            }
-        };
-    }
-
     /**
      * Returns the list of assigned libraries of the current user
      *
@@ -240,65 +213,39 @@ export class OrganizationSelect extends AdapterLitElement {
             return [];
         }
 
-        const functions = window.DBPPerson.functions;
+        let orgUrl = this.entryPointUrl + '/people/' +
+            encodeURIComponent(window.DBPPerson.identifier) +
+            '/organizations' +
+            '?context=' + encodeURIComponent('library-manager') +
+            '&lang=' + encodeURIComponent(this.lang);
 
-        if (functions === undefined) {
-            return [];
-        }
+        let response = await fetch(orgUrl, {
+            headers: {
+                'Content-Type': 'application/ld+json',
+                'Authorization': 'Bearer ' + window.DBPAuthToken,
+            },
+        });
 
-        // we also allow "_" in the id for example for the special id 1226_1231
-        const re = /^F_BIB:F:(\d+):([\d_]+)$/;
+        if (!response.ok)
+            throw new Error(response.statusText);
+
+        let data = await response.json();
+
         let results = [];
-        let promises = [];
-
-        for (const item of functions) {
-            const matches = re.exec(item);
-
-            if (matches !== null) {
-                const identifier = matches[2] + '-F' + matches[1];
-                const apiUrl = this.entryPointUrl + '/organizations/' + identifier + '?lang=' + this.lang;
-
-                // load organisations
-                promises.push(fetch(apiUrl, {
-                    headers: {
-                        'Content-Type': 'application/ld+json',
-                        'Authorization': 'Bearer ' + window.DBPAuthToken,
-                    },
-                })
-                    .then(response => response.json())
-                    .then(org => {
-                        let organization;
-
-                        if (org['@type'] !== 'hydra:Error') {
-                            organization = {
-                                id: org.identifier,
-                                code: org.alternateName,
-                                name: org.name,
-                                url: org.url,
-                                value: org['@id'],
-                                object: org,
-                            };
-                        } else {
-                            organization = this.getMinimalOrganization(identifier, matches[1]);
-                            notify({
-                                "summary": i18n.t('select-organization.load-error'),
-                                "icon": "sad",
-                                "body": org["hydra:description"],
-                                "type": "danger",
-                            });
-                        }
-
-                        results.push(organization);
-
-                        if (organization.value === this.value) {
-                            this.setDataObject(organization);
-                        }
-                    })
-                );
+        for (let org of data['hydra:member']) {
+            let organization = {
+                id: org.identifier,
+                code: org.alternateName,
+                name: org.name,
+                url: org.url,
+                value: org['@id'],
+                object: org,
+            };
+            results.push(organization);
+            if (organization.value === this.value) {
+                this.setDataObject(organization);
             }
         }
-
-        await Promise.all(promises);
 
         return results;
     }
