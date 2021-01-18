@@ -52,10 +52,10 @@ COMPOSER_VENDOR_DIR=_temp composer require "deployer/deployer" "deployer/recipes
 
 <https://frontend-demo.tugraz.at/apps/library>
 
-Build bundle for the demo server
+Build bundle for the demo environment
 
 ```bash
-yarn run build-demo
+APP_ENV=demo yarn run build
 ```
 
 ## Browser versions
