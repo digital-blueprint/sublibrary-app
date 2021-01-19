@@ -388,7 +388,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
@@ -396,7 +396,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">
-                        <dbp-person-select subscribe="lang:lang,entry-point-url:global-entry-point-url"
+                        <dbp-person-select subscribe="lang:lang,entry-point-url:entry-point-url"
                                            value="${this.personId}"
                                            organization-id="${this.organizationId}"
                                            show-reload-button
