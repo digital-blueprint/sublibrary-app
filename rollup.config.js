@@ -7,7 +7,6 @@ import commonjs from '@rollup/plugin-commonjs';
 import copy from 'rollup-plugin-copy';
 import {terser} from "rollup-plugin-terser";
 import json from '@rollup/plugin-json';
-import replace from "@rollup/plugin-replace";
 import serve from 'rollup-plugin-serve';
 import urlPlugin from "@rollup/plugin-url";
 import consts from 'rollup-plugin-consts';
@@ -17,6 +16,7 @@ import emitEJS from 'rollup-plugin-emit-ejs'
 import babel from '@rollup/plugin-babel'
 import selfsigned from 'selfsigned';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
+import appConfig from './app.config.js';
 
 // -------------------------------
 
@@ -28,63 +28,33 @@ const USE_HTTPS = false;
 // -------------------------------
 
 const pkg = require('./package.json');
-const build = (typeof process.env.BUILD !== 'undefined') ? process.env.BUILD : 'local';
+const appEnv = (typeof process.env.APP_ENV !== 'undefined') ? process.env.APP_ENV : 'local';
 const watch = process.env.ROLLUP_WATCH === 'true';
-const buildFull = (!watch && build !== 'test') || (process.env.FORCE_FULL !== undefined);
-
-console.log("build: " + build);
-let basePath = '';
-let entryPointURL = '';
-let keyCloakServer = '';
-let keyCloakBaseURL = '';
-let keyCloakClientId = '';
-let matomoSiteId = 131;
-let matomoUrl = 'https://analytics.tugraz.at/';
+const buildFull = (!watch && appEnv !== 'test') || (process.env.FORCE_FULL !== undefined);
 let useTerser = buildFull;
 let useBabel = buildFull;
 let checkLicenses = buildFull;
 
-switch (build) {
-  case 'local':
-    basePath = '/dist/';
-    entryPointURL = 'http://127.0.0.1:8000';
-    keyCloakServer = 'auth-dev.tugraz.at';
-    keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
-    keyCloakClientId = 'auth-dev-mw-frontend-local';
-    break;
-  case 'development':
-    basePath = '/apps/library/';
-    entryPointURL = 'https://mw-dev.tugraz.at';
-    keyCloakServer = 'auth-dev.tugraz.at';
-    keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
-    keyCloakClientId = 'ibib-dev_tugraz_at-IBIB';
-    break;
-  case 'demo':
-    basePath = '/apps/library/';
-    entryPointURL = 'https://api-demo.tugraz.at';
-    keyCloakServer = 'auth-test.tugraz.at';
-    keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
-    keyCloakClientId = 'ibib-demo_tugraz_at-IBIB';
-    break;
-  case 'production':
-    basePath = '/';
-    entryPointURL = 'https://api.tugraz.at';
-    keyCloakServer = 'auth.tugraz.at';
-    keyCloakBaseURL = 'https://' + keyCloakServer + '/auth';
-    keyCloakClientId = 'ibib_tugraz_at-IBIB';
-    matomoSiteId = 130;
-    break;
-  case 'test':
-    basePath = '/apps/library/';
-    entryPointURL = '';
-    keyCloakServer = '';
-    keyCloakBaseURL = '';
-    keyCloakClientId = '';
-    break;
-  default:
-    console.error('Unknown build environment: ' + build);
+console.log("APP_ENV: " + appEnv);
+
+let config;
+if (appEnv in appConfig) {
+    config = appConfig[appEnv];
+} else if (appEnv === 'test') {
+    config = {
+        basePath: '/',
+        entryPointURL: 'https://test',
+        keyCloakBaseURL: 'https://test',
+        keyCloakClientId: '',
+        matomoUrl: '',
+        matomoSiteId: -1,
+    };
+} else {
+    console.error(`Unknown build environment: '${appEnv}', use one of '${Object.keys(appConfig)}'`);
     process.exit(1);
 }
+
+config.keyCloakServer = new URL(config.keyCloakBaseURL).origin;
 
 /**
  * Creates a server certificate and caches it in the .cert directory
@@ -125,12 +95,12 @@ function getBuildInfo() {
         info: commit,
         url: newUrl,
         time: new Date().toISOString(),
-        env: build
+        env: appEnv
     }
 }
 
 export default {
-    input: (build != 'test') ? [
+    input: (appEnv != 'test') ? [
       'src/' + pkg.name + '.js',
       'vendor/toolkit/packages/provider/src/dbp-provider.js',
       'src/dbp-library-shelving.js',
@@ -166,7 +136,7 @@ export default {
           targets: 'dist/*'
         }),
         consts({
-          environment: build,
+          environment: appEnv,
           buildinfo: getBuildInfo(),
         }),
         emitEJS({
@@ -174,19 +144,19 @@ export default {
           include: ['**/*.ejs', '**/.*.ejs'],
           data: {
             getUrl: (p) => {
-              return url.resolve(basePath, p);
+              return url.resolve(config.basePath, p);
             },
             getPrivateUrl: (p) => {
-                return url.resolve(`${basePath}local/${pkg.name}/`, p);
+                return url.resolve(`${config.basePath}local/${pkg.name}/`, p);
             },
             name: pkg.name,
-            entryPointURL: entryPointURL,
-            keyCloakServer: keyCloakServer,
-            keyCloakBaseURL: keyCloakBaseURL,
-            keyCloakClientId: keyCloakClientId,
-            environment: build,
-            matomoSiteId: matomoSiteId,
-            matomoUrl: matomoUrl,
+            entryPointURL: config.entryPointURL,
+            keyCloakServer: config.keyCloakServer,
+            keyCloakBaseURL: config.keyCloakBaseURL,
+            keyCloakClientId: config.keyCloakClientId,
+            environment: appEnv,
+            matomoSiteId: config.matomoSiteId,
+            matomoUrl: config.matomoUrl,
             buildInfo: getBuildInfo()
           }
         }),
@@ -223,9 +193,6 @@ Dependencies:
           ],
           emitFiles: true,
           fileName: 'shared/[name].[hash][extname]'
-        }),
-        replace({
-            "process.env.BUILD": '"' + build + '"',
         }),
         useTerser ? terser() : false,
         copy({
@@ -294,10 +261,10 @@ Dependencies:
           contentBase: '.',
           host: '127.0.0.1',
           port: 8001,
-          historyApiFallback: basePath + pkg.name + '.html',
+          historyApiFallback: config.basePath + pkg.name + '.html',
           https: USE_HTTPS ? generateTLSConfig() : false,
           headers: {
-              'Content-Security-Policy': `default-src 'self' 'unsafe-eval' 'unsafe-inline' analytics.tugraz.at ${keyCloakServer} ${entryPointURL}; img-src *`
+              'Content-Security-Policy': `default-src 'self' 'unsafe-eval' 'unsafe-inline' analytics.tugraz.at ${config.keyCloakServer} ${config.entryPointURL}; img-src *`
           },
         }) : false
     ]
