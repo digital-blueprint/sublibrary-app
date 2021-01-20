@@ -8,6 +8,7 @@ cache:
 
 variables:
   GIT_SUBMODULE_STRATEGY: normal
+  GIT_CLONE_PATH: $CI_BUILDS_DIR/$CI_CONCURRENT_ID/$CI_PROJECT_PATH-2
 
 before_script:
   - 'git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.tugraz.at/".insteadOf "git@gitlab.tugraz.at:"'
