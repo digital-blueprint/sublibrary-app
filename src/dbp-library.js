@@ -1,7 +1,9 @@
 import {AppShell} from '@dbp-toolkit/app-shell';
 import * as commonUtils from '@dbp-toolkit/common/utils';
+import {Provider} from '@dbp-toolkit/provider';
 
 commonUtils.defineCustomElement('dbp-library', AppShell);
+commonUtils.defineCustomElement('dbp-provider', Provider);
 
 console.log("# Example book barcodes\n\n" +
 "## F1490\n+F20313804, +F24048209, +F24084706\n\n" +
