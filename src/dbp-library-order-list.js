@@ -198,7 +198,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                         that.books.forEach(function(bookOrder) {
                             const orderDate = new Date(bookOrder.orderDate);
                             let priceString = bookOrder.orderedItem.price > 0 ?
-                                numberFormat(i18n, bookOrder.orderedItem.price) + " " + bookOrder.orderedItem.priceCurrency :
+                                numberFormat(i18n, bookOrder.orderedItem.price, { style: 'currency', currency: bookOrder.orderedItem.priceCurrency }) :
                                 "";
 
                             const row = [
