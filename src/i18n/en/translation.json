@@ -104,6 +104,7 @@
     "receiving -note": "Information",
     "current-state": "State",
     "sum-of-column": "Sum of column",
+    "open-only": "Show open orders only",
     "status-name-active": "active",
     "status-name-cancelled": "cancelled",
     "status-name-closed": "closed"

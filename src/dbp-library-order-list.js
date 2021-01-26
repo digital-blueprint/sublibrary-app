@@ -44,6 +44,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         this.books = [];
         this.organizationId = '';
         this.abortController = null;
+        this.openOnly = false;
 
         let now = new Date();
         now.setDate(now.getDate() - 1);
@@ -71,6 +72,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
             books: { type: Object, attribute: false },
+            openOnly: { type: Boolean, attribute: false },
             analyticsUpdateDate: { type: Object, attribute: false },
         });
     }
@@ -99,13 +101,17 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
 
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
-            if (propName === "lang") {
-                i18n.changeLanguage(this.lang);
+            switch (propName) {
+                case "lang":
+                    i18n.changeLanguage(this.lang);
 
-                // we need to update the column titles
-                this.loadTable();
-            } else if (propName === "organizationId") {
-                this.loadTable();
+                    // we need to update the column titles
+                    this.loadTable();
+                    break;
+                case "organizationId":
+                case "openOnly":
+                    this.loadTable();
+                    break;
             }
         });
 
@@ -196,6 +202,10 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
 
                         const tbl = [];
                         that.books.forEach(function(bookOrder) {
+                            if (that.openOnly && bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus.name !== 'active') {
+                                return;
+                            }
+
                             const orderDate = new Date(bookOrder.orderDate);
                             let priceString = bookOrder.orderedItem.price > 0 ?
                                 numberFormat(i18n, bookOrder.orderedItem.price, { style: 'currency', currency: bookOrder.orderedItem.priceCurrency }) :
@@ -235,6 +245,10 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
 
     onLanguageChanged(e) {
         this.lang = e.detail.lang;
+    }
+
+    toggleOpenOnly() {
+        this.openOnly = !this.openOnly;
     }
 
     static get styles() {
@@ -283,13 +297,21 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                     </div>
                 </div>
                 <dbp-mini-spinner id="books-loading" text="${i18n.t('order-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
-                <div id="book-list-block" class="field">
-                    <label class="label">${i18n.t('book-list.books')}</label>
-                    <div class="control">
-                        <dbp-data-table-view searching paging column-searching
-                                default-order='[3, "desc"]'
-                                exportable export-name="${i18n.t('order-list.export-name', {organizationCode: this.getOrganizationCode()})}"
-                                subscribe="lang:lang" id="book-books-1"></dbp-data-table-view>
+                <div id="book-list-block">
+                    <div class="field">
+                        <label class="label">
+                            <input type="checkbox" .checked=${this.openOnly} @click=${this.toggleOpenOnly} .disabled=${this.overdueOnly}>
+                            ${i18n.t('order-list.open-only')}
+                        </label>
+                    </div>
+                    <div class="field">
+                        <label class="label">${i18n.t('book-list.books')}</label>
+                        <div class="control">
+                            <dbp-data-table-view searching paging column-searching
+                                    default-order='[3, "desc"]'
+                                    exportable export-name="${i18n.t('order-list.export-name', {organizationCode: this.getOrganizationCode()})}"
+                                    subscribe="lang:lang" id="book-books-1"></dbp-data-table-view>
+                        </div>
                     </div>
                 </div>
                 <div id="no-books-block">

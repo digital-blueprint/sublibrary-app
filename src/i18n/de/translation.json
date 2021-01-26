@@ -103,6 +103,7 @@
     "book-price": "Preis",
     "receiving -note": "Information",
     "current-state": "Stand",
+    "open-only": "Nur offene Bestellungen anzeigen",
     "sum-of-column": "Summe der Spalte",
     "status-name-active": "offen",
     "status-name-cancelled": "storniert",
