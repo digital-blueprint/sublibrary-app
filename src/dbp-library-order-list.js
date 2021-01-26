@@ -298,12 +298,14 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 </div>
                 <dbp-mini-spinner id="books-loading" text="${i18n.t('order-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
                 <div id="book-list-block">
+                    <!--
                     <div class="field">
                         <label class="label">
                             <input type="checkbox" .checked=${this.openOnly} @click=${this.toggleOpenOnly} .disabled=${this.overdueOnly}>
                             ${i18n.t('order-list.open-only')}
                         </label>
                     </div>
+                    -->
                     <div class="field">
                         <label class="label">${i18n.t('book-list.books')}</label>
                         <div class="control">
