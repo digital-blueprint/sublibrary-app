@@ -23,7 +23,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.lang = i18n.language;
-        this.entryPointUrl = commonUtils.getAPiUrl();
+        this.entryPointUrl = '';
         this.monetaryAmounts = [];
         this.organizationId = '';
         this.abortController = null;

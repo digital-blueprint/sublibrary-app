@@ -24,7 +24,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
     constructor() {
         super();
         this.lang = 'de';
-        this.entryPointUrl = commonUtils.getAPiUrl();
+        this.entryPointUrl = '';
         this.jsonld = null;
         this.$select = null;
         // For some reason using the same ID on the whole page twice breaks select2 (regardless if they are in different custom elements)

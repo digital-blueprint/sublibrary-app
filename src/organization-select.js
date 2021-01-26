@@ -18,7 +18,7 @@ export class OrganizationSelect extends AdapterLitElement {
     constructor() {
         super();
         this.lang = i18n.language;
-        this.entryPointUrl = commonUtils.getAPiUrl();
+        this.entryPointUrl = '';
         this.jsonld = null;
         this.organizations = [];
         // For some reason using the same ID on the whole page twice breaks select2 (regardless if they are in different custom elements)

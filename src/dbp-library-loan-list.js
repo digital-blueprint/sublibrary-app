@@ -17,7 +17,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.lang = i18n.language;
-        this.entryPointUrl = commonUtils.getAPiUrl();
+        this.entryPointUrl = '';
         this.personId = "";
         this.person = null;
         this.loans = [];
