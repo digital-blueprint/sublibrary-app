@@ -8,6 +8,7 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import select2LangDe from "@dbp-toolkit/person-select/src/i18n/de/select2";
 import select2LangEn from "@dbp-toolkit/person-select/src/i18n/en/select2";
 import JSONLD from "@dbp-toolkit/common/jsonld";
+import {EventBus} from '@dbp-toolkit/common';
 import {AdapterLitElement} from "@dbp-toolkit/provider/src/adapter-lit-element";
 
 select2(window, $);
@@ -47,13 +48,16 @@ export class OrganizationSelect extends AdapterLitElement {
         super.connectedCallback();
         this.updateSelect2();
 
-        this.updateComplete.then(()=> {
-            window.addEventListener("dbp-auth-person-init", async () => {
+        this._bus = new EventBus();
+        this._bus.subscribe('auth-update', async (data) => {
+            if (data.person) {
+                this._bus.close();
                 this.cache = {};
                 await this.updateSelect2();
-                this.setAttribute("data-auth-person-init-finished", "");
-            });
+            }
+        });
 
+        this.updateComplete.then(()=> {
             // Close the popup when clicking outside of select2
             document.addEventListener('click', (ev) => {
                 if (!ev.composedPath().includes(this)) {
@@ -61,6 +65,11 @@ export class OrganizationSelect extends AdapterLitElement {
                 }
             });
         });
+    }
+
+    disconnectedCallback() {
+        this._bus.close();
+        super.disconnectedCallback();
     }
 
     async load_organizations() {
