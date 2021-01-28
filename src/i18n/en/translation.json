@@ -64,7 +64,7 @@
     "export-name": "Books {{organizationCode}}",
     "book-title": "Title",
     "book-author": "Author",
-    "book-isbn": "ISBN",
+    "book-isbn": "ISBN/ISSN",
     "book-barcode": "Barcode",
     "book-location-identifier": "Location",
     "book-description": "Description",

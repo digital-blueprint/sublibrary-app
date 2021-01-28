@@ -64,7 +64,7 @@
     "export-name": "Buchliste {{organizationCode}}",
     "book-title": "Titel",
     "book-author": "Autor",
-    "book-isbn": "ISBN",
+    "book-isbn": "ISBN/ISSN",
     "book-barcode": "Barcode",
     "book-location-identifier": "Aufstellung",
     "book-description": "Beschreibung",
