@@ -54,6 +54,7 @@ export class OrganizationSelect extends AdapterLitElement {
                 this._bus.close();
                 this.cache = {};
                 await this.updateSelect2();
+                // this attribute is used in end2end tests
                 this.setAttribute("data-auth-person-init-finished", "");
             }
         });
