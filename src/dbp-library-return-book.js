@@ -248,7 +248,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                         <dbp-library-book-offer-select subscribe="lang:lang,entry-point-url:entry-point-url"
+                         <dbp-library-book-offer-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                                                         @change=${this.onBookSelectChanged}
                                                         @unselect=${this.onBookSelectChanged}
                                                         value="${this.bookOfferId}"
