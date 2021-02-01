@@ -44,7 +44,8 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
      * See: https://lit-element.polymer-project.org/guide/properties#conversion-type
      */
     static get properties() {
-        return this.getProperties({
+        return {
+            ...super.properties,
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
@@ -52,7 +53,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
             overdueOnly: { type: Boolean, attribute: false },
             openOnly: { type: Boolean, attribute: false },
             analyticsUpdateDate: { type: Object, attribute: false },
-        });
+        };
     }
 
     $(selector) {

@@ -45,14 +45,15 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
      * See: https://lit-element.polymer-project.org/guide/properties#conversion-type
      */
     static get properties() {
-        return this.getProperties({
+        return {
+            ...super.properties,
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
             analyticsUpdateDate: { type: Object, attribute: false },
             monetaryAmounts: { type: Array, attribute: false },
             pageStatus: { type: Boolean, attribute: false },
-        });
+        };
     }
 
     loginCallback() {

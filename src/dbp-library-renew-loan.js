@@ -40,13 +40,14 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
      * See: https://lit-element.polymer-project.org/guide/properties#conversion-type
      */
     static get properties() {
-        return this.getProperties({
+        return {
+            ...super.properties,
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             personId: { type: String, attribute: 'person-id', reflect: true},
             loans: { type: Object, attribute: false },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
-        });
+        };
     }
 
     $(selector) {
