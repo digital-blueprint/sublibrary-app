@@ -16,6 +16,7 @@ const i18n = createI18nInstance();
 class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
+        this.auth = {};
         this.lang = i18n.language;
         this.entryPointUrl = '';
         this.bookOfferId = "";
@@ -38,7 +39,8 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     }
 
     static get properties() {
-        return this.getProperties({
+        return {
+            ...super.properties,
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             bookOfferId: { type: String, attribute: 'book-offer-id', reflect: true},
@@ -47,7 +49,8 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             status: { type: Object },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
             sendButtonDisabled: { type: Boolean, attribute: false },
-        });
+            auth: { type: Object },
+        };
     }
 
     connectedCallback() {
@@ -124,7 +127,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             result = await fetch(apiUrl, {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    'Authorization': 'Bearer ' + window.DBPAuthToken,
+                    'Authorization': 'Bearer ' + this.auth.token,
                 },
             });
 
@@ -225,7 +228,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             headers: {
                 'Accept': 'application/ld+json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + window.DBPAuthToken
+                'Authorization': 'Bearer ' + this.auth.token
             },
             body: JSON.stringify(data),
         });
@@ -260,7 +263,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
@@ -268,7 +271,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">
-                        <dbp-person-select subscribe="lang:lang,entry-point-url:entry-point-url"
+                        <dbp-person-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                                            @change=${this.onPersonSelectChanged}
                                            value="${this.personId}"
                                            show-birth-date>
@@ -278,7 +281,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                         <dbp-library-book-offer-select subscribe="lang:lang,entry-point-url:entry-point-url"
+                         <dbp-library-book-offer-select subscribe="auth:auth,lang:lang,entry-point-url:entry-point-url"
                                                         @change=${this.onBookSelectChanged}
                                                         @unselect=${this.onBookSelectChanged}
                                                         value="${this.bookOfferId}"

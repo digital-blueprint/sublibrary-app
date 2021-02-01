@@ -16,6 +16,7 @@ const i18n = createI18nInstance();
 class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
+        this.auth = {};
         this.lang = i18n.language;
         this.entryPointUrl = '';
         this.personId = "";
@@ -53,6 +54,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
             overdueOnly: { type: Boolean, attribute: false },
             openOnly: { type: Boolean, attribute: false },
             analyticsUpdateDate: { type: Object, attribute: false },
+            auth: { type: Object },
         };
     }
 
@@ -140,11 +142,11 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         const signal = this.abortController.signal;
 
         // load list of loans for person
-        console.assert(window.DBPAuthToken);
+        console.assert(this.auth.token);
         fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + window.DBPAuthToken,
+                'Authorization': 'Bearer ' + this.auth.token,
             },
             signal: signal,
         })
@@ -328,7 +330,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 fetch(apiUrl, {
                     headers: {
                         'Content-Type': 'application/ld+json',
-                        'Authorization': 'Bearer ' + window.DBPAuthToken,
+                        'Authorization': 'Bearer ' + this.auth.token,
                     },
                 })
                     .then(result => {
@@ -357,7 +359,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>

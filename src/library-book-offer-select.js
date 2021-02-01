@@ -24,6 +24,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
     constructor() {
         super();
         this.lang = 'de';
+        this.auth = {};
         this.entryPointUrl = '';
         this.jsonld = null;
         this.$select = null;
@@ -49,7 +50,8 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
     }
 
     static get properties() {
-        return this.getProperties({
+        return {
+            ...super.properties,
             lang: { type: String },
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
             value: { type: String },
@@ -57,7 +59,8 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
             showReloadButton: { type: Boolean, attribute: 'show-reload-button' },
             reloadButtonTitle: { type: String, attribute: 'reload-button-title' },
             organizationId: { type: String, attribute: 'organization-id' },
-        });
+            auth: { type: Object },
+        };
     }
 
     close() {
@@ -168,7 +171,8 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                 url: apiUrl,
                 contentType: "application/ld+json",
                 beforeSend: function (jqXHR) {
-                    jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.DBPAuthToken);
+                    // console.log("this.auth", that.auth);
+                    jqXHR.setRequestHeader('Authorization', 'Bearer ' + that.auth.token);
                 },
                 data: function (params) {
                     let barcode = params.term.trim();
@@ -238,7 +242,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
             fetch(apiUrl, {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    'Authorization': 'Bearer ' + window.DBPAuthToken,
+                    'Authorization': 'Bearer ' + that.auth.token,
                 },
             })
             .then(result => {

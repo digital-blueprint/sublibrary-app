@@ -16,6 +16,7 @@ const i18n = createI18nInstance();
 class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
+        this.auth = {};
         this.lang = i18n.language;
         this.entryPointUrl = '';
         this.bookOfferId = "";
@@ -48,6 +49,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
             borrowerName: { type: String, attribute: false },
             status: { type: Object , attribute: false },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
+            auth: { type: Object },
         };
     }
 
@@ -96,7 +98,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 fetch(apiUrl, {
                     headers: {
                         'Content-Type': 'application/ld+json',
-                        'Authorization': 'Bearer ' + window.DBPAuthToken,
+                        'Authorization': 'Bearer ' + that.auth.token,
                     },
                 })
                 .then(result => {
@@ -144,7 +146,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                     type: 'POST',
                     contentType: 'application/json',
                     beforeSend: function( jqXHR ) {
-                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.DBPAuthToken);
+                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + that.auth.token);
                     },
                     data: "{}",
                     success: function(data) {
@@ -202,7 +204,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + window.DBPAuthToken,
+                'Authorization': 'Bearer ' + this.auth.token,
             },
         })
             .then(response => response.json())
@@ -238,7 +240,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>

@@ -18,6 +18,7 @@ const i18n = createI18nInstance();
 export class OrganizationSelect extends AdapterLitElement {
     constructor() {
         super();
+        this.auth = {};
         this.lang = i18n.language;
         this.entryPointUrl = '';
         this.jsonld = null;
@@ -33,7 +34,8 @@ export class OrganizationSelect extends AdapterLitElement {
             ...super.properties,
             lang: {type: String},
             entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            value: {type: String, reflect: true}
+            value: {type: String, reflect: true},
+            auth: { type: Object },
         };
     }
 
@@ -218,7 +220,7 @@ export class OrganizationSelect extends AdapterLitElement {
     /**
      * Returns the list of assigned libraries of the current user
      *
-     * @returns {Array} list of orga objects
+     * @returns {Array} list of organization objects
      */
     async getAssociatedOrganizations() {
         if (window.DBPPerson === undefined) {
@@ -234,7 +236,7 @@ export class OrganizationSelect extends AdapterLitElement {
         let response = await fetch(orgUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + window.DBPAuthToken,
+                'Authorization': 'Bearer ' + this.auth.token,
             },
         });
 

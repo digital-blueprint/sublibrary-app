@@ -55,7 +55,7 @@ export class LibraryElement extends AdapterLitElement {
     isLoading() {
         if (this._loginStatus === "logged-out")
             return false;
-        return (!this.isLoggedIn() && window.DBPAuthToken !== undefined);
+        return (!this.isLoggedIn() && this.auth.token !== undefined);
     }
 
     loginCallback() {

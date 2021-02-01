@@ -18,6 +18,7 @@ const i18n = createI18nInstance();
 class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
+        this.auth = {};
         this.lang = i18n.language;
         this.entryPointUrl = '';
         this.personId = "";
@@ -47,6 +48,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
             personId: { type: String, attribute: 'person-id', reflect: true},
             loans: { type: Object, attribute: false },
             organizationId: { type: String, attribute: 'organization-id', reflect: true},
+            auth: { type: Object },
         };
     }
 
@@ -154,7 +156,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
             fetch(apiUrl, {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    'Authorization': 'Bearer ' + window.DBPAuthToken,
+                    'Authorization': 'Bearer ' + this.auth.token,
                 },
             })
                 .then(result => {
@@ -330,7 +332,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                     body: JSON.stringify(data),
                     headers: {
                         'Content-Type': 'application/ld+json',
-                        'Authorization': 'Bearer ' + window.DBPAuthToken,
+                        'Authorization': 'Bearer ' + this.auth.token,
                     },
                 })
                     .then(result => {
@@ -389,7 +391,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>
@@ -397,7 +399,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">
-                        <dbp-person-select subscribe="lang:lang,entry-point-url:entry-point-url"
+                        <dbp-person-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                                            value="${this.personId}"
                                            organization-id="${this.organizationId}"
                                            show-reload-button

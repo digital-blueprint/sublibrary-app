@@ -37,6 +37,7 @@ function getEventStatusName(status) {
 class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
+        this.auth = {};
         this.lang = i18n.language;
         this.entryPointUrl = '';
         this.personId = "";
@@ -75,6 +76,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
             books: { type: Object, attribute: false },
             openOnly: { type: Boolean, attribute: false },
             analyticsUpdateDate: { type: Object, attribute: false },
+            auth: { type: Object },
         };
     }
 
@@ -154,12 +156,12 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         this.abortController = new AbortController();
         const signal = this.abortController.signal;
 
-        console.assert(window.DBPAuthToken);
+        console.assert(this.auth.token);
         // load list of books for person
         fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + window.DBPAuthToken,
+                'Authorization': 'Bearer ' + this.auth.token,
             },
             signal: signal,
         })
@@ -292,7 +294,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url"
+                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
                     </div>

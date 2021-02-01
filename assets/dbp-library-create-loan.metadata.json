@@ -14,6 +14,6 @@
     "de": "Buchentlehnung für Institutsbibliothek",
     "en": "Allows to loan books from the library"
   },
-  "subscribe": "lang:lang,entry-point-url:entry-point-url"
+  "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
 }
 
