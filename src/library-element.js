@@ -8,10 +8,10 @@ export class LibraryElement extends AdapterLitElement {
     }
 
     hasLibraryPermissions() {
-        if (!window.DBPPerson || !Array.isArray(window.DBPPerson.roles))
+        if (!this.auth.person || !Array.isArray(this.auth.person.roles))
             return false;
 
-        let roles = window.DBPPerson.roles;
+        let roles = this.auth.person.roles;
         // Remove ROLE_F_BIB_F once https://gitlab.tugraz.at/dbp/middleware/api/-/commit/e06e503a3fbe61ec328cf3f246140fb30f52a07e
         // is deployed
         return (roles.indexOf('ROLE_F_BIB_F') !== -1 || roles.indexOf('ROLE_LIBRARY_MANAGER') !== -1);
@@ -49,7 +49,7 @@ export class LibraryElement extends AdapterLitElement {
     }
 
     isLoggedIn() {
-        return (window.DBPPerson !== undefined && window.DBPPerson !== null);
+        return (this.auth.person !== undefined && this.auth.person !== null);
     }
 
     isLoading() {

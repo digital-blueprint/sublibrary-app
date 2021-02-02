@@ -223,12 +223,12 @@ export class OrganizationSelect extends AdapterLitElement {
      * @returns {Array} list of organization objects
      */
     async getAssociatedOrganizations() {
-        if (window.DBPPerson === undefined) {
+        if (this.auth.person === undefined) {
             return [];
         }
 
         let orgUrl = this.entryPointUrl + '/people/' +
-            encodeURIComponent(window.DBPPerson.identifier) +
+            encodeURIComponent(this.auth.person.identifier) +
             '/organizations' +
             '?context=' + encodeURIComponent('library-manager') +
             '&lang=' + encodeURIComponent(this.lang);
