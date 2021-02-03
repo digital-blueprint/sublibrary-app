@@ -1,5 +1,4 @@
 import path from 'path';
-import fs from 'fs';
 import url from 'url';
 import glob from 'glob';
 import resolve from '@rollup/plugin-node-resolve';
@@ -12,9 +11,9 @@ import urlPlugin from "@rollup/plugin-url";
 import license from 'rollup-plugin-license';
 import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs'
-import selfsigned from 'selfsigned';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 import appConfig from './app.config.js';
+import {getPackagePath, getBuildInfo, generateTLSConfig, getDistPath} from './vendor/toolkit/rollup.utils.js';
 
 const pkg = require('./package.json');
 const appEnv = (typeof process.env.APP_ENV !== 'undefined') ? process.env.APP_ENV : 'local';
@@ -44,52 +43,18 @@ if (appEnv in appConfig) {
     process.exit(1);
 }
 
-config.keyCloakServer = new URL(config.keyCloakBaseURL).origin;
-
-/**
- * Creates a server certificate and caches it in the .cert directory
- */
-function generateTLSConfig() {
-  fs.mkdirSync('.cert', {recursive: true});
-
-  if (!fs.existsSync('.cert/server.key') || !fs.existsSync('.cert/server.cert')) {
-    const attrs = [{name: 'commonName', value: 'dbp-dev.localhost'}];
-    const pems = selfsigned.generate(attrs, {algorithm: 'sha256', days: 9999});
-    fs.writeFileSync('.cert/server.key', pems.private);
-    fs.writeFileSync('.cert/server.cert', pems.cert);
-  }
-
-  return {
-    key: fs.readFileSync('.cert/server.key'),
-    cert: fs.readFileSync('.cert/server.cert')
-  }
+function getOrigin(url) {
+    if (url)
+        return new URL(url).origin;
+    return '';
 }
 
-function getBuildInfo() {
-    const child_process = require('child_process');
-    const url = require('url');
+config.CSP = `default-src 'self' 'unsafe-eval' 'unsafe-inline' \
+${getOrigin(config.matomoUrl)} ${getOrigin(config.keyCloakBaseURL)} ${getOrigin(config.entryPointURL)}; img-src *`
 
-    let remote = child_process.execSync('git config --get remote.origin.url').toString().trim();
-    let commit = child_process.execSync('git rev-parse --short HEAD').toString().trim();
-
-    let parsed = url.parse(remote);
-    // convert git urls
-    if (parsed.protocol === null) {
-        parsed = url.parse('git://' + remote.replace(":", "/"));
-        parsed.protocol = 'https:';
-    }
-    let newPath = parsed.path.slice(0, parsed.path.lastIndexOf('.'));
-    let newUrl = parsed.protocol + '//' + parsed.host + newPath + '/commit/' + commit;
-
+export default (async () => {
+    let privatePath = await getDistPath(pkg.name)
     return {
-        info: commit,
-        url: newUrl,
-        time: new Date().toISOString(),
-        env: appEnv
-    }
-}
-
-export default {
     input: (appEnv != 'test') ? [
       'src/' + pkg.name + '.js',
       'src/dbp-library-shelving.js',
@@ -129,20 +94,19 @@ export default {
           include: ['**/*.ejs', '**/.*.ejs'],
           data: {
             getUrl: (p) => {
-              return url.resolve(config.basePath, p);
+                return url.resolve(config.basePath, p);
             },
             getPrivateUrl: (p) => {
-                return url.resolve(`${config.basePath}local/${pkg.name}/`, p);
+                return url.resolve(`${config.basePath}${privatePath}/`, p);
             },
             name: pkg.name,
             entryPointURL: config.entryPointURL,
-            keyCloakServer: config.keyCloakServer,
             keyCloakBaseURL: config.keyCloakBaseURL,
             keyCloakClientId: config.keyCloakClientId,
-            environment: appEnv,
             matomoSiteId: config.matomoSiteId,
             matomoUrl: config.matomoUrl,
-            buildInfo: getBuildInfo()
+            CSP: config.CSP,
+            buildInfo: getBuildInfo(appEnv)
           }
         }),
         resolve({
@@ -187,17 +151,13 @@ Dependencies:
                 {src: 'assets/*.css', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/*.ico', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/*.svg', dest: 'dist/local/' + pkg.name},
-                {src: 'node_modules/@dbp-toolkit/font-source-sans-pro/files/*', dest: 'dist/local/' + pkg.name + '/fonts/source-sans-pro'},
-                {src: 'node_modules/@dbp-toolkit/common/src/spinner.js', dest: 'dist/local/' + pkg.name, rename: 'spinner.js'},
-                {src: 'node_modules/@dbp-toolkit/common/misc/browser-check.js', dest: 'dist/local/' + pkg.name, rename: 'browser-check.js'},
                 {src: 'assets/icon-*.png', dest: 'dist/local/' + pkg.name},
                 {src: 'assets/manifest.json', dest: 'dist', rename: pkg.name + '.manifest.json'},
                 {src: 'assets/*.metadata.json', dest: 'dist'},
+                {src: 'node_modules/@dbp-toolkit/font-source-sans-pro/files/*', dest: 'dist/local/' + pkg.name + '/fonts/source-sans-pro'},
+                {src: 'node_modules/@dbp-toolkit/common/src/spinner.js', dest: 'dist/local/' + pkg.name, rename: 'spinner.js'},
+                {src: 'node_modules/@dbp-toolkit/common/misc/browser-check.js', dest: 'dist/local/' + pkg.name, rename: 'browser-check.js'},
                 {src: 'node_modules/@dbp-toolkit/common/assets/icons/*.svg', dest: 'dist/local/@dbp-toolkit/common/icons'},
-            ],
-        }),
-        copy({
-            targets: [
                 {src: 'node_modules/datatables.net-dt/css', dest: 'dist/local/@dbp-toolkit/data-table-view/'},
                 {src: 'node_modules/datatables.net-dt/images', dest: 'dist/local/@dbp-toolkit/data-table-view/'},
                 {src: 'node_modules/datatables.net-responsive-dt/css', dest: 'dist/local/@dbp-toolkit/data-table-view'},
@@ -223,10 +183,10 @@ Dependencies:
           host: '127.0.0.1',
           port: 8001,
           historyApiFallback: config.basePath + pkg.name + '.html',
-          https: useHTTPS ? generateTLSConfig() : false,
+          https: useHTTPS ? await generateTLSConfig() : false,
           headers: {
-              'Content-Security-Policy': `default-src 'self' 'unsafe-eval' 'unsafe-inline' analytics.tugraz.at ${config.keyCloakServer} ${config.entryPointURL}; img-src *`
+              'Content-Security-Policy': config.CSP
           },
         }) : false
     ]
-};
+};})();
