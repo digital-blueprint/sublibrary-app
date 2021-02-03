@@ -16,15 +16,6 @@ import selfsigned from 'selfsigned';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 import appConfig from './app.config.js';
 
-// -------------------------------
-
-// Some new web APIs are only available when HTTPS is active.
-// Note that this only works with a Non-HTTPS API endpoint with Chrome,
-// Firefox will emit CORS errors, see https://bugzilla.mozilla.org/show_bug.cgi?id=1488740
-const USE_HTTPS = false;
-
-// -------------------------------
-
 const pkg = require('./package.json');
 const appEnv = (typeof process.env.APP_ENV !== 'undefined') ? process.env.APP_ENV : 'local';
 const watch = process.env.ROLLUP_WATCH === 'true';
@@ -32,6 +23,7 @@ const buildFull = (!watch && appEnv !== 'test') || (process.env.FORCE_FULL !== u
 let useTerser = buildFull;
 let useBabel = buildFull;
 let checkLicenses = buildFull;
+let useHTTPS = false;
 
 console.log("APP_ENV: " + appEnv);
 
@@ -231,7 +223,7 @@ Dependencies:
           host: '127.0.0.1',
           port: 8001,
           historyApiFallback: config.basePath + pkg.name + '.html',
-          https: USE_HTTPS ? generateTLSConfig() : false,
+          https: useHTTPS ? generateTLSConfig() : false,
           headers: {
               'Content-Security-Policy': `default-src 'self' 'unsafe-eval' 'unsafe-inline' analytics.tugraz.at ${config.keyCloakServer} ${config.entryPointURL}; img-src *`
           },
