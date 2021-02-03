@@ -55,17 +55,7 @@ ${getOrigin(config.matomoUrl)} ${getOrigin(config.keyCloakBaseURL)} ${getOrigin(
 export default (async () => {
     let privatePath = await getDistPath(pkg.name)
     return {
-    input: (appEnv != 'test') ? [
-      'src/' + pkg.name + '.js',
-      'src/dbp-library-shelving.js',
-      'src/dbp-library-create-loan.js',
-      'src/dbp-library-return-book.js',
-      'src/dbp-library-renew-loan.js',
-      'src/dbp-library-book-list.js',
-      'src/dbp-library-loan-list.js',
-      'src/dbp-library-order-list.js',
-      'src/dbp-library-budget.js',
-    ] : glob.sync('test/**/*.js'),
+    input: (appEnv != 'test') ? glob.sync('src/dbp-library*.js') : glob.sync('test/**/*.js'),
     output: {
       dir: 'dist',
       entryFileNames: '[name].js',
