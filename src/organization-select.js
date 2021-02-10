@@ -8,7 +8,6 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import select2LangDe from "@dbp-toolkit/person-select/src/i18n/de/select2";
 import select2LangEn from "@dbp-toolkit/person-select/src/i18n/en/select2";
 import JSONLD from "@dbp-toolkit/common/jsonld";
-import {EventBus} from '@dbp-toolkit/common';
 import {AdapterLitElement} from "@dbp-toolkit/provider/src/adapter-lit-element";
 
 select2(window, $);
@@ -51,17 +50,6 @@ export class OrganizationSelect extends AdapterLitElement {
         super.connectedCallback();
         this.updateSelect2();
 
-        this._bus = new EventBus();
-        this._bus.subscribe('auth-update', async (data) => {
-            if (data.person) {
-                this._bus.close();
-                this.cache = {};
-                await this.updateSelect2();
-                // this attribute is used in end2end tests
-                this.setAttribute("data-auth-person-init-finished", "");
-            }
-        });
-
         this.updateComplete.then(()=> {
             // Close the popup when clicking outside of select2
             document.addEventListener('click', (ev) => {
@@ -70,11 +58,6 @@ export class OrganizationSelect extends AdapterLitElement {
                 }
             });
         });
-    }
-
-    disconnectedCallback() {
-        this._bus.close();
-        super.disconnectedCallback();
     }
 
     async load_organizations() {
@@ -210,11 +193,27 @@ export class OrganizationSelect extends AdapterLitElement {
                         this.jsonld = jsonld;
                     }, {}, this.lang);
                     break;
+                case "auth":
+                    JSONLD.doInitializationOnce(this.entryPointUrl, this.auth.token);
+                    this.initAuthPersonOnce().then();
+                    break;
                 default:
             }
         });
 
         super.update(changedProperties);
+    }
+
+    async initAuthPersonOnce() {
+        if (!this.auth.person || this.hasAttribute("data-auth-person-init-finished")) {
+            return;
+        }
+
+        this.cache = {};
+        await this.updateSelect2();
+
+        // this attribute is used in end2end tests
+        this.setAttribute("data-auth-person-init-finished", "");
     }
 
     /**
@@ -223,7 +222,7 @@ export class OrganizationSelect extends AdapterLitElement {
      * @returns {Array} list of organization objects
      */
     async getAssociatedOrganizations() {
-        if (this.auth.person === undefined) {
+        if (!this.auth.person) {
             return [];
         }
 
