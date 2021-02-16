@@ -6,7 +6,6 @@ import {LibraryElement} from "./library-element.js";
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
-import * as errorUtils from "@dbp-toolkit/common/error";
 import {OrganizationSelect} from './organization-select.js';
 import {MiniSpinner} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
@@ -241,7 +240,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
 
                 $booksLoadingIndicator.hide();
             }).catch(error => {
-                errorUtils.handleFetchError(error, i18n.t('order-list.error-load-orders'));
+                this.handleFetchError(error, i18n.t('order-list.error-load-orders'));
                 $booksLoadingIndicator.hide();
             });
     }

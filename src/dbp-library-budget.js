@@ -5,7 +5,6 @@ import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import * as errorUtils from "@dbp-toolkit/common/error";
 import {OrganizationSelect} from './organization-select.js';
 import {MiniSpinner} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
@@ -143,7 +142,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
                     that.pageStatus = pageStatus.noBudget;
                 } else {
                     that.pageStatus = pageStatus.none;
-                    errorUtils.handleFetchError(error, i18n.t('budget.load-error'));
+                    this.handleFetchError(error, i18n.t('budget.load-error'));
                 }
             });
     }

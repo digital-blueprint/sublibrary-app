@@ -1,7 +1,12 @@
 import {AdapterLitElement} from "@dbp-toolkit/provider/src/adapter-lit-element";
 import JSONLD from "@dbp-toolkit/common/jsonld";
+import * as errorUtils from "@dbp-toolkit/common/error";
 
 export class LibraryElement extends AdapterLitElement {
+    constructor() {
+        super();
+        Object.assign(LibraryElement.prototype, errorUtils.errorMixin);
+    }
 
     _(selector) {
         return this.shadowRoot === null ? this.querySelector(selector) : this.shadowRoot.querySelector(selector);

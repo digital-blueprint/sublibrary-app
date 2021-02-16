@@ -6,7 +6,6 @@ import {PersonSelect} from '@dbp-toolkit/person-select';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import * as errorUtils from "@dbp-toolkit/common/error";
 import {OrganizationSelect} from './organization-select.js';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
@@ -136,7 +135,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
             result = await result.json();
         } catch (error) {
-            await errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary'));
+            await this.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary'));
             return;
         } finally {
             loansLoadingIndicator.style.display = "none";
@@ -244,7 +243,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 "type": "info"
             };
         } else {
-            await errorUtils.handleFetchError(response);
+            await this.handleFetchError(response);
         }
     }
 

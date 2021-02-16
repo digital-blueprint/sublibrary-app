@@ -8,7 +8,6 @@ import Suggestions from 'suggestions';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
-import * as errorUtils from "@dbp-toolkit/common/error";
 import {Button, MiniSpinner} from "@dbp-toolkit/common";
 import {OrganizationSelect} from './organization-select.js';
 import {classMap} from 'lit-html/directives/class-map.js';
@@ -153,7 +152,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
 
                         $bookOfferSelect[0].clear();
                     },
-                    error: errorUtils.handleXhrError,
+                    error: (jqXHR, textStatus, errorThrown) => { this.handleXhrError(jqXHR, textStatus, errorThrown); },
                     complete: function (jqXHR, textStatus, errorThrown) {
                         that._("#send").stop();
                     }

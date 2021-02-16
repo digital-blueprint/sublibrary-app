@@ -5,7 +5,6 @@ import {LibraryElement} from "./library-element.js";
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
-import * as errorUtils from "@dbp-toolkit/common/error";
 import {OrganizationSelect} from './organization-select.js';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
@@ -166,7 +165,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 that.buildTable();
                 $loansLoadingIndicator.hide();
             }).catch(error => {
-                errorUtils.handleFetchError(error, i18n.t('loan-list.error-load-loans'));
+                this.handleFetchError(error, i18n.t('loan-list.error-load-loans'));
                 $loansLoadingIndicator.hide();
             });
     }
@@ -344,7 +343,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
 
                         // open mail client with new mail
                         location.href = `mailto:${loan.borrower.email}?subject=${subject}`;
-                    }).catch(error => errorUtils.handleFetchError(error, i18n.t('loan-list.error-load-loan')));
+                    }).catch(error => { this.handleFetchError(error, i18n.t('loan-list.error-load-loan')); });
                 break;
             }
         }

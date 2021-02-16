@@ -5,7 +5,6 @@ import {LibraryElement} from "./library-element.js";
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
-import * as errorUtils from "@dbp-toolkit/common/error";
 import {MiniSpinner} from "@dbp-toolkit/common";
 import select2 from 'select2';
 import select2LangDe from './i18n/de/select2';
@@ -202,7 +201,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 that.buildTable();
                 $booksLoadingIndicator.hide();
             }).catch(error => {
-                errorUtils.handleFetchError(error, i18n.t('book-list.error-load-books'));
+                this.handleFetchError(error, i18n.t('book-list.error-load-books'));
                 $booksLoadingIndicator.hide();
             });
     }

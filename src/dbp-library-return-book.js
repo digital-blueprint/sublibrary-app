@@ -5,7 +5,6 @@ import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import * as errorUtils from "@dbp-toolkit/common/error";
 import {OrganizationSelect} from './organization-select.js';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
@@ -128,7 +127,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                             "body": i18nKey('return-book.error-no-existing-loans-body'),
                         };
                     }
-                }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')));
+                }).catch(error => { this.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary')); });
             }).on('unselect', function (e) {
                 $returnBookBlock.hide();
             });
@@ -157,7 +156,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                             "body": i18n.t('return-book.success-body', {personName: that.borrowerName}),
                         };
                     },
-                    error: errorUtils.handleXhrError,
+                    error: (jqXHR, textStatus, errorThrown) => { this.handleXhrError(jqXHR, textStatus, errorThrown); },
                     complete: function (jqXHR, textStatus, errorThrown) {
                         that._("#send").stop();
                         that.updateSubmitButtonDisabled();

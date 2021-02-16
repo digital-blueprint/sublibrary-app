@@ -10,7 +10,6 @@ import {createI18nInstance} from './i18n.js';
 import {Icon} from "@dbp-toolkit/common";
 import * as commonUtils from "@dbp-toolkit/common/utils";
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import * as errorUtils from "@dbp-toolkit/common/error";
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import {AdapterLitElement} from "@dbp-toolkit/provider/src/adapter-lit-element";
 
@@ -196,7 +195,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                         results: results
                     };
                 },
-                error: errorUtils.handleXhrError
+                error: (jqXHR, textStatus, errorThrown) => { this.handleXhrError(jqXHR, textStatus, errorThrown); }
             }
         }).on("select2:select", function (e) {
             that.$('#library-book-offer-select-dropdown').removeClass('select2-bug');

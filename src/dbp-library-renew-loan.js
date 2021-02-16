@@ -8,7 +8,6 @@ import {PersonSelect} from '@dbp-toolkit/person-select';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
-import * as errorUtils from "@dbp-toolkit/common/error";
 import {OrganizationSelect} from './organization-select.js';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
@@ -224,7 +223,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                     }
                     $loansLoadingIndicator.hide();
                 }).catch(error => {
-                    errorUtils.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary'));
+                    this.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary'));
                     $loansLoadingIndicator.hide();
                 });
 
@@ -348,7 +347,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                         });
                         dateSelect.value = commonUtils.dateToInputDateString(loan.endTime);
                         timeSelect.value = commonUtils.dateToInputTimeString(loan.endTime);
-                    }).catch(error => errorUtils.handleFetchError(error, i18n.t('renew-loan.error-renew-loan-summary')))
+                    }).catch(error => { this.handleFetchError(error, i18n.t('renew-loan.error-renew-loan-summary')); })
                     .finally(() => { button.stop(); });
                 break;
             }
