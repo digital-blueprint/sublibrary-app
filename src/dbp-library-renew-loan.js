@@ -402,7 +402,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                            value="${this.personId}"
                                            organization-id="${this.organizationId}"
                                            show-reload-button
-                                           show-birth-date
+                                           show-details
                                            reload-button-title="${this.person ? i18n.t('renew-loan.button-refresh-title', {personName: this.person.name}): ""}"></dbp-person-select>
                     </div>
                 </div>
