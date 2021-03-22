@@ -6,7 +6,7 @@ import {LibraryElement} from "./library-element.js";
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
-import {OrganizationSelect} from './organization-select.js';
+import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import $ from "jquery";
@@ -53,7 +53,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'dbp-knowledge-base-organization-select': OrganizationSelect,
+            'dbp-organization-select': OrganizationSelect,
             'dbp-data-table-view': DataTableView,
             'dbp-mini-spinner': MiniSpinner,
         };
@@ -293,9 +293,9 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-knowledge-base-organization-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                        <dbp-organization-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                                                                 value="${this.organizationId}"
-                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-knowledge-base-organization-select>
+                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
                     </div>
                 </div>
                 <dbp-mini-spinner id="books-loading" text="${i18n.t('order-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
