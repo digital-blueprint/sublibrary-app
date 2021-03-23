@@ -240,6 +240,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
                         <dbp-organization-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                                                context="library-manager"
                                                                 value="${this.organizationId}"
                                                                 @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
                     </div>
