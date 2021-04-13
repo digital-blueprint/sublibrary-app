@@ -1,6 +1,6 @@
 # Library Application
 
-[GitLab Repository](https://gitlab.tugraz.at/dbp/apps/library)
+[GitLab Repository](https://gitlab.tugraz.at/dbp/topics/library)
 
 ![overview](docs/overview.svg)
 
@@ -13,7 +13,7 @@
 
 ```bash
 # get the source
-git clone git@gitlab.tugraz.at:dbp/apps/library.git
+git clone git@gitlab.tugraz.at:dbp/topics/library.git
 cd library
 git submodule update --init
 
