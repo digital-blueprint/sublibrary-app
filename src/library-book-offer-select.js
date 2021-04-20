@@ -104,7 +104,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
     initJSONLD(ignorePreset = false) {
         const that = this;
 
-        JSONLD.initialize(this.entryPointUrl, function (jsonld) {
+        JSONLD.getInstance(this.entryPointUrl).then(function (jsonld) {
             that.jsonld = jsonld;
 
             // we need to poll because maybe the user interface isn't loaded yet
@@ -300,9 +300,6 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                 case "entryPointUrl":
                     // we don't need to preset the selector if the entry point url changes
                     this.initJSONLD(true);
-                    break;
-                case "auth":
-                    JSONLD.doInitializationOnce(this.entryPointUrl, this.auth.token);
                     break;
             }
         });
