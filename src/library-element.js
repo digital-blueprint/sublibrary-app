@@ -71,13 +71,6 @@ export class LibraryElement extends AdapterLitElement {
         // Implement in subclass
     }
 
-    getScopedTagName(tagName) {
-        if (this.constructor.getScopedTagName) {
-            return this.constructor.getScopedTagName(tagName);
-        }
-        return tagName;
-    }
-
     getOrganization() {
         const organizationSelect = this._(this.getScopedTagName("dbp-organization-select"));
 
