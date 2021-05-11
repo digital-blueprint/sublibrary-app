@@ -1,5 +1,4 @@
 import {AdapterLitElement} from "@dbp-toolkit/provider/src/adapter-lit-element";
-import JSONLD from "@dbp-toolkit/common/jsonld";
 import * as errorUtils from "@dbp-toolkit/common/error";
 
 export class LibraryElement extends AdapterLitElement {
