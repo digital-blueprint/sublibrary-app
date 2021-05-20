@@ -121,7 +121,7 @@ for example like this:
     </style>
 
     <!-- Preloading/Preconnecting -->
-    <link rel="preconnect" href="http://127.0.0.1:8000">
+    <link rel="preconnect" href="https://mw-dev.tugraz.at">
     <link rel="preconnect" href="https://auth-dev.tugraz.at/auth">
     <script type="module" src="https://auth-dev.tugraz.at/auth/js/keycloak.min.js"></script>
 </head>
