@@ -1,6 +1,6 @@
 # Library Application
 
-[GitLab Repository](https://gitlab.tugraz.at/dbp/topics/library) |
+[GitLab Repository](https://gitlab.tugraz.at/dbp/library/library) |
 [npmjs package](https://www.npmjs.com/package/@dbp-topics/library) |
 [Unpkg CDN](https://unpkg.com/browse/@dbp-topics/library/)
 
@@ -15,7 +15,7 @@
 
 ```bash
 # get the source
-git clone git@gitlab.tugraz.at:dbp/topics/library.git
+git clone git@gitlab.tugraz.at:dbp/library/library.git
 cd library
 git submodule update --init
 
