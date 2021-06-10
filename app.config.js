@@ -5,9 +5,7 @@ export default {
         keyCloakBaseURL: 'https://auth-dev.tugraz.at/auth',
         keyCloakClientId: 'auth-dev-mw-frontend-local',
         matomoUrl: 'https://analytics.tugraz.at/',
-        matomoSiteId: 131,
-        siteName: 'TU Graz',
-        siteSubName: 'Graz University of Technology'
+        matomoSiteId: 131
     },
     development: {
         basePath: '/apps/library/',
@@ -15,9 +13,7 @@ export default {
         keyCloakBaseURL: 'https://auth-dev.tugraz.at/auth',
         keyCloakClientId: 'ibib-dev_tugraz_at-IBIB',
         matomoUrl: 'https://analytics.tugraz.at/',
-        matomoSiteId: 131,
-        siteName: 'TU Graz',
-        siteSubName: 'Graz University of Technology'
+        matomoSiteId: 131
     },
     demo: {
         basePath: '/apps/library/',
@@ -25,9 +21,7 @@ export default {
         keyCloakBaseURL: 'https://auth-test.tugraz.at/auth',
         keyCloakClientId: 'ibib-demo_tugraz_at-IBIB',
         matomoUrl: 'https://analytics.tugraz.at/',
-        matomoSiteId: 131,
-        siteName: 'TU Graz',
-        siteSubName: 'Graz University of Technology'
+        matomoSiteId: 131
     },
     production: {
         basePath: '/',
@@ -35,8 +29,6 @@ export default {
         keyCloakBaseURL: 'https://auth.tugraz.at/auth',
         keyCloakClientId: 'ibib_tugraz_at-IBIB',
         matomoUrl: 'https://analytics.tugraz.at/',
-        matomoSiteId: 130,
-        siteName: 'TU Graz',
-        siteSubName: 'Graz University of Technology'
+        matomoSiteId: 130
     },
 };
