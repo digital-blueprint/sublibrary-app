@@ -36,6 +36,8 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         this.showReloadButton = false;
         this.reloadButtonTitle = '';
         this.organizationId = '';
+
+        this._onDocumentClicked = this._onDocumentClicked.bind(this);
     }
 
     static get scopedElements() {
@@ -75,29 +77,28 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
 
     connectedCallback() {
         super.connectedCallback();
-        const that = this;
+        document.addEventListener('click', this._onDocumentClicked);
 
         this.updateComplete.then(()=>{
-            that.$select = that.$('#' + that.selectId);
-            that.$select.disabled = true;
-
-            // Close the popup when clicking outside of select2
-            document.addEventListener('click', (ev) => {
-                if (!ev.composedPath().includes(this)) {
-                    this._closeSelect2();
-                }
-            });
-
+            this.$select = this.$('#' + this.selectId);
+            this.$select.disabled = true;
             // try an init when user-interface is loaded
-            that.initJSONLD();
+            this.initJSONLD();
         });
     }
 
-    _closeSelect2() {
-        const $select = this.$('#' + this.selectId);
-        console.assert($select.length, "select2 missing");
-        if (this.select2IsInitialized($select)) {
-            $select.select2('close');
+    disconnectedCallback() {
+        document.removeEventListener('click', this._onDocumentClicked);
+        super.disconnectedCallback();
+    }
+
+    _onDocumentClicked(ev) {
+        // Close the popup when clicking outside of select2
+        if (!ev.composedPath().includes(this)) {
+            const $select = this.$('#' + this.selectId);
+            if ($select.length && this.select2IsInitialized($select)) {
+                $select.select2('close');
+            }
         }
     }
 
