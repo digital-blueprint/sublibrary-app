@@ -137,6 +137,8 @@ Dependencies:
                 {src: 'assets/*.css', dest: 'dist/' + await getDistPath(pkg.name)},
                 {src: 'assets/*.ico', dest: 'dist/' + await getDistPath(pkg.name)},
                 {src: 'assets/*.svg', dest: 'dist/' + await getDistPath(pkg.name)},
+                {src: 'assets/apple-*.png', dest: 'dist/' + await getDistPath(pkg.name)},
+                {src: 'assets/safari-*.svg', dest: 'dist/' + await getDistPath(pkg.name)},
                 {src: 'assets/icon-*.png', dest: 'dist/' + await getDistPath(pkg.name)},
                 {src: 'assets/manifest.json', dest: 'dist', rename: pkg.internalName + '.manifest.json'},
                 {src: 'assets/*.metadata.json', dest: 'dist'},
