@@ -3,18 +3,14 @@
     "headline": "Person"
   },
   "library-book-offer-select": {
-    "headline": "Buch"
+    "headline": "Bibliothek Buch",
+    "placeholder": "Bitte geben Sie einen Barcode ein"
   },
   "organization-select": {
     "label": "Institut"
   },
   "shelving": {
     "button-refresh-title": "Aufstellung von {{name}} erneut laden"
-  },
-  "library-book-offer-select": {
-    "headline": "Bibliothek Buch",
-    "placeholder": "Bitte geben Sie einen Barcode ein",
-    "error-summary": "Ein Fehler ist aufgetreten"
   },
   "create-loan": {
     "info-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
@@ -104,7 +100,6 @@
     "receiving -note": "Information",
     "current-state": "Stand",
     "open-only": "Nur offene Bestellungen anzeigen",
-    "sum-of-column": "Summe der Spalte",
     "status-name-active": "offen",
     "status-name-cancelled": "storniert",
     "status-name-closed": "abgeschlossen"
@@ -113,11 +108,6 @@
     "headline": "Identifikator zur Aufstellung",
     "placeholder": "Bitte geben Sie den Identifikator um das Buch aufzustellen ein",
     "submit": "Abschicken"
-  },
-  "select-organization": {
-    "placeholder": "Bitte wählen Sie ein Institut aus",
-    "loading": "Wird geladen...",
-    "load-error": "Fehler beim Laden der Organisation"
   },
   "budget": {
     "load-error": "Fehler beim Laden der Budgetwerte",

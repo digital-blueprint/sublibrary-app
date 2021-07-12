@@ -3,18 +3,14 @@
     "headline": "Person"
   },
   "library-book-offer-select": {
-    "headline": "Book"
+    "headline": "Library book",
+    "placeholder": "Please enter a barcode"
   },
   "organization-select": {
     "label": "Institute"
   },
   "shelving": {
     "button-refresh-title": "Load shelving from {{name}} again"
-  },
-  "library-book-offer-select": {
-    "headline": "Library book",
-    "placeholder": "Please enter a barcode",
-    "error-summary": "An error occurred"
   },
   "create-loan": {
     "info-no-existing-loans-summary": "No existing loans",
@@ -103,7 +99,6 @@
     "book-price": "Price",
     "receiving -note": "Information",
     "current-state": "State",
-    "sum-of-column": "Sum of column",
     "open-only": "Show open orders only",
     "status-name-active": "active",
     "status-name-cancelled": "cancelled",
@@ -113,11 +108,6 @@
     "headline": "Identifier for book placement",
     "placeholder": "Please enter the identifier to place the book",
     "submit": "Send"
-  },
-  "select-organization": {
-    "placeholder": "Please select an organization",
-    "loading": "Loading...",
-    "load-error": "Error loading the organization"
   },
   "budget": {
     "load-error": "Failed to load budget values",

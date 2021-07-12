@@ -169,6 +169,13 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     }
 
     getMonetaryAmountRow(name) {
+        // For i18next scanner
+        i18n.t('budget.taa');
+        i18n.t('budget.taa-tcb');
+        i18n.t('budget.tcb');
+        i18n.t('budget.tcb-tab');
+        i18n.t('budget.tab');
+
         return this.monetaryAmounts[name] ? html`
             <tr>
                 <th>${i18n.t('budget.' + name)}</th>
