@@ -6,7 +6,7 @@ import select2LangEn from './i18n/en/select2-book-offer';
 import JSONLD from '@dbp-toolkit/common/jsonld';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
-import {createI18nInstance} from './i18n.js';
+import {createInstance} from './i18n.js';
 import {Icon} from "@dbp-toolkit/common";
 import * as commonUtils from "@dbp-toolkit/common/utils";
 import * as commonStyles from '@dbp-toolkit/common/styles';
@@ -16,13 +16,12 @@ import {AdapterLitElement} from "@dbp-toolkit/provider/src/adapter-lit-element";
 
 select2(window, $);
 
-const i18n = createI18nInstance();
-
 export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElement) {
 
     constructor() {
         super();
-        this.lang = 'de';
+        this._i18n = createInstance();
+        this.lang = this._i18n.language;
         this.auth = {};
         this.entryPointUrl = '';
         this.jsonld = null;
@@ -164,7 +163,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
             language: this.lang === "de" ? select2LangDe() : select2LangEn(),
             minimumInputLength: 3,
             allowClear: true,
-            placeholder: i18n.t('library-book-offer-select.placeholder'),
+            placeholder: this._i18n.t('library-book-offer-select.placeholder'),
             dropdownParent: this.$('#library-book-offer-select-dropdown'),
             ajax: {
                 delay: 250,
@@ -276,7 +275,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
                 case "lang":
-                    i18n.changeLanguage(this.lang);
+                    this._i18n.changeLanguage(this.lang);
 
                     if (this.select2IsInitialized()) {
                         // no other way to set an other language at runtime did work

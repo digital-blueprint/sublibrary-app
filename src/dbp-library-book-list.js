@@ -1,4 +1,4 @@
-import {createI18nInstance} from './i18n.js';
+import {createInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
@@ -16,13 +16,12 @@ import {classMap} from 'lit-html/directives/class-map.js';
 
 select2(window, $);
 
-const i18n = createI18nInstance();
-
 class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
+        this._i18n = createInstance();
         this.auth = {};
-        this.lang = i18n.language;
+        this.lang = this._i18n.language;
         this.entryPointUrl = '';
         this.personId = "";
         this.person = null;
@@ -105,7 +104,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
                 case "lang":
-                    i18n.changeLanguage(this.lang);
+                    this._i18n.changeLanguage(this.lang);
                     this.updateLocationIdentifierSelect();
 
                     // we need to update the column titles
@@ -201,7 +200,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 that.buildTable();
                 $booksLoadingIndicator.hide();
             }).catch(error => {
-                this.handleFetchError(error, i18n.t('book-list.error-load-books'));
+                this.handleFetchError(error, that._i18n.t('book-list.error-load-books'));
                 $booksLoadingIndicator.hide();
             });
     }
@@ -217,15 +216,15 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             const vdtv1 = this._('#book-books-1');
             if (vdtv1 !== null) {
                 const columns = [
-                    {title: i18n.t('book-list.book-title')},
-                    {title: i18n.t('book-list.book-author')},
-                    {title: i18n.t('book-list.book-publication-year')},
-                    {title: i18n.t('book-list.book-publisher')},
-                    {title: i18n.t('book-list.book-availability-date')},
+                    {title: this._i18n.t('book-list.book-title')},
+                    {title: this._i18n.t('book-list.book-author')},
+                    {title: this._i18n.t('book-list.book-publication-year')},
+                    {title: this._i18n.t('book-list.book-publisher')},
+                    {title: this._i18n.t('book-list.book-availability-date')},
                     null,
-                    {title: i18n.t('book-list.book-barcode')},
-                    {title: i18n.t('book-list.book-location-identifier')},
-                    {title: i18n.t('book-list.book-description')},
+                    {title: this._i18n.t('book-list.book-barcode')},
+                    {title: this._i18n.t('book-list.book-location-identifier')},
+                    {title: this._i18n.t('book-list.book-description')},
                 ];
 
                 // sorting will be done by hidden columns
@@ -322,7 +321,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             width: '100%',
             allowClear: true,
             language: this.lang === "de" ? select2LangDe() : select2LangEn(),
-            placeholder: i18n.t('book-list.location-identifier-select-placeholder'),
+            placeholder: this._i18n.t('book-list.location-identifier-select-placeholder'),
             dropdownParent: this.$('#location-identifier-select-dropdown'),
         }).on("select2:select", function (e) {
             that.locationIdentifier = e.params.data.id;
@@ -360,7 +359,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             width: '100%',
             allowClear: true,
             language: this.lang === "de" ? select2LangDe() : select2LangEn(),
-            placeholder: i18n.t('book-list.inventory-year-select-placeholder'),
+            placeholder: this._i18n.t('book-list.inventory-year-select-placeholder'),
             dropdownParent: this.$('#inventory-year-select-dropdown'),
         }).on("select2:select", function (e) {
             that.inventoryYear = e.params.data.id;
@@ -413,6 +412,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         });
 
         const select2CSS = commonUtils.getAssetURL(select2CSSPath);
+        const i18n = this._i18n;
         return html`
             <link rel="stylesheet" href="${select2CSS}">
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading()})}">

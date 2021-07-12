@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {createI18nInstance, i18nKey} from './i18n.js';
+import {createInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
@@ -10,13 +10,12 @@ import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import  {LibraryBookOfferSelect} from './library-book-offer-select.js';
 
-const i18n = createI18nInstance();
-
 class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.auth = {};
-        this.lang = i18n.language;
+        this._i18n = createInstance();
+        this.lang = this._i18n.language;
         this.entryPointUrl = '';
         this.bookOfferId = "";
         this.bookOffer = null;
@@ -67,6 +66,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     connectedCallback() {
         super.connectedCallback();
         const that = this;
+        const i18n = this._i18n;
 
         this.updateComplete.then(()=>{
             const $bookOfferSelect = that.$(this.getScopedTagName('dbp-library-book-offer-select'));
@@ -177,7 +177,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === "lang") {
-                i18n.changeLanguage(this.lang);
+                this._i18n.changeLanguage(this.lang);
             }
         });
 
@@ -190,7 +190,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
 
     loadBorrower(personId) {
         this.borrower = null;
-        this.borrowerName = i18n.t('return-book.user-name-unknown');
+        this.borrowerName = this._i18n.t('return-book.user-name-unknown');
 
         // this happens if no person was found in LDAP by AlmaUserId
         if (personId == null) {
@@ -234,6 +234,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     }
 
     render() {
+        const i18n = this._i18n;
         return html`
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading()})}">
                 <div class="field">

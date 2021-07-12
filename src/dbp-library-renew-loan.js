@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {createI18nInstance} from './i18n.js';
+import {createInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {send as notify} from '@dbp-toolkit/common/notification';
@@ -12,13 +12,12 @@ import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
 
-const i18n = createI18nInstance();
-
 class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.auth = {};
-        this.lang = i18n.language;
+        this._i18n = createInstance();
+        this.lang = this._i18n.language;
         this.entryPointUrl = '';
         this.personId = "";
         this.person = null;
@@ -130,6 +129,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
 
     loadTable() {
         const that = this;
+        const i18n = this._i18n;
 
         const apiUrl = this.entryPointUrl + this.personId + "/library-book-loans";
 
@@ -234,7 +234,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === "lang") {
-                i18n.changeLanguage(this.lang);
+                this._i18n.changeLanguage(this.lang);
 
                 /*
                 const vdtv1 = this._('#book-loans-1');
@@ -271,6 +271,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
      */
     onDataTableClick(e) {
         const path = e.composedPath();
+        const i18n = this._i18n;
         let button, buttonIndex = -1;
 
         // search for the dbp-button
@@ -385,6 +386,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     }
 
     render() {
+        const i18n = this._i18n;
         return html`
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading()})}">
                 <div class="field">

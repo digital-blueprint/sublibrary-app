@@ -1,4 +1,4 @@
-import {createI18nInstance} from './i18n.js';
+import {createInstance} from './i18n.js';
 import {numberFormat} from '@dbp-toolkit/common/i18next.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
@@ -8,8 +8,6 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
-
-const i18n = createI18nInstance();
 
 const pageStatus = {
     'none': 0,
@@ -22,7 +20,8 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.auth = {};
-        this.lang = i18n.language;
+        this._i18n = createInstance();
+        this.lang = this._i18n.language;
         this.entryPointUrl = '';
         this.monetaryAmounts = [];
         this.organizationId = '';
@@ -73,7 +72,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === "lang") {
-                i18n.changeLanguage(this.lang);
+                this._i18n.changeLanguage(this.lang);
             } else if (propName === "organizationId") {
                 this.loadBudget();
             }
@@ -142,7 +141,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
                     that.pageStatus = pageStatus.noBudget;
                 } else {
                     that.pageStatus = pageStatus.none;
-                    this.handleFetchError(error, i18n.t('budget.load-error'));
+                    this.handleFetchError(error, that._i18n.t('budget.load-error'));
                 }
             });
     }
@@ -169,6 +168,8 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     }
 
     getMonetaryAmountRow(name) {
+        const i18n = this._i18n;
+
         // For i18next scanner
         i18n.t('budget.taa');
         i18n.t('budget.taa-tcb');
@@ -185,6 +186,8 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     }
 
     render() {
+        const i18n = this._i18n;
+
         return html`
             <div class="field">
                 ${i18n.t('order-list.current-state')}: ${this.analyticsUpdateDate}

@@ -1,4 +1,4 @@
-import {createI18nInstance, i18nKey} from './i18n.js';
+import {createInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from './library-element.js';
@@ -10,13 +10,12 @@ import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
 
-const i18n = createI18nInstance();
-
 class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.auth = {};
-        this.lang = i18n.language;
+        this._i18n = createInstance();
+        this.lang = this._i18n.language;
         this.entryPointUrl = '';
         this.bookOfferId = "";
         this.bookOffer = null;
@@ -59,7 +58,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === "lang") {
-                i18n.changeLanguage(this.lang);
+                this._i18n.changeLanguage(this.lang);
             }
         });
 
@@ -135,7 +134,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
             result = await result.json();
         } catch (error) {
-            await this.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary'));
+            await this.handleFetchError(error, this._i18n.t('renew-loan.error-load-loans-summary'));
             return;
         } finally {
             loansLoadingIndicator.style.display = "none";
@@ -206,8 +205,8 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         // check if selected date is in the past
         if (date < (new Date())) {
             this.status = {
-                "summary": i18n.t('error-summary'),
-                "body": i18n.t('renew-loan.error-renew-loan-date-in-past'),
+                "summary": this._i18n.t('error-summary'),
+                "body": this._i18n.t('renew-loan.error-renew-loan-date-in-past'),
                 "type": "danger"
             };
 
@@ -239,7 +238,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
             this.status = {
                 "summary": i18nKey('create-loan.success-summary'),
-                "body": i18n.t('create-loan.success-body', {personName: this.person.name}),
+                "body": this._i18n.t('create-loan.success-body', {personName: this.person.name}),
                 "type": "info"
             };
         } else {
@@ -256,6 +255,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         let date = new Date();
         date.setMonth(date.getMonth() + 1);
         const loanDate = date.toISOString();
+        const i18n = this._i18n;
 
         return html`
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading()})}">

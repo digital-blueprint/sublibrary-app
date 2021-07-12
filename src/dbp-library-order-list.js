@@ -1,4 +1,4 @@
-import {createI18nInstance} from './i18n.js';
+import {createInstance} from './i18n.js';
 import {numberFormat} from '@dbp-toolkit/common/i18next.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
@@ -11,16 +11,15 @@ import {MiniSpinner} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import $ from "jquery";
 
-const i18n = createI18nInstance();
-
 
 /**
  * Returns a translated label for the given status
  *
+ * @param i18n
  * @param {string} status
  * @returns {string} A status label for the actve language
  */
-function getEventStatusName(status) {
+function getEventStatusName(i18n, status) {
     if (status === 'active') {
         return i18n.t('order-list.status-name-active');
     } else if (status === 'cancelled') {
@@ -37,7 +36,8 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.auth = {};
-        this.lang = i18n.language;
+        this._i18n = createInstance();
+        this.lang = this._i18n.language;
         this.entryPointUrl = '';
         this.personId = "";
         this.person = null;
@@ -105,7 +105,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
                 case "lang":
-                    i18n.changeLanguage(this.lang);
+                    this._i18n.changeLanguage(this.lang);
 
                     // we need to update the column titles
                     this.loadTable();
@@ -129,6 +129,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     }
 
     loadTable() {
+        const i18n = this._i18n;
         const that = this;
         const $bookListBlock = that.$('#book-list-block');
         const $noBooksBlock = that.$('#no-books-block');
@@ -222,7 +223,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                                 bookOrder.orderNumber,
                                 priceString,
                                 bookOrder.orderedItem.price,
-                                getEventStatusName(bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus.name),
+                                getEventStatusName(i18n, bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus.name),
                                 bookOrder.receivingNote,
                             ];
                             tbl.push(row);
@@ -285,6 +286,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     }
 
     render() {
+        const i18n = this._i18n;
         return html`
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading()})}">
                 <div class="field">

@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {createI18nInstance} from './i18n.js';
+import {createInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {send as notify} from '@dbp-toolkit/common/notification';
@@ -13,13 +13,12 @@ import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {classMap} from 'lit-html/directives/class-map.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
 
-const i18n = createI18nInstance();
-
 class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.auth = {};
-        this.lang = i18n.language;
+        this._i18n = createInstance();
+        this.lang = this._i18n.language;
         this.entryPointUrl = '';
         this.bookOfferId = "";
         this.bookOffer = null;
@@ -62,6 +61,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     connectedCallback() {
         super.connectedCallback();
         const that = this;
+        const i18n = this._i18n;
 
         this.updateComplete.then(()=>{
             const $bookOfferSelect = that.$(this.getScopedTagName('dbp-library-book-offer-select'));
@@ -164,7 +164,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === "lang") {
-                i18n.changeLanguage(this.lang);
+                this._i18n.changeLanguage(this.lang);
             }
         });
 
@@ -201,6 +201,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
 
     render() {
         const suggestionsCSS = commonUtils.getAssetURL(suggestionsCSSPath);
+        const i18n = this._i18n;
 
         return html`
             <link rel="stylesheet" href="${suggestionsCSS}">

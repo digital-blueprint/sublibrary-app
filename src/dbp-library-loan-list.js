@@ -1,4 +1,4 @@
-import {createI18nInstance} from './i18n.js';
+import {createInstance} from './i18n.js';
 import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
@@ -10,13 +10,12 @@ import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import $ from "jquery";
 
-const i18n = createI18nInstance();
-
 class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.auth = {};
-        this.lang = i18n.language;
+        this._i18n = createInstance();
+        this.lang = this._i18n.language;
         this.entryPointUrl = '';
         this.personId = "";
         this.person = null;
@@ -87,7 +86,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
                 case "lang":
-                    i18n.changeLanguage(this.lang);
+                    this._i18n.changeLanguage(this.lang);
 
                     // we need to update the column titles
                     this.buildTable();
@@ -165,7 +164,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 that.buildTable();
                 $loansLoadingIndicator.hide();
             }).catch(error => {
-                this.handleFetchError(error, i18n.t('loan-list.error-load-loans'));
+                this.handleFetchError(error, that._i18n.t('loan-list.error-load-loans'));
                 $loansLoadingIndicator.hide();
             });
     }
@@ -174,6 +173,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         const $loanListBlock = this.$('#loan-list-block');
         const $noLoansBlock = this.$('#no-loans-block');
         const that = this;
+        const i18n = this._i18n;
 
         if (this.loans.length > 0) {
             const vdtv1 = this._('#loan-loans-1');
@@ -294,6 +294,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
     onDataTableClick(e) {
         const path = e.composedPath();
         let button, buttonIndex = -1;
+        const i18n = this._i18n;
 
         // search for the dbp-button
         path.some((item, index) => {
@@ -350,6 +351,8 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
     }
 
     render() {
+        const i18n = this._i18n;
+
         return html`
             <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading()})}">
                 <div class="field">
