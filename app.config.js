@@ -9,7 +9,7 @@ export default {
     },
     development: {
         basePath: '/apps/library/',
-        entryPointURL: 'https://mw-dev.tugraz.at',
+        entryPointURL: 'https://api-dev.tugraz.at',
         keyCloakBaseURL: 'https://auth-dev.tugraz.at/auth',
         keyCloakClientId: 'ibib-dev_tugraz_at-IBIB',
         matomoUrl: 'https://analytics.tugraz.at/',

@@ -36,7 +36,7 @@ Example book barcodes: `+F58330104`, `+F58019101`, `+F53498803`
 
 ## Remote development
 
-<https://mw-frontend-dev.tugraz.at/apps/library>
+<https://dvp-dev.tugraz.at/apps/library>
 
 Run `yarn run watch-dev` to build the `dist/bundle.js` constantly and upload the `dist` folder to the server.
 
@@ -52,7 +52,7 @@ COMPOSER_VENDOR_DIR=_temp composer require "deployer/deployer" "deployer/recipes
 
 ## Demo system
 
-<https://frontend-demo.tugraz.at/apps/library>
+<https://dbp-demo.tugraz.at/apps/library>
 
 Build bundle for the demo environment
 
