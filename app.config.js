@@ -3,6 +3,7 @@ export default {
         basePath: '/dist/',
         entryPointURL: 'http://127.0.0.1:8000',
         keyCloakBaseURL: 'https://auth-dev.tugraz.at/auth',
+        keyCloakRealm: 'tugraz-vpu',
         keyCloakClientId: 'auth-dev-mw-frontend-local',
         matomoUrl: 'https://analytics.tugraz.at/',
         matomoSiteId: 131
@@ -11,6 +12,7 @@ export default {
         basePath: '/apps/library/',
         entryPointURL: 'https://api-dev.tugraz.at',
         keyCloakBaseURL: 'https://auth-dev.tugraz.at/auth',
+        keyCloakRealm: 'tugraz-vpu',
         keyCloakClientId: 'ibib-dev_tugraz_at-IBIB',
         matomoUrl: 'https://analytics.tugraz.at/',
         matomoSiteId: 131
@@ -19,6 +21,7 @@ export default {
         basePath: '/apps/library/',
         entryPointURL: 'https://api-demo.tugraz.at',
         keyCloakBaseURL: 'https://auth-test.tugraz.at/auth',
+        keyCloakRealm: 'tugraz',
         keyCloakClientId: 'ibib-demo_tugraz_at-IBIB',
         matomoUrl: 'https://analytics.tugraz.at/',
         matomoSiteId: 131
@@ -27,6 +30,7 @@ export default {
         basePath: '/',
         entryPointURL: 'https://api.tugraz.at',
         keyCloakBaseURL: 'https://auth.tugraz.at/auth',
+        keyCloakRealm: 'tugraz',
         keyCloakClientId: 'ibib_tugraz_at-IBIB',
         matomoUrl: 'https://analytics.tugraz.at/',
         matomoSiteId: 130
