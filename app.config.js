@@ -20,9 +20,9 @@ export default {
     demo: {
         basePath: '/apps/library/',
         entryPointURL: 'https://api-demo.tugraz.at',
-        keyCloakBaseURL: 'https://auth-test.tugraz.at/auth',
-        keyCloakRealm: 'tugraz',
-        keyCloakClientId: 'ibib-demo_tugraz_at-IBIB',
+        keyCloakBaseURL: 'https://auth-demo.tugraz.at/auth',
+        keyCloakRealm: 'tugraz-vpu',
+        keyCloakClientId: 'dbp-library',
         matomoUrl: 'https://analytics.tugraz.at/',
         matomoSiteId: 131
     },
