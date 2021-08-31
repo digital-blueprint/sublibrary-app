@@ -13,7 +13,7 @@ export default {
         entryPointURL: 'https://api-dev.tugraz.at',
         keyCloakBaseURL: 'https://auth-dev.tugraz.at/auth',
         keyCloakRealm: 'tugraz-vpu',
-        keyCloakClientId: 'ibib-dev_tugraz_at-IBIB',
+        keyCloakClientId: 'dbp-library',
         matomoUrl: 'https://analytics.tugraz.at/',
         matomoSiteId: 131
     },
