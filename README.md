@@ -64,10 +64,10 @@ APP_ENV=demo yarn run build
 
 ### Install app
 
-If you want to install the DBP Library App in a new folder `library-app` you can call:
+If you want to install the DBP Library App in a new folder `library-app` with a path prefix `/` you can call:
 
 ```bash
-npx @digital-blueprint/cli install-app library library-app
+npx @digital-blueprint/cli install-app library library-app /
 ```
 
 Afterwards you can point your Apache web-server to `library-app/public`.
