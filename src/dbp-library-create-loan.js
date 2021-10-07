@@ -9,6 +9,7 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
+import {getPersonDisplayName} from './utils.js';
 
 class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -238,7 +239,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
             this.status = {
                 "summary": i18nKey('create-loan.success-summary'),
-                "body": this._i18n.t('create-loan.success-body', {personName: this.person.name}),
+                "body": this._i18n.t('create-loan.success-body', {personName: getPersonDisplayName(this.person)}),
                 "type": "info"
             };
         } else {

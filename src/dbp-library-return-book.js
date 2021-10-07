@@ -9,6 +9,7 @@ import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import  {LibraryBookOfferSelect} from './library-book-offer-select.js';
+import {getPersonDisplayName} from './utils.js';
 
 class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -209,7 +210,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
             .then(response => response.json())
             .then((person) => {
                 this.borrower = person;
-                this.borrowerName = person.name;
+                this.borrowerName = getPersonDisplayName(person);
             });
     }
 

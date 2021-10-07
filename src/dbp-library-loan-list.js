@@ -9,6 +9,7 @@ import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
 import $ from "jquery";
+import {getPersonDisplayName} from './utils.js';
 
 class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -229,7 +230,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                         loan.object.book.title,
                         loan.object.book.author,
                         loan.object.barcode,
-                        loan.borrower.name,
+                        getPersonDisplayName(loan.borrower),
                         startTime.toLocaleDateString("de-AT"),
                         loan.startTime,
                         endTime.toLocaleDateString("de-AT"),
@@ -241,7 +242,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                         `<div class="button-col">
                             <${button} data-id="${loan['@id']}" data-type="contact" data-book-name="${loan.object.name}"
                                         value="${i18n.t('renew-loan.contact-value')}" name="send" type="is-small"
-                                        title="${i18n.t('renew-loan.contact-title', {personName: loan.borrower.name})}" no-spinner-on-click></${button}>
+                                        title="${i18n.t('renew-loan.contact-title', {personName: getPersonDisplayName(loan.borrower)})}" no-spinner-on-click></${button}>
                         </div>`
                     ];
                     tbl.push(row);

@@ -18,3 +18,9 @@ export const findObjectInApiResults = (identifier, results, identifierAttribute 
         }
     }
 };
+
+
+export function getPersonDisplayName(person)
+{
+    return `${person.givenName} ${person.familyName}`;
+}

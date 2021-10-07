@@ -11,6 +11,7 @@ import {DataTableView} from '@dbp-toolkit/data-table-view';
 import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit-html/directives/class-map.js';
+import {getPersonDisplayName} from './utils.js';
 
 class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -208,7 +209,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                                         title="${i18n.t('renew-loan.renew-loan')}" no-spinner-on-click></${button}>
                                             <${button} data-id="${loan['@id']}" data-type="contact" data-book-name="${loan.object.name}"
                                                         value="${i18n.t('renew-loan.contact-value')}" name="send" type="is-small"
-                                                        title="${i18n.t('renew-loan.contact-title', {personName: that.person.name})}" no-spinner-on-click></${button}>
+                                                        title="${i18n.t('renew-loan.contact-title', {personName: getPersonDisplayName(that.person)})}" no-spinner-on-click></${button}>
                                         </div>`
                                 ];
                                 tbl.push(row);
@@ -406,7 +407,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                            organization-id="${this.organizationId}"
                                            show-reload-button
                                            show-details
-                                           reload-button-title="${this.person ? i18n.t('renew-loan.button-refresh-title', {personName: this.person.name}): ""}"></dbp-person-select>
+                                           reload-button-title="${this.person ? i18n.t('renew-loan.button-refresh-title', {personName: getPersonDisplayName(this.person)}): ""}"></dbp-person-select>
                     </div>
                 </div>
                 <dbp-mini-spinner id="loans-loading" text="${i18n.t('renew-loan.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
