@@ -1,0 +1,26 @@
+{
+  "name": {
+    "de": "Institutsbibliothek",
+    "en": "Sublibrary"
+  },
+  "short_name": {
+    "de": "Institutsbibliothek",
+    "en": "Sublibrary"
+  },
+  "description": {
+    "de": "",
+    "en": ""
+  },
+  "routing_name": "library",
+  "activities": [
+    {"path": "/app/dbp-library-shelving.metadata.json"},
+    {"path": "/app/dbp-library-create-loan.metadata.json"},
+    {"path": "/app/dbp-library-return-book.metadata.json"},
+    {"path": "/app/dbp-library-renew-loan.metadata.json"},
+    {"path": "/app/dbp-library-book-list.metadata.json"},
+    {"path": "/app/dbp-library-loan-list.metadata.json"},
+    {"path": "/app/dbp-library-order-list.metadata.json"},
+    {"path": "/app/dbp-library-budget.metadata.json"}
+  ],
+  "attributes": ["person-id", "book-offer-id", "organization-id"]
+}
