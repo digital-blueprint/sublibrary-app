@@ -51,7 +51,7 @@ function getOrigin(url) {
 }
 
 config.CSP = `default-src 'self' 'unsafe-eval' 'unsafe-inline' \
-${getOrigin(config.matomoUrl)} ${getOrigin(config.keyCloakBaseURL)} ${getOrigin(config.entryPointURL)}; img-src *`
+${getOrigin(config.matomoUrl)} ${getOrigin(config.keyCloakBaseURL)} ${getOrigin(config.entryPointURL)}; img-src * blob: data:`
 
 export default (async () => {
     let privatePath = await getDistPath(pkg.name)
