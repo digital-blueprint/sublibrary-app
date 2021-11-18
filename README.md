@@ -90,7 +90,7 @@ If you want to update the DBP Library App in the current folder you can call:
 npx @digital-blueprint/cli update-app library
 ```
 
-## "dbp-greenlight" Slots
+## "dbp-library" Slots
 
 These are common slots for the appshell. You can find the documentation of these slot in the `README.md` of the appshell webcomponent.
 
