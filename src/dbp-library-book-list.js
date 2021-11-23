@@ -1,5 +1,5 @@
 import {createInstance} from './i18n.js';
-import {css, html} from 'lit';
+import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from "./library-element.js";
 import * as commonUtils from '@dbp-toolkit/common/utils';
@@ -12,7 +12,7 @@ import select2LangEn from './i18n/en/select2';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import $ from "jquery";
 import {OrganizationSelect} from '@dbp-toolkit/organization-select';
-import {classMap} from 'lit/directives/class-map.js';
+import {classMap} from 'lit-html/directives/class-map.js';
 
 select2(window, $);
 

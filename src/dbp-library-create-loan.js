@@ -1,5 +1,5 @@
 import {createInstance, i18nKey} from './i18n.js';
-import {css, html} from 'lit';
+import {css, html} from 'lit-element';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from './library-element.js';
 import {PersonSelect} from '@dbp-toolkit/person-select';
@@ -8,7 +8,7 @@ import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
-import {classMap} from 'lit/directives/class-map.js';
+import {classMap} from 'lit-html/directives/class-map.js';
 import {getPersonDisplayName} from './utils.js';
 
 class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
