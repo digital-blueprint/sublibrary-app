@@ -192,6 +192,10 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                 }
                                 let button = that.getScopedTagName("dbp-button");
 
+                                // FIXME: DataTableView creates the rows using the global registry
+                                // but should use its own one
+                                commonUtils.defineCustomElement('dbp-button', Button);
+
                                 const row = [
                                     loan.object.name,
                                     loan.object.description,

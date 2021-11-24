@@ -224,6 +224,10 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                         return;
                     }
 
+                    // FIXME: DataTableView creates the rows using the global registry
+                    // but should use its own one
+                    commonUtils.defineCustomElement('dbp-button', Button);
+
 
                     let button = that.getScopedTagName('dbp-button');
                     const row = [
