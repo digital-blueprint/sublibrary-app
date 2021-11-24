@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import {createInstance} from './i18n.js';
-import {css, html} from 'lit-element';
+import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {send as notify} from '@dbp-toolkit/common/notification';
 import {LibraryElement} from "./library-element.js";
@@ -10,7 +10,7 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
 import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
-import {classMap} from 'lit-html/directives/class-map.js';
+import {classMap} from 'lit/directives/class-map.js';
 import {getPersonDisplayName} from './utils.js';
 
 class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
