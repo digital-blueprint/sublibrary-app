@@ -195,6 +195,13 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                     '',
                 ];
 
+                let createdCell = (td, cellData, rowData, row, col) => {
+                    // Recreate the content from the correct shadow root registry
+                    let div = that.shadowRoot.createElement('div');
+                    div.innerHTML = cellData;
+                    td.replaceChildren(...div.children);
+                };
+
                 // sorting will be done by hidden columns
                 // responsivePriority see https://datatables.net/extensions/responsive/priority
                 const columnDefs = [
@@ -205,7 +212,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                     {targets: [8], orderData: [9]},
                     {targets: [9], visible: false},
                     {targets: [11], responsivePriority: 10001},
-                    {targets: [12], sortable: false},
+                    {targets: [12], sortable: false, createdCell: createdCell},
                 ];
 
                 const currentDate = new Date();
@@ -223,11 +230,6 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                     if (that.overdueOnly && (currentDate < endTime || loan.returnTime !== null)) {
                         return;
                     }
-
-                    // FIXME: DataTableView creates the rows using the global registry
-                    // but should use its own one
-                    commonUtils.defineCustomElement('dbp-button', Button);
-
 
                     let button = that.getScopedTagName('dbp-button');
                     const row = [

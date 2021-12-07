@@ -178,11 +178,20 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                 null,
                                 ''
                             ];
+
+                            let createdCell = (td, cellData, rowData, row, col) => {
+                                // Recreate the content from the correct shadow root registry
+                                let div = that.shadowRoot.createElement('div');
+                                div.innerHTML = cellData;
+                                td.replaceChildren(...div.children);
+                            };
+
                             const vdtv1_columnDefs = [
                                 {targets: [3], visible: false},
                                 {targets: [2], orderData: [3]},
                                 {targets: [3, 4], searchable: false},
-                                {targets: [4], sortable: false}
+                                {targets: [4], sortable: false},
+                                {targets: [2, 4], createdCell: createdCell},
                             ];
                             const orgUnitCode = that.getLibrary();
                             const tbl = [];
@@ -191,10 +200,6 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                     return;
                                 }
                                 let button = that.getScopedTagName("dbp-button");
-
-                                // FIXME: DataTableView creates the rows using the global registry
-                                // but should use its own one
-                                commonUtils.defineCustomElement('dbp-button', Button);
 
                                 const row = [
                                     loan.object.name,
