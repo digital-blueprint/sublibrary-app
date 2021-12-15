@@ -199,7 +199,10 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                     // Recreate the content from the correct shadow root registry
                     let div = that.shadowRoot.createElement('div');
                     div.innerHTML = cellData;
-                    td.replaceChildren(...div.children);
+                    while(td.lastChild) {
+                        td.removeChild(td.lastChild);
+                    }
+                    td.append(...div.children);
                 };
 
                 // sorting will be done by hidden columns
