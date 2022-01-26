@@ -1,19 +1,18 @@
 {
-  "element": "dbp-library-loan-list",
-  "module_src": "dbp-library-loan-list.js",
-  "routing_name": "loan-list",
-  "name": {
-    "de": "Entlehnungen anzeigen",
-    "en": "Show current loans"
-  },
-  "short_name": {
-    "de": "Entlehnungen anzeigen",
-    "en": "Show current loans"
-  },
-  "description": {
-    "de": "Zeigt die Entlehnungen eines Instituts bis zum Vortag an",
-    "en": "Lists all loans of an organization until yesterday"
-  },
-  "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
+    "element": "dbp-library-loan-list",
+    "module_src": "dbp-library-loan-list.js",
+    "routing_name": "loan-list",
+    "name": {
+        "de": "Entlehnungen anzeigen",
+        "en": "Show current loans"
+    },
+    "short_name": {
+        "de": "Entlehnungen anzeigen",
+        "en": "Show current loans"
+    },
+    "description": {
+        "de": "Zeigt die Entlehnungen eines Instituts bis zum Vortag an",
+        "en": "Lists all loans of an organization until yesterday"
+    },
+    "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
 }
-

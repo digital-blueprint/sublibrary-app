@@ -6,7 +6,7 @@ export default {
         keyCloakRealm: 'tugraz-vpu',
         keyCloakClientId: 'auth-dev-mw-frontend-local',
         matomoUrl: 'https://analytics.tugraz.at/',
-        matomoSiteId: 131
+        matomoSiteId: 131,
     },
     development: {
         basePath: '/apps/library/',
@@ -15,7 +15,7 @@ export default {
         keyCloakRealm: 'tugraz-vpu',
         keyCloakClientId: 'dbp-library',
         matomoUrl: 'https://analytics.tugraz.at/',
-        matomoSiteId: 131
+        matomoSiteId: 131,
     },
     demo: {
         basePath: '/apps/library/',
@@ -24,7 +24,7 @@ export default {
         keyCloakRealm: 'tugraz-vpu',
         keyCloakClientId: 'dbp-library',
         matomoUrl: 'https://analytics.tugraz.at/',
-        matomoSiteId: 131
+        matomoSiteId: 131,
     },
     production: {
         basePath: '/',
@@ -33,6 +33,6 @@ export default {
         keyCloakRealm: 'tugraz',
         keyCloakClientId: 'ibib_tugraz_at-IBIB',
         matomoUrl: 'https://analytics.tugraz.at/',
-        matomoSiteId: 130
+        matomoSiteId: 130,
     },
 };

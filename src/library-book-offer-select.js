@@ -7,17 +7,15 @@ import JSONLD from '@dbp-toolkit/common/jsonld';
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {createInstance} from './i18n.js';
-import {Icon} from "@dbp-toolkit/common";
-import * as commonUtils from "@dbp-toolkit/common/utils";
+import {Icon} from '@dbp-toolkit/common';
+import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
-import {AdapterLitElement} from "@dbp-toolkit/provider/src/adapter-lit-element";
-
+import {AdapterLitElement} from '@dbp-toolkit/provider/src/adapter-lit-element';
 
 select2(window, $);
 
 export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElement) {
-
     constructor() {
         super();
         this._i18n = createInstance();
@@ -41,7 +39,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
 
     static get scopedElements() {
         return {
-          'dbp-icon': Icon,
+            'dbp-icon': Icon,
         };
     }
 
@@ -52,14 +50,14 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
     static get properties() {
         return {
             ...super.properties,
-            lang: { type: String },
-            entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            value: { type: String },
-            object: { type: Object, attribute: false },
-            showReloadButton: { type: Boolean, attribute: 'show-reload-button' },
-            reloadButtonTitle: { type: String, attribute: 'reload-button-title' },
-            organizationId: { type: String, attribute: 'organization-id' },
-            auth: { type: Object },
+            lang: {type: String},
+            entryPointUrl: {type: String, attribute: 'entry-point-url'},
+            value: {type: String},
+            object: {type: Object, attribute: false},
+            showReloadButton: {type: Boolean, attribute: 'show-reload-button'},
+            reloadButtonTitle: {type: String, attribute: 'reload-button-title'},
+            organizationId: {type: String, attribute: 'organization-id'},
+            auth: {type: Object},
         };
     }
 
@@ -69,8 +67,8 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
 
     clear() {
         this.object = null;
-        $(this).attr("data-object", "");
-        $(this).data("object", null);
+        $(this).attr('data-object', '');
+        $(this).data('object', null);
         this.$select.val(null).trigger('change').trigger('select2:unselect');
     }
 
@@ -78,7 +76,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         super.connectedCallback();
         document.addEventListener('click', this._onDocumentClicked);
 
-        this.updateComplete.then(()=>{
+        this.updateComplete.then(() => {
             this.$select = this.$('#' + this.selectId);
             this.$select.disabled = true;
             // try an init when user-interface is loaded
@@ -104,17 +102,32 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
     initJSONLD(ignorePreset = false) {
         const that = this;
 
-        JSONLD.getInstance(this.entryPointUrl).then(function (jsonld) {
-            that.jsonld = jsonld;
+        JSONLD.getInstance(this.entryPointUrl).then(
+            function (jsonld) {
+                that.jsonld = jsonld;
 
-            // we need to poll because maybe the user interface isn't loaded yet
-            // Note: we need to call initSelect2() in a different function so we can access "this" inside initSelect2()
-            commonUtils.pollFunc(() => { return that.initSelect2(ignorePreset); }, 10000, 100);
-        }, {}, this.lang);
+                // we need to poll because maybe the user interface isn't loaded yet
+                // Note: we need to call initSelect2() in a different function so we can access "this" inside initSelect2()
+                commonUtils.pollFunc(
+                    () => {
+                        return that.initSelect2(ignorePreset);
+                    },
+                    10000,
+                    100
+                );
+            },
+            {},
+            this.lang
+        );
     }
 
     isInt(value) {
-        return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value));
+        return (
+            !isNaN(value) &&
+            (function (x) {
+                return (x | 0) === x;
+            })(parseFloat(value))
+        );
     }
 
     getLibrary() {
@@ -127,7 +140,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
 
     /**
      * Initializes the Select2 selector
-     * 
+     *
      * @param {boolean} ignorePreset
      */
     initSelect2(ignorePreset = false) {
@@ -139,12 +152,12 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         }
 
         // find the correct api url for a library book offer
-        const apiUrl = this.jsonld.getApiUrlForEntityName("LibraryBookOffer");
+        const apiUrl = this.jsonld.getApiUrlForEntityName('LibraryBookOffer');
 
         // the mapping we need for Select2
         const localContext = {
-            "id": "@id",
-            "text": "http://schema.org/name"
+            id: '@id',
+            text: 'http://schema.org/name',
         };
 
         if (this.$select === null) {
@@ -158,114 +171,128 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
             this.$select.off('select2:unselect');
         }
 
-        this.$select.select2({
-            width: '100%',
-            language: this.lang === "de" ? select2LangDe() : select2LangEn(),
-            minimumInputLength: 3,
-            allowClear: true,
-            placeholder: this._i18n.t('library-book-offer-select.placeholder'),
-            dropdownParent: this.$('#library-book-offer-select-dropdown'),
-            ajax: {
-                delay: 250,
-                url: apiUrl,
-                contentType: "application/ld+json",
-                beforeSend: function (jqXHR) {
-                    // console.log("this.auth", that.auth);
-                    jqXHR.setRequestHeader('Authorization', 'Bearer ' + that.auth.token);
+        this.$select
+            .select2({
+                width: '100%',
+                language: this.lang === 'de' ? select2LangDe() : select2LangEn(),
+                minimumInputLength: 3,
+                allowClear: true,
+                placeholder: this._i18n.t('library-book-offer-select.placeholder'),
+                dropdownParent: this.$('#library-book-offer-select-dropdown'),
+                ajax: {
+                    delay: 250,
+                    url: apiUrl,
+                    contentType: 'application/ld+json',
+                    beforeSend: function (jqXHR) {
+                        // console.log("this.auth", that.auth);
+                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + that.auth.token);
+                    },
+                    data: function (params) {
+                        let barcode = params.term.trim();
+
+                        // add a "+" if the barcode is missing it
+                        // first check if barcode is not a pure integer or starts with a "@"
+                        if (
+                            !that.isInt(barcode) &&
+                            barcode.substr(0, 1) !== '+' &&
+                            barcode.substr(0, 1) !== '@'
+                        ) {
+                            barcode = '+' + barcode;
+                        }
+                        return {
+                            barcode: barcode,
+                            library: that.getLibrary(),
+                        };
+                    },
+                    processResults: function (data) {
+                        that.$('#library-book-offer-select-dropdown').addClass('select2-bug');
+                        that.lastResult = data;
+                        const results = that.jsonld.transformMembers(data, localContext);
+
+                        return {
+                            results: results,
+                        };
+                    },
+                    error: (jqXHR, textStatus, errorThrown) => {
+                        this.handleXhrError(jqXHR, textStatus, errorThrown);
+                    },
                 },
-                data: function (params) {
-                    let barcode = params.term.trim();
+            })
+            .on('select2:select', function (e) {
+                that.$('#library-book-offer-select-dropdown').removeClass('select2-bug');
+                const identifier = e.params.data.id;
+                that.object = findObjectInApiResults(identifier, that.lastResult);
 
-                    // add a "+" if the barcode is missing it
-                    // first check if barcode is not a pure integer or starts with a "@"
-                    if (!(that.isInt(barcode)) && barcode.substr(0,1) !== '+' && barcode.substr(0,1) !== '@') {
-                        barcode = '+' + barcode;
-                    }
-                    return {
-                        barcode: barcode,
-                        library: that.getLibrary(),
-                    };
-                },
-                processResults: function (data) {
-                    that.$('#library-book-offer-select-dropdown').addClass('select2-bug');
-                    that.lastResult = data;
-                    const results = that.jsonld.transformMembers(data, localContext);
+                if (that.object === undefined) {
+                    return;
+                }
 
-                    return {
-                        results: results
-                    };
-                },
-                error: (jqXHR, textStatus, errorThrown) => { this.handleXhrError(jqXHR, textStatus, errorThrown); }
-            }
-        }).on("select2:select", function (e) {
-            that.$('#library-book-offer-select-dropdown').removeClass('select2-bug');
-            const identifier = e.params.data.id;
-            that.object = findObjectInApiResults(identifier, that.lastResult);
+                // set custom element attributes
+                $that.attr('data-object', JSON.stringify(that.object));
+                $that.data('object', that.object);
 
-            if (that.object === undefined) {
-                return;
-            }
+                if ($that.attr('value') !== identifier) {
+                    that.ignoreValueUpdate = true;
+                    $that.attr('value', identifier);
+                    that.value = identifier;
 
-            // set custom element attributes
-            $that.attr("data-object", JSON.stringify(that.object));
-            $that.data("object", that.object);
-
-            if ($that.attr("value") !== identifier) {
+                    // fire a change event
+                    that.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: identifier,
+                            },
+                        })
+                    );
+                }
+            })
+            .on('select2:unselect', function (e) {
+                that.object = null;
+                $that.attr('data-object', '');
+                $that.data('object', {});
                 that.ignoreValueUpdate = true;
-                $that.attr("value", identifier);
-                that.value = identifier;
+                $that.attr('value', '');
+                that.value = '';
 
-                // fire a change event
-                that.dispatchEvent(new CustomEvent('change', {
-                    detail: {
-                        value: identifier,
-                    }
-                }));
-            }
-        }).on('select2:unselect', function (e) {
-            that.object = null;
-            $that.attr("data-object", "");
-            $that.data("object", {});
-            that.ignoreValueUpdate = true;
-            $that.attr("value", "");
-            that.value = "";
-
-            // fire a unselect event
-            that.dispatchEvent(new CustomEvent('unselect'));
-        });
+                // fire a unselect event
+                that.dispatchEvent(new CustomEvent('unselect'));
+            });
 
         // preset a book offer
-        if (!ignorePreset && this.value !== '' && this.value !== "null") {
+        if (!ignorePreset && this.value !== '' && this.value !== 'null') {
             const apiUrl = this.entryPointUrl + this.value;
 
             fetch(apiUrl, {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    'Authorization': 'Bearer ' + that.auth.token,
+                    Authorization: 'Bearer ' + that.auth.token,
                 },
             })
-            .then(result => {
-                if (!result.ok) throw result;
-                return result.json();
-            })
-            .then((bookOffer) => {
-                that.object = bookOffer;
-                const identifier = bookOffer["@id"];
-                const option = new Option(bookOffer.name, identifier, true, true);
-                $that.attr("data-object", JSON.stringify(bookOffer));
-                $that.data("object", bookOffer);
-                that.$select.val(null).append(option).trigger('change');
+                .then((result) => {
+                    if (!result.ok) throw result;
+                    return result.json();
+                })
+                .then((bookOffer) => {
+                    that.object = bookOffer;
+                    const identifier = bookOffer['@id'];
+                    const option = new Option(bookOffer.name, identifier, true, true);
+                    $that.attr('data-object', JSON.stringify(bookOffer));
+                    $that.data('object', bookOffer);
+                    that.$select.val(null).append(option).trigger('change');
 
-                // fire a change event
-                that.dispatchEvent(new CustomEvent('change', {
-                    detail: {
-                        value: identifier,
-                    },
-                    bubbles: true
-                }));
-            }).catch(() => {
-                that.clear();
-            });
+                    // fire a change event
+                    that.dispatchEvent(
+                        new CustomEvent('change', {
+                            detail: {
+                                value: identifier,
+                            },
+                            bubbles: true,
+                        })
+                    );
+                })
+                .catch(() => {
+                    that.clear();
+                });
         }
 
         return true;
@@ -274,7 +301,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
-                case "lang":
+                case 'lang':
                     this._i18n.changeLanguage(this.lang);
 
                     if (this.select2IsInitialized()) {
@@ -282,7 +309,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                         this.initSelect2(true);
                     }
                     break;
-                case "organizationId":
+                case 'organizationId':
                     if (!this.organizationId) {
                         this.organizationId = '';
                     }
@@ -290,14 +317,14 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                         this.$select.enable = this.organizationId.includes('-');
                     }
                     break;
-                case "value":
+                case 'value':
                     if (!this.ignoreValueUpdate && this.select2IsInitialized()) {
                         this.initSelect2();
                     }
 
                     this.ignoreValueUpdate = false;
                     break;
-                case "entryPointUrl":
+                case 'entryPointUrl':
                     // we don't need to preset the selector if the entry point url changes
                     this.initJSONLD(true);
                     break;
@@ -308,7 +335,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
     }
 
     select2IsInitialized() {
-        return this.$select !== null && this.$select.hasClass("select2-hidden-accessible");
+        return this.$select !== null && this.$select.hasClass('select2-hidden-accessible');
     }
 
     reloadClick() {
@@ -317,12 +344,14 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         }
 
         // fire a change event
-        this.dispatchEvent(new CustomEvent('change', {
-            detail: {
-                value: this.value,
-            },
-            bubbles: true
-        }));
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value: this.value,
+                },
+                bubbles: true,
+            })
+        );
     }
 
     static get styles() {
@@ -367,10 +396,14 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         const select2CSS = commonUtils.getAssetURL(select2CSSPath);
 
         return html`
-            <link rel="stylesheet" href="${select2CSS}">
+            <link rel="stylesheet" href="${select2CSS}" />
             <style>
-                #${this.selectId} {width: 100%;}
-                li.select2-selection__choice {white-space: normal;}
+                #${this.selectId} {
+                    width: 100%;
+                }
+                li.select2-selection__choice {
+                    white-space: normal;
+                }
             </style>
 
             <div class="select">
@@ -379,12 +412,13 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                         <!-- https://select2.org-->
                         <select id="${this.selectId}" name="book-offer" class="select"></select>
                     </div>
-                    <a class="control button"
-                       id="reload-button"
-                       ?disabled=${this.object === null}
-                       @click="${this.reloadClick}"
-                       style="display: ${this.showReloadButton ? "flex" : "none"}"
-                       title="${this.reloadButtonTitle}">
+                    <a
+                        class="control button"
+                        id="reload-button"
+                        ?disabled=${this.object === null}
+                        @click="${this.reloadClick}"
+                        style="display: ${this.showReloadButton ? 'flex' : 'none'}"
+                        title="${this.reloadButtonTitle}">
                         <dbp-icon name="reload"></dbp-icon>
                     </a>
                 </div>

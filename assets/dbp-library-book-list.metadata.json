@@ -1,19 +1,18 @@
 {
-  "element": "dbp-library-book-list",
-  "module_src": "dbp-library-book-list.js",
-  "routing_name": "book-list",
-  "name": {
-    "de": "Institutsbücher anzeigen",
-    "en": "Show sublibrary book list"
-  },
-  "short_name": {
-    "de": "Institutsbücher anzeigen",
-    "en": "Show sublibrary book list"
-  },
-  "description": {
-    "de": "Zeigt die Bücher eines Instituts bis zum Vortag an",
-    "en": "Lists all books of a sublibrary until yesterday"
-  },
-  "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
+    "element": "dbp-library-book-list",
+    "module_src": "dbp-library-book-list.js",
+    "routing_name": "book-list",
+    "name": {
+        "de": "Institutsbücher anzeigen",
+        "en": "Show sublibrary book list"
+    },
+    "short_name": {
+        "de": "Institutsbücher anzeigen",
+        "en": "Show sublibrary book list"
+    },
+    "description": {
+        "de": "Zeigt die Bücher eines Instituts bis zum Vortag an",
+        "en": "Lists all books of a sublibrary until yesterday"
+    },
+    "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
 }
-

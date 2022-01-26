@@ -21,7 +21,10 @@ export default function () {
         inputTooShort: function (args) {
             var remainingChars = args.minimum - args.input.length;
 
-            var message = 'You can only search for complete barcodes, please enter ' + remainingChars + ' or more characters';
+            var message =
+                'You can only search for complete barcodes, please enter ' +
+                remainingChars +
+                ' or more characters';
 
             return message;
         },
@@ -45,6 +48,6 @@ export default function () {
         },
         removeAllItems: function () {
             return 'Remove all items';
-        }
+        },
     };
 }
