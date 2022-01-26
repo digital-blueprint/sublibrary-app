@@ -5,8 +5,8 @@
  * @param results
  * @param identifierAttribute
  */
-export const findObjectInApiResults = (identifier, results, identifierAttribute = "@id") => {
-    const members = results["hydra:member"];
+export const findObjectInApiResults = (identifier, results, identifierAttribute = '@id') => {
+    const members = results['hydra:member'];
 
     if (members === undefined) {
         return;
@@ -19,8 +19,6 @@ export const findObjectInApiResults = (identifier, results, identifierAttribute 
     }
 };
 
-
-export function getPersonDisplayName(person)
-{
+export function getPersonDisplayName(person) {
     return `${person.givenName} ${person.familyName}`;
 }

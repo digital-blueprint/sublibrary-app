@@ -15,7 +15,11 @@ export default function () {
         inputTooShort: function (args) {
             var remainingChars = args.minimum - args.input.length;
 
-            return 'Es kann nur nach vollständigen Barcodes gesucht werden, bitte ' + remainingChars + ' Zeichen mehr eingeben';
+            return (
+                'Es kann nur nach vollständigen Barcodes gesucht werden, bitte ' +
+                remainingChars +
+                ' Zeichen mehr eingeben'
+            );
         },
         loadingMore: function () {
             return 'Lade mehr Ergebnisse…';
@@ -41,6 +45,6 @@ export default function () {
         },
         removeAllItems: function () {
             return 'Entferne alle Gegenstände';
-        }
+        },
     };
 }

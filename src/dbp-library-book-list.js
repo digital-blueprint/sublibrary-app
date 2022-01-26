@@ -1,16 +1,16 @@
 import {createInstance} from './i18n.js';
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
-import {LibraryElement} from "./library-element.js";
+import {LibraryElement} from './library-element.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
-import {MiniSpinner} from "@dbp-toolkit/common";
+import {MiniSpinner} from '@dbp-toolkit/common';
 import select2 from 'select2';
 import select2LangDe from './i18n/de/select2';
 import select2LangEn from './i18n/en/select2';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
-import $ from "jquery";
+import $ from 'jquery';
 import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {classMap} from 'lit/directives/class-map.js';
 
@@ -23,7 +23,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         this.auth = {};
         this.lang = this._i18n.language;
         this.entryPointUrl = '';
-        this.personId = "";
+        this.personId = '';
         this.person = null;
         this.books = [];
         this.organizationId = '';
@@ -31,11 +31,13 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         this.abortController = null;
         this.locationIdentifier = '';
         this.locationIdentifiers = [];
-        this.locationIdentifierSelectId = 'dbp-library-book-list-location-identifier-select-' + commonUtils.makeId(24);
+        this.locationIdentifierSelectId =
+            'dbp-library-book-list-location-identifier-select-' + commonUtils.makeId(24);
         this.$locationIdentifierSelect = null;
         this.inventoryYear = '';
         this.inventoryYears = [];
-        this.inventoryYearSelectId = 'dbp-library-book-list-inventory-year-select-' + commonUtils.makeId(24);
+        this.inventoryYearSelectId =
+            'dbp-library-book-list-inventory-year-select-' + commonUtils.makeId(24);
         this.$inventoryYearSelect = null;
 
         let now = new Date();
@@ -61,17 +63,17 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
     static get properties() {
         return {
             ...super.properties,
-            lang: { type: String },
-            entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            organizationId: { type: String, attribute: 'organization-id', reflect: true},
-            books: { type: Object, attribute: false },
-            locationIdentifiers: { type: Array, attribute: false },
-            locationIdentifier: { type: String, attribute: false },
-            inventoryYears: { type: Array, attribute: false },
-            inventoryYear: { type: String, attribute: false },
-            organization: { type: Object, attribute: false },
-            analyticsUpdateDate: { type: Object, attribute: false },
-            auth: { type: Object },
+            lang: {type: String},
+            entryPointUrl: {type: String, attribute: 'entry-point-url'},
+            organizationId: {type: String, attribute: 'organization-id', reflect: true},
+            books: {type: Object, attribute: false},
+            locationIdentifiers: {type: Array, attribute: false},
+            locationIdentifier: {type: String, attribute: false},
+            inventoryYears: {type: Array, attribute: false},
+            inventoryYear: {type: String, attribute: false},
+            organization: {type: Object, attribute: false},
+            analyticsUpdateDate: {type: Object, attribute: false},
+            auth: {type: Object},
         };
     }
 
@@ -84,7 +86,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
     connectedCallback() {
         super.connectedCallback();
 
-        this.updateComplete.then(()=>{
+        this.updateComplete.then(() => {
             this.initLocationIdentifierSelect();
             this.initInventoryYearSelect();
 
@@ -95,7 +97,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 }
             `;
 
-            this._(this.getScopedTagName("dbp-data-table-view")).setCSSStyle(css);
+            this._(this.getScopedTagName('dbp-data-table-view')).setCSSStyle(css);
             this.loadTable();
         });
     }
@@ -103,24 +105,24 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
-                case "lang":
+                case 'lang':
                     this._i18n.changeLanguage(this.lang);
                     this.updateLocationIdentifierSelect();
 
                     // we need to update the column titles
                     this.buildTable(false);
                     break;
-                case "organizationId":
+                case 'organizationId':
                     this.loadTable();
                     break;
-                case "locationIdentifiers":
+                case 'locationIdentifiers':
                     this.updateLocationIdentifierSelect();
                     break;
-                case "locationIdentifier":
-                case "inventoryYear":
+                case 'locationIdentifier':
+                case 'inventoryYear':
                     this.buildTable(false);
                     break;
-                case "inventoryYears":
+                case 'inventoryYears':
                     this.updateInventoryYearSelect();
                     break;
             }
@@ -156,14 +158,13 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         $bookListBlock.hide();
         $noBooksBlock.hide();
 
-        if (!this.isLoggedIn())
-            return;
+        if (!this.isLoggedIn()) return;
 
-        if (this.organizationId === "") {
+        if (this.organizationId === '') {
             return;
         }
 
-        const apiUrl = this.entryPointUrl + this.organizationId + "/library-book-offers";
+        const apiUrl = this.entryPointUrl + this.organizationId + '/library-book-offers';
         const $booksLoadingIndicator = this.$('#books-loading');
 
         $booksLoadingIndicator.show();
@@ -180,26 +181,29 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + this.auth.token,
+                Authorization: 'Bearer ' + this.auth.token,
             },
             signal: signal,
         })
-            .then(result => {
+            .then((result) => {
                 if (!result.ok) throw result;
 
                 if (result.headers.has('x-analytics-update-date')) {
                     const date = new Date(result.headers.get('x-analytics-update-date'));
-                    this.analyticsUpdateDate = date.toLocaleDateString(this.lang) + " " +
+                    this.analyticsUpdateDate =
+                        date.toLocaleDateString(this.lang) +
+                        ' ' +
                         date.toLocaleTimeString(this.lang);
                 }
 
                 return result.json();
             })
-            .then(result => {
+            .then((result) => {
                 that.books = result['hydra:member'];
                 that.buildTable();
                 $booksLoadingIndicator.hide();
-            }).catch(error => {
+            })
+            .catch((error) => {
                 this.handleFetchError(error, that._i18n.t('book-list.error-load-books'));
                 $booksLoadingIndicator.hide();
             });
@@ -236,21 +240,28 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 const tbl = [];
                 this.books.forEach(function (bookOffer) {
                     const availabilityStarts = new Date(bookOffer.availabilityStarts);
-                    const inventoryYear = bookOffer.availabilityStarts !== null ?
-                        availabilityStarts.getFullYear().toString() : "";
+                    const inventoryYear =
+                        bookOffer.availabilityStarts !== null
+                            ? availabilityStarts.getFullYear().toString()
+                            : '';
 
-                    if ((that.locationIdentifier === "" ||
-                         that.locationIdentifier === bookOffer.locationIdentifier) &&
-                        (that.inventoryYear === "" ||
-                         that.inventoryYear === inventoryYear)) {
+                    if (
+                        (that.locationIdentifier === '' ||
+                            that.locationIdentifier === bookOffer.locationIdentifier) &&
+                        (that.inventoryYear === '' || that.inventoryYear === inventoryYear)
+                    ) {
                         const datePublished = new Date(bookOffer.book.datePublished);
 
                         const row = [
                             bookOffer.book.title,
                             bookOffer.book.author,
-                            bookOffer.book.datePublished !== null ? datePublished.getFullYear() : "",
+                            bookOffer.book.datePublished !== null
+                                ? datePublished.getFullYear()
+                                : '',
                             bookOffer.book.publisher,
-                            bookOffer.availabilityStarts !== null ? availabilityStarts.toLocaleDateString("de-AT") : "",
+                            bookOffer.availabilityStarts !== null
+                                ? availabilityStarts.toLocaleDateString('de-AT')
+                                : '',
                             bookOffer.availabilityStarts,
                             bookOffer.barcode,
                             bookOffer.locationIdentifier,
@@ -261,19 +272,18 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                     }
 
                     if (updateFilterSelects) {
-                        if (bookOffer.locationIdentifier !== "" &&
-                            !locationIdentifiers.includes(bookOffer.locationIdentifier)) {
+                        if (
+                            bookOffer.locationIdentifier !== '' &&
+                            !locationIdentifiers.includes(bookOffer.locationIdentifier)
+                        ) {
                             locationIdentifiers.push(bookOffer.locationIdentifier);
                         }
-                        if (inventoryYear !== "" &&
-                            !inventoryYears.includes(inventoryYear)) {
+                        if (inventoryYear !== '' && !inventoryYears.includes(inventoryYear)) {
                             inventoryYears.push(inventoryYear);
                         }
                     }
                 });
-                vdtv1.set_columns(columns)
-                    .set_columnDefs(columnDefs)
-                    .set_datatable(tbl);
+                vdtv1.set_columns(columns).set_columnDefs(columnDefs).set_datatable(tbl);
             }
             $bookListBlock.show();
         } else {
@@ -282,17 +292,17 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
 
         if (updateFilterSelects) {
             this.locationIdentifiers = locationIdentifiers.sort();
-            this.locationIdentifier = "";
+            this.locationIdentifier = '';
 
             if (this.$locationIdentifierSelect !== null) {
-                this.$locationIdentifierSelect.val("");
+                this.$locationIdentifierSelect.val('');
             }
 
             this.inventoryYears = inventoryYears.sort().reverse();
-            this.inventoryYear = "";
+            this.inventoryYear = '';
 
             if (this.$inventoryYearSelect !== null) {
-                this.$inventoryYearSelect.val("");
+                this.$inventoryYearSelect.val('');
             }
         }
     }
@@ -302,7 +312,10 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
     }
 
     locationIdentifierSelect2IsInitialized() {
-        return this.$locationIdentifierSelect !== null && this.$locationIdentifierSelect.hasClass("select2-hidden-accessible");
+        return (
+            this.$locationIdentifierSelect !== null &&
+            this.$locationIdentifierSelect.hasClass('select2-hidden-accessible')
+        );
     }
 
     /**
@@ -314,33 +327,40 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
 
         // destroy previous instance of Select2
         if (this.locationIdentifierSelect2IsInitialized()) {
-            this.$locationIdentifierSelect.select2("destroy");
+            this.$locationIdentifierSelect.select2('destroy');
         }
 
-        this.$locationIdentifierSelect.select2({
-            width: '100%',
-            allowClear: true,
-            language: this.lang === "de" ? select2LangDe() : select2LangEn(),
-            placeholder: this._i18n.t('book-list.location-identifier-select-placeholder'),
-            dropdownParent: this.$('#location-identifier-select-dropdown'),
-        }).on("select2:select", function (e) {
-            that.locationIdentifier = e.params.data.id;
-        }).on("select2:clear", function () {
-            that.locationIdentifier = "";
-        }).on("select2:open", function () {
-            // close the selector when clicked outside of it
-            that.$("#location-identifier-select-dropdown .select2-search__field").blur(() => {
-                // the delay is a workaround to prevent troubles
-                setTimeout(() => {
-                    that.$locationIdentifierSelect.select2('close');
-                }, 250);
+        this.$locationIdentifierSelect
+            .select2({
+                width: '100%',
+                allowClear: true,
+                language: this.lang === 'de' ? select2LangDe() : select2LangEn(),
+                placeholder: this._i18n.t('book-list.location-identifier-select-placeholder'),
+                dropdownParent: this.$('#location-identifier-select-dropdown'),
+            })
+            .on('select2:select', function (e) {
+                that.locationIdentifier = e.params.data.id;
+            })
+            .on('select2:clear', function () {
+                that.locationIdentifier = '';
+            })
+            .on('select2:open', function () {
+                // close the selector when clicked outside of it
+                that.$('#location-identifier-select-dropdown .select2-search__field').blur(() => {
+                    // the delay is a workaround to prevent troubles
+                    setTimeout(() => {
+                        that.$locationIdentifierSelect.select2('close');
+                    }, 250);
+                });
+                //
             });
-            //
-        });
     }
 
     inventoryYearSelect2IsInitialized() {
-        return this.$inventoryYearSelect !== null && this.$inventoryYearSelect.hasClass("select2-hidden-accessible");
+        return (
+            this.$inventoryYearSelect !== null &&
+            this.$inventoryYearSelect.hasClass('select2-hidden-accessible')
+        );
     }
 
     /**
@@ -352,29 +372,33 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
 
         // destroy previous instance of Select2
         if (this.inventoryYearSelect2IsInitialized()) {
-            this.$inventoryYearSelect.select2("destroy");
+            this.$inventoryYearSelect.select2('destroy');
         }
 
-        this.$inventoryYearSelect.select2({
-            width: '100%',
-            allowClear: true,
-            language: this.lang === "de" ? select2LangDe() : select2LangEn(),
-            placeholder: this._i18n.t('book-list.inventory-year-select-placeholder'),
-            dropdownParent: this.$('#inventory-year-select-dropdown'),
-        }).on("select2:select", function (e) {
-            that.inventoryYear = e.params.data.id;
-        }).on("select2:clear", function () {
-            that.inventoryYear = "";
-        }).on("select2:open", function () {
-            // close the selector when clicked outside of it
-            that.$("#inventory-year-select-dropdown .select2-search__field").blur(() => {
-                // the delay is a workaround to prevent troubles
-                setTimeout(() => {
-                    that.$inventoryYearSelect.select2('close');
-                }, 250);
+        this.$inventoryYearSelect
+            .select2({
+                width: '100%',
+                allowClear: true,
+                language: this.lang === 'de' ? select2LangDe() : select2LangEn(),
+                placeholder: this._i18n.t('book-list.inventory-year-select-placeholder'),
+                dropdownParent: this.$('#inventory-year-select-dropdown'),
+            })
+            .on('select2:select', function (e) {
+                that.inventoryYear = e.params.data.id;
+            })
+            .on('select2:clear', function () {
+                that.inventoryYear = '';
+            })
+            .on('select2:open', function () {
+                // close the selector when clicked outside of it
+                that.$('#inventory-year-select-dropdown .select2-search__field').blur(() => {
+                    // the delay is a workaround to prevent troubles
+                    setTimeout(() => {
+                        that.$inventoryYearSelect.select2('close');
+                    }, 250);
+                });
+                //
             });
-            //
-        });
     }
 
     static get styles() {
@@ -389,10 +413,18 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 display: none;
             }
 
-            #book-list-block, #no-books-block { display: none; }
-            form, table {width: 100%}
+            #book-list-block,
+            #no-books-block {
+                display: none;
+            }
+            form,
+            table {
+                width: 100%;
+            }
 
-            #no-books-block { font-weight: bold; }
+            #no-books-block {
+                font-weight: bold;
+            }
         `;
     }
 
@@ -414,21 +446,28 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         const select2CSS = commonUtils.getAssetURL(select2CSSPath);
         const i18n = this._i18n;
         return html`
-            <link rel="stylesheet" href="${select2CSS}">
-            <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading()})}">
+            <link rel="stylesheet" href="${select2CSS}" />
+            <form
+                class="${classMap({
+                    hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
+                })}">
                 <div class="field">
                     ${i18n.t('book-list.current-state')}: ${this.analyticsUpdateDate}
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-organization-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                                                                context="library-manager"
-                                                                value="${this.organizationId}"
-                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
+                        <dbp-organization-select
+                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                            context="library-manager"
+                            value="${this.organizationId}"
+                            @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
                     </div>
                 </div>
-                <dbp-mini-spinner id="books-loading" text="${i18n.t('book-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
+                <dbp-mini-spinner
+                    id="books-loading"
+                    text="${i18n.t('book-list.mini-spinner-text')}"
+                    style="font-size: 2em; display: none;"></dbp-mini-spinner>
                 <div id="book-list-block">
                     <div class="field">
                         <label class="label">${i18n.t('book-list.book-location-identifier')}</label>
@@ -453,19 +492,30 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                     <div class="field">
                         <label class="label">${i18n.t('book-list.books')}</label>
                         <div class="control">
-                            <dbp-data-table-view searching paging exportable export-name="${i18n.t('book-list.export-name', {organizationCode: this.getOrganizationCode()})}"
-                                                 subscribe="lang:lang" id="book-books-1"></dbp-data-table-view>
+                            <dbp-data-table-view
+                                searching
+                                paging
+                                exportable
+                                export-name="${i18n.t('book-list.export-name', {
+                                    organizationCode: this.getOrganizationCode(),
+                                })}"
+                                subscribe="lang:lang"
+                                id="book-books-1"></dbp-data-table-view>
                         </div>
                     </div>
                 </div>
-                <div id="no-books-block">
-                    ${i18n.t('book-list.no-books')}
-                </div>
+                <div id="no-books-block">${i18n.t('book-list.no-books')}</div>
             </form>
-            <div class="notification is-warning ${classMap({hidden: this.isLoggedIn() || this.isLoading()})}">
+            <div
+                class="notification is-warning ${classMap({
+                    hidden: this.isLoggedIn() || this.isLoading(),
+                })}">
                 ${i18n.t('error-login-message')}
             </div>
-            <div class="notification is-danger ${classMap({hidden: this.hasLibraryPermissions() || !this.isLoggedIn() || this.isLoading()})}">
+            <div
+                class="notification is-danger ${classMap({
+                    hidden: this.hasLibraryPermissions() || !this.isLoggedIn() || this.isLoading(),
+                })}">
                 ${i18n.t('error-permission-message')}
             </div>
             <div class="${classMap({hidden: !this.isLoading()})}">

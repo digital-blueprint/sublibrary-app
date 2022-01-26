@@ -1,5 +1,5 @@
-import {AdapterLitElement} from "@dbp-toolkit/provider/src/adapter-lit-element";
-import * as errorUtils from "@dbp-toolkit/common/error";
+import {AdapterLitElement} from '@dbp-toolkit/provider/src/adapter-lit-element';
+import * as errorUtils from '@dbp-toolkit/common/error';
 
 export class LibraryElement extends AdapterLitElement {
     constructor() {
@@ -8,17 +8,18 @@ export class LibraryElement extends AdapterLitElement {
     }
 
     _(selector) {
-        return this.shadowRoot === null ? this.querySelector(selector) : this.shadowRoot.querySelector(selector);
+        return this.shadowRoot === null
+            ? this.querySelector(selector)
+            : this.shadowRoot.querySelector(selector);
     }
 
     hasLibraryPermissions() {
-        if (!this.auth.person || !Array.isArray(this.auth.person.roles))
-            return false;
+        if (!this.auth.person || !Array.isArray(this.auth.person.roles)) return false;
 
         let roles = this.auth.person.roles;
         // Remove ROLE_F_BIB_F once https://gitlab.tugraz.at/dbp/middleware/api/-/commit/e06e503a3fbe61ec328cf3f246140fb30f52a07e
         // is deployed
-        return (roles.indexOf('ROLE_F_BIB_F') !== -1 || roles.indexOf('ROLE_LIBRARY_MANAGER') !== -1);
+        return roles.indexOf('ROLE_F_BIB_F') !== -1 || roles.indexOf('ROLE_LIBRARY_MANAGER') !== -1;
     }
 
     _updateAuth() {
@@ -39,7 +40,7 @@ export class LibraryElement extends AdapterLitElement {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
-                case "auth":
+                case 'auth':
                     this._updateAuth();
                     break;
             }
@@ -57,13 +58,12 @@ export class LibraryElement extends AdapterLitElement {
     }
 
     isLoggedIn() {
-        return (this.auth.person !== undefined && this.auth.person !== null);
+        return this.auth.person !== undefined && this.auth.person !== null;
     }
 
     isLoading() {
-        if (this._loginStatus === "logged-out")
-            return false;
-        return (!this.isLoggedIn() && this.auth.token !== undefined);
+        if (this._loginStatus === 'logged-out') return false;
+        return !this.isLoggedIn() && this.auth.token !== undefined;
     }
 
     loginCallback() {
@@ -71,10 +71,10 @@ export class LibraryElement extends AdapterLitElement {
     }
 
     getOrganization() {
-        const organizationSelect = this._(this.getScopedTagName("dbp-organization-select"));
+        const organizationSelect = this._(this.getScopedTagName('dbp-organization-select'));
 
         if (organizationSelect) {
-            const objectText = organizationSelect.getAttribute("data-object");
+            const objectText = organizationSelect.getAttribute('data-object');
 
             if (objectText !== null) {
                 return JSON.parse(objectText);
@@ -87,6 +87,6 @@ export class LibraryElement extends AdapterLitElement {
     getOrganizationCode() {
         const organization = this.getOrganization();
 
-        return organization !== null ? organization.alternateName : "";
+        return organization !== null ? organization.alternateName : '';
     }
 }

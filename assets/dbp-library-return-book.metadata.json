@@ -1,19 +1,18 @@
 {
-  "element": "dbp-library-return-book",
-  "module_src": "dbp-library-return-book.js",
-  "routing_name": "return-book",
-  "name": {
-    "de": "Buch zurückgeben",
-    "en": "Return a library book"
-  },
-  "short_name": {
-    "de": "Buch zurückgeben",
-    "en": "Return book"
-  },
-  "description": {
-    "de": "Erlaubt die Rückgabe von Büchern",
-    "en": "Allows to return books"
-  },
-  "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
+    "element": "dbp-library-return-book",
+    "module_src": "dbp-library-return-book.js",
+    "routing_name": "return-book",
+    "name": {
+        "de": "Buch zurückgeben",
+        "en": "Return a library book"
+    },
+    "short_name": {
+        "de": "Buch zurückgeben",
+        "en": "Return book"
+    },
+    "description": {
+        "de": "Erlaubt die Rückgabe von Büchern",
+        "en": "Allows to return books"
+    },
+    "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
 }
-

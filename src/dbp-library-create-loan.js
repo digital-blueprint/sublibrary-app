@@ -18,9 +18,9 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         this._i18n = createInstance();
         this.lang = this._i18n.language;
         this.entryPointUrl = '';
-        this.bookOfferId = "";
+        this.bookOfferId = '';
         this.bookOffer = null;
-        this.personId = "";
+        this.personId = '';
         this.person = null;
         this.status = null;
         this.organizationId = '';
@@ -40,15 +40,15 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     static get properties() {
         return {
             ...super.properties,
-            lang: { type: String },
-            entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            bookOfferId: { type: String, attribute: 'book-offer-id', reflect: true},
-            bookOffer: { type: Object, attribute: false },
-            personId: { type: String, attribute: 'person-id', reflect: true},
-            status: { type: Object },
-            organizationId: { type: String, attribute: 'organization-id', reflect: true},
-            sendButtonDisabled: { type: Boolean, attribute: false },
-            auth: { type: Object },
+            lang: {type: String},
+            entryPointUrl: {type: String, attribute: 'entry-point-url'},
+            bookOfferId: {type: String, attribute: 'book-offer-id', reflect: true},
+            bookOffer: {type: Object, attribute: false},
+            personId: {type: String, attribute: 'person-id', reflect: true},
+            status: {type: Object},
+            organizationId: {type: String, attribute: 'organization-id', reflect: true},
+            sendButtonDisabled: {type: Boolean, attribute: false},
+            auth: {type: Object},
         };
     }
 
@@ -58,7 +58,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
-            if (propName === "lang") {
+            if (propName === 'lang') {
                 this._i18n.changeLanguage(this.lang);
             }
         });
@@ -77,7 +77,9 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 display: none;
             }
 
-            #create-loan-block { display: none; }
+            #create-loan-block {
+                display: none;
+            }
         `;
     }
 
@@ -92,33 +94,35 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         if (!bookOffer) {
             this.status = null;
             this.bookOffer = null;
-            this.bookOfferId = "";
-            createLoanBlock.style.display = "none";
+            this.bookOfferId = '';
+            createLoanBlock.style.display = 'none';
             return;
         }
 
         bookOffer = JSON.parse(bookOffer);
 
-        const bookOfferId = bookOffer["@id"];
+        const bookOfferId = bookOffer['@id'];
 
         this.bookOffer = bookOffer;
         this.bookOfferId = bookOfferId;
 
-        const apiUrl = this.entryPointUrl + this.bookOfferId + "/loans";
+        const apiUrl = this.entryPointUrl + this.bookOfferId + '/loans';
 
         // set book-offer-id of the custom element
-        this.setAttribute("book-offer-id", this.bookOfferId);
+        this.setAttribute('book-offer-id', this.bookOfferId);
 
         // fire a change event
-        this.dispatchEvent(new CustomEvent('change', {
-            detail: {
-                type: "book-offer-id",
-                value: this.bookOfferId,
-            }
-        }));
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    type: 'book-offer-id',
+                    value: this.bookOfferId,
+                },
+            })
+        );
 
         // TODO: check if library of book matches person's functions
-        loansLoadingIndicator.style.display = "block";
+        loansLoadingIndicator.style.display = 'block';
         let result = null;
 
         try {
@@ -126,36 +130,35 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             result = await fetch(apiUrl, {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    'Authorization': 'Bearer ' + this.auth.token,
+                    Authorization: 'Bearer ' + this.auth.token,
                 },
             });
 
-            if (!result.ok)
-                throw result;
+            if (!result.ok) throw result;
 
             result = await result.json();
         } catch (error) {
             await this.handleFetchError(error, this._i18n.t('renew-loan.error-load-loans-summary'));
             return;
         } finally {
-            loansLoadingIndicator.style.display = "none";
+            loansLoadingIndicator.style.display = 'none';
         }
 
         const loans = result['hydra:member'];
 
         if (loans.length > 0) {
             this.status = {
-                "summary": i18nKey('create-loan.error-existing-loans-summary'),
-                "body": i18nKey('create-loan.error-existing-loans-body'),
-                "type": "danger"
+                summary: i18nKey('create-loan.error-existing-loans-summary'),
+                body: i18nKey('create-loan.error-existing-loans-body'),
+                type: 'danger',
             };
         } else {
             this.status = {
-                "summary": i18nKey('create-loan.info-no-existing-loans-summary'),
-                "body": i18nKey('create-loan.info-no-existing-loans-body'),
-                "type": "info"
+                summary: i18nKey('create-loan.info-no-existing-loans-summary'),
+                body: i18nKey('create-loan.info-no-existing-loans-body'),
+                type: 'info',
             };
-            createLoanBlock.style.display = "block";
+            createLoanBlock.style.display = 'block';
         }
     }
 
@@ -170,19 +173,21 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     onPersonSelectChanged(e) {
         const select = e.target;
         const person = JSON.parse(select.dataset.object);
-        const personId = person["@id"];
+        const personId = person['@id'];
         this.sendButtonDisabled = false;
 
         this.personId = personId;
         this.person = person;
 
         // fire a change event
-        this.dispatchEvent(new CustomEvent('change', {
-            detail: {
-                type: "person-id",
-                value: this.personId,
-            }
-        }));
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    type: 'person-id',
+                    value: this.personId,
+                },
+            })
+        );
     }
 
     async onSubmitClicked(e) {
@@ -199,35 +204,34 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         const dateSelect = this._("input[type='date']");
         const timeSelect = this._("input[type='time']");
         let isoString = dateSelect.value;
-        if (timeSelect.value)
-            isoString += 'T' + timeSelect.value;
+        if (timeSelect.value) isoString += 'T' + timeSelect.value;
         const date = new Date(isoString);
 
         // check if selected date is in the past
-        if (date < (new Date())) {
+        if (date < new Date()) {
             this.status = {
-                "summary": this._i18n.t('error-summary'),
-                "body": this._i18n.t('renew-loan.error-renew-loan-date-in-past'),
-                "type": "danger"
+                summary: this._i18n.t('error-summary'),
+                body: this._i18n.t('renew-loan.error-renew-loan-date-in-past'),
+                type: 'danger',
             };
 
             return;
         }
 
-        const apiUrl = this.entryPointUrl + this.bookOfferId + "/loans";
+        const apiUrl = this.entryPointUrl + this.bookOfferId + '/loans';
 
         const data = {
-            "borrower": this.personId,
-            "library": this.getLibrary(),
-            "endTime": date.toISOString()
+            borrower: this.personId,
+            library: this.getLibrary(),
+            endTime: date.toISOString(),
         };
 
         let response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
-                'Accept': 'application/ld+json',
+                Accept: 'application/ld+json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + this.auth.token
+                Authorization: 'Bearer ' + this.auth.token,
             },
             body: JSON.stringify(data),
         });
@@ -238,9 +242,11 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             bookOfferSelect.clear();
 
             this.status = {
-                "summary": i18nKey('create-loan.success-summary'),
-                "body": this._i18n.t('create-loan.success-body', {personName: getPersonDisplayName(this.person)}),
-                "type": "info"
+                summary: i18nKey('create-loan.success-summary'),
+                body: this._i18n.t('create-loan.success-body', {
+                    personName: getPersonDisplayName(this.person),
+                }),
+                type: 'info',
             };
         } else {
             await this.handleFetchError(response);
@@ -259,68 +265,94 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         const i18n = this._i18n;
 
         return html`
-            <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading()})}">
+            <form
+                class="${classMap({
+                    hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
+                })}">
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-organization-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                                                                context="library-manager"
-                                                                value="${this.organizationId}"
-                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
+                        <dbp-organization-select
+                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                            context="library-manager"
+                            value="${this.organizationId}"
+                            @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">
-                        <dbp-person-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                                           @change=${this.onPersonSelectChanged}
-                                           value="${this.personId}"
-                                           show-details>
+                        <dbp-person-select
+                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                            @change=${this.onPersonSelectChanged}
+                            value="${this.personId}"
+                            show-details>
                         </dbp-person-select>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                         <dbp-library-book-offer-select subscribe="auth:auth,lang:lang,entry-point-url:entry-point-url,auth:auth"
-                                                        @change=${this.onBookSelectChanged}
-                                                        @unselect=${this.onBookSelectChanged}
-                                                        value="${this.bookOfferId}"
-                                                        organization-id="${this.organizationId}"
-                                                        show-reload-button
-                                                        reload-button-title="${this.bookOffer ? i18n.t('create-loan.button-refresh-title', {name: this.bookOffer.name}): ""}"></dbp-library-book-offer-select>
+                        <dbp-library-book-offer-select
+                            subscribe="auth:auth,lang:lang,entry-point-url:entry-point-url,auth:auth"
+                            @change=${this.onBookSelectChanged}
+                            @unselect=${this.onBookSelectChanged}
+                            value="${this.bookOfferId}"
+                            organization-id="${this.organizationId}"
+                            show-reload-button
+                            reload-button-title="${this.bookOffer
+                                ? i18n.t('create-loan.button-refresh-title', {
+                                      name: this.bookOffer.name,
+                                  })
+                                : ''}"></dbp-library-book-offer-select>
                     </div>
                 </div>
 
-                <dbp-mini-spinner id="loans-loading" text="${i18n.t('create-loan.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
+                <dbp-mini-spinner
+                    id="loans-loading"
+                    text="${i18n.t('create-loan.mini-spinner-text')}"
+                    style="font-size: 2em; display: none;"></dbp-mini-spinner>
                 <div id="create-loan-block">
                     <div class="field">
                         <label class="label">${i18n.t('renew-loan.end-date')}</label>
-                        <input class="input" type="date" min="${commonUtils.dateToInputDateString(minDate)}" value="${commonUtils.dateToInputDateString(loanDate)}">
-                        <input type="time" class="hidden" value="23:59:59">
+                        <input
+                            class="input"
+                            type="date"
+                            min="${commonUtils.dateToInputDateString(minDate)}"
+                            value="${commonUtils.dateToInputDateString(loanDate)}" />
+                        <input type="time" class="hidden" value="23:59:59" />
                     </div>
                     <div class="field">
                         <div class="control">
-                             <dbp-button id="send"
-                                         @click=${this.onSubmitClicked}
-                                         value="${i18n.t('create-loan.submit')}"
-                                         ?disabled="${this.sendButtonDisabled}"
-                                         type=""></dbp-button>
+                            <dbp-button
+                                id="send"
+                                @click=${this.onSubmitClicked}
+                                value="${i18n.t('create-loan.submit')}"
+                                ?disabled="${this.sendButtonDisabled}"
+                                type=""></dbp-button>
                         </div>
                     </div>
                 </div>
-                ${ this.status ? html`
-                    <br>
-                    <div class="notification is-${this.status.type}">
-                        <h4>${i18n.t(this.status.summary)}</h4>
-                        ${i18n.t(this.status.body)}
-                    </div>
-                `: ``}
+                ${this.status
+                    ? html`
+                          <br />
+                          <div class="notification is-${this.status.type}">
+                              <h4>${i18n.t(this.status.summary)}</h4>
+                              ${i18n.t(this.status.body)}
+                          </div>
+                      `
+                    : ``}
             </form>
-            <div class="notification is-warning ${classMap({hidden: this.isLoggedIn() || this.isLoading()})}">
+            <div
+                class="notification is-warning ${classMap({
+                    hidden: this.isLoggedIn() || this.isLoading(),
+                })}">
                 ${i18n.t('error-login-message')}
             </div>
-            <div class="notification is-danger ${classMap({hidden: this.hasLibraryPermissions() || !this.isLoggedIn() || this.isLoading()})}">
+            <div
+                class="notification is-danger ${classMap({
+                    hidden: this.hasLibraryPermissions() || !this.isLoggedIn() || this.isLoading(),
+                })}">
                 ${i18n.t('error-permission-message')}
             </div>
             <div class="${classMap({hidden: !this.isLoading()})}">

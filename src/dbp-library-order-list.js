@@ -2,15 +2,14 @@ import {createInstance} from './i18n.js';
 import {numberFormat} from '@dbp-toolkit/common/i18next.js';
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
-import {LibraryElement} from "./library-element.js";
+import {LibraryElement} from './library-element.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
 import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
-import $ from "jquery";
-
+import $ from 'jquery';
 
 /**
  * Returns a translated label for the given status
@@ -31,7 +30,6 @@ function getEventStatusName(i18n, status) {
     }
 }
 
-
 class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
@@ -39,7 +37,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         this._i18n = createInstance();
         this.lang = this._i18n.language;
         this.entryPointUrl = '';
-        this.personId = "";
+        this.personId = '';
         this.person = null;
         this.books = [];
         this.organizationId = '';
@@ -69,13 +67,13 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     static get properties() {
         return {
             ...super.properties,
-            lang: { type: String },
-            entryPointUrl: { type: String, attribute: 'entry-point-url' },
-            organizationId: { type: String, attribute: 'organization-id', reflect: true},
-            books: { type: Object, attribute: false },
-            openOnly: { type: Boolean, attribute: false },
-            analyticsUpdateDate: { type: Object, attribute: false },
-            auth: { type: Object },
+            lang: {type: String},
+            entryPointUrl: {type: String, attribute: 'entry-point-url'},
+            organizationId: {type: String, attribute: 'organization-id', reflect: true},
+            books: {type: Object, attribute: false},
+            openOnly: {type: Boolean, attribute: false},
+            analyticsUpdateDate: {type: Object, attribute: false},
+            auth: {type: Object},
         };
     }
 
@@ -88,7 +86,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     connectedCallback() {
         super.connectedCallback();
 
-        this.updateComplete.then(()=>{
+        this.updateComplete.then(() => {
             // language=css
             const css = `
                 table.dataTable tbody tr.odd {
@@ -96,7 +94,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 }
             `;
 
-            this._(this.getScopedTagName("dbp-data-table-view")).setCSSStyle(css);
+            this._(this.getScopedTagName('dbp-data-table-view')).setCSSStyle(css);
             this.loadTable();
         });
     }
@@ -104,14 +102,14 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
-                case "lang":
+                case 'lang':
                     this._i18n.changeLanguage(this.lang);
 
                     // we need to update the column titles
                     this.loadTable();
                     break;
-                case "organizationId":
-                case "openOnly":
+                case 'organizationId':
+                case 'openOnly':
                     this.loadTable();
                     break;
             }
@@ -136,14 +134,13 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         $bookListBlock.hide();
         $noBooksBlock.hide();
 
-        if (!this.isLoggedIn())
-            return;
+        if (!this.isLoggedIn()) return;
 
-        if (this.organizationId === "") {
+        if (this.organizationId === '') {
             return;
         }
 
-        const apiUrl = this.entryPointUrl + this.organizationId + "/library-book-orders";
+        const apiUrl = this.entryPointUrl + this.organizationId + '/library-book-orders';
         const $booksLoadingIndicator = this.$('#books-loading');
 
         $booksLoadingIndicator.show();
@@ -161,22 +158,24 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
-                'Authorization': 'Bearer ' + this.auth.token,
+                Authorization: 'Bearer ' + this.auth.token,
             },
             signal: signal,
         })
-            .then(result => {
+            .then((result) => {
                 if (!result.ok) throw result;
 
                 if (result.headers.has('x-analytics-update-date')) {
                     const date = new Date(result.headers.get('x-analytics-update-date'));
-                    this.analyticsUpdateDate = date.toLocaleDateString(this.lang) + " " +
-                            date.toLocaleTimeString(this.lang);
+                    this.analyticsUpdateDate =
+                        date.toLocaleDateString(this.lang) +
+                        ' ' +
+                        date.toLocaleTimeString(this.lang);
                 }
 
                 return result.json();
             })
-            .then(result => {
+            .then((result) => {
                 that.books = result['hydra:member'];
 
                 if (that.books.length > 0) {
@@ -204,31 +203,44 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                         ];
 
                         const tbl = [];
-                        that.books.forEach(function(bookOrder) {
-                            if (that.openOnly && bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus.name !== 'active') {
+                        that.books.forEach(function (bookOrder) {
+                            if (
+                                that.openOnly &&
+                                bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus
+                                    .name !== 'active'
+                            ) {
                                 return;
                             }
 
                             const orderDate = new Date(bookOrder.orderDate);
-                            let priceString = bookOrder.orderedItem.price > 0 ?
-                                numberFormat(i18n, bookOrder.orderedItem.price, { style: 'currency', currency: bookOrder.orderedItem.priceCurrency }) :
-                                "";
+                            let priceString =
+                                bookOrder.orderedItem.price > 0
+                                    ? numberFormat(i18n, bookOrder.orderedItem.price, {
+                                          style: 'currency',
+                                          currency: bookOrder.orderedItem.priceCurrency,
+                                      })
+                                    : '';
 
                             const row = [
                                 bookOrder.orderedItem.orderedItem.title,
                                 bookOrder.orderedItem.orderedItem.author,
                                 bookOrder.orderedItem.orderedItem.isbn,
-                                orderDate.toLocaleDateString("de-AT"),
+                                orderDate.toLocaleDateString('de-AT'),
                                 bookOrder.orderDate,
                                 bookOrder.orderNumber,
                                 priceString,
                                 bookOrder.orderedItem.price,
-                                getEventStatusName(i18n, bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus.name),
+                                getEventStatusName(
+                                    i18n,
+                                    bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus
+                                        .name
+                                ),
                                 bookOrder.receivingNote,
                             ];
                             tbl.push(row);
                         });
-                        vdtv1.set_columns(columns)
+                        vdtv1
+                            .set_columns(columns)
                             .set_columnDefs(columnDefs)
                             .set_datatable(tbl)
                             .on('draw', this.table_draw.bind(that))
@@ -240,7 +252,8 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 }
 
                 $booksLoadingIndicator.hide();
-            }).catch(error => {
+            })
+            .catch((error) => {
                 this.handleFetchError(error, i18n.t('order-list.error-load-orders'));
                 $booksLoadingIndicator.hide();
             });
@@ -261,12 +274,22 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getNotificationCSS()}
 
-            .hidden {display: none;}
+            .hidden {
+                display: none;
+            }
 
-            #book-list-block, #no-books-block { display: none; }
-            form, table {width: 100%}
+            #book-list-block,
+            #no-books-block {
+                display: none;
+            }
+            form,
+            table {
+                width: 100%;
+            }
 
-            #no-books-block { font-weight: bold; }
+            #no-books-block {
+                font-weight: bold;
+            }
         `;
     }
 
@@ -278,9 +301,17 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         const table = this.shadowRoot.querySelector('#book-books-1');
         table.columnReduce(7, function (a, b) {
             let a1 = 0;
-            if (typeof a === 'string') { a1 = a.replace(',', '.').replace(' EUR', '') * 1; } else { a1 = a * 1; }
+            if (typeof a === 'string') {
+                a1 = a.replace(',', '.').replace(' EUR', '') * 1;
+            } else {
+                a1 = a * 1;
+            }
             let b1 = 0;
-            if (typeof b === 'string') { b1 = b.replace(',', '.').replace(' EUR', '') * 1; } else { b1 = b * 1; }
+            if (typeof b === 'string') {
+                b1 = b.replace(',', '.').replace(' EUR', '') * 1;
+            } else {
+                b1 = b * 1;
+            }
             return a1 + b1;
         });
     }
@@ -288,25 +319,33 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     render() {
         const i18n = this._i18n;
         return html`
-            <form class="${classMap({hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading()})}">
+            <form
+                class="${classMap({
+                    hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
+                })}">
                 <div class="field">
                     ${i18n.t('order-list.current-state')}: ${this.analyticsUpdateDate}
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-organization-select subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                                                                context="library-manager"
-                                                                value="${this.organizationId}"
-                                                                @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
+                        <dbp-organization-select
+                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                            context="library-manager"
+                            value="${this.organizationId}"
+                            @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
                     </div>
                 </div>
-                <dbp-mini-spinner id="books-loading" text="${i18n.t('order-list.mini-spinner-text')}" style="font-size: 2em; display: none;"></dbp-mini-spinner>
+                <dbp-mini-spinner
+                    id="books-loading"
+                    text="${i18n.t('order-list.mini-spinner-text')}"
+                    style="font-size: 2em; display: none;"></dbp-mini-spinner>
                 <div id="book-list-block">
                     <!--
                     <div class="field">
                         <label class="label">
-                            <input type="checkbox" .checked=${this.openOnly} @click=${this.toggleOpenOnly} .disabled=${this.overdueOnly}>
+                            <input type="checkbox" .checked=${this.openOnly} @click=${this
+                        .toggleOpenOnly} .disabled=${this.overdueOnly}>
                             ${i18n.t('order-list.open-only')}
                         </label>
                     </div>
@@ -314,21 +353,32 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                     <div class="field">
                         <label class="label">${i18n.t('book-list.books')}</label>
                         <div class="control">
-                            <dbp-data-table-view searching paging column-searching
-                                    default-order='[3, "desc"]'
-                                    exportable export-name="${i18n.t('order-list.export-name', {organizationCode: this.getOrganizationCode()})}"
-                                    subscribe="lang:lang" id="book-books-1"></dbp-data-table-view>
+                            <dbp-data-table-view
+                                searching
+                                paging
+                                column-searching
+                                default-order='[3, "desc"]'
+                                exportable
+                                export-name="${i18n.t('order-list.export-name', {
+                                    organizationCode: this.getOrganizationCode(),
+                                })}"
+                                subscribe="lang:lang"
+                                id="book-books-1"></dbp-data-table-view>
                         </div>
                     </div>
                 </div>
-                <div id="no-books-block">
-                    ${i18n.t('book-list.no-books')}
-                </div>
+                <div id="no-books-block">${i18n.t('book-list.no-books')}</div>
             </form>
-            <div class="notification is-warning ${classMap({hidden: this.isLoggedIn() || this.isLoading()})}">
+            <div
+                class="notification is-warning ${classMap({
+                    hidden: this.isLoggedIn() || this.isLoading(),
+                })}">
                 ${i18n.t('error-login-message')}
             </div>
-            <div class="notification is-danger ${classMap({hidden: this.hasLibraryPermissions() || !this.isLoggedIn() || this.isLoading()})}">
+            <div
+                class="notification is-danger ${classMap({
+                    hidden: this.hasLibraryPermissions() || !this.isLoggedIn() || this.isLoading(),
+                })}">
                 ${i18n.t('error-permission-message')}
             </div>
             <div class="${classMap({hidden: !this.isLoading()})}">
