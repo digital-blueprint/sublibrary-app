@@ -161,7 +161,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                         $bookOfferSelect[0].clear();
                     },
                     error: (jqXHR, textStatus, errorThrown) => {
-                        this.handleXhrError(jqXHR, textStatus, errorThrown);
+                        that.handleXhrError(jqXHR, textStatus, errorThrown);
                     },
                     complete: function (jqXHR, textStatus, errorThrown) {
                         that._('#send').stop();

@@ -132,7 +132,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                             }
                         })
                         .catch((error) => {
-                            this.handleFetchError(
+                            that.handleFetchError(
                                 error,
                                 i18n.t('renew-loan.error-load-loans-summary')
                             );
@@ -173,7 +173,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                         };
                     },
                     error: (jqXHR, textStatus, errorThrown) => {
-                        this.handleXhrError(jqXHR, textStatus, errorThrown);
+                        that.handleXhrError(jqXHR, textStatus, errorThrown);
                     },
                     complete: function (jqXHR, textStatus, errorThrown) {
                         that._('#send').stop();

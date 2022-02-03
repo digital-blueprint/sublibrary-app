@@ -258,7 +258,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                         $loansLoadingIndicator.hide();
                     })
                     .catch((error) => {
-                        this.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary'));
+                        that.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary'));
                         $loansLoadingIndicator.hide();
                     });
 

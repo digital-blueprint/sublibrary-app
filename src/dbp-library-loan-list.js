@@ -167,7 +167,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 $loansLoadingIndicator.hide();
             })
             .catch((error) => {
-                this.handleFetchError(error, that._i18n.t('loan-list.error-load-loans'));
+                that.handleFetchError(error, that._i18n.t('loan-list.error-load-loans'));
                 $loansLoadingIndicator.hide();
             });
     }

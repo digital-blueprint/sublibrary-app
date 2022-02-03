@@ -147,7 +147,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
                     that.pageStatus = pageStatus.noBudget;
                 } else {
                     that.pageStatus = pageStatus.none;
-                    this.handleFetchError(error, that._i18n.t('budget.load-error'));
+                    that.handleFetchError(error, that._i18n.t('budget.load-error'));
                 }
             });
     }

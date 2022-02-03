@@ -204,7 +204,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 $booksLoadingIndicator.hide();
             })
             .catch((error) => {
-                this.handleFetchError(error, that._i18n.t('book-list.error-load-books'));
+                that.handleFetchError(error, that._i18n.t('book-list.error-load-books'));
                 $booksLoadingIndicator.hide();
             });
     }
