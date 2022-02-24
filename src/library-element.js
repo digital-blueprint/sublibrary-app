@@ -87,6 +87,6 @@ export class LibraryElement extends AdapterLitElement {
     getOrganizationCode() {
         const organization = this.getOrganization();
 
-        return organization !== null ? organization.alternateName : '';
+        return organization !== null ? organization.name : '';
     }
 }
