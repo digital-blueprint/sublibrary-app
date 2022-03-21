@@ -93,7 +93,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             // language=css
             const css = `
                 table.dataTable tbody tr.odd {
-                    background-color: #f9f9f9;
+                    background-color: var(--dbp-background);
                 }
             `;
 

@@ -375,7 +375,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                border: 1px solid #aaa;
+                border: 1px solid var(--dbp-override-muted);
                 -moz-border-radius-topright: var(--dbp-border-radius);
                 -moz-border-radius-bottomright: var(--dbp-border-radius);
                 line-height: 100%;

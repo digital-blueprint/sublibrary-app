@@ -202,13 +202,13 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
         const i18n = this._i18n;
 
         return html`
-            <div class="field">
-                ${i18n.t('order-list.current-state')}: ${this.analyticsUpdateDate}
-            </div>
             <div
                 class="${classMap({
                     hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
                 })}">
+                <div class="field">
+                    ${i18n.t('order-list.current-state')}: ${this.analyticsUpdateDate}
+                </div>
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">

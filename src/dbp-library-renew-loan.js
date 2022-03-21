@@ -90,7 +90,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 }
 
                 table.dataTable tbody tr.odd {
-                    background-color: #f9f9f9;
+                    background-color: var(--dbp-background);
                 }
             `;
 
