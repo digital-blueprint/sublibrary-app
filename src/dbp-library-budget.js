@@ -100,7 +100,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
         const organizationIdentifier = parts[parts.length - 1];
         const apiUrl =
             this.entryPointUrl +
-            '/library_budget_monetary_amounts?organization=' +
+            '/sublibrary/budget_monetary_amounts?organization=' +
             organizationIdentifier;
 
         // abort previous list fetch if it is still running
