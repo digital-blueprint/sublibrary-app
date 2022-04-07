@@ -29,7 +29,7 @@ yarn run watch-local
 yarn test
 ```
 
-Jump to <http://localhost:8001> and you should get a Single Sign On login page.
+Jump to <http://localhost:8001>, and you should get a Single Sign On login page.
 
 Example book barcodes: `+F58330104`, `+F58019101`, `+F53498803`
 
