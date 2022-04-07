@@ -30,12 +30,12 @@ set('rsync_dest','{{release_path}}');
 host('demo')
     ->stage('demo')
     ->hostname('mw@vpu01-demo.tugraz.at')
-    ->set('deploy_path', '/home/mw/demo/deploy/apps/library');
+    ->set('deploy_path', '/home/mw/demo/deploy/apps/sublibrary');
 
 host('development')
     ->stage('development')
     ->hostname('mw@mw01-dev.tugraz.at')
-    ->set('deploy_path', '/home/mw/dev/deploy/apps/library');
+    ->set('deploy_path', '/home/mw/dev/deploy/apps/sublibrary');
 
 host('production')
     ->stage('production')
