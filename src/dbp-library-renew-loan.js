@@ -184,7 +184,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
 
                                 let createdCell = (td, cellData, rowData, row, col) => {
                                     // Recreate the content from the correct shadow root registry
-                                    let div = that.shadowRoot.createElement('div');
+                                    let div = that.createScopedElement('div');
                                     div.innerHTML = cellData;
                                     while (td.lastChild) {
                                         td.removeChild(td.lastChild);

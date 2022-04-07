@@ -54,7 +54,7 @@
         "@dbp-toolkit/organization-select": "^0.2.0",
         "@dbp-toolkit/person-profile": "^0.2.0",
         "@dbp-toolkit/person-select": "^0.3.0",
-        "@open-wc/scoped-elements": "^2.0.0",
+        "@open-wc/scoped-elements": "^2.1.0",
         "i18next": "^21.4.2",
         "jquery": "^3.5.1",
         "lit": "^2.0.0",
