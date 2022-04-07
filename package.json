@@ -1,7 +1,7 @@
 {
-    "name": "@dbp-topics/library",
+    "name": "@dbp-topics/sublibrary",
     "internalName": "dbp-library",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "main": "src/dbp-library.js",
     "license": "LGPL-2.1-or-later",
     "repository": {

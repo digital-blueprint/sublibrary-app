@@ -1,8 +1,8 @@
-# Library Application
+# Sublibrary Application
 
 [GitLab Repository](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary) |
-[npmjs package](https://www.npmjs.com/package/@dbp-topics/library) |
-[Unpkg CDN](https://unpkg.com/browse/@dbp-topics/library/)
+[npmjs package](https://www.npmjs.com/package/@dbp-topics/sublibrary) |
+[Unpkg CDN](https://unpkg.com/browse/@dbp-topics/sublibrary/)
 
 ![overview](docs/overview.svg)
 
@@ -77,7 +77,7 @@ Make sure you are allowing `.htaccess` files in your Apache configuration.
 Also make sure to add all of your resources you are using (like your API and Keycloak servers) to the
 `Content-Security-Policy` in your `library-app/public/.htaccess`, so the browser allows access to those sites.
 
-You can also use this app directly from the [Unpkg CDN](https://unpkg.com/browse/@dbp-topics/library/)
+You can also use this app directly from the [Unpkg CDN](https://unpkg.com/browse/@dbp-topics/sublibrary/)
 for example like this: [dbp-library/index.html](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/tree/master/examples/dbp-library/index.html)
 
 Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
