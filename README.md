@@ -64,18 +64,18 @@ APP_ENV=demo yarn run build
 
 ### Install app
 
-If you want to install the DBP Library App in a new folder `library-app` with a path prefix `/` you can call:
+If you want to install the DBP Sublibrary App in a new folder `sublibrary-app` with a path prefix `/` you can call:
 
 ```bash
-npx @digital-blueprint/cli install-app library library-app /
+npx @digital-blueprint/cli install-app sublibrary sublibrary-app /
 ```
 
-Afterwards you can point your Apache web-server to `library-app/public`.
+Afterwards you can point your Apache web-server to `sublibrary-app/public`.
 
 Make sure you are allowing `.htaccess` files in your Apache configuration.
 
 Also make sure to add all of your resources you are using (like your API and Keycloak servers) to the
-`Content-Security-Policy` in your `library-app/public/.htaccess`, so the browser allows access to those sites.
+`Content-Security-Policy` in your `sublibrary-app/public/.htaccess`, so the browser allows access to those sites.
 
 You can also use this app directly from the [Unpkg CDN](https://unpkg.com/browse/@dbp-topics/sublibrary/)
 for example like this: [dbp-library/index.html](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/tree/master/examples/dbp-library/index.html)
@@ -84,7 +84,7 @@ Note that you will need a Keycloak server along with a client id for the domain 
 
 ### Update app
 
-If you want to update the DBP Library App in the current folder you can call:
+If you want to update the DBP Sublibrary App in the current folder you can call:
 
 ```bash
 npx @digital-blueprint/cli update-app library
