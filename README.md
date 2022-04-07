@@ -1,6 +1,6 @@
 # Library Application
 
-[GitLab Repository](https://gitlab.tugraz.at/dbp/library/library) |
+[GitLab Repository](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary) |
 [npmjs package](https://www.npmjs.com/package/@dbp-topics/library) |
 [Unpkg CDN](https://unpkg.com/browse/@dbp-topics/library/)
 
@@ -15,7 +15,7 @@
 
 ```bash
 # get the source
-git clone git@gitlab.tugraz.at:dbp/library/library.git
+git clone git@gitlab.tugraz.at:dbp/sublibrary/sublibrary.git
 cd library
 git submodule update --init
 
@@ -78,7 +78,7 @@ Also make sure to add all of your resources you are using (like your API and Key
 `Content-Security-Policy` in your `library-app/public/.htaccess`, so the browser allows access to those sites.
 
 You can also use this app directly from the [Unpkg CDN](https://unpkg.com/browse/@dbp-topics/library/)
-for example like this: [dbp-library/index.html](https://gitlab.tugraz.at/dbp/library/library/-/tree/master/examples/dbp-library/index.html)
+for example like this: [dbp-library/index.html](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/tree/master/examples/dbp-library/index.html)
 
 Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
 

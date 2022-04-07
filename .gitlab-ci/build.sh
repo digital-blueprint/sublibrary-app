@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-TAG="registry.gitlab.tugraz.at/dbp/library/library/main:v1"
+TAG="registry.gitlab.tugraz.at/dbp/sublibrary/sublibrary/main:v1"
 sudo docker build --tag "${TAG}" --file "Dockerfile" .
 sudo docker run --rm --security-opt label=disable \
     --volume "$(pwd)/..:/home/user/app" --workdir "/home/user/app" \
