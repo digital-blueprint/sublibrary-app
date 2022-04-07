@@ -63,7 +63,7 @@ ${getOrigin(config.matomoUrl)} ${getOrigin(config.keyCloakBaseURL)} ${getOrigin(
 export default (async () => {
     let privatePath = await getDistPath(pkg.name);
     return {
-        input: appEnv != 'test' ? glob.sync('src/dbp-library*.js') : glob.sync('test/**/*.js'),
+        input: appEnv != 'test' ? glob.sync('src/dbp-sublibrary*.js') : glob.sync('test/**/*.js'),
         output: {
             dir: 'dist',
             entryFileNames: '[name].js',

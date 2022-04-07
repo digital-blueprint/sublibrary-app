@@ -511,4 +511,4 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     }
 }
 
-commonUtils.defineCustomElement('dbp-library-renew-loan', LibraryRenewLoan);
+commonUtils.defineCustomElement('dbp-sublibrary-renew-loan', LibraryRenewLoan);

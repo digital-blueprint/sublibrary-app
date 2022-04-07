@@ -388,4 +388,4 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     }
 }
 
-commonUtils.defineCustomElement('dbp-library-order-list', LibraryOrderList);
+commonUtils.defineCustomElement('dbp-sublibrary-order-list', LibraryOrderList);

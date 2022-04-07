@@ -1,17 +1,19 @@
 import $ from 'jquery';
-import {createInstance, i18nKey} from './i18n.js';
+import {createInstance} from './i18n.js';
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
+import {send as notify} from '@dbp-toolkit/common/notification';
 import {LibraryElement} from './library-element.js';
+import Suggestions from 'suggestions';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
+import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
+import {Button, MiniSpinner} from '@dbp-toolkit/common';
 import {OrganizationSelect} from '@dbp-toolkit/organization-select';
-import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
-import {getPersonDisplayName} from './utils.js';
 
-class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
+class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
         this.auth = {};
@@ -20,20 +22,15 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         this.entryPointUrl = '';
         this.bookOfferId = '';
         this.bookOffer = null;
-        this.loanId = '';
-        this.loan = null;
-        this.borrower = null;
-        this.borrowerName = '';
-        this.status = null;
         this.organizationId = '';
     }
 
     static get scopedElements() {
         return {
             'dbp-organization-select': OrganizationSelect,
-            'dbp-library-book-offer-select': LibraryBookOfferSelect,
-            'dbp-mini-spinner': MiniSpinner,
+            'dbp-sublibrary-book-offer-select': LibraryBookOfferSelect,
             'dbp-button': Button,
+            'dbp-mini-spinner': MiniSpinner,
         };
     }
 
@@ -44,16 +41,9 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
             bookOfferId: {type: String, attribute: 'book-offer-id', reflect: true},
             bookOffer: {type: Object, attribute: false},
-            borrower: {type: Object, attribute: false},
-            borrowerName: {type: String, attribute: false},
-            status: {type: Object, attribute: false},
             organizationId: {type: String, attribute: 'organization-id', reflect: true},
             auth: {type: Object},
         };
-    }
-
-    $(selector) {
-        return $(this._(selector));
     }
 
     getLibrary() {
@@ -64,23 +54,37 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         return this.organizationId.includes('-') ? this.organizationId.split('-')[1] : '';
     }
 
+    $(selector) {
+        return $(this._(selector));
+    }
+
     connectedCallback() {
         super.connectedCallback();
         const that = this;
         const i18n = this._i18n;
 
         this.updateComplete.then(() => {
-            const $bookOfferSelect = that.$(this.getScopedTagName('dbp-library-book-offer-select'));
-            const $returnBookBlock = that.$('#return-book-block');
-            const $loansLoadingIndicator = that.$('#loans-loading');
+            const $bookOfferSelect = that.$(this.getScopedTagName('dbp-sublibrary-book-offer-select'));
+            const $locationIdentifierInput = that.$('#location-identifier');
+            const locationIdentifierInput = that._('#location-identifier');
+            const $locationIdentifierBlock = that.$('#location-identifier-block');
 
-            // show return book block if book offer was selected
+            // show location identifier block if book offer was selected
             $bookOfferSelect
                 .change(function () {
+                    console.log('change');
+                    console.log($bookOfferSelect.val());
+                    console.log($bookOfferSelect.attr('value'));
+                    console.log($bookOfferSelect.prop('value'));
                     that.bookOffer = $(this).data('object');
                     that.bookOfferId = that.bookOffer['@id'];
-                    that.updateSubmitButtonDisabled();
-                    const apiUrl = that.entryPointUrl + that.bookOfferId + '/loans';
+                    $locationIdentifierInput
+                        .val(that.bookOffer.locationIdentifier)
+                        .trigger('input');
+
+                    $locationIdentifierBlock.show();
+
+                    const apiUrl = that.entryPointUrl + that.bookOfferId + '/location_identifiers';
 
                     // set book-offer-id of the custom element
                     that.setAttribute('book-offer-id', that.bookOfferId);
@@ -95,101 +99,76 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                         })
                     );
 
-                    $loansLoadingIndicator.show();
-
-                    // check if there are already loans on this book offer
+                    // fetch and setup the location identifier suggestions
                     fetch(apiUrl, {
                         headers: {
                             'Content-Type': 'application/ld+json',
                             Authorization: 'Bearer ' + that.auth.token,
                         },
                     })
+                        .then((response) => response.json())
                         .then((result) => {
-                            $loansLoadingIndicator.hide();
-                            if (!result.ok) throw result;
-                            return result.json();
-                        })
-                        .then((result) => {
-                            const loans = result['hydra:member'];
-
-                            if (loans.length > 0) {
-                                that.loan = loans[0];
-                                that.loanId = that.loan['@id'];
-                                console.log(that.loan);
-                                that.loadBorrower(that.loan.borrower);
-
-                                that.status = {
-                                    summary: i18nKey('return-book.info-existing-loans-summary'),
-                                    body: i18nKey('return-book.info-existing-loans-body'),
-                                };
-
-                                $returnBookBlock.show();
-                            } else {
-                                that.status = {
-                                    summary: i18nKey('return-book.error-no-existing-loans-summary'),
-                                    body: i18nKey('return-book.error-no-existing-loans-body'),
-                                };
-                            }
-                        })
-                        .catch((error) => {
-                            that.handleFetchError(
-                                error,
-                                i18n.t('renew-loan.error-load-loans-summary')
-                            );
+                            new Suggestions(locationIdentifierInput, result['hydra:member']);
                         });
                 })
                 .on('unselect', function (e) {
-                    $returnBookBlock.hide();
+                    console.log('unselect');
+
+                    that.bookOffer = null;
+                    that.bookOfferId = '';
+                    $(that).attr('book-offer-id', null);
+
+                    $locationIdentifierBlock.hide();
                 });
 
-            // update loan status of book loan
+            // enable send button if location identifier was entered
+            $locationIdentifierInput.on('input', function () {
+                that.$('#send').prop('disabled', $(this).val() === '');
+            });
+
+            // update the book offer with location identifier
             that.$('#send').click((e) => {
                 e.preventDefault();
                 console.log('send');
                 const apiUrl =
-                    that.entryPointUrl +
-                    that.bookOfferId +
-                    '/return' +
-                    '?library=' +
-                    that.getLibrary();
-                console.log('dbp-library-return-book: #send.click() apiUrl = ' + apiUrl);
+                    that.entryPointUrl + $bookOfferSelect.val() + '?library=' + that.getLibrary();
+                console.log(apiUrl);
+                console.log($locationIdentifierInput);
+
+                const data = {
+                    locationIdentifier: $locationIdentifierInput.val(),
+                };
+
+                console.log(data);
+                console.log(JSON.stringify(data));
 
                 $.ajax({
                     url: apiUrl,
-                    type: 'POST',
+                    type: 'PUT',
                     contentType: 'application/json',
                     beforeSend: function (jqXHR) {
                         jqXHR.setRequestHeader('Authorization', 'Bearer ' + that.auth.token);
                     },
-                    data: '{}',
+                    data: JSON.stringify(data),
                     success: function (data) {
-                        $bookOfferSelect[0].clear();
+                        notify({
+                            summary: i18n.t('success-summary'),
+                            body: i18n.t('success-body', {name: that.bookOffer.name || ''}),
+                            type: 'success',
+                            timeout: 5,
+                        });
 
-                        that.status = {
-                            summary: i18nKey('return-book.success-summary'),
-                            body: i18n.t('return-book.success-body', {
-                                personName: that.borrowerName,
-                            }),
-                        };
+                        $bookOfferSelect[0].clear();
                     },
                     error: (jqXHR, textStatus, errorThrown) => {
                         that.handleXhrError(jqXHR, textStatus, errorThrown);
                     },
                     complete: function (jqXHR, textStatus, errorThrown) {
                         that._('#send').stop();
-                        that.updateSubmitButtonDisabled();
                     },
                 });
             });
         });
-    }
-
-    async onBookSelectChanged(e) {
-        this.status = null;
-    }
-
-    updateSubmitButtonDisabled() {
-        this.$('#send').prop('disabled', this.bookOfferId === '');
     }
 
     update(changedProperties) {
@@ -206,31 +185,6 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         this.lang = e.detail.lang;
     }
 
-    loadBorrower(personId) {
-        this.borrower = null;
-        this.borrowerName = this._i18n.t('return-book.user-name-unknown');
-
-        // this happens if no person was found in LDAP by AlmaUserId
-        if (personId == null) {
-            return;
-        }
-
-        const apiUrl = this.entryPointUrl + personId;
-
-        // load person
-        fetch(apiUrl, {
-            headers: {
-                'Content-Type': 'application/ld+json',
-                Authorization: 'Bearer ' + this.auth.token,
-            },
-        })
-            .then((response) => response.json())
-            .then((person) => {
-                this.borrower = person;
-                this.borrowerName = getPersonDisplayName(person);
-            });
-    }
-
     static get styles() {
         // language=css
         return css`
@@ -242,11 +196,13 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 display: none;
             }
 
-            #return-book-block {
+            #location-identifier-block {
                 display: none;
             }
-            #return-book-block input {
+
+            #location-identifier-block input {
                 width: 100%;
+                border-radius: var(--dbp-border-radius);
             }
         `;
     }
@@ -256,8 +212,12 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     }
 
     render() {
+        const suggestionsCSS = commonUtils.getAssetURL(suggestionsCSSPath);
         const i18n = this._i18n;
+
         return html`
+            <link rel="stylesheet" href="${suggestionsCSS}" />
+
             <form
                 class="${classMap({
                     hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
@@ -275,50 +235,40 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                        <dbp-library-book-offer-select
+                        <dbp-sublibrary-book-offer-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            @change=${this.onBookSelectChanged}
-                            @unselect=${this.onBookSelectChanged}
                             value="${this.bookOfferId}"
                             organization-id="${this.organizationId}"
                             show-reload-button
                             reload-button-title="${this.bookOffer
-                                ? i18n.t('return-book.button-refresh-title', {
+                                ? i18n.t('shelving.button-refresh-title', {
                                       name: this.bookOffer.name,
                                   })
-                                : ''}"></dbp-library-book-offer-select>
+                                : ''}"></dbp-sublibrary-book-offer-select>
                     </div>
                 </div>
 
-                <dbp-mini-spinner
-                    id="loans-loading"
-                    text="${i18n.t('return-book.mini-spinner-text')}"
-                    style="font-size: 2em; display: none;"></dbp-mini-spinner>
-                <div id="return-book-block">
+                <div id="location-identifier-block">
                     <div class="field">
-                        <label class="label">${i18n.t('return-book.borrower')}</label>
-                        <div class="control">${this.borrowerName}</div>
+                        <label class="label">${i18n.t('location-identifier.headline')}</label>
+                        <div class="control">
+                            <input
+                                class="input"
+                                id="location-identifier"
+                                type="text"
+                                placeholder="${i18n.t('location-identifier.placeholder')}" />
+                        </div>
                     </div>
                     <div class="field">
                         <div class="control">
                             <dbp-button
                                 id="send"
                                 disabled="disabled"
-                                value="${i18n.t('return-book.submit')}"
+                                value="${i18n.t('location-identifier.submit')}"
                                 type=""></dbp-button>
                         </div>
                     </div>
                 </div>
-
-                ${this.status
-                    ? html`
-                          <br />
-                          <div class="notification is-info">
-                              <h4>${i18n.t(this.status.summary)}</h4>
-                              ${i18n.t(this.status.body)}
-                          </div>
-                      `
-                    : ''}
             </form>
             <div
                 class="notification is-warning ${classMap({
@@ -339,4 +289,4 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     }
 }
 
-commonUtils.defineCustomElement('dbp-library-return-book', LibraryReturnBook);
+commonUtils.defineCustomElement('dbp-sublibrary-shelving', LibraryShelving);

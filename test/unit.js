@@ -1,13 +1,13 @@
 import {assert} from 'chai';
 
-import '../src/dbp-library-shelving';
-import '../src/dbp-library.js';
+import '../src/dbp-sublibrary-shelving';
+import '../src/dbp-sublibrary.js';
 
-suite('dbp-library-shelving basics', () => {
+suite('dbp-sublibrary-shelving basics', () => {
     let node;
 
     suiteSetup(async () => {
-        node = document.createElement('dbp-library-shelving');
+        node = document.createElement('dbp-sublibrary-shelving');
         document.body.appendChild(node);
         await node.updateComplete;
     });
@@ -21,7 +21,7 @@ suite('dbp-library-shelving basics', () => {
     });
 });
 
-suite('dbp-library-app basics', () => {
+suite('dbp-sublibrary-app basics', () => {
     let node;
 
     suiteSetup(async () => {

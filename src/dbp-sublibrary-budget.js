@@ -258,4 +258,4 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     }
 }
 
-commonUtils.defineCustomElement('dbp-library-budget', LibraryBudget);
+commonUtils.defineCustomElement('dbp-sublibrary-budget', LibraryBudget);

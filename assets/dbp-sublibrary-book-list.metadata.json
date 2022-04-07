@@ -1,6 +1,6 @@
 {
-    "element": "dbp-library-book-list",
-    "module_src": "dbp-library-book-list.js",
+    "element": "dbp-sublibrary-book-list",
+    "module_src": "dbp-sublibrary-book-list.js",
     "routing_name": "book-list",
     "name": {
         "de": "Institutsbücher anzeigen",

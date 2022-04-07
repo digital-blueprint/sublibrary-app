@@ -26,7 +26,7 @@
     </script>
 
     <!-- App bundles-->
-    <script type="module" src="/app/dbp-library.js"></script>
+    <script type="module" src="/app/dbp-sublibrary.js"></script>
 
     <!-- Prevent Chrome/Edge from suggesting to translate the page -->
     <meta name="google" content="notranslate">
@@ -98,7 +98,7 @@
 </head>
 
 <body>
-<dbp-library
+<dbp-sublibrary
     provider-root
     id="app"
     lang="de" entry-point-url="https://api-demo.tugraz.at"
@@ -110,10 +110,10 @@
     themes='[{"class": "light-theme", "icon": "sun", "name": "Light Mode"},
             {"class": "dark-theme", "icon": "night", "name": "Dark Mode"}]'
 ><dbp-loading-spinner></dbp-loading-spinner>
-</dbp-library>
+</dbp-sublibrary>
 
 <template id="global-override">
-    <template id="dbp-library">
+    <template id="dbp-sublibrary">
         <div slot="name">
             DBP<br />
             <dbp-translated subscribe="lang">

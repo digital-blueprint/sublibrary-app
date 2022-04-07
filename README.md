@@ -78,7 +78,7 @@ Also make sure to add all of your resources you are using (like your API and Key
 `Content-Security-Policy` in your `sublibrary-app/public/.htaccess`, so the browser allows access to those sites.
 
 You can also use this app directly from the [Unpkg CDN](https://unpkg.com/browse/@dbp-topics/sublibrary/)
-for example like this: [dbp-library/index.html](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/tree/master/examples/dbp-library/index.html)
+for example like this: [dbp-sublibrary/index.html](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/tree/master/examples/dbp-sublibrary/index.html)
 
 Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
 
@@ -92,7 +92,7 @@ npx @digital-blueprint/cli update-app library
 
 ## Activities
 
-### dbp-library-book-list
+### dbp-sublibrary-book-list
 
 You can use this activity to list all books for an organisation. You cal also filter
 the list by location and/or by inventory year. 
@@ -111,7 +111,7 @@ Note that you will need a Keycloak server along with a client id for the domain 
 - `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
   - example: `organization-id="1190-F2050"`
 
-### dbp-library-budget
+### dbp-sublibrary-budget
 
 You can use this activity to retrieve the budget for an organisation library.
 
@@ -129,7 +129,7 @@ Note that you will need a Keycloak server along with a client id for the domain 
 - `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
   - example: `organization-id="681-F1490"`
 
-### dbp-library-create-loan
+### dbp-sublibrary-create-loan
 
 You can use this activity to
 
@@ -151,7 +151,7 @@ Note that you will need a Keycloak server along with a client id for the domain 
 - `person-id`: id of the person to borrow the book
   - example: `person-id="demo1dbp"`
 
-### dbp-library-loan-list
+### dbp-sublibrary-loan-list
 
 You can use this activity to all loans for an organisation library.
 
@@ -169,7 +169,7 @@ Note that you will need a Keycloak server along with a client id for the domain 
 - `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
   - example: `organization-id="1190-F2050"`
 
-### dbp-library-order-list
+### dbp-sublibrary-order-list
 
 You can use this activity to list the orders for an organisation library.
 
@@ -187,7 +187,7 @@ Note that you will need a Keycloak server along with a client id for the domain 
 - `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
   - example: `organization-id="1190-F2050"`
 
-### dbp-library-renew-loan
+### dbp-sublibrary-renew-loan
 
 You can use this activity to list all loans a person has. The organisation is used as a filter (so each library officer 
 sees only loans for books he/she has to manage).
@@ -208,7 +208,7 @@ Note that you will need a Keycloak server along with a client id for the domain 
 - `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
   - example: `organization-id="681-F1490"`
 
-### dbp-library-return-book
+### dbp-sublibrary-return-book
 
 You can use this activity to return a borrowed book. Each library office can only accept books from the library he/she
 manages.
@@ -229,7 +229,7 @@ Note that you will need a Keycloak server along with a client id for the domain 
 - `book-offer-id`: id of the book to borrow
   - example: `book-offer-id="+F20313804"`
 
-### dbp-library-shelving
+### dbp-sublibrary-shelving
 
 You can use this activity to store the place (on the shelf) for a added/returned book. Each library office can only 
 shelf books she/he manages. 
@@ -250,7 +250,7 @@ Note that you will need a Keycloak server along with a client id for the domain 
 - `book-offer-id`: id of the book to borrow
   - example: `book-offer-id="+F20313804"`
 
-## "dbp-library" Slots
+## "dbp-sublibrary" Slots
 
 These are common slots for the appshell. You can find the documentation of these slot in the `README.md` of the appshell webcomponent.
 
@@ -264,10 +264,10 @@ If you are not using the `provider-root` attribute to "terminate" all provider a
 you need to manually add these attributes so that the topic will work properly:
 
 ```html
-<dbp-library
+<dbp-sublibrary
     auth
     requested-login-status
     analytics-event
 >
-</dbp-library>
+</dbp-sublibrary>
 ```

@@ -462,4 +462,4 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
     }
 }
 
-commonUtils.defineCustomElement('dbp-library-loan-list', LibraryLoanList);
+commonUtils.defineCustomElement('dbp-sublibrary-loan-list', LibraryLoanList);

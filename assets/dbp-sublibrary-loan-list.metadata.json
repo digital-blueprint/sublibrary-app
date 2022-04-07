@@ -1,6 +1,6 @@
 {
-    "element": "dbp-library-loan-list",
-    "module_src": "dbp-library-loan-list.js",
+    "element": "dbp-sublibrary-loan-list",
+    "module_src": "dbp-sublibrary-loan-list.js",
     "routing_name": "loan-list",
     "name": {
         "de": "Entlehnungen anzeigen",

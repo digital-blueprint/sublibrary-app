@@ -32,12 +32,12 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         this.locationIdentifier = '';
         this.locationIdentifiers = [];
         this.locationIdentifierSelectId =
-            'dbp-library-book-list-location-identifier-select-' + commonUtils.makeId(24);
+            'dbp-sublibrary-book-list-location-identifier-select-' + commonUtils.makeId(24);
         this.$locationIdentifierSelect = null;
         this.inventoryYear = '';
         this.inventoryYears = [];
         this.inventoryYearSelectId =
-            'dbp-library-book-list-inventory-year-select-' + commonUtils.makeId(24);
+            'dbp-sublibrary-book-list-inventory-year-select-' + commonUtils.makeId(24);
         this.$inventoryYearSelect = null;
 
         let now = new Date();
@@ -525,4 +525,4 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
     }
 }
 
-commonUtils.defineCustomElement('dbp-library-book-list', LibraryBookList);
+commonUtils.defineCustomElement('dbp-sublibrary-book-list', LibraryBookList);

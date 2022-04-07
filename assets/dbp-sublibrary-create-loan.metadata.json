@@ -1,6 +1,6 @@
 {
-    "element": "dbp-library-create-loan",
-    "module_src": "dbp-library-create-loan.js",
+    "element": "dbp-sublibrary-create-loan",
+    "module_src": "dbp-sublibrary-create-loan.js",
     "routing_name": "create-loan",
     "name": {
         "de": "Buch entlehnen",

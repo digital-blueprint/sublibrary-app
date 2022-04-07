@@ -1,6 +1,6 @@
 {
-    "element": "dbp-library-order-list",
-    "module_src": "dbp-library-order-list.js",
+    "element": "dbp-sublibrary-order-list",
+    "module_src": "dbp-sublibrary-order-list.js",
     "routing_name": "order-list",
     "name": {
         "de": "Buchbestellungen anzeigen",

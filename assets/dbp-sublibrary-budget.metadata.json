@@ -1,6 +1,6 @@
 {
-    "element": "dbp-library-budget",
-    "module_src": "dbp-library-budget.js",
+    "element": "dbp-sublibrary-budget",
+    "module_src": "dbp-sublibrary-budget.js",
     "routing_name": "budget",
     "name": {
         "de": "Budget anzeigen",

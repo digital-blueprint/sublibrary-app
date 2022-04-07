@@ -1,6 +1,6 @@
 {
-    "element": "dbp-library-shelving",
-    "module_src": "dbp-library-shelving.js",
+    "element": "dbp-sublibrary-shelving",
+    "module_src": "dbp-sublibrary-shelving.js",
     "routing_name": "shelving",
     "name": {
         "de": "Aufstellung vergeben",

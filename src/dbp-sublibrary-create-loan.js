@@ -31,7 +31,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         return {
             'dbp-organization-select': OrganizationSelect,
             'dbp-person-select': PersonSelect,
-            'dbp-library-book-offer-select': LibraryBookOfferSelect,
+            'dbp-sublibrary-book-offer-select': LibraryBookOfferSelect,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-button': Button,
         };
@@ -238,7 +238,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
         if (response.ok) {
             // clear book offer select to hide "loan" button
-            const bookOfferSelect = this._(this.getScopedTagName('dbp-library-book-offer-select'));
+            const bookOfferSelect = this._(this.getScopedTagName('dbp-sublibrary-book-offer-select'));
             bookOfferSelect.clear();
 
             this.status = {
@@ -293,7 +293,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control">
-                        <dbp-library-book-offer-select
+                        <dbp-sublibrary-book-offer-select
                             subscribe="auth:auth,lang:lang,entry-point-url:entry-point-url,auth:auth"
                             @change=${this.onBookSelectChanged}
                             @unselect=${this.onBookSelectChanged}
@@ -304,7 +304,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                                 ? i18n.t('create-loan.button-refresh-title', {
                                       name: this.bookOffer.name,
                                   })
-                                : ''}"></dbp-library-book-offer-select>
+                                : ''}"></dbp-sublibrary-book-offer-select>
                     </div>
                 </div>
 
@@ -362,4 +362,4 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     }
 }
 
-commonUtils.defineCustomElement('dbp-library-create-loan', LibraryCreateLoan);
+commonUtils.defineCustomElement('dbp-sublibrary-create-loan', LibraryCreateLoan);

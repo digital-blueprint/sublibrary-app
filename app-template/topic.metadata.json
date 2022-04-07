@@ -11,16 +11,16 @@
         "de": "",
         "en": ""
     },
-    "routing_name": "library",
+    "routing_name": "sublibrary",
     "activities": [
-        {"path": "/app/dbp-library-shelving.metadata.json"},
-        {"path": "/app/dbp-library-create-loan.metadata.json"},
-        {"path": "/app/dbp-library-return-book.metadata.json"},
-        {"path": "/app/dbp-library-renew-loan.metadata.json"},
-        {"path": "/app/dbp-library-book-list.metadata.json"},
-        {"path": "/app/dbp-library-loan-list.metadata.json"},
-        {"path": "/app/dbp-library-order-list.metadata.json"},
-        {"path": "/app/dbp-library-budget.metadata.json"}
+        {"path": "/app/dbp-sublibrary-shelving.metadata.json"},
+        {"path": "/app/dbp-sublibrary-create-loan.metadata.json"},
+        {"path": "/app/dbp-sublibrary-return-book.metadata.json"},
+        {"path": "/app/dbp-sublibrary-renew-loan.metadata.json"},
+        {"path": "/app/dbp-sublibrary-book-list.metadata.json"},
+        {"path": "/app/dbp-sublibrary-loan-list.metadata.json"},
+        {"path": "/app/dbp-sublibrary-order-list.metadata.json"},
+        {"path": "/app/dbp-sublibrary-budget.metadata.json"}
     ],
     "attributes": ["person-id", "book-offer-id", "organization-id"]
 }
