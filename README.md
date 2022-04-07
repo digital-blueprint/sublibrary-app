@@ -4,7 +4,7 @@
 [npmjs package](https://www.npmjs.com/package/@dbp-topics/sublibrary) |
 [Unpkg CDN](https://unpkg.com/browse/@dbp-topics/sublibrary/)
 
-![overview](docs/overview.svg)
+![overview](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/blob/master/docs/overview.svg)
 
 ## Prerequisites
 
