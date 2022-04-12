@@ -9,9 +9,13 @@ import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import {Button, MiniSpinner} from '@dbp-toolkit/common';
-import {OrganizationSelect} from '@dbp-toolkit/organization-select';
+import {ResourceSelect} from '@dbp-toolkit/resource-select';
 import {classMap} from 'lit/directives/class-map.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
+
+function getLibraryCodeFromId(id) {
+    return id.includes('-') ? id.split('-')[1] : '';
+}
 
 class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -27,7 +31,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'dbp-organization-select': OrganizationSelect,
+            'dbp-resource-select': ResourceSelect,
             'dbp-sublibrary-book-offer-select': LibraryBookOfferSelect,
             'dbp-button': Button,
             'dbp-mini-spinner': MiniSpinner,
@@ -51,7 +55,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         // until the API understands this:
         //this.organizationId == '/organizations/1263-F2190';
         // extracting the orgUnitCode (F2190) is done here:
-        return this.organizationId.includes('-') ? this.organizationId.split('-')[1] : '';
+        return getLibraryCodeFromId(this.organizationId);
     }
 
     $(selector) {
@@ -217,6 +221,17 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         const suggestionsCSS = commonUtils.getAssetURL(suggestionsCSSPath);
         const i18n = this._i18n;
 
+        let buildUrl = (select, url) => {
+            url += '/' + encodeURIComponent(select.auth['person-id']);
+            url += '/organizations';
+            url += '?' + new URLSearchParams({lang: select.lang, context: 'library-manager'}).toString();
+            return url;
+        };
+
+        let formatResource = (select, resource) => {
+            return `${resource['name']} (${getLibraryCodeFromId(resource['identifier'])})`;
+        };
+
         return html`
             <link rel="stylesheet" href="${suggestionsCSS}" />
 
@@ -227,11 +242,13 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-organization-select
+                        <dbp-resource-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            context="library-manager"
                             value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
+                            resource-path="base/people"
+                            .buildUrl="${buildUrl}"
+                            .formatResource="${formatResource}"
+                            @change="${this.onOrgUnitCodeChanged}"></dbp-resource-select>
                     </div>
                 </div>
                 <div class="field">
