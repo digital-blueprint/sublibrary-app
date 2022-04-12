@@ -64,7 +64,9 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         const i18n = this._i18n;
 
         this.updateComplete.then(() => {
-            const $bookOfferSelect = that.$(this.getScopedTagName('dbp-sublibrary-book-offer-select'));
+            const $bookOfferSelect = that.$(
+                this.getScopedTagName('dbp-sublibrary-book-offer-select')
+            );
             const $locationIdentifierInput = that.$('#location-identifier');
             const locationIdentifierInput = that._('#location-identifier');
             const $locationIdentifierBlock = that.$('#location-identifier-block');

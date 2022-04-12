@@ -238,7 +238,9 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
         if (response.ok) {
             // clear book offer select to hide "loan" button
-            const bookOfferSelect = this._(this.getScopedTagName('dbp-sublibrary-book-offer-select'));
+            const bookOfferSelect = this._(
+                this.getScopedTagName('dbp-sublibrary-book-offer-select')
+            );
             bookOfferSelect.clear();
 
             this.status = {
