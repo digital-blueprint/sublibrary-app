@@ -101,7 +101,7 @@ e2e_tests:
     refs:
       - master
   variables:
-    E2E_PROJECT: library
+    E2E_PROJECT: sublibrary
   stage: e2e
   trigger:
     project: dbp/e2e-tests
