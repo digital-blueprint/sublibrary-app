@@ -11,8 +11,8 @@ import select2LangDe from './i18n/de/select2';
 import select2LangEn from './i18n/en/select2';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import $ from 'jquery';
-import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {classMap} from 'lit/directives/class-map.js';
+import {LibrarySelect} from './library-select.js';
 
 select2(window, $);
 
@@ -47,7 +47,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'dbp-organization-select': OrganizationSelect,
+            'dbp-library-select': LibrarySelect,
             'dbp-data-table-view': DataTableView,
             'dbp-mini-spinner': MiniSpinner,
         };
@@ -457,11 +457,10 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-organization-select
+                        <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            context="library-manager"
                             value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
+                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <dbp-mini-spinner

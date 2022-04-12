@@ -22,3 +22,7 @@ export const findObjectInApiResults = (identifier, results, identifierAttribute 
 export function getPersonDisplayName(person) {
     return `${person.givenName} ${person.familyName}`;
 }
+
+export function getLibraryCodeFromId(id) {
+    return id.includes('-') ? id.split('-')[1] : '';
+}

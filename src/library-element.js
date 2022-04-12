@@ -71,7 +71,7 @@ export class LibraryElement extends AdapterLitElement {
     }
 
     getOrganization() {
-        const organizationSelect = this._(this.getScopedTagName('dbp-organization-select'));
+        const organizationSelect = this._(this.getScopedTagName('dbp-library-select'));
 
         if (organizationSelect) {
             const objectText = organizationSelect.getAttribute('data-object');

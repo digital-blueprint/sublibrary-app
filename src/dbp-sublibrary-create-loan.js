@@ -6,10 +6,10 @@ import {PersonSelect} from '@dbp-toolkit/person-select';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
-import {getPersonDisplayName} from './utils.js';
+import {getPersonDisplayName, getLibraryCodeFromId} from './utils.js';
+import {LibrarySelect} from './library-select.js';
 
 class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -29,7 +29,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'dbp-organization-select': OrganizationSelect,
+            'dbp-library-select': LibrarySelect,
             'dbp-person-select': PersonSelect,
             'dbp-sublibrary-book-offer-select': LibraryBookOfferSelect,
             'dbp-mini-spinner': MiniSpinner,
@@ -167,7 +167,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         // until the API understands this:
         //this.organizationId == '/organizations/1263-F2190';
         // extracting the orgUnitCode (F2190) is done here:
-        return this.organizationId.includes('-') ? this.organizationId.split('-')[1] : '';
+        return getLibraryCodeFromId(this.organizationId);
     }
 
     onPersonSelectChanged(e) {
@@ -274,11 +274,10 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-organization-select
+                        <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            context="library-manager"
                             value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
+                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <div class="field">

@@ -9,13 +9,10 @@ import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import {Button, MiniSpinner} from '@dbp-toolkit/common';
-import {ResourceSelect} from '@dbp-toolkit/resource-select';
 import {classMap} from 'lit/directives/class-map.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
-
-function getLibraryCodeFromId(id) {
-    return id.includes('-') ? id.split('-')[1] : '';
-}
+import {getLibraryCodeFromId} from './utils.js';
+import {LibrarySelect} from './library-select.js';
 
 class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -31,7 +28,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'dbp-resource-select': ResourceSelect,
+            'dbp-library-select': LibrarySelect,
             'dbp-sublibrary-book-offer-select': LibraryBookOfferSelect,
             'dbp-button': Button,
             'dbp-mini-spinner': MiniSpinner,
@@ -221,17 +218,6 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         const suggestionsCSS = commonUtils.getAssetURL(suggestionsCSSPath);
         const i18n = this._i18n;
 
-        let buildUrl = (select, url) => {
-            url += '/' + encodeURIComponent(select.auth['person-id']);
-            url += '/organizations';
-            url += '?' + new URLSearchParams({lang: select.lang, context: 'library-manager'}).toString();
-            return url;
-        };
-
-        let formatResource = (select, resource) => {
-            return `${resource['name']} (${getLibraryCodeFromId(resource['identifier'])})`;
-        };
-
         return html`
             <link rel="stylesheet" href="${suggestionsCSS}" />
 
@@ -242,13 +228,10 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-resource-select
+                        <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                             value="${this.organizationId}"
-                            resource-path="base/people"
-                            .buildUrl="${buildUrl}"
-                            .formatResource="${formatResource}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-resource-select>
+                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <div class="field">

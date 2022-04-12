@@ -8,10 +8,10 @@ import {PersonSelect} from '@dbp-toolkit/person-select';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
-import {OrganizationSelect} from '@dbp-toolkit/organization-select';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
 import {getPersonDisplayName} from './utils.js';
+import {LibrarySelect} from './library-select.js';
 
 class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -28,7 +28,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
 
     static get scopedElements() {
         return {
-            'dbp-organization-select': OrganizationSelect,
+            'dbp-library-select': LibrarySelect,
             'dbp-person-select': PersonSelect,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-button': Button,
@@ -448,11 +448,10 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 <div class="field">
                     <label class="label">${i18n.t('organization-select.label')}</label>
                     <div class="control">
-                        <dbp-organization-select
+                        <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            context="library-manager"
                             value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-organization-select>
+                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <div class="field">
