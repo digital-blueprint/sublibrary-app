@@ -1,128 +1,128 @@
 {
-    "person-select": {
-        "headline": "Person"
+    "book-list": {
+        "book-author": "Autor",
+        "book-availability-date": "Inventarisierungsdatum",
+        "book-barcode": "Barcode",
+        "book-description": "Beschreibung",
+        "book-inventory-year": "Inventarisierungsjahr",
+        "book-isbn": "ISBN/ISSN",
+        "book-location-identifier": "Aufstellung",
+        "book-publication-year": "Erscheinungsjahr",
+        "book-publisher": "Verlag",
+        "book-title": "Titel",
+        "books": "Bücher",
+        "current-state": "Stand",
+        "error-load-books": "Liste der Bücher konnte nicht geladen werden",
+        "export-name": "Buchliste {{organizationCode}}",
+        "inventory-year-select-placeholder": "Bitte wählen Sie ein Inventarisierungsjahr aus um die Büchsterliste einzuschränken",
+        "location-identifier-select-placeholder": "Bitte wählen Sie eine Aufstellung aus um die Büchsterliste einzuschränken",
+        "mini-spinner-text": "Bücher werden geladen...",
+        "no-books": "Es sind keine Bücher vorhanden."
     },
+    "budget": {
+        "budget-key-values": "Budgetzahlen",
+        "load-error": "Fehler beim Laden der Budgetwerte",
+        "mini-spinner-text": "Budgetzahlen werden geladen...",
+        "no-budget": "Für dieses Institut existieren keine Budgetzahlen!",
+        "taa": "Zugewiesenes Guthaben (inkl. Übertrag vom Vorjahr)",
+        "taa-tcb": "Summe Rechnungsbelastungen",
+        "tab": "Verfügbares Guthaben",
+        "tcb": "Aktuelles Guthaben",
+        "tcb-tab": "Belastetes Guthaben (offene Bestellungen)"
+    },
+    "create-loan": {
+        "button-refresh-title": "Entlehnungen von {{name}} erneut überprüfen",
+        "error-existing-loans-body": "Es wurde eine bestehende Entlehnung gefunden, das Buch kann nicht entlehnt werden!",
+        "error-existing-loans-summary": "Bestehende Entlehnung!",
+        "info-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden, das Buch kann entlehnt werden.",
+        "info-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
+        "mini-spinner-text": "Entlehnungen werden geladen...",
+        "submit": "Buch entlehnen",
+        "success-body": "Das Buch wurde erfolgreich entlehnt.",
+        "success-summary": "Buchentlehnung erfolgreich"
+    },
+    "error-login-message": "Sie müssen eingeloggt sein um diese Funktion nutzen zu können!",
+    "error-permission-message": "Sie müssen Bibliotheksbeauftragte/r sein um diese Funktion nutzen zu können!",
+    "error-summary": "Ein Fehler ist aufgetreten",
     "library-book-offer-select": {
         "headline": "Bibliothek Buch",
         "placeholder": "Bitte geben Sie einen Barcode ein"
     },
-    "organization-select": {
-        "label": "Institut"
-    },
-    "shelving": {
-        "button-refresh-title": "Aufstellung von {{name}} erneut laden"
-    },
-    "create-loan": {
-        "info-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
-        "info-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden, das Buch kann entlehnt werden.",
-        "error-existing-loans-summary": "Bestehende Entlehnung!",
-        "error-existing-loans-body": "Es wurde eine bestehende Entlehnung gefunden, das Buch kann nicht entlehnt werden!",
-        "submit": "Buch entlehnen",
-        "mini-spinner-text": "Entlehnungen werden geladen...",
-        "success-summary": "Buchentlehnung erfolgreich",
-        "success-body": "Das Buch wurde erfolgreich entlehnt.",
-        "button-refresh-title": "Entlehnungen von {{name}} erneut überprüfen"
-    },
-    "return-book": {
-        "error-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
-        "error-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden!",
-        "info-existing-loans-summary": "Bestehende Entlehnung!",
-        "info-existing-loans-body": "Es wurden eine bestehende Entlehnung gefunden, das Buch kann zurückgegeben werden!",
-        "submit": "Buch zurückgeben",
-        "mini-spinner-text": "Entlehnungen werden geladen...",
-        "success-summary": "Buchrückgabe erfolgreich",
-        "success-body": "Das Buch von {{personName}} wurde erfolgreich zurückgegeben.",
-        "borrower": "Entlehner",
-        "user-name-unknown": "Unbekannt",
-        "button-refresh-title": "Entlehnung von {{name}} erneut laden"
-    },
-    "renew-loan": {
-        "no-loans": "Es wurden keine bestehenden Entlehnungen gefunden!",
-        "book": "Buch",
-        "error-load-loans-summary": "Fehler beim Laden der Entlehnungen",
-        "end-date": "Rückgabedatum",
-        "loans": "Entlehnungen",
-        "renew-loan": "Entlehnung verlängern",
-        "mini-spinner-text": "Entlehnungen werden geladen...",
-        "error-renew-loan-summary": "Fehler beim Verlängern",
-        "info-renew-loan-success-summary": "Verlängern erfolgreich",
-        "info-renew-loan-success-body": "Das Verlängern der Entlehnung war erfolgreich.",
-        "error-renew-loan-date-in-past": "Enddatum darf nicht in der Vergangenheit liegen!",
-        "button-refresh-title": "Entlehnungen von {{personName}} erneut laden",
-        "contact-value": "EMail",
-        "contact-title": "Per EMail Kontakt mit {{personName}} aufnehmen",
-        "contact-subject": "Entlehnung von: {{bookName}}"
-    },
-    "book-list": {
-        "no-books": "Es sind keine Bücher vorhanden.",
-        "mini-spinner-text": "Bücher werden geladen...",
-        "books": "Bücher",
-        "export-name": "Buchliste {{organizationCode}}",
-        "book-title": "Titel",
-        "book-author": "Autor",
-        "book-isbn": "ISBN/ISSN",
-        "book-barcode": "Barcode",
-        "book-location-identifier": "Aufstellung",
-        "book-description": "Beschreibung",
-        "book-publication-year": "Erscheinungsjahr",
-        "book-publisher": "Verlag",
-        "book-availability-date": "Inventarisierungsdatum",
-        "location-identifier-select-placeholder": "Bitte wählen Sie eine Aufstellung aus um die Büchsterliste einzuschränken",
-        "book-inventory-year": "Inventarisierungsjahr",
-        "inventory-year-select-placeholder": "Bitte wählen Sie ein Inventarisierungsjahr aus um die Büchsterliste einzuschränken",
-        "error-load-books": "Liste der Bücher konnte nicht geladen werden",
-        "current-state": "Stand"
-    },
     "loan-list": {
-        "no-loans": "Es sind keine Entlehnungen vorhanden.",
-        "mini-spinner-text": "Entlehnungen werden geladen...",
-        "loans": "Entlehnungen",
-        "export-name": "Entlehnungen {{organizationCode}}",
-        "overdue-only": "Nur überfällige Entlehnungen anzeigen",
-        "open-only": "Nur offene Entlehnungen anzeigen",
-        "borrower-name": "Entlehner",
         "book-author": "Autor/Herausgeber",
-        "start-date": "Entlehndatum",
-        "due-date": "Fällig am",
-        "return-date": "Rückgegeben am",
-        "error-load-loans": "Liste der Entlehnungen konnte nicht geladen werden",
-        "error-load-loan": "Entlehnung konnte nicht geladen werden",
-        "current-state": "Stand"
-    },
-    "order-list": {
-        "export-name": "Buchbestellungen {{organizationCode}}",
-        "error-load-orders": "Liste der Bestellungen konnte nicht geladen werden",
-        "mini-spinner-text": "Bestellungen werden geladen...",
-        "order-date": "Bestelldatum",
-        "order-status": "Status",
-        "order-number": "Bestellnummer",
-        "book-price": "Preis",
-        "receiving -note": "Information",
+        "borrower-name": "Entlehner",
         "current-state": "Stand",
-        "open-only": "Nur offene Bestellungen anzeigen",
-        "status-name-active": "offen",
-        "status-name-cancelled": "storniert",
-        "status-name-closed": "abgeschlossen"
+        "due-date": "Fällig am",
+        "error-load-loan": "Entlehnung konnte nicht geladen werden",
+        "error-load-loans": "Liste der Entlehnungen konnte nicht geladen werden",
+        "export-name": "Entlehnungen {{organizationCode}}",
+        "loans": "Entlehnungen",
+        "mini-spinner-text": "Entlehnungen werden geladen...",
+        "no-loans": "Es sind keine Entlehnungen vorhanden.",
+        "open-only": "Nur offene Entlehnungen anzeigen",
+        "overdue-only": "Nur überfällige Entlehnungen anzeigen",
+        "return-date": "Rückgegeben am",
+        "start-date": "Entlehndatum"
     },
     "location-identifier": {
         "headline": "Identifikator zur Aufstellung",
         "placeholder": "Bitte geben Sie den Identifikator um das Buch aufzustellen ein",
         "submit": "Abschicken"
     },
-    "budget": {
-        "load-error": "Fehler beim Laden der Budgetwerte",
-        "budget-key-values": "Budgetzahlen",
-        "mini-spinner-text": "Budgetzahlen werden geladen...",
-        "taa": "Zugewiesenes Guthaben (inkl. Übertrag vom Vorjahr)",
-        "taa-tcb": "Summe Rechnungsbelastungen",
-        "tcb": "Aktuelles Guthaben",
-        "tcb-tab": "Belastetes Guthaben (offene Bestellungen)",
-        "tab": "Verfügbares Guthaben",
-        "no-budget": "Für dieses Institut existieren keine Budgetzahlen!"
+    "order-list": {
+        "book-price": "Preis",
+        "current-state": "Stand",
+        "error-load-orders": "Liste der Bestellungen konnte nicht geladen werden",
+        "export-name": "Buchbestellungen {{organizationCode}}",
+        "mini-spinner-text": "Bestellungen werden geladen...",
+        "open-only": "Nur offene Bestellungen anzeigen",
+        "order-date": "Bestelldatum",
+        "order-number": "Bestellnummer",
+        "order-status": "Status",
+        "receiving -note": "Information",
+        "status-name-active": "offen",
+        "status-name-cancelled": "storniert",
+        "status-name-closed": "abgeschlossen"
     },
-    "success-summary": "Buchaufstellung erfolgreich",
+    "organization-select": {
+        "label": "Institut"
+    },
+    "person-select": {
+        "headline": "Person"
+    },
+    "renew-loan": {
+        "book": "Buch",
+        "button-refresh-title": "Entlehnungen von {{personName}} erneut laden",
+        "contact-subject": "Entlehnung von: {{bookName}}",
+        "contact-title": "Per EMail Kontakt mit {{personName}} aufnehmen",
+        "contact-value": "EMail",
+        "end-date": "Rückgabedatum",
+        "error-load-loans-summary": "Fehler beim Laden der Entlehnungen",
+        "error-renew-loan-date-in-past": "Enddatum darf nicht in der Vergangenheit liegen!",
+        "error-renew-loan-summary": "Fehler beim Verlängern",
+        "info-renew-loan-success-body": "Das Verlängern der Entlehnung war erfolgreich.",
+        "info-renew-loan-success-summary": "Verlängern erfolgreich",
+        "loans": "Entlehnungen",
+        "mini-spinner-text": "Entlehnungen werden geladen...",
+        "no-loans": "Es wurden keine bestehenden Entlehnungen gefunden!",
+        "renew-loan": "Entlehnung verlängern"
+    },
+    "return-book": {
+        "borrower": "Entlehner",
+        "button-refresh-title": "Entlehnung von {{name}} erneut laden",
+        "error-no-existing-loans-body": "Es wurden keine bestehenden Entlehnungen gefunden!",
+        "error-no-existing-loans-summary": "Keine bestehenden Entlehnungen",
+        "info-existing-loans-body": "Es wurden eine bestehende Entlehnung gefunden, das Buch kann zurückgegeben werden!",
+        "info-existing-loans-summary": "Bestehende Entlehnung!",
+        "mini-spinner-text": "Entlehnungen werden geladen...",
+        "submit": "Buch zurückgeben",
+        "success-body": "Das Buch von {{personName}} wurde erfolgreich zurückgegeben.",
+        "success-summary": "Buchrückgabe erfolgreich",
+        "user-name-unknown": "Unbekannt"
+    },
+    "shelving": {
+        "button-refresh-title": "Aufstellung von {{name}} erneut laden"
+    },
     "success-body": "Das Buch \"{{name}}\" wurde erfolgreich aufgestellt.",
-    "error-summary": "Ein Fehler ist aufgetreten",
-    "error-permission-message": "Sie müssen Bibliotheksbeauftragte/r sein um diese Funktion nutzen zu können!",
-    "error-login-message": "Sie müssen eingeloggt sein um diese Funktion nutzen zu können!"
+    "success-summary": "Buchaufstellung erfolgreich"
 }

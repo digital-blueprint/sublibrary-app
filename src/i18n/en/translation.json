@@ -1,128 +1,128 @@
 {
-    "person-select": {
-        "headline": "Person"
+    "book-list": {
+        "book-author": "Author",
+        "book-availability-date": "Availability date",
+        "book-barcode": "Barcode",
+        "book-description": "Description",
+        "book-inventory-year": "Availability year",
+        "book-isbn": "ISBN/ISSN",
+        "book-location-identifier": "Location",
+        "book-publication-year": "Publication year",
+        "book-publisher": "Publisher",
+        "book-title": "Title",
+        "books": "Books",
+        "current-state": "State",
+        "error-load-books": "List of books could not be loaded",
+        "export-name": "Books {{organizationCode}}",
+        "inventory-year-select-placeholder": "Please select a availability year to restrict the book list",
+        "location-identifier-select-placeholder": "Please select a location to restrict the book list",
+        "mini-spinner-text": "Loading books...",
+        "no-books": "There are no books."
     },
+    "budget": {
+        "budget-key-values": "Budget",
+        "load-error": "Failed to load budget values",
+        "mini-spinner-text": "Budget will be loaded...",
+        "no-budget": "There are no budget values for this institute!",
+        "taa": "Allocated credit (including carryover from previous year)",
+        "taa-tcb": "Sum of billing charges",
+        "tab": "Available balance",
+        "tcb": "Current balances",
+        "tcb-tab": "Debited credit (open orders)"
+    },
+    "create-loan": {
+        "button-refresh-title": "Check loans of {{name}} again",
+        "error-existing-loans-body": "Existing loan was found, a new one cannot be created!",
+        "error-existing-loans-summary": "Existing loan was found!",
+        "info-no-existing-loans-body": "No existing loans were found, a new one can be created.",
+        "info-no-existing-loans-summary": "No existing loans",
+        "mini-spinner-text": "Loading loans...",
+        "submit": "Loan book",
+        "success-body": "The book loan creation successful.",
+        "success-summary": "Book loan creation successful"
+    },
+    "error-login-message": "You need to be logged in to use this function!",
+    "error-permission-message": "You need to be a library officer to use this function!",
+    "error-summary": "An error occurred",
     "library-book-offer-select": {
         "headline": "Library book",
         "placeholder": "Please enter a barcode"
     },
-    "organization-select": {
-        "label": "Institute"
-    },
-    "shelving": {
-        "button-refresh-title": "Load shelving from {{name}} again"
-    },
-    "create-loan": {
-        "info-no-existing-loans-summary": "No existing loans",
-        "info-no-existing-loans-body": "No existing loans were found, a new one can be created.",
-        "error-existing-loans-summary": "Existing loan was found!",
-        "error-existing-loans-body": "Existing loan was found, a new one cannot be created!",
-        "submit": "Loan book",
-        "mini-spinner-text": "Loading loans...",
-        "success-summary": "Book loan creation successful",
-        "success-body": "The book loan creation successful.",
-        "button-refresh-title": "Check loans of {{name}} again"
-    },
-    "return-book": {
-        "error-no-existing-loans-summary": "No existing loans",
-        "error-no-existing-loans-body": "No existing loans were found!",
-        "info-existing-loans-summary": "Existing loan was found!",
-        "info-existing-loans-body": "Existing loan was found, it can be returned!",
-        "submit": "Return book",
-        "mini-spinner-text": "Loading loans...",
-        "success-summary": "Book returned successfully",
-        "success-body": "The book from {{personName}} was successfully returned.",
-        "borrower": "Borrower",
-        "user-name-unknown": "Unknown",
-        "button-refresh-title": "Load loans of {{name}} again"
-    },
-    "renew-loan": {
-        "no-loans": "No existing loans were found!",
-        "book": "Book",
-        "error-load-loans-summary": "Error on loading loans",
-        "end-date": "Return date",
-        "loans": "Loans",
-        "renew-loan": "Renew loan",
-        "mini-spinner-text": "Loading loans...",
-        "error-renew-loan-summary": "Renewal failed",
-        "info-renew-loan-success-summary": "Renewal successfull",
-        "info-renew-loan-success-body": "The renewal of the loan was successful.",
-        "error-renew-loan-date-in-past": "End time may not be in the past!",
-        "button-refresh-title": "Load loans from {{personName}} again",
-        "contact-value": "EMail",
-        "contact-title": "Contact {{personName}} via email",
-        "contact-subject": "Loaning of: {{bookName}}"
-    },
-    "book-list": {
-        "no-books": "There are no books.",
-        "mini-spinner-text": "Loading books...",
-        "books": "Books",
-        "export-name": "Books {{organizationCode}}",
-        "book-title": "Title",
-        "book-author": "Author",
-        "book-isbn": "ISBN/ISSN",
-        "book-barcode": "Barcode",
-        "book-location-identifier": "Location",
-        "book-description": "Description",
-        "book-publication-year": "Publication year",
-        "book-publisher": "Publisher",
-        "book-availability-date": "Availability date",
-        "location-identifier-select-placeholder": "Please select a location to restrict the book list",
-        "book-inventory-year": "Availability year",
-        "inventory-year-select-placeholder": "Please select a availability year to restrict the book list",
-        "error-load-books": "List of books could not be loaded",
-        "current-state": "State"
-    },
     "loan-list": {
-        "no-loans": "There are no books.",
-        "mini-spinner-text": "Loading loans...",
-        "loans": "Loans",
-        "export-name": "Loans {{organizationCode}}",
-        "overdue-only": "Show overdue loans only",
-        "open-only": "Show open loans only",
-        "borrower-name": "Borrower",
         "book-author": "Author/Publisher",
-        "start-date": "Start date",
-        "due-date": "Due date",
-        "return-date": "Return date",
-        "error-load-loans": "List of loans could not be loaded",
-        "error-load-loan": "Loan could not be loaded",
-        "current-state": "State"
-    },
-    "order-list": {
-        "export-name": "Orders {{organizationCode}}",
-        "error-load-orders": "List of orders could not be loaded",
-        "mini-spinner-text": "Loading order...",
-        "order-date": "Order date",
-        "order-status": "Status",
-        "order-number": "Order  number",
-        "book-price": "Price",
-        "receiving -note": "Information",
+        "borrower-name": "Borrower",
         "current-state": "State",
-        "open-only": "Show open orders only",
-        "status-name-active": "active",
-        "status-name-cancelled": "cancelled",
-        "status-name-closed": "closed"
+        "due-date": "Due date",
+        "error-load-loan": "Loan could not be loaded",
+        "error-load-loans": "List of loans could not be loaded",
+        "export-name": "Loans {{organizationCode}}",
+        "loans": "Loans",
+        "mini-spinner-text": "Loading loans...",
+        "no-loans": "There are no books.",
+        "open-only": "Show open loans only",
+        "overdue-only": "Show overdue loans only",
+        "return-date": "Return date",
+        "start-date": "Start date"
     },
     "location-identifier": {
         "headline": "Identifier for book placement",
         "placeholder": "Please enter the identifier to place the book",
         "submit": "Send"
     },
-    "budget": {
-        "load-error": "Failed to load budget values",
-        "budget-key-values": "Budget",
-        "mini-spinner-text": "Budget will be loaded...",
-        "taa": "Allocated credit (including carryover from previous year)",
-        "taa-tcb": "Sum of billing charges",
-        "tcb": "Current balances",
-        "tcb-tab": "Debited credit (open orders)",
-        "tab": "Available balance",
-        "no-budget": "There are no budget values for this institute!"
+    "order-list": {
+        "book-price": "Price",
+        "current-state": "State",
+        "error-load-orders": "List of orders could not be loaded",
+        "export-name": "Orders {{organizationCode}}",
+        "mini-spinner-text": "Loading order...",
+        "open-only": "Show open orders only",
+        "order-date": "Order date",
+        "order-number": "Order  number",
+        "order-status": "Status",
+        "receiving -note": "Information",
+        "status-name-active": "active",
+        "status-name-cancelled": "cancelled",
+        "status-name-closed": "closed"
     },
-    "success-summary": "Book lineup successful",
+    "organization-select": {
+        "label": "Institute"
+    },
+    "person-select": {
+        "headline": "Person"
+    },
+    "renew-loan": {
+        "book": "Book",
+        "button-refresh-title": "Load loans from {{personName}} again",
+        "contact-subject": "Loaning of: {{bookName}}",
+        "contact-title": "Contact {{personName}} via email",
+        "contact-value": "EMail",
+        "end-date": "Return date",
+        "error-load-loans-summary": "Error on loading loans",
+        "error-renew-loan-date-in-past": "End time may not be in the past!",
+        "error-renew-loan-summary": "Renewal failed",
+        "info-renew-loan-success-body": "The renewal of the loan was successful.",
+        "info-renew-loan-success-summary": "Renewal successfull",
+        "loans": "Loans",
+        "mini-spinner-text": "Loading loans...",
+        "no-loans": "No existing loans were found!",
+        "renew-loan": "Renew loan"
+    },
+    "return-book": {
+        "borrower": "Borrower",
+        "button-refresh-title": "Load loans of {{name}} again",
+        "error-no-existing-loans-body": "No existing loans were found!",
+        "error-no-existing-loans-summary": "No existing loans",
+        "info-existing-loans-body": "Existing loan was found, it can be returned!",
+        "info-existing-loans-summary": "Existing loan was found!",
+        "mini-spinner-text": "Loading loans...",
+        "submit": "Return book",
+        "success-body": "The book from {{personName}} was successfully returned.",
+        "success-summary": "Book returned successfully",
+        "user-name-unknown": "Unknown"
+    },
+    "shelving": {
+        "button-refresh-title": "Load shelving from {{name}} again"
+    },
     "success-body": "The book lineup for \"{{name}}\" was successful.",
-    "error-summary": "An error occurred",
-    "error-permission-message": "You need to be a library officer to use this function!",
-    "error-login-message": "You need to be logged in to use this function!"
+    "success-summary": "Book lineup successful"
 }
