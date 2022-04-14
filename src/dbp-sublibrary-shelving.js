@@ -13,6 +13,7 @@ import {classMap} from 'lit/directives/class-map.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
 import {getLibraryCodeFromId} from './utils.js';
 import {LibrarySelect} from './library-select.js';
+import {ReloadButton} from './reload-button.js';
 
 class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -32,6 +33,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
             'dbp-sublibrary-book-offer-select': LibraryBookOfferSelect,
             'dbp-button': Button,
             'dbp-mini-spinner': MiniSpinner,
+            'dbp-reload-button': ReloadButton,
         };
     }
 
@@ -207,11 +209,24 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 width: 100%;
                 border-radius: var(--dbp-border-radius);
             }
+
+            dbp-sublibrary-book-offer-select {
+                width: 100%;
+                margin-right: 4px;
+            }
+
+            .book-offer-select-container {
+                display: flex;
+            }
         `;
     }
 
     onOrgUnitCodeChanged(e) {
         this.organizationId = e.detail.value;
+    }
+
+    onReloadButtonClicked(e) {
+        this.$("dbp-sublibrary-book-offer-select").trigger('change');
     }
 
     render() {
@@ -236,17 +251,20 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
-                    <div class="control">
+                    <div class="control book-offer-select-container">
                         <dbp-sublibrary-book-offer-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                             value="${this.bookOfferId}"
-                            organization-id="${this.organizationId}"
-                            show-reload-button
-                            reload-button-title="${this.bookOffer
-                                ? i18n.t('shelving.button-refresh-title', {
-                                      name: this.bookOffer.name,
-                                  })
-                                : ''}"></dbp-sublibrary-book-offer-select>
+                            organization-id="${this.organizationId}"></dbp-sublibrary-book-offer-select>
+                        <dbp-reload-button
+                            ?disabled=${!this.bookOffer}
+                            @click=${this.onReloadButtonClicked}
+                            title="${this.bookOffer
+                                    ? i18n.t('shelving.button-refresh-title', {
+                                        name: this.bookOffer.name,
+                                    })
+                                    : ''}"
+                        ></dbp-reload-button>
                     </div>
                 </div>
 

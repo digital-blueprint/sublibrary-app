@@ -361,7 +361,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
             ${commonStyles.getGeneralCSS()}
             ${commonStyles.getButtonCSS()}
             ${commonStyles.getFormAddonsCSS()}
-	    ${commonStyles.getSelect2CSS()}
+            ${commonStyles.getSelect2CSS()}
 
             .select2-control.control {
                 width: 100%;
@@ -379,6 +379,10 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                 -moz-border-radius-topright: var(--dbp-border-radius);
                 -moz-border-radius-bottomright: var(--dbp-border-radius);
                 line-height: 100%;
+            }
+
+            .field:not(:last-child) {
+                margin-bottom: 0;
             }
 
             .field .button.control dbp-icon {
