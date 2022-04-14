@@ -9,7 +9,8 @@
 ## Prerequisites
 
 - You need library officer permissions to be allowed to use the application
-- You need the [API server](https://gitlab.tugraz.at/dbp/middleware/api) running on <http://127.0.0.1:8000> or access the [official api server](https://api.tugraz.at/)
+- You need the [API server](https://gitlab.tugraz.at/dbp/relay/dbp-relay-server-template) running
+- You need the [Dbp Relay Sublibrary Bundle](https://gitlab.tugraz.at/dbp/sublibrary/dbp-relay-sublibrary-bundle) for the API server to talk to the Alma backend
 
 ## Local development
 
