@@ -165,8 +165,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         }
 
         const apiUrl = this.entryPointUrl + this.organizationId + '/library-book-offers';
-        const $booksLoadingIndicator = this.$('#books-loading');
-
+        const $booksLoadingIndicator = that.$('#books-loading');
         $booksLoadingIndicator.show();
 
         // abort previous list fetch if it is still running
@@ -205,7 +204,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             })
             .catch((error) => {
                 that.handleFetchError(error, that._i18n.t('book-list.error-load-books'));
-                $booksLoadingIndicator.hide();
+                if(this.abortController === null)
+                    $booksLoadingIndicator.hide();
             });
     }
 
