@@ -10,6 +10,7 @@ import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
 import {getPersonDisplayName} from './utils.js';
 import {LibrarySelect} from './library-select.js';
+import {ReloadButton} from './reload-button.js';
 
 class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -35,6 +36,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             'dbp-sublibrary-book-offer-select': LibraryBookOfferSelect,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-button': Button,
+            'dbp-reload-button': ReloadButton,
         };
     }
 
@@ -81,11 +83,24 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             #create-loan-block {
                 display: none;
             }
+
+            dbp-sublibrary-book-offer-select {
+                width: 100%;
+                margin-right: 4px;
+            }
+
+            .book-offer-select-container {
+                display: flex;
+            }
         `;
     }
 
     async onBookSelectChanged(e) {
-        const select = e.target;
+        await this.updateCreateLoan();
+    }
+
+    async updateCreateLoan() {
+        const select = this.shadowRoot.querySelector("dbp-sublibrary-book-offer-select");
         let bookOffer = select.dataset.object;
         const createLoanBlock = this.shadowRoot.querySelector('#create-loan-block');
         const loansLoadingIndicator = this.shadowRoot.querySelector('#loans-loading');
@@ -261,6 +276,10 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         this.sublibrary = e.detail.object;
     }
 
+    onReloadButtonClicked(e) {
+        this.updateCreateLoan();
+    }
+
     render() {
         const minDate = new Date().toISOString();
         let date = new Date();
@@ -295,19 +314,22 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
-                    <div class="control">
+                    <div class="control book-offer-select-container">
                         <dbp-sublibrary-book-offer-select
                             subscribe="auth:auth,lang:lang,entry-point-url:entry-point-url,auth:auth"
                             @change=${this.onBookSelectChanged}
                             @unselect=${this.onBookSelectChanged}
                             value="${this.bookOfferId}"
-                            sublibrary-iri="${this.sublibraryIri}"
-                            show-reload-button
-                            reload-button-title="${this.bookOffer
-                                ? i18n.t('create-loan.button-refresh-title', {
-                                      name: this.bookOffer.name,
-                                  })
-                                : ''}"></dbp-sublibrary-book-offer-select>
+                            sublibrary-iri="${this.sublibraryIri}"></dbp-sublibrary-book-offer-select>
+                        <dbp-reload-button
+                            ?disabled=${!this.bookOffer}
+                            @click=${this.onReloadButtonClicked}
+                            title="${this.bookOffer
+                                    ? i18n.t('shelving.button-refresh-title', {
+                                        name: this.bookOffer.name,
+                                    })
+                                    : ''}"
+                        ></dbp-reload-button>
                     </div>
                 </div>
 

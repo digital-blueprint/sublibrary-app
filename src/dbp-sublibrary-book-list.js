@@ -26,7 +26,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         this.personId = '';
         this.person = null;
         this.books = [];
-        this.sublibraryIri = '';
+        this.organizationId = '';
         this.organization = null;
         this.abortController = null;
         this.locationIdentifier = '';
@@ -65,7 +65,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             ...super.properties,
             lang: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
-            sublibraryIri: {type: String, attribute: 'organization-id', reflect: true},
+            organizationId: {type: String, attribute: 'organization-id', reflect: true},
             books: {type: Object, attribute: false},
             locationIdentifiers: {type: Array, attribute: false},
             locationIdentifier: {type: String, attribute: false},
@@ -112,7 +112,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                     // we need to update the column titles
                     this.buildTable(false);
                     break;
-                case 'sublibraryIri':
+                case 'organizationId':
                     this.loadTable();
                     break;
                 case 'locationIdentifiers':
@@ -160,7 +160,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
 
         if (!this.isLoggedIn()) return;
 
-        if (this.sublibraryIri === '') {
+        if (this.organizationId === '') {
             return;
         }
 
@@ -168,7 +168,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         const sublibraryIdentifier = parts[parts.length - 1];
 
         const apiUrl = this.entryPointUrl + '/sublibrary/book-offers?sublibrary=' + sublibraryIdentifier;
-        const $booksLoadingIndicator = this.$('#books-loading');
+        const $booksLoadingIndicator = that.$('#books-loading');
 
         $booksLoadingIndicator.show();
 
@@ -208,7 +208,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             })
             .catch((error) => {
                 that.handleFetchError(error, that._i18n.t('book-list.error-load-books'));
-                $booksLoadingIndicator.hide();
+                if(this.abortController === null)
+                    $booksLoadingIndicator.hide();
             });
     }
 
@@ -431,8 +432,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         `;
     }
 
-    onSublibraryChanged(e) {
-        this.sublibraryIri = e.detail.value;
+    onOrgUnitCodeChanged(e) {
+        this.organizationId = e.detail.value;
     }
 
     render() {
@@ -462,8 +463,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                     <div class="control">
                         <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.sublibraryIri}"
-                            @change="${this.onSublibraryChanged}"></dbp-library-select>
+                            value="${this.organizationId}"
+                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <dbp-mini-spinner
