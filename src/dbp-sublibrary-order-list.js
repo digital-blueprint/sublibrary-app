@@ -40,7 +40,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         this.personId = '';
         this.person = null;
         this.books = [];
-        this.organizationId = '';
+        this.sublibraryIri = '';
         this.abortController = null;
         this.openOnly = false;
 
@@ -69,7 +69,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
             ...super.properties,
             lang: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
-            organizationId: {type: String, attribute: 'organization-id', reflect: true},
+            sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
             books: {type: Object, attribute: false},
             openOnly: {type: Boolean, attribute: false},
             analyticsUpdateDate: {type: Object, attribute: false},
@@ -108,7 +108,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                     // we need to update the column titles
                     this.loadTable();
                     break;
-                case 'organizationId':
+                case 'sublibraryIri':
                 case 'openOnly':
                     this.loadTable();
                     break;
@@ -136,11 +136,14 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
 
         if (!this.isLoggedIn()) return;
 
-        if (this.organizationId === '') {
+        if (this.sublibraryIri === '') {
             return;
         }
 
-        const apiUrl = this.entryPointUrl + this.organizationId + '/library-book-orders';
+        const parts = this.sublibraryIri.split('/');
+        const sublibraryIdentifier = parts[parts.length - 1];
+
+        const apiUrl = this.entryPointUrl + '/sublibrary/book-orders?sublibrary=' + sublibraryIdentifier;
         const $booksLoadingIndicator = this.$('#books-loading');
 
         $booksLoadingIndicator.show();
@@ -293,8 +296,8 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         `;
     }
 
-    onOrgUnitCodeChanged(e) {
-        this.organizationId = e.detail.value;
+    onSublibraryChanged(e) {
+        this.sublibraryIri = e.detail.value;
     }
 
     table_draw() {
@@ -331,8 +334,8 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                     <div class="control">
                         <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
+                            value="${this.sublibraryIri}"
+                            @change="${this.onSublibraryChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <dbp-mini-spinner

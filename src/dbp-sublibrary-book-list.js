@@ -26,7 +26,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         this.personId = '';
         this.person = null;
         this.books = [];
-        this.organizationId = '';
+        this.sublibraryIri = '';
         this.organization = null;
         this.abortController = null;
         this.locationIdentifier = '';
@@ -65,7 +65,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             ...super.properties,
             lang: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
-            organizationId: {type: String, attribute: 'organization-id', reflect: true},
+            sublibraryIri: {type: String, attribute: 'organization-id', reflect: true},
             books: {type: Object, attribute: false},
             locationIdentifiers: {type: Array, attribute: false},
             locationIdentifier: {type: String, attribute: false},
@@ -112,7 +112,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                     // we need to update the column titles
                     this.buildTable(false);
                     break;
-                case 'organizationId':
+                case 'sublibraryIri':
                     this.loadTable();
                     break;
                 case 'locationIdentifiers':
@@ -160,11 +160,14 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
 
         if (!this.isLoggedIn()) return;
 
-        if (this.organizationId === '') {
+        if (this.sublibraryIri === '') {
             return;
         }
 
-        const apiUrl = this.entryPointUrl + this.organizationId + '/library-book-offers';
+        const parts = this.sublibraryIri.split('/');
+        const sublibraryIdentifier = parts[parts.length - 1];
+
+        const apiUrl = this.entryPointUrl + '/sublibrary/book-offers?sublibrary=' + sublibraryIdentifier;
         const $booksLoadingIndicator = this.$('#books-loading');
 
         $booksLoadingIndicator.show();
@@ -428,8 +431,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         `;
     }
 
-    onOrgUnitCodeChanged(e) {
-        this.organizationId = e.detail.value;
+    onSublibraryChanged(e) {
+        this.sublibraryIri = e.detail.value;
     }
 
     render() {
@@ -459,8 +462,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                     <div class="control">
                         <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
+                            value="${this.sublibraryIri}"
+                            @change="${this.onSublibraryChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <dbp-mini-spinner

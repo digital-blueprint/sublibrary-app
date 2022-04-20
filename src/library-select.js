@@ -1,21 +1,20 @@
 import {ResourceSelect} from '@dbp-toolkit/resource-select';
-import {getLibraryCodeFromId} from './utils.js';
 
 export class LibrarySelect extends ResourceSelect {
     constructor() {
         super();
-        this.resourcePath = 'base/people';
+        this.resourcePath = 'sublibrary';
     }
 
     buildUrl(select, url) {
-        url += '/' + encodeURIComponent(select.auth['person-id']);
-        url += '/organizations';
+        url += '/sublibraries';
         url +=
-            '?' + new URLSearchParams({lang: select.lang, context: 'library-manager'}).toString();
+            '?' + new URLSearchParams({lang: select.lang, libraryManager: encodeURIComponent(select.auth['person-id'])}).toString();
         return url;
     }
 
     formatResource(select, resource) {
-        return `${resource['name']} (${getLibraryCodeFromId(resource['identifier'])})`;
+        return `${resource['name']} (${resource['code']})`;
     }
 }
+

@@ -24,7 +24,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
         this.lang = this._i18n.language;
         this.entryPointUrl = '';
         this.monetaryAmounts = [];
-        this.organizationId = '';
+        this.sublibraryIri = '';
         this.abortController = null;
         this.pageStatus = pageStatus.none;
 
@@ -48,7 +48,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
             ...super.properties,
             lang: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
-            organizationId: {type: String, attribute: 'organization-id', reflect: true},
+            sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
             analyticsUpdateDate: {type: Object, attribute: false},
             monetaryAmounts: {type: Array, attribute: false},
             pageStatus: {type: Boolean, attribute: false},
@@ -73,7 +73,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === 'lang') {
                 this._i18n.changeLanguage(this.lang);
-            } else if (propName === 'organizationId') {
+            } else if (propName === 'sublibraryIri') {
                 this.loadBudget();
             }
         });
@@ -90,18 +90,18 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     }
 
     loadBudget() {
-        if (!this.isLoggedIn() || this.organizationId === '') {
+        if (!this.isLoggedIn() || this.sublibraryIri === '') {
             return;
         }
 
         const that = this;
         this.pageStatus = pageStatus.loading;
-        const parts = this.organizationId.split('/');
-        const organizationIdentifier = parts[parts.length - 1];
+        const parts = this.sublibraryIri.split('/');
+        const sublibraryIdentifier = parts[parts.length - 1];
         const apiUrl =
             this.entryPointUrl +
-            '/sublibrary/budget_monetary_amounts?organization=' +
-            organizationIdentifier;
+            '/sublibrary/budget-monetary-amounts?sublibrary=' +
+            sublibraryIdentifier;
 
         // abort previous list fetch if it is still running
         if (this.abortController !== null) {
@@ -169,8 +169,8 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
         `;
     }
 
-    onOrgUnitCodeChanged(e) {
-        this.organizationId = e.detail.value;
+    onSublibraryChanged(e) {
+        this.sublibraryIri = e.detail.value;
     }
 
     getMonetaryAmountRow(name) {
@@ -214,8 +214,8 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
                     <div class="control">
                         <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
+                            value="${this.sublibraryIri}"
+                            @change="${this.onSublibraryChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <dbp-mini-spinner

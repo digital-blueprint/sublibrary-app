@@ -8,7 +8,7 @@ import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
-import {getPersonDisplayName, getLibraryCodeFromId} from './utils.js';
+import {getPersonDisplayName} from './utils.js';
 import {LibrarySelect} from './library-select.js';
 
 class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
@@ -23,7 +23,8 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         this.personId = '';
         this.person = null;
         this.status = null;
-        this.organizationId = '';
+        this.sublibraryIri = '';
+        this.sublibrary = null;
         this.sendButtonDisabled = true;
     }
 
@@ -46,7 +47,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             bookOffer: {type: Object, attribute: false},
             personId: {type: String, attribute: 'person-id', reflect: true},
             status: {type: Object},
-            organizationId: {type: String, attribute: 'organization-id', reflect: true},
+            sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
             sendButtonDisabled: {type: Boolean, attribute: false},
             auth: {type: Object},
         };
@@ -162,12 +163,12 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         }
     }
 
-    getLibrary() {
-        //console.log('getLibrary() organizationId = ' + this.organizationId);
+    getSublibraryCode() {
+        //console.log('getSublibraryCode() sublibraryIri = ' + this.sublibraryIri);
         // until the API understands this:
-        //this.organizationId == '/organizations/1263-F2190';
+        //this.sublibraryIri == '/organizations/1263-F2190';
         // extracting the orgUnitCode (F2190) is done here:
-        return getLibraryCodeFromId(this.organizationId);
+        return this.sublibrary.code;
     }
 
     onPersonSelectChanged(e) {
@@ -222,7 +223,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
         const data = {
             borrower: this.personId,
-            library: this.getLibrary(),
+            library: this.getSublibraryCode(),
             endTime: date.toISOString(),
         };
 
@@ -255,8 +256,9 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         }
     }
 
-    onOrgUnitCodeChanged(e) {
-        this.organizationId = e.detail.value;
+    onSublibraryChanged(e) {
+        this.sublibraryIri = e.detail.value;
+        this.sublibrary = e.detail.object;
     }
 
     render() {
@@ -276,8 +278,8 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                     <div class="control">
                         <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
+                            value="${this.sublibraryIri}"
+                            @change="${this.onSublibraryChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <div class="field">
@@ -299,7 +301,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                             @change=${this.onBookSelectChanged}
                             @unselect=${this.onBookSelectChanged}
                             value="${this.bookOfferId}"
-                            organization-id="${this.organizationId}"
+                            sublibrary-iri="${this.sublibraryIri}"
                             show-reload-button
                             reload-button-title="${this.bookOffer
                                 ? i18n.t('create-loan.button-refresh-title', {

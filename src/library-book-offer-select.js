@@ -32,7 +32,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         this.lastResult = {};
         this.showReloadButton = false;
         this.reloadButtonTitle = '';
-        this.organizationId = '';
+        this.sublibraryIri = '';
 
         this._onDocumentClicked = this._onDocumentClicked.bind(this);
     }
@@ -56,7 +56,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
             object: {type: Object, attribute: false},
             showReloadButton: {type: Boolean, attribute: 'show-reload-button'},
             reloadButtonTitle: {type: String, attribute: 'reload-button-title'},
-            organizationId: {type: String, attribute: 'organization-id'},
+            sublibraryIri: {type: String, attribute: 'sublibrary-iri'},
             auth: {type: Object},
         };
     }
@@ -130,12 +130,12 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         );
     }
 
-    getLibrary() {
-        //console.log('getLibrary() organizationId = ' + this.organizationId);
+    getSublibraryCode() {
+        //console.log('getSublibraryCode() sublibraryIri = ' + this.sublibraryIri);
         // until the API understands this:
-        //this.organizationId == '/organizations/1263-F2190';
+        //this.sublibraryIri == '/organizations/1263-F2190';
         // extracting the orgUnitCode (F2190) is done here:
-        return this.organizationId.includes('-') ? this.organizationId.split('-')[1] : '';
+        return this.sublibraryIri.includes('-') ? this.sublibraryIri.split('-')[1] : '';
     }
 
     /**
@@ -201,7 +201,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                         }
                         return {
                             barcode: barcode,
-                            library: that.getLibrary(),
+                            library: that.getSublibraryCode(),
                         };
                     },
                     processResults: function (data) {
@@ -309,12 +309,12 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                         this.initSelect2(true);
                     }
                     break;
-                case 'organizationId':
-                    if (!this.organizationId) {
-                        this.organizationId = '';
+                case 'sublibraryIri':
+                    if (!this.sublibraryIri) {
+                        this.sublibraryIri = '';
                     }
                     if (this.$select) {
-                        this.$select.enable = this.organizationId.includes('-');
+                        this.$select.enable = this.sublibraryIri.includes('-');
                     }
                     break;
                 case 'value':

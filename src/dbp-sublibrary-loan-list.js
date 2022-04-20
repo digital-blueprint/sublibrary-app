@@ -21,7 +21,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         this.personId = '';
         this.person = null;
         this.loans = [];
-        this.organizationId = '';
+        this.sublibraryIri = '';
         this.abortController = null;
         this.overdueOnly = false;
         this.openOnly = false;
@@ -48,7 +48,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
             ...super.properties,
             lang: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
-            organizationId: {type: String, attribute: 'organization-id', reflect: true},
+            sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
             loans: {type: Object, attribute: false},
             overdueOnly: {type: Boolean, attribute: false},
             openOnly: {type: Boolean, attribute: false},
@@ -92,7 +92,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                     // we need to update the column titles
                     this.buildTable();
                     break;
-                case 'organizationId':
+                case 'sublibraryIri':
                     this.loadTable();
                     break;
                 case 'overdueOnly':
@@ -122,11 +122,14 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
 
         if (!this.isLoggedIn()) return;
 
-        if (this.organizationId === '') {
+        if (this.sublibraryIri === '') {
             return;
         }
 
-        const apiUrl = this.entryPointUrl + this.organizationId + '/library-book-loans';
+        const parts = this.sublibraryIri.split('/');
+        const sublibraryIdentifier = parts[parts.length - 1];
+
+        const apiUrl = this.entryPointUrl + '/sublibrary/book-loans?sublibrary=' + sublibraryIdentifier;
         const $loansLoadingIndicator = this.$('#loans-loading');
 
         $loansLoadingIndicator.show();
@@ -306,8 +309,8 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         this.openOnly = !this.openOnly;
     }
 
-    onOrgUnitCodeChanged(e) {
-        this.organizationId = e.detail.value;
+    onSublibraryChanged(e) {
+        this.sublibraryIri = e.detail.value;
     }
 
     /**
@@ -396,8 +399,8 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                     <div class="control">
                         <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
+                            value="${this.sublibraryIri}"
+                            @change="${this.onSublibraryChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <dbp-mini-spinner

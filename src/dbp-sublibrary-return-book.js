@@ -25,7 +25,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         this.borrower = null;
         this.borrowerName = '';
         this.status = null;
-        this.organizationId = '';
+        this.sublibraryIri = '';
     }
 
     static get scopedElements() {
@@ -47,7 +47,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
             borrower: {type: Object, attribute: false},
             borrowerName: {type: String, attribute: false},
             status: {type: Object, attribute: false},
-            organizationId: {type: String, attribute: 'organization-id', reflect: true},
+            sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
             auth: {type: Object},
         };
     }
@@ -56,12 +56,12 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         return $(this._(selector));
     }
 
-    getLibrary() {
-        //console.log('getLibrary() organizationId = ' + this.organizationId);
+    getSublibraryCode() {
+        //console.log('getSublibraryCode() sublibraryIri = ' + this.sublibraryIri);
         // until the API understands this:
-        //this.organizationId == '/organizations/1263-F2190';
+        //this.sublibraryIri == '/organizations/1263-F2190';
         // extracting the orgUnitCode (F2190) is done here:
-        return this.organizationId.includes('-') ? this.organizationId.split('-')[1] : '';
+        return this.sublibraryIri.includes('-') ? this.sublibraryIri.split('-')[1] : '';
     }
 
     connectedCallback() {
@@ -153,7 +153,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                     that.bookOfferId +
                     '/return' +
                     '?library=' +
-                    that.getLibrary();
+                    that.getSublibraryCode();
                 console.log('dbp-sublibrary-return-book: #send.click() apiUrl = ' + apiUrl);
 
                 $.ajax({
@@ -253,8 +253,8 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         `;
     }
 
-    onOrgUnitCodeChanged(e) {
-        this.organizationId = e.detail.value;
+    onSublibraryChanged(e) {
+        this.sublibraryIri = e.detail.value;
     }
 
     render() {
@@ -269,8 +269,8 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                     <div class="control">
                         <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
+                            value="${this.sublibraryIri}"
+                            @change="${this.onSublibraryChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <div class="field">
@@ -281,7 +281,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                             @change=${this.onBookSelectChanged}
                             @unselect=${this.onBookSelectChanged}
                             value="${this.bookOfferId}"
-                            organization-id="${this.organizationId}"
+                            sublibrary-iri="${this.sublibraryIri}"
                             show-reload-button
                             reload-button-title="${this.bookOffer
                                 ? i18n.t('return-book.button-refresh-title', {

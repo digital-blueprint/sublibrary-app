@@ -20,10 +20,11 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         this._i18n = createInstance();
         this.lang = this._i18n.language;
         this.entryPointUrl = '';
-        this.personId = '';
+        this.personIri = '';
         this.person = null;
         this.loans = [];
-        this.organizationId = '';
+        this.sublibraryIri = '';
+        this.sublibrary = null
     }
 
     static get scopedElements() {
@@ -44,9 +45,9 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
             ...super.properties,
             lang: {type: String},
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
-            personId: {type: String, attribute: 'person-id', reflect: true},
+            personIri: {type: String, attribute: 'person-id', reflect: true},
             loans: {type: Object, attribute: false},
-            organizationId: {type: String, attribute: 'organization-id', reflect: true},
+            sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
             auth: {type: Object},
         };
     }
@@ -55,12 +56,12 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         return $(this._(selector));
     }
 
-    getLibrary() {
-        //console.log('getLibrary() organizationId = ' + this.organizationId);
+    getSublibraryCode() {
+        //console.log('getSublibraryCode() sublibraryIri = ' + this.sublibraryIri);
         // until the API understands this:
-        //this.organizationId == '/organizations/1263-F2190';
+        //this.sublibraryIri == '/organizations/1263-F2190';
         // extracting the orgUnitCode (F2190) is done here:
-        return this.organizationId.includes('-') ? this.organizationId.split('-')[1] : '';
+        return this.sublibrary.code;
     }
 
     connectedCallback() {
@@ -107,17 +108,17 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                         return;
                     }
 
-                    that.personId = that.person['@id'];
+                    that.personIri = that.person['@id'];
 
                     // set person-id of the custom element
-                    that.setAttribute('person-id', that.personId);
+                    that.setAttribute('person-id', that.personIri);
 
                     // fire a change event
                     that.dispatchEvent(
                         new CustomEvent('change', {
                             detail: {
                                 type: 'person-id',
-                                value: that.personId,
+                                value: that.personIri,
                             },
                         })
                     );
@@ -134,13 +135,17 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         const that = this;
         const i18n = this._i18n;
 
-        const apiUrl = this.entryPointUrl + this.personId + '/library-book-loans';
+        const parts = this.personIri.split('/');
+        const personIdentifier = parts[parts.length - 1];
+
+        // REMOVEME: const apiUrl = this.entryPointUrl + this.personId + '/library-book-loans';
+        const apiUrl = this.entryPointUrl + '/sublibrary/book-loans?borrower=' + personIdentifier;
 
         const $noLoansBlock = this.$('#no-loans-block');
         const $loansLoadingIndicator = this.$('#loans-loading');
         const $renewLoanBlock = this.$('#renew-loan-block');
 
-        if (this.person == null || this.organizationId === '') {
+        if (this.person == null || this.sublibraryIri === '') {
             return;
         }
 
@@ -151,7 +156,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         commonUtils.pollFunc(
             () => {
                 // we need to wait until orgUnitCode is present!
-                if (this.organizationId === '') {
+                if (this.sublibraryIri === '') {
                     return false;
                 }
 
@@ -199,10 +204,10 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                     {targets: [4], sortable: false},
                                     {targets: [2, 4], createdCell: createdCell},
                                 ];
-                                const orgUnitCode = that.getLibrary();
+                                const libraryCode = that.getSublibraryCode();
                                 const tbl = [];
                                 that.loans.forEach(function (loan) {
-                                    if (loan.object.library !== orgUnitCode) {
+                                    if (loan.object.library !== libraryCode) {
                                         return;
                                     }
                                     let button = that.getScopedTagName('dbp-button');
@@ -289,7 +294,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
 
                 // we need to update the book list because of the localization of the "Contact" button
                 this.$(this.getScopedTagName('dbp-person-select')).change();
-            } else if (propName === 'organizationId') {
+            } else if (propName === 'sublibraryIri') {
                 this.loadTable();
             }
         });
@@ -434,8 +439,9 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         `;
     }
 
-    onOrgUnitCodeChanged(e) {
-        this.organizationId = e.detail.value;
+    onSublibraryChanged(e) {
+        this.sublibraryIri = e.detail.value;
+        this.sublibrary = e.detail.object;
     }
 
     render() {
@@ -450,8 +456,8 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                     <div class="control">
                         <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
+                            value="${this.sublibraryIri}"
+                            @change="${this.onSublibraryChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <div class="field">
@@ -459,8 +465,8 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                     <div class="control">
                         <dbp-person-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.personId}"
-                            organization-id="${this.organizationId}"
+                            value="${this.personIri}"
+                            sublibrary-iri="${this.sublibraryIri}"
                             show-reload-button
                             show-details
                             reload-button-title="${this.person

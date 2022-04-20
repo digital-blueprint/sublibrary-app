@@ -24,7 +24,8 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         this.entryPointUrl = '';
         this.bookOfferId = '';
         this.bookOffer = null;
-        this.organizationId = '';
+        this.sublibraryIri = '';
+        this.sublibrary = null;
     }
 
     static get scopedElements() {
@@ -44,17 +45,17 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
             bookOfferId: {type: String, attribute: 'book-offer-id', reflect: true},
             bookOffer: {type: Object, attribute: false},
-            organizationId: {type: String, attribute: 'organization-id', reflect: true},
+            sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
             auth: {type: Object},
         };
     }
 
-    getLibrary() {
-        //console.log('getLibrary() organizationId = ' + this.organizationId);
+    getSublibraryCode() {
+        //console.log('getSublibraryCode() sublibraryIri = ' + this.sublibraryIri);
         // until the API understands this:
-        //this.organizationId == '/organizations/1263-F2190';
+        //this.sublibraryIri == '/organizations/1263-F2190';
         // extracting the orgUnitCode (F2190) is done here:
-        return getLibraryCodeFromId(this.organizationId);
+        return this.sublibrary.code;
     }
 
     $(selector) {
@@ -136,7 +137,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 e.preventDefault();
                 console.log('send');
                 const apiUrl =
-                    that.entryPointUrl + $bookOfferSelect.val() + '?library=' + that.getLibrary();
+                    that.entryPointUrl + $bookOfferSelect.val() + '?library=' + that.getSublibraryCode();
                 console.log(apiUrl);
                 console.log($locationIdentifierInput);
 
@@ -221,8 +222,9 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         `;
     }
 
-    onOrgUnitCodeChanged(e) {
-        this.organizationId = e.detail.value;
+    onSublibraryChanged(e) {
+        this.sublibraryIri = e.detail.value;
+        this.sublibrary = e.detail.object;
     }
 
     onReloadButtonClicked(e) {
@@ -245,8 +247,8 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                     <div class="control">
                         <dbp-library-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.organizationId}"
-                            @change="${this.onOrgUnitCodeChanged}"></dbp-library-select>
+                            value="${this.sublibraryIri}"
+                            @change="${this.onSublibraryChanged}"></dbp-library-select>
                     </div>
                 </div>
                 <div class="field">
@@ -255,7 +257,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                         <dbp-sublibrary-book-offer-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                             value="${this.bookOfferId}"
-                            organization-id="${this.organizationId}"></dbp-sublibrary-book-offer-select>
+                            sublibrary-iri="${this.sublibraryIri}"></dbp-sublibrary-book-offer-select>
                         <dbp-reload-button
                             ?disabled=${!this.bookOffer}
                             @click=${this.onReloadButtonClicked}
