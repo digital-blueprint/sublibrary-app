@@ -24,7 +24,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         this.person = null;
         this.loans = [];
         this.sublibraryIri = '';
-        this.sublibrary = null
+        this.sublibrary = null;
     }
 
     static get scopedElements() {

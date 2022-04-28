@@ -11,7 +11,6 @@ import suggestionsCSSPath from 'suggestions/dist/suggestions.css';
 import {Button, MiniSpinner} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
-import {getLibraryCodeFromId} from './utils.js';
 import {LibrarySelect} from './library-select.js';
 import {ReloadButton} from './reload-button.js';
 
