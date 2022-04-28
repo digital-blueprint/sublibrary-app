@@ -90,7 +90,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
 
                     $locationIdentifierBlock.show();
 
-                    const apiUrl = that.entryPointUrl + that.bookOfferId + '/location_identifiers';
+                    const apiUrl = that.entryPointUrl + that.bookOfferId + '/location-identifiers';
 
                     // set book-offer-id of the custom element
                     that.setAttribute('book-offer-id', that.bookOfferId);
