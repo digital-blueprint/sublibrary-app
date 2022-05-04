@@ -2,7 +2,8 @@
 
 [GitLab Repository](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary) |
 [npmjs package](https://www.npmjs.com/package/@dbp-topics/sublibrary) |
-[Unpkg CDN](https://unpkg.com/browse/@dbp-topics/sublibrary/)
+[Unpkg CDN](https://unpkg.com/browse/@dbp-topics/sublibrary/) |
+[Sublibrary Bundle](https://gitlab.tugraz.at/dbp/sublibrary/dbp-relay-sublibrary-bundle) |
 
 ![overview](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/blob/master/docs/overview.svg)
 
