@@ -165,7 +165,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         const parts = this.sublibraryIri.split('/');
         const sublibraryIdentifier = parts[parts.length - 1];
 
-        const apiUrl = this.entryPointUrl + '/sublibrary/book-offers?sublibrary=' + sublibraryIdentifier;
+        const apiUrl = this.entryPointUrl + '/sublibrary/book-offers?perPage=9999999&sublibrary=' + sublibraryIdentifier;
         const $booksLoadingIndicator = that.$('#books-loading');
 
         $booksLoadingIndicator.show();

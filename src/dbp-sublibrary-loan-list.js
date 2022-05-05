@@ -129,7 +129,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         const parts = this.sublibraryIri.split('/');
         const sublibraryIdentifier = parts[parts.length - 1];
 
-        const apiUrl = this.entryPointUrl + '/sublibrary/book-loans?sublibrary=' + sublibraryIdentifier;
+        const apiUrl = this.entryPointUrl + '/sublibrary/book-loans?perPage=9999999&sublibrary=' + sublibraryIdentifier;
         const $loansLoadingIndicator = this.$('#loans-loading');
 
         $loansLoadingIndicator.show();
