@@ -11,7 +11,7 @@ import {Icon} from '@dbp-toolkit/common';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
-import {AdapterLitElement} from '@dbp-toolkit/provider/src/adapter-lit-element';
+import {AdapterLitElement} from '@dbp-toolkit/common';
 
 select2(window, $);
 
