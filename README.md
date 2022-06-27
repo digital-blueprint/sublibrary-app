@@ -7,6 +7,9 @@
 
 ![overview](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/blob/master/docs/overview.svg)
 
+With the dbp sublibrary app you can assign call number, borrow books, return library books, extend loan periods, 
+show current loans, show current book orders and show the budgets.
+
 ## Prerequisites
 
 - You need library officer permissions to be allowed to use the application
@@ -66,7 +69,7 @@ APP_ENV=demo yarn run build
 
 ### Install app
 
-If you want to install the DBP Sublibrary App in a new folder `sublibrary-app` with a path prefix `/` you can call:
+If you want to install the dbp sublibrary app in a new folder `sublibrary-app` with a path prefix `/` you can call:
 
 ```bash
 npx @digital-blueprint/cli install-app sublibrary sublibrary-app /
@@ -86,7 +89,7 @@ Note that you will need a Keycloak server along with a client id for the domain 
 
 ### Update app
 
-If you want to update the DBP Sublibrary App in the current folder you can call:
+If you want to update the dbp sublibrary app in the current folder you can call:
 
 ```bash
 npx @digital-blueprint/cli update-app library
@@ -94,182 +97,57 @@ npx @digital-blueprint/cli update-app library
 
 ## Activities
 
-### dbp-sublibrary-book-list
+This app has the following activities:
+- `dbp-sublibrary-book-list`
+- `dbp-sublibrary-budget`
+- `dbp-sublibrary-create-loan`
+- `dbp-sublibrary-loan-list`
+- `dbp-sublibrary-order-list`
+- `dbp-sublibrary-renew-loan`
+- `dbp-sublibrary-return-book`
+- `dbp-sublibrary-shelving`
+- `dbp-sublibrary-shelving`
 
-You can use this activity to list all books for an organisation. You cal also filter
-the list by location and/or by inventory year. 
+You can find the documentation of these activities in the [sublibrary activities documentation](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/tree/master/src).
 
-Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
+## Adapt app
 
-#### Attributes
+### Functionality
 
-- `lang` (optional, default: `de`): set to `de` or `en` for German or English
-    - example `lang="de"`
-- `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
-    - example `entry-point-url="https://api-dev.tugraz.at"`
-- `auth` object: you need to set that object property for the auth token
-    - example auth property: `{token: "THE_BEARER_TOKEN"}`
-    - note: most often this should be an attribute that is not set directly, but subscribed at a provider
-- `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
-  - example: `organization-id="1190-F2050"`
+You can add multiple attributes to the `<dbp-sublibrary>` tag.
 
-### dbp-sublibrary-budget
+| attribute name | value | Link to description |
+|----------------|-------| ------------|
+| `provider-root` | Boolean | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes) |
+| `lang`         | String | [language-select](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/language-select#attributes) | 
+| `entry-point-url` | String | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes) |
+| `keycloak-config` | Object | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes) |
+| `base-path` | String | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes) |
+| `src` | String | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes) |
+| `html-overrides` | String | [common](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/common#overriding-slots-in-nested-web-components) |
+| `themes` | Array | [theme-switcher](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/theme-switcher#themes-attribute) |
+| `darkModeThemeOverride` | String | [theme-switcher](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/theme-switcher#themes-attribute) |
 
-You can use this activity to retrieve the budget for an organisation library.
-
-Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
-
-#### Attributes
-
-- `lang` (optional, default: `de`): set to `de` or `en` for German or English
-  - example `lang="de"`
-- `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
-  - example `entry-point-url="https://api-dev.tugraz.at"`
-- `auth` object: you need to set that object property for the auth token
-  - example auth property: `{token: "THE_BEARER_TOKEN"}`
-  - note: most often this should be an attribute that is not set directly, but subscribed at a provider
-- `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
-  - example: `organization-id="681-F1490"`
-
-### dbp-sublibrary-create-loan
-
-You can use this activity to
-
-Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
-
-#### Attributes
-
-- `lang` (optional, default: `de`): set to `de` or `en` for German or English
-  - example `lang="de"`
-- `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
-  - example `entry-point-url="https://api-dev.tugraz.at"`
-- `auth` object: you need to set that object property for the auth token
-  - example auth property: `{token: "THE_BEARER_TOKEN"}`
-  - note: most often this should be an attribute that is not set directly, but subscribed at a provider
-- `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
-  - example: `organization-id="681-F1490"`
-- `book-offer-id`: id of the book to borrow
-  - example: `book-offer-id="+F20313804"`
-- `person-id`: id of the person to borrow the book
-  - example: `person-id="demo1dbp"`
-
-### dbp-sublibrary-loan-list
-
-You can use this activity to all loans for an organisation library.
-
-Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
-
-#### Attributes
-
-- `lang` (optional, default: `de`): set to `de` or `en` for German or English
-  - example `lang="de"`
-- `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
-  - example `entry-point-url="https://api-dev.tugraz.at"`
-- `auth` object: you need to set that object property for the auth token
-  - example auth property: `{token: "THE_BEARER_TOKEN"}`
-  - note: most often this should be an attribute that is not set directly, but subscribed at a provider
-- `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
-  - example: `organization-id="1190-F2050"`
-
-### dbp-sublibrary-order-list
-
-You can use this activity to list the orders for an organisation library.
-
-Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
-
-#### Attributes
-
-- `lang` (optional, default: `de`): set to `de` or `en` for German or English
-  - example `lang="de"`
-- `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
-  - example `entry-point-url="https://api-dev.tugraz.at"`
-- `auth` object: you need to set that object property for the auth token
-  - example auth property: `{token: "THE_BEARER_TOKEN"}`
-  - note: most often this should be an attribute that is not set directly, but subscribed at a provider
-- `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
-  - example: `organization-id="1190-F2050"`
-
-### dbp-sublibrary-renew-loan
-
-You can use this activity to list all loans a person has. The organisation is used as a filter (so each library officer 
-sees only loans for books he/she has to manage).
-
-Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
-
-#### Attributes
-
-- `lang` (optional, default: `de`): set to `de` or `en` for German or English
-  - example `lang="de"`
-- `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
-  - example `entry-point-url="https://api-dev.tugraz.at"`
-- `auth` object: you need to set that object property for the auth token
-  - example auth property: `{token: "THE_BEARER_TOKEN"}`
-  - note: most often this should be an attribute that is not set directly, but subscribed at a provider
-- `person-id`: id of the person to borrow the book
-  - example: `person-id="demo1dbp"`
-- `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
-  - example: `organization-id="681-F1490"`
-
-### dbp-sublibrary-return-book
-
-You can use this activity to return a borrowed book. Each library office can only accept books from the library he/she
-manages.
-
-Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
-
-#### Attributes
-
-- `lang` (optional, default: `de`): set to `de` or `en` for German or English
-  - example `lang="de"`
-- `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
-  - example `entry-point-url="https://api-dev.tugraz.at"`
-- `auth` object: you need to set that object property for the auth token
-  - example auth property: `{token: "THE_BEARER_TOKEN"}`
-  - note: most often this should be an attribute that is not set directly, but subscribed at a provider
-- `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
-  - example: `organization-id="681-F1490"`
-- `book-offer-id`: id of the book to borrow
-  - example: `book-offer-id="+F20313804"`
-
-### dbp-sublibrary-shelving
-
-You can use this activity to store the place (on the shelf) for a added/returned book. Each library office can only 
-shelf books she/he manages. 
-
-Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
-
-#### Attributes
-
-- `lang` (optional, default: `de`): set to `de` or `en` for German or English
-  - example `lang="de"`
-- `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
-  - example `entry-point-url="https://api-dev.tugraz.at"`
-- `auth` object: you need to set that object property for the auth token
-  - example auth property: `{token: "THE_BEARER_TOKEN"}`
-  - note: most often this should be an attribute that is not set directly, but subscribed at a provider
-- `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
-  - example: `organization-id="681-F1490"`
-- `book-offer-id`: id of the book to borrow
-  - example: `book-offer-id="+F20313804"`
-
-## "dbp-sublibrary" Slots
-
-These are common slots for the appshell. You can find the documentation of these slot in the `README.md` of the appshell webcomponent.
-
-## Design Note
-
-To ensure a uniform and responsive design the activity should occupy 100% of the window width when the activity width is less than 768 px.
-
-## Mandatory attributes
+#### Mandatory attributes
 
 If you are not using the `provider-root` attribute to "terminate" all provider attributes
 you need to manually add these attributes so that the topic will work properly:
 
 ```html
 <dbp-sublibrary
-    auth
-    requested-login-status
-    analytics-event
+        auth
+        requested-login-status
+        analytics-event
 >
 </dbp-sublibrary>
 ```
+
+### Design
+
+For frontend design customizations, such as logo, colors, font, favicon, and more, take a look at the [theming documentation](https://dbp-demo.tugraz.at/dev-guide/frontend/theming/).
+
+## "dbp-sublibrary" slots
+
+These are common slots for the app-shell. You can find the documentation of these slots in the [app-shell documentation](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell).
+For the app specific slots take a look at the [sublibrary activities](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/tree/master/src).
+
