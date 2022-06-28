@@ -106,7 +106,6 @@ This app has the following activities:
 - `dbp-sublibrary-renew-loan`
 - `dbp-sublibrary-return-book`
 - `dbp-sublibrary-shelving`
-- `dbp-sublibrary-shelving`
 
 You can find the documentation of these activities in the [sublibrary activities documentation](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/tree/master/src).
 
