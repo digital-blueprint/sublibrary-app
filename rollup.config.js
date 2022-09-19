@@ -105,10 +105,7 @@ export default (async () => {
                     buildInfo: getBuildInfo(appEnv),
                 },
             }),
-            resolve({
-                // ignore node_modules from vendored packages
-                moduleDirectories: [path.join(process.cwd(), 'node_modules')],
-            }),
+            resolve(),
             checkLicenses &&
                 license({
                     banner: {
