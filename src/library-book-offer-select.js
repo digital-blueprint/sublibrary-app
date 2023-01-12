@@ -130,14 +130,6 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         );
     }
 
-    getSublibraryCode() {
-        //console.log('getSublibraryCode() sublibraryIri = ' + this.sublibraryIri);
-        // until the API understands this:
-        //this.sublibraryIri == '/organizations/1263-F2190';
-        // extracting the orgUnitCode (F2190) is done here:
-        return this.sublibraryIri.includes('-') ? this.sublibraryIri.split('-')[1] : '';
-    }
-
     /**
      * Initializes the Select2 selector
      *
@@ -199,9 +191,10 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                         ) {
                             barcode = '+' + barcode;
                         }
+                        let sublibraryId = that.sublibraryIri.split('/').slice(-1)[0];
                         return {
                             barcode: barcode,
-                            library: that.getSublibraryCode(),
+                            sublibrary: sublibraryId,
                         };
                     },
                     processResults: function (data) {
