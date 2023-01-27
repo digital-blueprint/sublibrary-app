@@ -1,10 +1,10 @@
 # Sublibrary activities
 
-Here you can find the individual activities of the `sublibrary` app. If you want to use the whole app look at [sublibrary](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary).
+Here you can find the individual activities of the `sublibrary` app. If you want to use the whole app look at [sublibrary](https://github.com/digital-blueprint/sublibrary-app).
 
 ## Usage of an activity
 
-You can use every activity alone. Take a look at our examples [here](https://gitlab.tugraz.at/dbp/sublibrary/sublibrary/-/tree/main/examples).
+You can use every activity alone. Take a look at our examples [here](https://github.com/digital-blueprint/sublibrary-app/tree/main/examples).
 
 ## Activities
 

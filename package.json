@@ -6,7 +6,7 @@
     "license": "LGPL-2.1-or-later",
     "repository": {
         "type": "git",
-        "url": "https://gitlab.tugraz.at/dbp/sublibrary/sublibrary.git"
+        "url": "https://github.com/digital-blueprint/sublibrary-app.git"
     },
     "private": true,
     "workspaces": [
