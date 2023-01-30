@@ -5,29 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Favicons -->
-    <link rel="shortcut icon" type="image/x-icon" href="https://unpkg.com/@dbp-topics/sublibrary@2.0.0/dist/local/@dbp-topics/sublibrary/favicon.ico">
-    <link rel="icon" type="image/svg+xml" href="https://unpkg.com/@dbp-topics/sublibrary@2.0.0/dist/local/@dbp-topics/sublibrary/favicon.svg" sizes="any">
+    <link rel="shortcut icon" type="image/x-icon" href="https://unpkg.com/@digital-blueprint/sublibrary-app@2.0.0/dist/local/@digital-blueprint/sublibrary-app/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="https://unpkg.com/@digital-blueprint/sublibrary-app@2.0.0/dist/local/@digital-blueprint/sublibrary-app/favicon.svg" sizes="any">
 
     <!-- PWA manfiest file -->
-    <link rel="manifest" href="https://unpkg.com/@dbp-topics/sublibrary@2.0.0/dist/dbp-sublibrary.manifest.json">
+    <link rel="manifest" href="https://unpkg.com/@digital-blueprint/sublibrary-app@2.0.0/dist/dbp-sublibrary.manifest.json">
 
     <!-- Loading spinner -->
     <script type="module">
-        import {Spinner} from 'https://unpkg.com/@dbp-topics/sublibrary@2.0.0/dist/local/@dbp-topics/sublibrary/spinner.js';
+        import {Spinner} from 'https://unpkg.com/@digital-blueprint/sublibrary-app@2.0.0/dist/local/@digital-blueprint/sublibrary-app/spinner.js';
         customElements.define('dbp-loading-spinner', Spinner);
     </script>
 
     <!-- App bundles-->
-    <script type="module" src="https://unpkg.com/@dbp-topics/sublibrary@2.0.0/dist/dbp-sublibrary.js"></script>
+    <script type="module" src="https://unpkg.com/@digital-blueprint/sublibrary-app@2.0.0/dist/dbp-sublibrary.js"></script>
 
     <!-- Prevent Chrome/Edge from suggesting to translate the page -->
     <meta name="google" content="notranslate">
 
     <!-- Font related CSS -->
     <style>
-        @import "https://unpkg.com/@dbp-topics/sublibrary@2.0.0/dist/local/@dbp-topics/sublibrary/fonts/source-sans-pro/300.css";
-        @import "https://unpkg.com/@dbp-topics/sublibrary@2.0.0/dist/local/@dbp-topics/sublibrary/fonts/source-sans-pro/400.css";
-        @import "https://unpkg.com/@dbp-topics/sublibrary@2.0.0/dist/local/@dbp-topics/sublibrary/fonts/source-sans-pro/600.css";
+        @import "https://unpkg.com/@digital-blueprint/sublibrary-app@2.0.0/dist/local/@digital-blueprint/sublibrary-app/fonts/source-sans-pro/300.css";
+        @import "https://unpkg.com/@digital-blueprint/sublibrary-app@2.0.0/dist/local/@digital-blueprint/sublibrary-app/fonts/source-sans-pro/400.css";
+        @import "https://unpkg.com/@digital-blueprint/sublibrary-app@2.0.0/dist/local/@digital-blueprint/sublibrary-app/fonts/source-sans-pro/600.css";
 
         body {
             font-family: 'Source Sans Pro', 'Calibri', 'Arial', 'sans-serif';
@@ -58,7 +58,7 @@
         auth
         analytics-event
         requested-login-status
-        src="https://unpkg.com/@dbp-topics/sublibrary@2.0.0/dist/dbp-sublibrary.topic.metadata.json"
+        src="https://unpkg.com/@digital-blueprint/sublibrary-app@2.0.0/dist/dbp-sublibrary.topic.metadata.json"
         base-path="/"
         keycloak-config='{"url": "https://auth-dev.tugraz.at/auth", "realm": "tugraz-vpu", "clientId": "auth-dev-mw-frontend-local", "silentCheckSsoRedirectUri": "./silent-check-sso.html"}'
         env='local'
@@ -67,7 +67,7 @@
 ><dbp-loading-spinner></dbp-loading-spinner></dbp-sublibrary>
 
 <!-- Error handling for too old browsers -->
-<script src="https://unpkg.com/@dbp-topics/sublibrary@2.0.0/dist/local/@dbp-topics/sublibrary/browser-check.js" defer></script>
+<script src="https://unpkg.com/@digital-blueprint/sublibrary-app@2.0.0/dist/local/@digital-blueprint/sublibrary-app/browser-check.js" defer></script>
 <noscript>Diese Applikation ben�tigt Javascript / This application requires Javascript</noscript>
 </body>
 </html>

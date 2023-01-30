@@ -1,8 +1,8 @@
 # Sublibrary Application
 
 [GitLab Repository](https://github.com/digital-blueprint/sublibrary-app) |
-[npmjs package](https://www.npmjs.com/package/@dbp-topics/sublibrary) |
-[Unpkg CDN](https://unpkg.com/browse/@dbp-topics/sublibrary/) |
+[npmjs package](https://www.npmjs.com/package/@digital-blueprint/sublibrary-app) |
+[Unpkg CDN](https://unpkg.com/browse/@digital-blueprint/sublibrary-app/) |
 [Sublibrary Bundle](https://gitlab.tugraz.at/dbp/sublibrary/dbp-relay-sublibrary-bundle)
 
 ![overview](https://github.com/digital-blueprint/sublibrary-app/-/blob/master/docs/overview.svg)
@@ -82,7 +82,7 @@ Make sure you are allowing `.htaccess` files in your Apache configuration.
 Also make sure to add all of your resources you are using (like your API and Keycloak servers) to the
 `Content-Security-Policy` in your `sublibrary-app/public/.htaccess`, so the browser allows access to those sites.
 
-You can also use this app directly from the [Unpkg CDN](https://unpkg.com/browse/@dbp-topics/sublibrary/)
+You can also use this app directly from the [Unpkg CDN](https://unpkg.com/browse/@digital-blueprint/sublibrary-app/)
 for example like this: [dbp-sublibrary/index.html](https://github.com/digital-blueprint/sublibrary-app/-/tree/master/examples/dbp-sublibrary/index.html)
 
 Note that you will need a Keycloak server along with a client id for the domain you are running this html on.
