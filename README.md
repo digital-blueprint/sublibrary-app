@@ -1,6 +1,6 @@
 # Sublibrary Application
 
-[GitLab Repository](https://github.com/digital-blueprint/sublibrary-app) |
+[GitHub Repository](https://github.com/digital-blueprint/sublibrary-app) |
 [npmjs package](https://www.npmjs.com/package/@digital-blueprint/sublibrary-app) |
 [Unpkg CDN](https://unpkg.com/browse/@digital-blueprint/sublibrary-app/) |
 [Sublibrary Bundle](https://gitlab.tugraz.at/dbp/sublibrary/dbp-relay-sublibrary-bundle)
