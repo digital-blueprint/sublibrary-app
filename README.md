@@ -5,7 +5,9 @@
 [Unpkg CDN](https://unpkg.com/browse/@digital-blueprint/sublibrary-app/) |
 [Sublibrary Bundle](https://gitlab.tugraz.at/dbp/sublibrary/dbp-relay-sublibrary-bundle)
 
-![overview](https://github.com/digital-blueprint/sublibrary-app/-/blob/master/docs/overview.svg)
+[![Build and Test](https://github.com/digital-blueprint/sublibrary-app/actions/workflows/build-test-publish.yml/badge.svg)](https://github.com/digital-blueprint/sublibrary-app/actions/workflows/build-test-publish.yml)
+
+![overview](https://raw.githubusercontent.com/digital-blueprint/sublibrary-app/main/docs/overview.svg)
 
 With the dbp sublibrary app you can assign call number, borrow books, return library books, extend loan periods, 
 show current loans, show current book orders and show the budgets.
