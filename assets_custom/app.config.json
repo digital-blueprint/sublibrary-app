@@ -1,0 +1,72 @@
+{
+    "local": {
+        "basePath": "/dist/",
+        "entryPointURL": "http://127.0.0.1:8000",
+        "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
+        "keyCloakRealm": "tugraz-vpu",
+        "keyCloakClientId": "auth-dev-mw-frontend-local",
+        "matomoUrl": "https://analytics.tugraz.at/",
+        "matomoSiteId": "131",
+        "shortName": "dbp"
+    },
+    "localCustom": {
+        "basePath": "/dist/",
+        "entryPointURL": "http://127.0.0.1:8000",
+        "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
+        "keyCloakRealm": "tugraz-vpu",
+        "keyCloakClientId": "auth-dev-mw-frontend-local",
+        "matomoUrl": "https://analytics.tugraz.at/",
+        "matomoSiteId": "131",
+        "shortName": "TU Graz"
+    },
+    "development": {
+        "basePath": "/apps/sublibrary/",
+        "entryPointURL": "https://api-dev.tugraz.at",
+        "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
+        "keyCloakRealm": "tugraz-vpu",
+        "keyCloakClientId": "dbp-sublibrary",
+        "matomoUrl": "https://analytics.tugraz.at/",
+        "matomoSiteId": "131",
+        "shortName": "dbp"
+    },
+    "developmentCustom": {
+        "basePath": "/tugapps/sublibrary/",
+        "entryPointURL": "https://api-dev.tugraz.at",
+        "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
+        "keyCloakRealm": "tugraz-vpu",
+        "keyCloakClientId": "dbp-sublibrary",
+        "matomoUrl": "https://analytics.tugraz.at/",
+        "matomoSiteId": "131",
+        "shortName": "TU Graz"
+    },
+    "demo": {
+        "basePath": "/apps/sublibrary/",
+        "entryPointURL": "https://api-demo.tugraz.at",
+        "keyCloakBaseURL": "https://auth-demo.tugraz.at/auth",
+        "keyCloakRealm": "tugraz-vpu",
+        "keyCloakClientId": "dbp-sublibrary",
+        "matomoUrl": "https://analytics.tugraz.at/",
+        "matomoSiteId": "131",
+        "shortName": "dbp"
+    },
+    "demoCustom": {
+        "basePath": "/tugapps/sublibrary/",
+        "entryPointURL": "https://api-demo.tugraz.at",
+        "keyCloakBaseURL": "https://auth-demo.tugraz.at/auth",
+        "keyCloakRealm": "tugraz-vpu",
+        "keyCloakClientId": "dbp-sublibrary",
+        "matomoUrl": "https://analytics.tugraz.at/",
+        "matomoSiteId": "131",
+        "shortName": "TU Graz"
+    },
+    "production": {
+        "basePath": "/",
+        "entryPointURL": "https://api.tugraz.at",
+        "keyCloakBaseURL": "https://auth.tugraz.at/auth",
+        "keyCloakRealm": "tugraz",
+        "keyCloakClientId": "ibib_tugraz_at-IBIB",
+        "matomoUrl": "https://analytics.tugraz.at/",
+        "matomoSiteId": "130",
+        "shortName": "TU Graz"
+    }
+}

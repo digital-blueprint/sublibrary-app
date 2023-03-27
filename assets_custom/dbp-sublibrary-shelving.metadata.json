@@ -1,0 +1,18 @@
+{
+    "element": "dbp-sublibrary-shelving",
+    "module_src": "dbp-sublibrary-shelving.js",
+    "routing_name": "shelving",
+    "name": {
+        "de": "Aufstellung vergeben",
+        "en": "Assign Call number"
+    },
+    "short_name": {
+        "de": "Aufstellung vergeben",
+        "en": "Assign Call number"
+    },
+    "description": {
+        "de": "Erlaubt das Aufstellen von Büchern in der Bibliothek",
+        "en": "Allows the assigning of Call numbers to books in the library"
+    },
+    "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
+}

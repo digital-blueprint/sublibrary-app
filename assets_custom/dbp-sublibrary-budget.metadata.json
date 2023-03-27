@@ -1,0 +1,18 @@
+{
+    "element": "dbp-sublibrary-budget",
+    "module_src": "dbp-sublibrary-budget.js",
+    "routing_name": "budget",
+    "name": {
+        "de": "Budget anzeigen",
+        "en": "Show budget"
+    },
+    "short_name": {
+        "de": "Budget anzeigen",
+        "en": "Show budget"
+    },
+    "description": {
+        "de": "Zeigt die Budgetzahlen eines Instituts an",
+        "en": "Shows the budget of an institute"
+    },
+    "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
+}

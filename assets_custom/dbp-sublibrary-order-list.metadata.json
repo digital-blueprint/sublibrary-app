@@ -1,0 +1,18 @@
+{
+    "element": "dbp-sublibrary-order-list",
+    "module_src": "dbp-sublibrary-order-list.js",
+    "routing_name": "order-list",
+    "name": {
+        "de": "Buchbestellungen anzeigen",
+        "en": "Show current book orders"
+    },
+    "short_name": {
+        "de": "Buchbestellungen anzeigen",
+        "en": "Show current book orders"
+    },
+    "description": {
+        "de": "Zeigt die bestellten Bücher eines Instituts bis zum Vortag an",
+        "en": "Lists all ordered books of an organization until yesterday"
+    },
+    "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
+}

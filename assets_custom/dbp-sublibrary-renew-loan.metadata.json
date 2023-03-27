@@ -1,0 +1,18 @@
+{
+    "element": "dbp-sublibrary-renew-loan",
+    "module_src": "dbp-sublibrary-renew-loan.js",
+    "routing_name": "renew-loan",
+    "name": {
+        "de": "Leihfrist verlängern",
+        "en": "Extend loan period"
+    },
+    "short_name": {
+        "de": "Leihfrist verlängern",
+        "en": "Extend loan period"
+    },
+    "description": {
+        "de": "Erlaubt das Verlängern der Leihfrist von Buchentlehnungen",
+        "en": "Allows to extend book loan period"
+    },
+    "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
+}

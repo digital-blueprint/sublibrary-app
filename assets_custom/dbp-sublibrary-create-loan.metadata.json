@@ -1,0 +1,18 @@
+{
+    "element": "dbp-sublibrary-create-loan",
+    "module_src": "dbp-sublibrary-create-loan.js",
+    "routing_name": "create-loan",
+    "name": {
+        "de": "Buch entlehnen",
+        "en": "Borrow book"
+    },
+    "short_name": {
+        "de": "Buch entlehnen",
+        "en": "Borrow book"
+    },
+    "description": {
+        "de": "Buchentlehnung für Institutsbibliothek",
+        "en": "Allows to loan books from the library"
+    },
+    "subscribe": "lang:lang,entry-point-url:entry-point-url,auth:auth"
+}
