@@ -12,7 +12,6 @@ import license from 'rollup-plugin-license';
 import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
-import appConfig from './app.config.js';
 import {
     getPackagePath,
     getBuildInfo,
@@ -63,6 +62,8 @@ try {
         } catch(e) {
             if (e.code == "MODULE_NOT_FOUND") {
                 console.warn("no dev-config found, use default whitelabel config instead ...");
+                devConfig = require("./app.config.json");
+                customAssetsPath = devPath;
             } else {
                 throw e;
             }
@@ -75,7 +76,7 @@ try {
 console.log('APP_ENV: ' + appEnv);
 
 let config;
-if (appEnv in devConfig) {
+if (devConfig != undefined && appEnv in devConfig) {
     config = devConfig[appEnv];
 } else if (appEnv === 'test') {
     config = {
