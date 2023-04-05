@@ -33,7 +33,7 @@ let whitelabel;
 // path to non whitelabel assets and configs
 let customAssetsPath;
 // development path
-let devPath = 'assets_custom/';
+let devPath = 'assets_custom/dbp-sublibrary/assets/';
 // deployment path
 let deploymentPath = '../';
 
