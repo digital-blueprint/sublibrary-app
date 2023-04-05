@@ -23,7 +23,7 @@ show current loans, show current book orders and show the budgets.
 ```bash
 # get the source
 git clone git@github.com:digital-blueprint/sublibrary-app.git
-cd library
+cd sublibrary-app
 git submodule update --init
 
 # install dependencies
@@ -42,6 +42,9 @@ yarn test
 Jump to <http://localhost:8001>, and you should get a Single Sign On login page.
 
 Example book barcodes: `+F58330104`, `+F58019101`, `+F53498803`
+
+
+By default, the application is built using the assets in `assets/`. However, custom assets can also be used to build the application. The custom assets can be added to the directory `assets_custom/dbp-sublibrary/assets/`. This allows developers to easily develop and build the application for different environments.
 
 
 ## Remote development
