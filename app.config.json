@@ -8,5 +8,25 @@
         "matomoUrl": "",
         "matomoSiteId": "-1",
         "universityShortName": "dbp"
+    },
+    "localCustom": {
+        "basePath": "/dist/",
+        "entryPointURL": "http://127.0.0.1:8000",
+        "keyCloakBaseURL": "",
+        "keyCloakRealm": "",
+        "keyCloakClientId": "",
+        "matomoUrl": "",
+        "matomoSiteId": "-1",
+        "universityShortName": "dbp"
+    },
+    "development": {
+        "basePath": "/apps/sublibrary/",
+        "entryPointURL": "https://api-dev.tugraz.at",
+        "keyCloakBaseURL": "https://auth-dev.tugraz.at/auth",
+        "keyCloakRealm": "tugraz-vpu",
+        "keyCloakClientId": "dbp-sublibrary",
+        "matomoUrl": "https://analytics.tugraz.at/",
+        "matomoSiteId": "131",
+        "shortName": "dbp"
     }
 }
