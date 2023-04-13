@@ -4,7 +4,7 @@ import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {send as notify} from '@dbp-toolkit/common/notification';
 import {LibraryElement} from './library-element.js';
-import {PersonSelect} from '@dbp-toolkit/person-select';
+import {CustomPersonSelect} from './custom-person-select.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
@@ -30,7 +30,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     static get scopedElements() {
         return {
             'dbp-library-select': LibrarySelect,
-            'dbp-person-select': PersonSelect,
+            'dbp-person-select': CustomPersonSelect,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-button': Button,
             'dbp-data-table-view': DataTableView,
@@ -468,7 +468,6 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                             value="${this.personIri}"
                             sublibrary-iri="${this.sublibraryIri}"
                             show-reload-button
-                            show-details
                             reload-button-title="${this.person
                                 ? i18n.t('renew-loan.button-refresh-title', {
                                       personName: getPersonDisplayName(this.person),

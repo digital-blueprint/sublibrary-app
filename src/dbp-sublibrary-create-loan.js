@@ -2,7 +2,7 @@ import {createInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {LibraryElement} from './library-element.js';
-import {PersonSelect} from '@dbp-toolkit/person-select';
+import {CustomPersonSelect} from './custom-person-select.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
@@ -32,7 +32,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     static get scopedElements() {
         return {
             'dbp-library-select': LibrarySelect,
-            'dbp-person-select': PersonSelect,
+            'dbp-person-select': CustomPersonSelect,
             'dbp-sublibrary-book-offer-select': LibraryBookOfferSelect,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-button': Button,
@@ -307,8 +307,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                         <dbp-person-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                             @change=${this.onPersonSelectChanged}
-                            value="${this.personId}"
-                            show-details>
+                            value="${this.personId}">
                         </dbp-person-select>
                     </div>
                 </div>

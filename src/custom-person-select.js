@@ -22,7 +22,7 @@ export class CustomPersonSelect extends ScopedElementsMixin(PersonSelect) {
 
         let email = person?.localData?.email;
         if (email !== undefined && email.length) {
-             text += ` (${email[0]})`;
+             text += ` (${email})`;
         }
 
         return text;
