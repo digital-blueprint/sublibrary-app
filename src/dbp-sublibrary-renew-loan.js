@@ -319,7 +319,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
 
         // search for the dbp-button
         path.some((item, index) => {
-            if (item.nodeName.toUpperCase() === this.getScopedTagName('dbp-button').toUpperCase()) {
+            if (item.nodeName !== undefined && item.nodeName.toUpperCase() === this.getScopedTagName('dbp-button').toUpperCase()) {
                 button = item;
                 buttonIndex = index;
 
