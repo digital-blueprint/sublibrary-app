@@ -407,7 +407,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 const subject = i18n.t('renew-loan.contact-subject', {bookName: bookName});
 
                 // open mail client with new mail
-                location.href = `mailto:${this.person.email}?subject=${subject}`;
+                location.href = `mailto:${this.person.localData.email}?subject=${subject}`;
                 break;
             }
         }
