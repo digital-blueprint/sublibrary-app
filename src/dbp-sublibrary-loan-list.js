@@ -317,7 +317,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
      * Handles all clicks on the data table
      * @param e
      */
-    onDataTableClick(e) {
+    async onDataTableClick(e) {
         const path = e.composedPath();
         let button,
             buttonIndex = -1;
@@ -353,30 +353,39 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         switch (type) {
             case 'contact': {
                 button.start();
-                const apiUrl = this.entryPointUrl + loanId;
+                try {
+                    const apiUrl = this.entryPointUrl + loanId;
 
-                // we need to load the loan because we cannot get the borrower's email address via Alma Analytics
-                fetch(apiUrl, {
-                    headers: {
-                        'Content-Type': 'application/ld+json',
-                        Authorization: 'Bearer ' + this.auth.token,
-                    },
-                })
-                    .then((result) => {
-                        button.stop();
-                        if (!result.ok) throw result;
-                        return result.json();
-                    })
-                    .then((loan) => {
-                        const bookName = button.getAttribute('data-book-name');
-                        const subject = i18n.t('renew-loan.contact-subject', {bookName: bookName});
-
-                        // open mail client with new mail
-                        location.href = `mailto:${loan.borrower.email}?subject=${subject}`;
-                    })
-                    .catch((error) => {
-                        this.handleFetchError(error, i18n.t('loan-list.error-load-loan'));
+                    // we need to load the loan because we cannot get the borrower's email address via Alma Analytics
+                    let result = await fetch(apiUrl, {
+                        headers: {
+                            'Content-Type': 'application/ld+json',
+                            Authorization: 'Bearer ' + this.auth.token,
+                        },
                     });
+                    if (!result.ok)
+                        throw result;
+                    let loan = await result.json();
+                    const bookName = button.getAttribute('data-book-name');
+                    const subject = i18n.t('renew-loan.contact-subject', {bookName: bookName});
+
+                    let personUrl =  this.entryPointUrl + loan.borrower['@id'] + '?' + new URLSearchParams({'includeLocal': 'email'}).toString();
+                    let personResult = await fetch(personUrl, {
+                        headers: {
+                            'Content-Type': 'application/ld+json',
+                            Authorization: 'Bearer ' + this.auth.token,
+                        },
+                    });
+                    if (!personResult.ok)
+                        throw personResult;
+                    let person = await personResult.json();
+
+                    location.href = `mailto:${person.localData.email}?subject=${subject}`;
+                } catch (error) {
+                    this.handleFetchError(error, i18n.t('loan-list.error-load-loan'));
+                } finally {
+                    button.stop();
+                }
                 break;
             }
         }
