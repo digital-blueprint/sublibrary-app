@@ -135,7 +135,6 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
 
     /**
      * Initializes the Select2 selector
-     *
      * @param {boolean} ignorePreset
      */
     initSelect2(ignorePreset = false) {

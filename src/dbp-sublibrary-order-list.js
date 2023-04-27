@@ -13,7 +13,6 @@ import {LibrarySelect} from './library-select.js';
 
 /**
  * Returns a translated label for the given status
- *
  * @param i18n
  * @param {string} status
  * @returns {string} A status label for the actve language

@@ -308,7 +308,6 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
 
     /**
      * Handles all clicks on the data table
-     *
      * @param e
      */
     onDataTableClick(e) {

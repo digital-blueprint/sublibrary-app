@@ -9,7 +9,6 @@ export function createInstance() {
 
 /**
  * Dummy function to mark strings as i18next keys for i18next-scanner
- *
  * @param {string} key
  * @returns {string} The key param as is
  */
