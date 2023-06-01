@@ -9,8 +9,8 @@ import urlPlugin from '@rollup/plugin-url';
 import del from 'rollup-plugin-delete';
 import json from '@rollup/plugin-json';
 import emitEJS from 'rollup-plugin-emit-ejs';
-import {getPackagePath, getDistPath} from '../toolkit/rollup.utils.js';
-import config from '../toolkit/demo.common.config.js';
+import {getPackagePath, getDistPath} from '../../vendor/toolkit/rollup.utils.js';
+import config from '../../vendor/toolkit/demo.common.config.js';
 
 const build = typeof process.env.BUILD !== 'undefined' ? process.env.BUILD : 'local';
 console.log('build: ' + build);

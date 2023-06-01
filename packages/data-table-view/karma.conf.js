@@ -1,1 +1,1 @@
-module.exports = require('../toolkit/karma.common.conf.js');
+module.exports = require('../../vendor/toolkit/karma.common.conf.js');
