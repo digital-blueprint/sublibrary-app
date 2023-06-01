@@ -11,7 +11,7 @@
     "private": true,
     "workspaces": [
         "vendor/toolkit/packages/*",
-        "vendor/data-table-view"
+        "packages/*"
     ],
     "devDependencies": {
         "@babel/core": "^7.10.4",
