@@ -14,8 +14,6 @@ import $ from 'jquery';
 import {classMap} from 'lit/directives/class-map.js';
 import {LibrarySelect} from './library-select.js';
 
-select2(window, $);
-
 class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
         super();
@@ -42,6 +40,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         let now = new Date();
         now.setDate(now.getDate() - 1);
         this.analyticsUpdateDate = now.toLocaleDateString(this.lang);
+
+        select2(window, $);
     }
 
     static get scopedElements() {
