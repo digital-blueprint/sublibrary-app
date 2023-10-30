@@ -148,12 +148,6 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         // find the correct api url for a library book offer
         const apiUrl = this.jsonld.getApiUrlForEntityName('LibraryBookOffer');
 
-        // the mapping we need for Select2
-        const localContext = {
-            id: '@id',
-            text: 'http://schema.org/name',
-        };
-
         if (this.$select === null) {
             return false;
         }
@@ -202,8 +196,14 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                     processResults: function (data) {
                         that.$('#library-book-offer-select-dropdown').addClass('select2-bug');
                         that.lastResult = data;
-                        const results = that.jsonld.transformMembers(data, localContext);
 
+                        let results = [];
+                        data['hydra:member'].forEach((item) => {
+                            results.push({
+                                id: item['@id'],
+                                text: item['name'],
+                            });
+                        });
                         return {
                             results: results,
                         };
