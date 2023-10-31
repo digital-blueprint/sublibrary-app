@@ -3,11 +3,10 @@ import {findObjectInApiResults} from './utils.js';
 import select2 from 'select2';
 import select2LangDe from './i18n/de/select2-book-offer';
 import select2LangEn from './i18n/en/select2-book-offer';
-import JSONLD from '@dbp-toolkit/common/jsonld';
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@open-wc/scoped-elements';
 import {createInstance} from './i18n.js';
-import {Icon} from '@dbp-toolkit/common';
+import {Icon, combineURLs} from '@dbp-toolkit/common';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
@@ -21,7 +20,6 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         this.lang = this._i18n.language;
         this.auth = {};
         this.entryPointUrl = '';
-        this.jsonld = null;
         this.$select = null;
         // For some reason using the same ID on the whole page twice breaks select2 (regardless if they are in different custom elements)
         this.selectId = 'book-offer-select-' + commonUtils.makeId(24);
@@ -83,7 +81,9 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
             this.$select = this.$('#' + this.selectId);
             this.$select.disabled = true;
             // try an init when user-interface is loaded
-            this.initJSONLD();
+            if (!this.select2IsInitialized()) {
+                this.initSelect2();
+            }
         });
     }
 
@@ -100,28 +100,6 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                 $select.select2('close');
             }
         }
-    }
-
-    initJSONLD(ignorePreset = false) {
-        const that = this;
-
-        JSONLD.getInstance(this.entryPointUrl).then(
-            function (jsonld) {
-                that.jsonld = jsonld;
-
-                // we need to poll because maybe the user interface isn't loaded yet
-                // Note: we need to call initSelect2() in a different function so we can access "this" inside initSelect2()
-                commonUtils.pollFunc(
-                    () => {
-                        return that.initSelect2(ignorePreset);
-                    },
-                    10000,
-                    100
-                );
-            },
-            {},
-            this.lang
-        );
     }
 
     isInt(value) {
@@ -141,16 +119,11 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         const that = this;
         const $that = $(this);
 
-        if (this.jsonld === null) {
+        if (this.$select === null || this.entryPointUrl === null) {
             return false;
         }
 
-        // find the correct api url for a library book offer
-        const apiUrl = this.jsonld.getApiUrlForEntityName('LibraryBookOffer');
-
-        if (this.$select === null) {
-            return false;
-        }
+        const apiUrl = combineURLs(this.entryPointUrl, '/sublibrary/book-offers');
 
         // we need to destroy Select2 and remove the event listeners before we can initialize it again
         if (this.$select.hasClass('select2-hidden-accessible')) {
@@ -321,7 +294,12 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                     break;
                 case 'entryPointUrl':
                     // we don't need to preset the selector if the entry point url changes
-                    this.initJSONLD(true);
+                    this.initSelect2(true);
+                    break;
+                case 'auth':
+                    if (this.auth.token && (!oldValue || !oldValue.token)) {
+                        this.initSelect2();
+                    }
                     break;
             }
         });
