@@ -113,7 +113,8 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                     })
                         .then((response) => response.json())
                         .then((result) => {
-                            new Suggestions(locationIdentifierInput, result['hydra:member']);
+                            let ids = result['hydra:member'].map((item) => { return item['identifier']; });
+                            new Suggestions(locationIdentifierInput, ids);
                         });
                 })
                 .on('unselect', function (e) {
