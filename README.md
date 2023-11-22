@@ -16,7 +16,7 @@ show current loans, show current book orders and show the budgets.
 
 - You need library officer permissions to be allowed to use the application
 - You need the [API server](https://gitlab.tugraz.at/dbp/relay/dbp-relay-server-template) running
-- You need the [Dbp Relay Sublibrary Bundle](https://gitlab.tugraz.at/dbp/sublibrary/dbp-relay-sublibrary-bundle) for the API server to talk to the Alma backend
+- You need the [Dbp Relay Sublibrary Bundle](https://github.com/digital-blueprint/relay-sublibrary-bundle) for the API server to talk to the Alma backend
 
 ## Local development
 
