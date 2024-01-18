@@ -64,8 +64,7 @@
         "jquery": "^3.5.1",
         "lit": "^2.7.0 || ^3.0.0",
         "select2": "^4.0.13",
-        "suggestions": "^1.7.0",
-        "universal-router": "^9.0.1"
+        "suggestions": "^1.7.0"
     },
     "engines": {
         "node": ">=18.0.0",
