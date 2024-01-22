@@ -204,7 +204,9 @@ export default (async () => {
                     shortName: config.shortName,
                 },
             }),
-            resolve(),
+            resolve({
+                browser: true,
+            }),
             checkLicenses &&
                 license({
                     banner: {
