@@ -159,7 +159,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 $.ajax({
                     url: apiUrl,
                     type: 'POST',
-                    contentType: 'application/json',
+                    contentType: 'application/ld+json',
                     beforeSend: function (jqXHR) {
                         jqXHR.setRequestHeader('Authorization', 'Bearer ' + that.auth.token);
                     },

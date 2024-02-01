@@ -246,7 +246,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             method: 'POST',
             headers: {
                 Accept: 'application/ld+json',
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/ld+json',
                 Authorization: 'Bearer ' + this.auth.token,
             },
             body: JSON.stringify(data),
