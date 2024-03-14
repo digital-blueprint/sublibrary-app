@@ -373,7 +373,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
 
                 // update loan
                 fetch(apiUrl, {
-                    method: 'PUT',
+                    method: 'PATCH',
                     body: JSON.stringify(data),
                     headers: {
                         'Content-Type': 'application/ld+json',

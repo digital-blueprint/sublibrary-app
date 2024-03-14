@@ -150,7 +150,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
 
                 $.ajax({
                     url: apiUrl,
-                    type: 'PUT',
+                    type: 'PATCH',
                     contentType: 'application/ld+json',
                     beforeSend: function (jqXHR) {
                         jqXHR.setRequestHeader('Authorization', 'Bearer ' + that.auth.token);
