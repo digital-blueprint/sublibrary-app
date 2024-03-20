@@ -376,7 +376,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                     method: 'PATCH',
                     body: JSON.stringify(data),
                     headers: {
-                        'Content-Type': 'application/ld+json',
+                        'Content-Type': 'application/merge-patch+json',
                         Authorization: 'Bearer ' + this.auth.token,
                     },
                 })
