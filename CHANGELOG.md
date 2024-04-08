@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.0
+
+* Adjust for bundle API changes (PUT -> PATCH)
+
 ## 2.1.0
 
 * Various dependency updates
