@@ -1,5 +1,0 @@
-/vendor/**
-/dist/**
-/*.js
-/_cypress_cache/**
-/packages/**
