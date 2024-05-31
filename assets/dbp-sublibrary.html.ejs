@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="white"/>
 
+    <title>Sublibrary</title>
+    <meta name="description" content="Applikation für Verwaltung von Buchbeständen und -Entlehnungen an Universitäten">
+
     <!-- Favicons -->
     <link rel="shortcut icon" type="image/x-icon" href="<%= getPrivateUrl('icon/favicon.ico') %>">
     <link rel="icon" type="image/svg+xml" href="<%= getPrivateUrl('icon/favicon.svg') %>">
@@ -18,7 +21,7 @@
 
     <!-- Loading spinner -->
     <script type="module">
-        import {Spinner} from '<%= getPrivateUrl('org_spinner.js') %>';
+        import {Spinner} from "<%= getPrivateUrl('org_spinner.js') %>";
         customElements.define('org-spinner', Spinner);
     </script>
 
