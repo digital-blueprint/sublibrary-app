@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+* Fix the loan extension list being cut off after 30 entries, even if more loans exist.
+* Remove unsafe-eval from the CSP, no longer needed with recent Keycloak
+* Improved application metadata
+* Port to eslint 9
+
 ## 2.2.0
 
 * Adjust for bundle API changes (PUT -> PATCH)
