@@ -206,7 +206,6 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                     {targets: [4], sortable: false},
                                     {targets: [2, 4], createdCell: createdCell},
                                 ];
-                                const libraryCode = that.getSublibraryCode();
                                 const tbl = [];
                                 that.loans.forEach(function (loan) {
                                     let button = that.getScopedTagName('dbp-button');
