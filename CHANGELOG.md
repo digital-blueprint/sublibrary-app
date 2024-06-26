@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.2.1
 
 * Fix the loan extension list being cut off after 30 entries, even if more loans exist.
 * Remove unsafe-eval from the CSP, no longer needed with recent Keycloak
