@@ -141,7 +141,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         const libParts = this.sublibraryIri.split('/');
         const sublibraryIdentifier = libParts[libParts.length - 1];
 
-        const apiUrl = this.entryPointUrl + '/sublibrary/book-loans?sublibrary=' + sublibraryIdentifier + '&borrower=' + personIdentifier;
+        const apiUrl = this.entryPointUrl + '/sublibrary/book-loans?perPage=9999999&sublibrary=' + sublibraryIdentifier + '&borrower=' + personIdentifier;
 
         const $noLoansBlock = this.$('#no-loans-block');
         const $loansLoadingIndicator = this.$('#loans-loading');
