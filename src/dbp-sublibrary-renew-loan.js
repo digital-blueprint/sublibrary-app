@@ -138,8 +138,10 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         const parts = this.personIri.split('/');
         const personIdentifier = parts[parts.length - 1];
 
-        // REMOVEME: const apiUrl = this.entryPointUrl + this.personId + '/library-book-loans';
-        const apiUrl = this.entryPointUrl + '/sublibrary/book-loans?borrower=' + personIdentifier;
+        const libParts = this.sublibraryIri.split('/');
+        const sublibraryIdentifier = libParts[libParts.length - 1];
+
+        const apiUrl = this.entryPointUrl + '/sublibrary/book-loans?sublibrary=' + sublibraryIdentifier + '&borrower=' + personIdentifier;
 
         const $noLoansBlock = this.$('#no-loans-block');
         const $loansLoadingIndicator = this.$('#loans-loading');
@@ -207,9 +209,6 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                 const libraryCode = that.getSublibraryCode();
                                 const tbl = [];
                                 that.loans.forEach(function (loan) {
-                                    if (loan.object.library !== libraryCode) {
-                                        return;
-                                    }
                                     let button = that.getScopedTagName('dbp-button');
 
                                     const row = [
