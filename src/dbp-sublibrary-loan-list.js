@@ -8,7 +8,7 @@ import {DataTableView} from '@dbp-toolkit/data-table-view';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
 import $ from 'jquery';
-import {getPersonDisplayName} from './utils.js';
+import {getPersonDisplayName, escapeHtml} from './utils.js';
 import {LibrarySelect} from './library-select.js';
 
 class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
@@ -241,8 +241,8 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
 
                     let button = that.getScopedTagName('dbp-button');
                     const row = [
-                        loan.object.book.title,
-                        loan.object.book.author,
+                        escapeHtml(loan.object.book.title),
+                        escapeHtml(loan.object.book.author),
                         loan.object.barcode,
                         getPersonDisplayName(loan.borrower),
                         startTime.toLocaleDateString('de-AT'),
@@ -256,7 +256,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                         `<div class="button-col">
                             <${button} data-id="${
                             loan['@id']
-                        }" data-type="contact" data-book-name="${loan.object.name}"
+                        }" data-type="contact" data-book-name="${escapeHtml(loan.object.name)}"
                                         value="${i18n.t(
                                             'renew-loan.contact-value'
                                         )}" name="send" type="is-small"

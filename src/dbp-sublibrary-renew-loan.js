@@ -10,7 +10,7 @@ import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
-import {getPersonDisplayName} from './utils.js';
+import {getPersonDisplayName, escapeHtml} from './utils.js';
 import {LibrarySelect} from './library-select.js';
 
 class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
@@ -76,7 +76,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                         white-space: nowrap;
                     }
                 }
-    
+
                 @media (max-width: 900px) {
                     td .date-col input[type="time"] {
                         margin-top: 5px;
@@ -211,7 +211,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                     let button = that.getScopedTagName('dbp-button');
 
                                     const row = [
-                                        loan.object.name,
+                                        escapeHtml(loan.object.name),
                                         loan.object.description,
                                         `<div class="date-col">
                                             <input data-date-id="${loan['@id']}"
@@ -233,7 +233,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                                         )}" no-spinner-on-click></${button}>
                                             <${button} data-id="${
                                             loan['@id']
-                                        }" data-type="contact" data-book-name="${loan.object.name}"
+                                        }" data-type="contact" data-book-name="${escapeHtml(loan.object.name)}"
                                                         value="${i18n.t(
                                                             'renew-loan.contact-value'
                                                         )}" name="send" type="is-small"
