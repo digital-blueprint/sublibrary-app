@@ -308,6 +308,11 @@ export class DataTableView extends AdapterLitElement {
                 border-radius: 0;
                 border: ;
                 padding: 0.1em;
+                color: var(--dbp-content);
+            }
+
+            .dataTables_wrapper .dataTables_info {
+                color: var(--dbp-content);
             }
 
             table.dataTable .column-search-line {
