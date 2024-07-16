@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.2
+
+* Minor theme fixes for the dark mode
+* Fix buttons in list rows for books which contained special characters
+
 ## 2.2.1
 
 * Fix the loan extension list being cut off after 30 entries, even if more loans exist.
