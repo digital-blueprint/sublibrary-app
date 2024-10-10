@@ -93,7 +93,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 }
             `;
 
-            this._(this.getScopedTagName('dbp-data-table-view')).setCSSStyle(css);
+            this._('dbp-data-table-view').setCSSStyle(css);
             this.loadTable();
         });
     }

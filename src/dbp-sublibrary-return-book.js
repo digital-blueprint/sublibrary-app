@@ -71,7 +71,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
 
         this.updateComplete.then(() => {
             const $bookOfferSelect = that.$(
-                this.getScopedTagName('dbp-sublibrary-book-offer-select')
+                'dbp-sublibrary-book-offer-select'
             );
             const $returnBookBlock = that.$('#return-book-block');
             const $loansLoadingIndicator = that.$('#loans-loading');

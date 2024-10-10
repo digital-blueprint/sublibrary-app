@@ -95,8 +95,8 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 }
             `;
 
-            this._(this.getScopedTagName('dbp-data-table-view')).setCSSStyle(css);
-            const $personSelect = that.$(this.getScopedTagName('dbp-person-select'));
+            this._('dbp-data-table-view').setCSSStyle(css);
+            const $personSelect = that.$('dbp-person-select');
             const $renewLoanBlock = that.$('#renew-loan-block');
 
             // show loan list block if person was selected
@@ -208,7 +208,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                 ];
                                 const tbl = [];
                                 that.loans.forEach(function (loan) {
-                                    let button = that.getScopedTagName('dbp-button');
+                                    let button = 'dbp-button';
 
                                     const row = [
                                         escapeHtml(loan.object.name),
@@ -291,7 +291,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 */
 
                 // we need to update the book list because of the localization of the "Contact" button
-                this.$(this.getScopedTagName('dbp-person-select')).change();
+                this.$('dbp-person-select').change();
             } else if (propName === 'sublibraryIri') {
                 this.loadTable();
             }
@@ -316,7 +316,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
 
         // search for the dbp-button
         path.some((item, index) => {
-            if (item.nodeName !== undefined && item.nodeName.toUpperCase() === this.getScopedTagName('dbp-button').toUpperCase()) {
+            if (item.nodeName !== undefined && item.nodeName.toUpperCase() === 'dbp-button'.toUpperCase()) {
                 button = item;
                 buttonIndex = index;
 

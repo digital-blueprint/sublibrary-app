@@ -78,7 +78,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 }
             `;
 
-            this._(this.getScopedTagName('dbp-data-table-view')).setCSSStyle(css);
+            this._('dbp-data-table-view').setCSSStyle(css);
             this.loadTable();
         });
     }
@@ -239,7 +239,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                         return;
                     }
 
-                    let button = that.getScopedTagName('dbp-button');
+                    let button = 'dbp-button';
                     const row = [
                         escapeHtml(loan.object.book.title),
                         escapeHtml(loan.object.book.author),
@@ -326,7 +326,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         // search for the dbp-button
         path.some((item, index) => {
             if (
-                item.nodeName?.toUpperCase() === this.getScopedTagName('dbp-button').toUpperCase()
+                item.nodeName?.toUpperCase() === 'dbp-button'.toUpperCase()
             ) {
                 button = item;
                 buttonIndex = index;
