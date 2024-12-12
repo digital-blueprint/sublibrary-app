@@ -53,7 +53,6 @@
         "@dbp-toolkit/auth": "^0.3.0",
         "@dbp-toolkit/common": "^0.3.0",
         "@dbp-toolkit/data-table-view": "^0.3.0",
-        "@dbp-toolkit/knowledge-base-web-page-element-view": "^0.2.0",
         "@dbp-toolkit/language-select": "^0.3.0",
         "@dbp-toolkit/notification": "^0.3.0",
         "@dbp-toolkit/person-select": "^0.3.0",
