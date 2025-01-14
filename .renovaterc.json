@@ -1,27 +1,33 @@
 {
-    "extends": ["config:base", "group:allNonMajor", "schedule:weekly"],
-    "ignorePresets": [":prHourlyLimit2"],
-    "rangeStrategy": "update-lockfile",
-    "composer": {
-        "enabled": false
+  "extends": ["config:recommended", "group:allNonMajor", "schedule:weekly"],
+  "ignorePresets": [":prHourlyLimit2"],
+  "rangeStrategy": "update-lockfile",
+  "composer": {
+    "enabled": false
+  },
+  "cloneSubmodules": true,
+  "packageRules": [
+    {
+      "matchPackageNames": ["datatables.net", "datatables.net-dt"],
+      "allowedVersions": "<1.13"
     },
-    "cloneSubmodules": true,
-    "packageRules": [
-        {
-          "matchPackageNames": ["datatables.net", "datatables.net-dt"],
-          "allowedVersions": "<1.13"
-        },
-        {
-          "matchPackageNames": ["datatables.net-buttons", "datatables.net-buttons-dt"],
-          "allowedVersions": "<2.3"
-        },
-        {
-          "matchPackageNames": ["datatables.net-responsive", "datatables.net-responsive-dt"],
-          "allowedVersions": "<2.4"
-        },
-        {
-          "matchPackageNames": ["@open-wc/scoped-elements"],
-          "allowedVersions": "<3"
-        }
-      ]
+    {
+      "matchPackageNames": [
+        "datatables.net-buttons",
+        "datatables.net-buttons-dt"
+      ],
+      "allowedVersions": "<2.3"
+    },
+    {
+      "matchPackageNames": [
+        "datatables.net-responsive",
+        "datatables.net-responsive-dt"
+      ],
+      "allowedVersions": "<2.4"
+    },
+    {
+      "matchPackageNames": ["@open-wc/scoped-elements"],
+      "allowedVersions": "<3"
+    }
+  ]
 }
