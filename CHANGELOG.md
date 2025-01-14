@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.3
+
+* New optional extended application layout for wider screens
+* book list: show freeform publication date text if possible instead of just the
+  year. Sorting is using the oldest year in the freeform text.
+
 ## 2.2.2
 
 * Minor theme fixes for the dark mode
