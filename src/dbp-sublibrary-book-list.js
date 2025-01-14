@@ -13,6 +13,7 @@ import select2CSSPath from 'select2/dist/css/select2.min.css';
 import $ from 'jquery';
 import {classMap} from 'lit/directives/class-map.js';
 import {LibrarySelect} from './library-select.js';
+import {extractEarliestPossibleYearFromPublicationDate} from './utils.js';
 
 class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -224,7 +225,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 const columns = [
                     {title: this._i18n.t('book-list.book-title')},
                     {title: this._i18n.t('book-list.book-author')},
-                    {title: this._i18n.t('book-list.book-publication-year')},
+                    {title: this._i18n.t('book-list.book-publication-date')},
+                    null,
                     {title: this._i18n.t('book-list.book-publisher')},
                     {title: this._i18n.t('book-list.book-availability-date')},
                     null,
@@ -235,8 +237,10 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
 
                 // sorting will be done by hidden columns
                 const columnDefs = [
-                    {targets: [4], orderData: [5]},
-                    {targets: [5], visible: false},
+                    {targets: [2], orderData: [3]},
+                    {targets: [3], visible: false},
+                    {targets: [5], orderData: [6]},
+                    {targets: [6], visible: false},
                 ];
 
                 const tbl = [];
@@ -252,14 +256,24 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                             that.locationIdentifier === bookOffer.locationIdentifier) &&
                         (that.inventoryYear === '' || that.inventoryYear === inventoryYear)
                     ) {
-                        const datePublished = new Date(bookOffer.book.datePublished);
+                        // We used to return an ISO date string here, but now it returns a freeform date
+                        // string with usually the year only and some other characters like brackets
+                        // or copyrigth symbols. So support both during the transition.
+                        let datePublishedString = bookOffer.book.datePublished ?? '';
+
+                        // FIXME: remove this after the transition is done.
+                        const datePublished = new Date(datePublishedString);
+                        if (!isNaN(datePublished.valueOf())) {
+                            datePublishedString = datePublished.getFullYear().toString();
+                        }
+
+                        let datePublishedSortValue = extractEarliestPossibleYearFromPublicationDate(datePublishedString);
 
                         const row = [
                             bookOffer.book.title,
                             bookOffer.book.author,
-                            bookOffer.book.datePublished !== null
-                                ? datePublished.getFullYear()
-                                : '',
+                            datePublishedString,
+                            datePublishedSortValue,
                             bookOffer.book.publisher,
                             bookOffer.availabilityStarts !== null
                                 ? availabilityStarts.toLocaleDateString('de-AT')

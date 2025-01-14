@@ -7,7 +7,7 @@
         "book-inventory-year": "Inventarisierungsjahr",
         "book-isbn": "ISBN/ISSN",
         "book-location-identifier": "Aufstellung",
-        "book-publication-year": "Erscheinungsjahr",
+        "book-publication-date": "Erscheinungsdatum",
         "book-publisher": "Verlag",
         "book-title": "Titel",
         "books": "Bücher",
