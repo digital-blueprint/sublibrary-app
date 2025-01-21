@@ -24,10 +24,6 @@
         "datatables.net-responsive-dt"
       ],
       "allowedVersions": "<2.4"
-    },
-    {
-      "matchPackageNames": ["@open-wc/scoped-elements"],
-      "allowedVersions": "<3"
     }
   ]
 }

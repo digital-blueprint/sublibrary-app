@@ -1,6 +1,6 @@
 import {createInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit';
-import {ScopedElementsMixin} from '@open-wc/scoped-elements';
+import {ScopedElementsMixin} from '@dbp-toolkit/common';
 import {LibraryElement} from './library-element.js';
 import {CustomPersonSelect} from './custom-person-select.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';

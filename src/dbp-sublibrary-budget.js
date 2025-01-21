@@ -1,7 +1,7 @@
 import {createInstance} from './i18n.js';
 import {numberFormat} from '@dbp-toolkit/common/i18next.js';
 import {css, html} from 'lit';
-import {ScopedElementsMixin} from '@open-wc/scoped-elements';
+import {ScopedElementsMixin} from '@dbp-toolkit/common';
 import {LibraryElement} from './library-element.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
