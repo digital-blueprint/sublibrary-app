@@ -17,9 +17,7 @@ export class LibraryElement extends AdapterLitElement {
         if (!this.auth.person || !Array.isArray(this.auth.person.roles)) return false;
 
         let roles = this.auth.person.roles;
-        // Remove ROLE_F_BIB_F once https://gitlab.tugraz.at/dbp/middleware/api/-/commit/e06e503a3fbe61ec328cf3f246140fb30f52a07e
-        // is deployed
-        return roles.indexOf('ROLE_F_BIB_F') !== -1 || roles.indexOf('ROLE_LIBRARY_MANAGER') !== -1;
+        return roles.indexOf('ROLE_LIBRARY_MANAGER') !== -1;
     }
 
     _updateAuth() {
