@@ -75,6 +75,7 @@
         "build": "rollup -c",
         "build-custom": "rollup -c --environment APP_ENV:localCustom",
         "i18next": "i18next",
+        "i18next:check": "i18next --fail-on-update",
         "format": "npm run format:eslint && npm run format:prettier",
         "format:eslint": "eslint \"**/*.{js,ts}\" --fix",
         "format:prettier": "prettier \"**/*.{js,json,ts}\" --write",
