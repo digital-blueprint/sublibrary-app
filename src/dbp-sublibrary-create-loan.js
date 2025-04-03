@@ -324,7 +324,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                             ?disabled=${!this.bookOffer}
                             @click=${this.onReloadButtonClicked}
                             title="${this.bookOffer
-                                    ? i18n.t('shelving.button-refresh-title', {
+                                    ? i18n.t('create-loan.button-refresh-title', {
                                         name: this.bookOffer.name,
                                     })
                                     : ''}"

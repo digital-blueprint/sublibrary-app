@@ -41,8 +41,8 @@
         "success-body": "The book loan creation successful.",
         "success-summary": "Book loan creation successful"
     },
-    "error-login-message": "Please log in to use this functionality",
     "error-login-link": "Log in",
+    "error-login-message": "Please log in to use this functionality",
     "error-permission-message": "You need to be a library officer to use this function!",
     "error-summary": "An error occurred",
     "library-book-offer-select": {
