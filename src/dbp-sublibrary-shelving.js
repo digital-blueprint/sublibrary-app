@@ -231,6 +231,11 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         this.$("dbp-sublibrary-book-offer-select").trigger('change');
     }
 
+    _onLoginClicked(e) {
+        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        e.preventDefault();
+    }
+
     render() {
         const suggestionsCSS = commonUtils.getAssetURL(suggestionsCSSPath);
         const i18n = this._i18n;

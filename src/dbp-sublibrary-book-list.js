@@ -448,6 +448,11 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         this.sublibraryIri = e.detail.value;
     }
 
+    _onLoginClicked(e) {
+        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        e.preventDefault();
+    }
+
     render() {
         let locationIdentifierItemTemplates = [];
         this.locationIdentifiers.forEach((item) => {

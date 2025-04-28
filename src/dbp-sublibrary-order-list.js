@@ -318,6 +318,11 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         });
     }
 
+    _onLoginClicked(e) {
+        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        e.preventDefault();
+    }
+
     render() {
         const i18n = this._i18n;
         return html`

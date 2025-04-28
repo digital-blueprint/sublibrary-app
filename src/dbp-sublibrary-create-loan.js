@@ -280,6 +280,11 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         this.updateCreateLoan();
     }
 
+    _onLoginClicked(e) {
+        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        e.preventDefault();
+    }
+
     render() {
         const minDate = new Date().toISOString();
         let date = new Date();

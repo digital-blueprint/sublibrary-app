@@ -441,6 +441,11 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         this.sublibrary = e.detail.object;
     }
 
+    _onLoginClicked(e) {
+        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        e.preventDefault();
+    }
+
     render() {
         const i18n = this._i18n;
         return html`
