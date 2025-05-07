@@ -13,15 +13,15 @@ You can use every activity alone. Take a look at our examples [here](https://git
 These attributes are available for all activities listed here:
 
 - `lang` (optional, default: `de`): set to `de` or `en` for German or English
-  - example `lang="de"`
+    - example `lang="de"`
 - `entry-point-url` (optional, default is the TU Graz entry point url): entry point url to access the api
-  - example `entry-point-url="https://api-dev.tugraz.at"`
+    - example `entry-point-url="https://api-dev.tugraz.at"`
 - `auth` object: you need to set that object property for the auth token
-  - example auth property: `{token: "THE_BEARER_TOKEN"}`
-  - note: most often this should be an attribute that is not set directly, but subscribed at a provider
+    - example auth property: `{token: "THE_BEARER_TOKEN"}`
+    - note: most often this should be an attribute that is not set directly, but subscribed at a provider
 - `organization-id` (optional, default is the first in organisations list): id of the organisation library to which the user needs access rights.
-  - example: `organization-id="1190-F2050"`
-  
+    - example: `organization-id="1190-F2050"`
+
 ### dbp-sublibrary-book-list
 
 You can use this activity to list all books for an organisation. You cal also filter
@@ -111,7 +111,7 @@ Note that you will need a Keycloak server along with a client id for the domain 
 
 - `book-offer-id`: id of the book to borrow
     - example: `book-offer-id="+F20313804"`
-    
+
 ## Design Note
 
 To ensure a uniform and responsive design these activities should occupy 100% width of the window when the activities' width are under 768 px.
@@ -122,10 +122,5 @@ If you are not using the `provider-root` attribute to "terminate" all provider a
 you need to manually add these attributes so that the topic will work properly:
 
 ```html
-<dbp-sublibrary
-        auth
-        requested-login-status
-        analytics-event
->
-</dbp-sublibrary>
+<dbp-sublibrary auth requested-login-status analytics-event> </dbp-sublibrary>
 ```

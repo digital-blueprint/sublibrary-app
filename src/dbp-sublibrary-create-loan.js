@@ -100,7 +100,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     }
 
     async updateCreateLoan() {
-        const select = this.shadowRoot.querySelector("dbp-sublibrary-book-offer-select");
+        const select = this.shadowRoot.querySelector('dbp-sublibrary-book-offer-select');
         let bookOffer = select.dataset.object;
         const createLoanBlock = this.shadowRoot.querySelector('#create-loan-block');
         const loansLoadingIndicator = this.shadowRoot.querySelector('#loans-loading');
@@ -134,7 +134,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                     type: 'book-offer-id',
                     value: this.bookOfferId,
                 },
-            })
+            }),
         );
 
         // TODO: check if library of book matches person's functions
@@ -202,7 +202,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                     type: 'person-id',
                     value: this.personId,
                 },
-            })
+            }),
         );
     }
 
@@ -254,9 +254,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
         if (response.ok) {
             // clear book offer select to hide "loan" button
-            const bookOfferSelect = this._(
-                'dbp-sublibrary-book-offer-select'
-            );
+            const bookOfferSelect = this._('dbp-sublibrary-book-offer-select');
             bookOfferSelect.clear();
 
             this.status = {
@@ -281,7 +279,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     }
 
     _onLoginClicked(e) {
-        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        this.sendSetPropertyEvent('requested-login-status', 'logged-in');
         e.preventDefault();
     }
 
@@ -324,16 +322,16 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                             @change=${this.onBookSelectChanged}
                             @unselect=${this.onBookSelectChanged}
                             value="${this.bookOfferId}"
-                            sublibrary-iri="${this.sublibraryIri}"></dbp-sublibrary-book-offer-select>
+                            sublibrary-iri="${this
+                                .sublibraryIri}"></dbp-sublibrary-book-offer-select>
                         <dbp-reload-button
                             ?disabled=${!this.bookOffer}
                             @click=${this.onReloadButtonClicked}
                             title="${this.bookOffer
-                                    ? i18n.t('create-loan.button-refresh-title', {
-                                        name: this.bookOffer.name,
-                                    })
-                                    : ''}"
-                        ></dbp-reload-button>
+                                ? i18n.t('create-loan.button-refresh-title', {
+                                      name: this.bookOffer.name,
+                                  })
+                                : ''}"></dbp-reload-button>
                     </div>
                 </div>
 
@@ -376,7 +374,8 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),
                 })}">
-                ${i18n.t('error-login-message')} <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
+                ${i18n.t('error-login-message')}
+                <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
             </div>
             <div
                 class="notification is-danger ${classMap({

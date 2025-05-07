@@ -1,8 +1,7 @@
-import {PersonSelect} from "@dbp-toolkit/person-select";
+import {PersonSelect} from '@dbp-toolkit/person-select';
 import {ScopedElementsMixin} from '@dbp-toolkit/common';
 
 export class CustomPersonSelect extends ScopedElementsMixin(PersonSelect) {
-
     // Search for persons by name requesting local data attribute 'email'
     buildUrlData(select, params) {
         let term = params.term.trim();
@@ -22,7 +21,7 @@ export class CustomPersonSelect extends ScopedElementsMixin(PersonSelect) {
 
         let email = person.localData.email;
         if (email !== null && email.length) {
-             text += ` (${email})`;
+            text += ` (${email})`;
         }
 
         return text;

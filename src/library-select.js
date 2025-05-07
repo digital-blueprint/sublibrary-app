@@ -9,7 +9,11 @@ export class LibrarySelect extends ResourceSelect {
     buildUrl(select, url) {
         url += '/sublibraries';
         url +=
-            '?' + new URLSearchParams({lang: select.lang, libraryManager: encodeURIComponent(select.auth['person-id'])}).toString();
+            '?' +
+            new URLSearchParams({
+                lang: select.lang,
+                libraryManager: encodeURIComponent(select.auth['person-id']),
+            }).toString();
         return url;
     }
 
@@ -17,4 +21,3 @@ export class LibrarySelect extends ResourceSelect {
         return `${resource['name']} (${resource['code']})`;
     }
 }
-

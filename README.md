@@ -9,7 +9,7 @@
 
 ![overview](https://raw.githubusercontent.com/digital-blueprint/sublibrary-app/main/docs/overview.svg)
 
-With the dbp sublibrary app you can assign call number, borrow books, return library books, extend loan periods, 
+With the dbp sublibrary app you can assign call number, borrow books, return library books, extend loan periods,
 show current loans, show current book orders and show the budgets.
 
 ## Prerequisites
@@ -29,7 +29,7 @@ git submodule update --init
 # install dependencies
 npm install
 
-# constantly build dist/bundle.js and run a local web-server on port 8001 
+# constantly build dist/bundle.js and run a local web-server on port 8001
 npm run watch-local
 
 # constantly build dist/bundle.js and run a local web-server on port 8001 using a custom assets directory assets_custom/
@@ -43,9 +43,7 @@ Jump to <http://localhost:8001>, and you should get a Single Sign On login page.
 
 Example book barcodes: `+F58330104`, `+F58019101`, `+F53498803`
 
-
 By default, the application is built using the assets in `assets/`. However, custom assets can also be used to build the application. The custom assets can be added to the directory `assets_custom/dbp-sublibrary/assets/`. This allows developers to easily develop and build the application for different environments.
-
 
 ## Remote development
 
@@ -106,6 +104,7 @@ npx @digital-blueprint/cli update-app library
 ## Activities
 
 This app has the following activities:
+
 - `dbp-sublibrary-book-list`
 - `dbp-sublibrary-budget`
 - `dbp-sublibrary-create-loan`
@@ -123,17 +122,17 @@ You can find the documentation of these activities in the [sublibrary activities
 
 You can add multiple attributes to the `<dbp-sublibrary>` tag.
 
-| attribute name | value | Link to description |
-|----------------|-------| ------------|
-| `provider-root` | Boolean | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes) |
-| `lang`         | String | [language-select](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/language-select#attributes) | 
-| `entry-point-url` | String | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes) |
-| `keycloak-config` | Object | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes) |
-| `base-path` | String | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes) |
-| `src` | String | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes) |
-| `html-overrides` | String | [common](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/common#overriding-slots-in-nested-web-components) |
-| `themes` | Array | [theme-switcher](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/theme-switcher#themes-attribute) |
-| `darkModeThemeOverride` | String | [theme-switcher](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/theme-switcher#themes-attribute) |
+| attribute name          | value   | Link to description                                                                                                                   |
+| ----------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `provider-root`         | Boolean | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes)                          |
+| `lang`                  | String  | [language-select](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/language-select#attributes)              |
+| `entry-point-url`       | String  | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes)                          |
+| `keycloak-config`       | Object  | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes)                          |
+| `base-path`             | String  | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes)                          |
+| `src`                   | String  | [app-shell](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell#attributes)                          |
+| `html-overrides`        | String  | [common](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/common#overriding-slots-in-nested-web-components) |
+| `themes`                | Array   | [theme-switcher](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/theme-switcher#themes-attribute)          |
+| `darkModeThemeOverride` | String  | [theme-switcher](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/theme-switcher#themes-attribute)          |
 
 #### Mandatory attributes
 
@@ -141,12 +140,7 @@ If you are not using the `provider-root` attribute to "terminate" all provider a
 you need to manually add these attributes so that the topic will work properly:
 
 ```html
-<dbp-sublibrary
-        auth
-        requested-login-status
-        analytics-event
->
-</dbp-sublibrary>
+<dbp-sublibrary auth requested-login-status analytics-event> </dbp-sublibrary>
 ```
 
 ### Design
@@ -157,4 +151,3 @@ For frontend design customizations, such as logo, colors, font, favicon, and mor
 
 These are common slots for the app-shell. You can find the documentation of these slots in the [app-shell documentation](https://gitlab.tugraz.at/dbp/web-components/toolkit/-/tree/master/packages/app-shell).
 For the app specific slots take a look at the [sublibrary activities](https://github.com/digital-blueprint/sublibrary-app/-/tree/master/src).
-

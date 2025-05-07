@@ -67,9 +67,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         const i18n = this._i18n;
 
         this.updateComplete.then(() => {
-            const $bookOfferSelect = that.$(
-                'dbp-sublibrary-book-offer-select'
-            );
+            const $bookOfferSelect = that.$('dbp-sublibrary-book-offer-select');
             const $locationIdentifierInput = that.$('#location-identifier');
             const locationIdentifierInput = that._('#location-identifier');
             const $locationIdentifierBlock = that.$('#location-identifier-block');
@@ -101,7 +99,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                                 type: 'book-offer-id',
                                 value: that.bookOfferId,
                             },
-                        })
+                        }),
                     );
 
                     // fetch and setup the location identifier suggestions
@@ -113,7 +111,9 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                     })
                         .then((response) => response.json())
                         .then((result) => {
-                            let ids = result['hydra:member'].map((item) => { return item['identifier']; });
+                            let ids = result['hydra:member'].map((item) => {
+                                return item['identifier'];
+                            });
                             new Suggestions(locationIdentifierInput, ids);
                         });
                 })
@@ -137,7 +137,10 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 e.preventDefault();
                 console.log('send');
                 const apiUrl =
-                    that.entryPointUrl + $bookOfferSelect.val() + '?library=' + that.getSublibraryCode();
+                    that.entryPointUrl +
+                    $bookOfferSelect.val() +
+                    '?library=' +
+                    that.getSublibraryCode();
                 console.log(apiUrl);
                 console.log($locationIdentifierInput);
 
@@ -228,11 +231,11 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     }
 
     onReloadButtonClicked(e) {
-        this.$("dbp-sublibrary-book-offer-select").trigger('change');
+        this.$('dbp-sublibrary-book-offer-select').trigger('change');
     }
 
     _onLoginClicked(e) {
-        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        this.sendSetPropertyEvent('requested-login-status', 'logged-in');
         e.preventDefault();
     }
 
@@ -262,16 +265,16 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                         <dbp-sublibrary-book-offer-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                             value="${this.bookOfferId}"
-                            sublibrary-iri="${this.sublibraryIri}"></dbp-sublibrary-book-offer-select>
+                            sublibrary-iri="${this
+                                .sublibraryIri}"></dbp-sublibrary-book-offer-select>
                         <dbp-reload-button
                             ?disabled=${!this.bookOffer}
                             @click=${this.onReloadButtonClicked}
                             title="${this.bookOffer
-                                    ? i18n.t('shelving.button-refresh-title', {
-                                        name: this.bookOffer.name,
-                                    })
-                                    : ''}"
-                        ></dbp-reload-button>
+                                ? i18n.t('shelving.button-refresh-title', {
+                                      name: this.bookOffer.name,
+                                  })
+                                : ''}"></dbp-reload-button>
                     </div>
                 </div>
 
@@ -301,7 +304,8 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),
                 })}">
-                ${i18n.t('error-login-message')}  <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
+                ${i18n.t('error-login-message')}
+                <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
             </div>
             <div
                 class="notification is-danger ${classMap({

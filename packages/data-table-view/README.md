@@ -4,14 +4,18 @@
 
 ```html
 <dbp-data-table-view></dbp-data-table-view>
-<script type="module" src="node_modules/@dbp-toolkit/data-table-view/dist/dbp-data-table-view.js"></script>
+<script
+    type="module"
+    src="node_modules/@dbp-toolkit/data-table-view/dist/dbp-data-table-view.js"></script>
 ```
 
 Or directly via CDN:
 
 ```html
 <dbp-data-table-view></dbp-data-table-view>
-<script type="module" src="https://unpkg.com/@dbp-toolkit/data-table-view@0.2.2/dist/dbp-data-table-view.js"></script>
+<script
+    type="module"
+    src="https://unpkg.com/@dbp-toolkit/data-table-view@0.2.2/dist/dbp-data-table-view.js"></script>
 ```
 
 ## Attributes
@@ -29,8 +33,8 @@ Or directly via CDN:
 - `column-searching` (optional, default: false): add search fields for every column
     - example `<dbp-data-table-view column-searching></pu-data-table-view>`
 - `default-order` (optional, default: [ ]): set the default order as column and direction
-    - example `<dbp-data-table-view default-order='[1,"asc"]'></pu-data-table-view>` 
-    - example `<dbp-data-table-view default-order='[[0,"desc"],[2,"asc"]]'></pu-data-table-view>` 
+    - example `<dbp-data-table-view default-order='[1,"asc"]'></pu-data-table-view>`
+    - example `<dbp-data-table-view default-order='[[0,"desc"],[2,"asc"]]'></pu-data-table-view>`
 
 ## Local development
 
@@ -42,7 +46,7 @@ cd toolkit/packages/data-table-view
 # install dependencies
 yarn install
 
-# constantly build dist/bundle.js and run a local web-server on port 8002 
+# constantly build dist/bundle.js and run a local web-server on port 8002
 yarn run watch-local
 
 # build local packages in dist directory

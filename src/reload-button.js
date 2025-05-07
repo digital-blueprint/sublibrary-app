@@ -5,7 +5,6 @@ import {css, html} from 'lit';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 
 export class ReloadButton extends ScopedElementsMixin(LitElement) {
-
     constructor() {
         super();
         this.disabled = true;
@@ -51,12 +50,12 @@ export class ReloadButton extends ScopedElementsMixin(LitElement) {
     render() {
         return html`
             <a
-            class="control button"
-            id="reload-button"
-            ?disabled="${this.disabled}"
-            title="${this.title}">
-            <dbp-icon name="reload"></dbp-icon>
-        </a>
+                class="control button"
+                id="reload-button"
+                ?disabled="${this.disabled}"
+                title="${this.title}">
+                <dbp-icon name="reload"></dbp-icon>
+            </a>
         `;
     }
 }

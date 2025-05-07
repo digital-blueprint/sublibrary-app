@@ -129,7 +129,10 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         const parts = this.sublibraryIri.split('/');
         const sublibraryIdentifier = parts[parts.length - 1];
 
-        const apiUrl = this.entryPointUrl + '/sublibrary/book-loans?perPage=9999999&sublibrary=' + sublibraryIdentifier;
+        const apiUrl =
+            this.entryPointUrl +
+            '/sublibrary/book-loans?perPage=9999999&sublibrary=' +
+            sublibraryIdentifier;
         const $loansLoadingIndicator = this.$('#loans-loading');
 
         $loansLoadingIndicator.show();
@@ -255,10 +258,10 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                         loan.object.description,
                         `<div class="button-col">
                             <${button} data-id="${
-                            loan['@id']
-                        }" data-type="contact" data-book-name="${escapeHtml(loan.object.name)}"
+                                loan['@id']
+                            }" data-type="contact" data-book-name="${escapeHtml(loan.object.name)}"
                                         value="${i18n.t(
-                                            'renew-loan.contact-value'
+                                            'renew-loan.contact-value',
                                         )}" name="send" type="is-small"
                                         title="${i18n.t('renew-loan.contact-title', {
                                             personName: getPersonDisplayName(loan.borrower),
@@ -325,9 +328,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
 
         // search for the dbp-button
         path.some((item, index) => {
-            if (
-                item.nodeName?.toUpperCase() === 'dbp-button'.toUpperCase()
-            ) {
+            if (item.nodeName?.toUpperCase() === 'dbp-button'.toUpperCase()) {
                 button = item;
                 buttonIndex = index;
 
@@ -363,21 +364,23 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                             Authorization: 'Bearer ' + this.auth.token,
                         },
                     });
-                    if (!result.ok)
-                        throw result;
+                    if (!result.ok) throw result;
                     let loan = await result.json();
                     const bookName = button.getAttribute('data-book-name');
                     const subject = i18n.t('renew-loan.contact-subject', {bookName: bookName});
 
-                    let personUrl =  this.entryPointUrl + loan.borrower['@id'] + '?' + new URLSearchParams({'includeLocal': 'email'}).toString();
+                    let personUrl =
+                        this.entryPointUrl +
+                        loan.borrower['@id'] +
+                        '?' +
+                        new URLSearchParams({includeLocal: 'email'}).toString();
                     let personResult = await fetch(personUrl, {
                         headers: {
                             'Content-Type': 'application/ld+json',
                             Authorization: 'Bearer ' + this.auth.token,
                         },
                     });
-                    if (!personResult.ok)
-                        throw personResult;
+                    if (!personResult.ok) throw personResult;
                     let person = await personResult.json();
 
                     location.href = `mailto:${person.localData.email}?subject=${subject}`;
@@ -392,7 +395,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
     }
 
     _onLoginClicked(e) {
-        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        this.sendSetPropertyEvent('requested-login-status', 'logged-in');
         e.preventDefault();
     }
 
@@ -462,7 +465,8 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),
                 })}">
-                ${i18n.t('error-login-message')} <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
+                ${i18n.t('error-login-message')}
+                <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
             </div>
             <div
                 class="notification is-danger ${classMap({

@@ -70,9 +70,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         const i18n = this._i18n;
 
         this.updateComplete.then(() => {
-            const $bookOfferSelect = that.$(
-                'dbp-sublibrary-book-offer-select'
-            );
+            const $bookOfferSelect = that.$('dbp-sublibrary-book-offer-select');
             const $returnBookBlock = that.$('#return-book-block');
             const $loansLoadingIndicator = that.$('#loans-loading');
 
@@ -94,7 +92,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                                 type: 'book-offer-id',
                                 value: that.bookOfferId,
                             },
-                        })
+                        }),
                     );
 
                     $loansLoadingIndicator.show();
@@ -136,7 +134,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                         .catch((error) => {
                             that.handleFetchError(
                                 error,
-                                i18n.t('renew-loan.error-load-loans-summary')
+                                i18n.t('renew-loan.error-load-loans-summary'),
                             );
                         });
                 })
@@ -258,7 +256,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     }
 
     _onLoginClicked(e) {
-        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        this.sendSetPropertyEvent('requested-login-status', 'logged-in');
         e.preventDefault();
     }
 
@@ -330,7 +328,8 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),
                 })}">
-                ${i18n.t('error-login-message')}  <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
+                ${i18n.t('error-login-message')}
+                <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
             </div>
             <div
                 class="notification is-danger ${classMap({

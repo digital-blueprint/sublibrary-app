@@ -142,7 +142,10 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
         const parts = this.sublibraryIri.split('/');
         const sublibraryIdentifier = parts[parts.length - 1];
 
-        const apiUrl = this.entryPointUrl + '/sublibrary/book-orders?perPage=9999999&sublibrary=' + sublibraryIdentifier;
+        const apiUrl =
+            this.entryPointUrl +
+            '/sublibrary/book-orders?perPage=9999999&sublibrary=' +
+            sublibraryIdentifier;
         const $booksLoadingIndicator = this.$('#books-loading');
 
         $booksLoadingIndicator.show();
@@ -235,7 +238,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                                 getEventStatusName(
                                     i18n,
                                     bookOrder.orderedItem.orderDelivery.deliveryStatus.eventStatus
-                                        .name
+                                        .name,
                                 ),
                                 bookOrder.receivingNote,
                             ];
@@ -319,7 +322,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     }
 
     _onLoginClicked(e) {
-        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        this.sendSetPropertyEvent('requested-login-status', 'logged-in');
         e.preventDefault();
     }
 
@@ -379,7 +382,8 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),
                 })}">
-                ${i18n.t('error-login-message')} <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
+                ${i18n.t('error-login-message')}
+                <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
             </div>
             <div
                 class="notification is-danger ${classMap({

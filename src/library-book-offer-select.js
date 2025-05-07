@@ -11,7 +11,7 @@ import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
 import {AdapterLitElement} from '@dbp-toolkit/common';
-import * as errorUtils from "@dbp-toolkit/common/error";
+import * as errorUtils from '@dbp-toolkit/common/error';
 
 export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElement) {
     constructor() {
@@ -210,7 +210,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                             detail: {
                                 value: identifier,
                             },
-                        })
+                        }),
                     );
                 }
             })
@@ -255,7 +255,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                                 value: identifier,
                             },
                             bubbles: true,
-                        })
+                        }),
                     );
                 })
                 .catch(() => {
@@ -323,7 +323,7 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                     value: this.value,
                 },
                 bubbles: true,
-            })
+            }),
         );
     }
 

@@ -29,18 +29,18 @@ export function getLibraryCodeFromId(id) {
 export function escapeHtml(str) {
     return str.replace(/[<>&"]/g, (char) => {
         switch (char) {
-          case '<':
-            return '&lt;';
-          case '>':
-            return '&gt;';
-          case '&':
-            return '&amp;';
-          case '"':
-            return '&quot;';
-          default:
-            return char;
+            case '<':
+                return '&lt;';
+            case '>':
+                return '&gt;';
+            case '&':
+                return '&amp;';
+            case '"':
+                return '&quot;';
+            default:
+                return char;
         }
-      });
+    });
 }
 
 /**
@@ -51,19 +51,19 @@ export function escapeHtml(str) {
  * @returns {number|null} The earliest year found in the publication date string, or null if no valid year is found.
  */
 export function extractEarliestPossibleYearFromPublicationDate(publicationDate) {
-  const matches = publicationDate.replace(/[()[\]]/g, '').match(/\d+/g);
-  if (!matches) {
-    return null;
-  }
-
-  let earliestYear = null;
-  for (const match of matches) {
-    const year = Number(match);
-    // Ignore anything below the year 1000, since that could reference editions and not years.
-    if (year >= 1000 && (earliestYear === null || year < earliestYear)) {
-      earliestYear = year;
+    const matches = publicationDate.replace(/[()[\]]/g, '').match(/\d+/g);
+    if (!matches) {
+        return null;
     }
-  }
 
-  return earliestYear;
+    let earliestYear = null;
+    for (const match of matches) {
+        const year = Number(match);
+        // Ignore anything below the year 1000, since that could reference editions and not years.
+        if (year >= 1000 && (earliestYear === null || year < earliestYear)) {
+            earliestYear = year;
+        }
+    }
+
+    return earliestYear;
 }

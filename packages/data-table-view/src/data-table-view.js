@@ -306,7 +306,7 @@ export class DataTableView extends AdapterLitElement {
 
             .dataTables_filter input {
                 border-radius: 0;
-                border: ;
+                border:;
                 padding: 0.1em;
                 color: var(--dbp-content);
             }

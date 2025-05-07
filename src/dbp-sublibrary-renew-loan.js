@@ -120,7 +120,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                 type: 'person-id',
                                 value: that.personIri,
                             },
-                        })
+                        }),
                     );
 
                     that.loadTable();
@@ -141,7 +141,12 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         const libParts = this.sublibraryIri.split('/');
         const sublibraryIdentifier = libParts[libParts.length - 1];
 
-        const apiUrl = this.entryPointUrl + '/sublibrary/book-loans?perPage=9999999&sublibrary=' + sublibraryIdentifier + '&borrower=' + personIdentifier;
+        const apiUrl =
+            this.entryPointUrl +
+            '/sublibrary/book-loans?perPage=9999999&sublibrary=' +
+            sublibraryIdentifier +
+            '&borrower=' +
+            personIdentifier;
 
         const $noLoansBlock = this.$('#no-loans-block');
         const $loansLoadingIndicator = this.$('#loans-loading');
@@ -216,10 +221,10 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                         `<div class="date-col">
                                             <input data-date-id="${loan['@id']}"
                                                    type="date" min="${commonUtils.dateToInputDateString(
-                                                       minDate
+                                                       minDate,
                                                    )}"
                                                    value="${commonUtils.dateToInputDateString(
-                                                       loan.endTime
+                                                       loan.endTime,
                                                    )}">
                                             <input data-time-id="${loan['@id']}"
                                                    type="time" class="hidden" value="23:59:59">
@@ -229,21 +234,21 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                                             <${button} data-id="${loan['@id']}" data-type="renew"
                                                         value="Ok" name="send" type="is-small"
                                                         title="${i18n.t(
-                                                            'renew-loan.renew-loan'
+                                                            'renew-loan.renew-loan',
                                                         )}" no-spinner-on-click></${button}>
                                             <${button} data-id="${
-                                            loan['@id']
-                                        }" data-type="contact" data-book-name="${escapeHtml(loan.object.name)}"
+                                                loan['@id']
+                                            }" data-type="contact" data-book-name="${escapeHtml(loan.object.name)}"
                                                         value="${i18n.t(
-                                                            'renew-loan.contact-value'
+                                                            'renew-loan.contact-value',
                                                         )}" name="send" type="is-small"
                                                         title="${i18n.t(
                                                             'renew-loan.contact-title',
                                                             {
                                                                 personName: getPersonDisplayName(
-                                                                    that.person
+                                                                    that.person,
                                                                 ),
-                                                            }
+                                                            },
                                                         )}" no-spinner-on-click></${button}>
                                         </div>`,
                                     ];
@@ -268,7 +273,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 return true;
             },
             10000,
-            100
+            100,
         );
     }
 
@@ -316,7 +321,10 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
 
         // search for the dbp-button
         path.some((item, index) => {
-            if (item.nodeName !== undefined && item.nodeName.toUpperCase() === 'dbp-button'.toUpperCase()) {
+            if (
+                item.nodeName !== undefined &&
+                item.nodeName.toUpperCase() === 'dbp-button'.toUpperCase()
+            ) {
                 button = item;
                 buttonIndex = index;
 
@@ -344,10 +352,10 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 button.start();
                 const vdtv1 = this._('#book-loans-1');
                 const dateSelect = vdtv1.shadowRoot.querySelector(
-                    `input[data-date-id='${loanId}']`
+                    `input[data-date-id='${loanId}']`,
                 );
                 const timeSelect = vdtv1.shadowRoot.querySelector(
-                    `input[data-time-id='${loanId}']`
+                    `input[data-time-id='${loanId}']`,
                 );
                 let isoString = dateSelect.value;
                 if (timeSelect.value) isoString += 'T' + timeSelect.value;
@@ -442,7 +450,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     }
 
     _onLoginClicked(e) {
-        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        this.sendSetPropertyEvent('requested-login-status', 'logged-in');
         e.preventDefault();
     }
 
@@ -502,7 +510,8 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),
                 })}">
-                ${i18n.t('error-login-message')} <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
+                ${i18n.t('error-login-message')}
+                <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
             </div>
             <div
                 class="notification is-danger ${classMap({

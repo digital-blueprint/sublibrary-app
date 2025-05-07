@@ -166,7 +166,10 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         const parts = this.sublibraryIri.split('/');
         const sublibraryIdentifier = parts[parts.length - 1];
 
-        const apiUrl = this.entryPointUrl + '/sublibrary/book-offers?perPage=9999999&sublibrary=' + sublibraryIdentifier;
+        const apiUrl =
+            this.entryPointUrl +
+            '/sublibrary/book-offers?perPage=9999999&sublibrary=' +
+            sublibraryIdentifier;
         const $booksLoadingIndicator = that.$('#books-loading');
 
         $booksLoadingIndicator.show();
@@ -207,8 +210,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             })
             .catch((error) => {
                 that.handleFetchError(error, that._i18n.t('book-list.error-load-books'));
-                if(this.abortController === null)
-                    $booksLoadingIndicator.hide();
+                if (this.abortController === null) $booksLoadingIndicator.hide();
             });
     }
 
@@ -267,7 +269,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                             datePublishedString = datePublished.getFullYear().toString();
                         }
 
-                        let datePublishedSortValue = extractEarliestPossibleYearFromPublicationDate(datePublishedString);
+                        let datePublishedSortValue =
+                            extractEarliestPossibleYearFromPublicationDate(datePublishedString);
 
                         const row = [
                             bookOffer.book.title,
@@ -449,7 +452,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
     }
 
     _onLoginClicked(e) {
-        this.sendSetPropertyEvent('requested-login-status', "logged-in");
+        this.sendSetPropertyEvent('requested-login-status', 'logged-in');
         e.preventDefault();
     }
 
@@ -530,7 +533,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),
                 })}">
-                ${i18n.t('error-login-message')} <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
+                ${i18n.t('error-login-message')}
+                <a href="#" @click="${this._onLoginClicked}">${i18n.t('error-login-link')}</a>
             </div>
             <div
                 class="notification is-danger ${classMap({
