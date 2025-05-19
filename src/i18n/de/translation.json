@@ -41,7 +41,7 @@
         "success-body": "Das Buch wurde erfolgreich entlehnt.",
         "success-summary": "Buchentlehnung erfolgreich"
     },
-    "error-login-link": "Zur Anmeldung",
+    "error-login-link": "Anmelden",
     "error-login-message": "Bitte melden Sie sich an, um diese Funktion nutzen zu können.",
     "error-permission-message": "Sie müssen Bibliotheksbeauftragte/r sein um diese Funktion nutzen zu können!",
     "error-summary": "Ein Fehler ist aufgetreten",
