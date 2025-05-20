@@ -12,7 +12,7 @@ export class LibrarySelect extends ResourceSelect {
             '?' +
             new URLSearchParams({
                 lang: select.lang,
-                libraryManager: encodeURIComponent(select.auth['person-id']),
+                libraryManager: encodeURIComponent(select.auth['user-id']),
             }).toString();
         return url;
     }
