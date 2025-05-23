@@ -310,8 +310,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                         <dbp-person-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                             @change=${this.onPersonSelectChanged}
-                            value="${this.personId}">
-                        </dbp-person-select>
+                            value="${this.personId}"></dbp-person-select>
                     </div>
                 </div>
                 <div class="field">

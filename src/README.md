@@ -122,5 +122,5 @@ If you are not using the `provider-root` attribute to "terminate" all provider a
 you need to manually add these attributes so that the topic will work properly:
 
 ```html
-<dbp-sublibrary auth requested-login-status analytics-event> </dbp-sublibrary>
+<dbp-sublibrary auth requested-login-status analytics-event></dbp-sublibrary>
 ```

@@ -1,12 +1,12 @@
-version: '3'
+version: "3"
 
 services:
-    apache:
-        build: .
-        volumes:
-            - ..:/usr/local/apache2/htdocs
-            - ./httpd.conf:/usr/local/apache2/conf/httpd.conf
-            - ./httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
-        ports:
-            - '8001:80'
-            - '9001:443'
+  apache:
+    build: .
+    volumes:
+      - ..:/usr/local/apache2/htdocs
+      - ./httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./httpd-ssl.conf:/usr/local/apache2/conf/extra/httpd-ssl.conf
+    ports:
+      - "8001:80"
+      - "9001:443"

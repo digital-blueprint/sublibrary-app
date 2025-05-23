@@ -459,12 +459,16 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
     render() {
         let locationIdentifierItemTemplates = [];
         this.locationIdentifiers.forEach((item) => {
-            locationIdentifierItemTemplates.push(html`<option value="${item}">${item}</option>`);
+            locationIdentifierItemTemplates.push(html`
+                <option value="${item}">${item}</option>
+            `);
         });
 
         let inventoryYearItemTemplates = [];
         this.inventoryYears.forEach((item) => {
-            inventoryYearItemTemplates.push(html`<option value="${item}">${item}</option>`);
+            inventoryYearItemTemplates.push(html`
+                <option value="${item}">${item}</option>
+            `);
         });
 
         const select2CSS = commonUtils.getAssetURL(select2CSSPath);
