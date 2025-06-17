@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Update PersonSelect from toolkit and adapt: no custom derivation of PersonSelect required anymore
+
 ## 2.2.3
 
 - New optional extended application layout for wider screens

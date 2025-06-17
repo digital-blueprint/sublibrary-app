@@ -4,7 +4,6 @@ import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@dbp-toolkit/common';
 import {send as notify} from '@dbp-toolkit/common/notification';
 import {LibraryElement} from './library-element.js';
-import {CustomPersonSelect} from './custom-person-select.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {DataTableView} from '@dbp-toolkit/data-table-view';
@@ -12,6 +11,7 @@ import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
 import {getPersonDisplayName, escapeHtml} from './utils.js';
 import {LibrarySelect} from './library-select.js';
+import {PersonSelect} from '@dbp-toolkit/person-select';
 
 class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -30,7 +30,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     static get scopedElements() {
         return {
             'dbp-library-select': LibrarySelect,
-            'dbp-person-select': CustomPersonSelect,
+            'dbp-person-select': PersonSelect,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-button': Button,
             'dbp-data-table-view': DataTableView,
@@ -476,6 +476,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                         <dbp-person-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                             value="${this.personIri}"
+                            local-data-attributes='["email"]'
                             sublibrary-iri="${this.sublibraryIri}"
                             show-reload-button
                             reload-button-title="${this.person
