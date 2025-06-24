@@ -11,6 +11,7 @@ export class LibrarySelect extends ResourceSelect {
         url +=
             '?' +
             new URLSearchParams({
+                // FIXME: lang can be removed once relay-sublibrary-bundle v0.5.5 is deployed
                 lang: select.lang,
                 libraryManager: encodeURIComponent(select.auth['user-id']),
             }).toString();
