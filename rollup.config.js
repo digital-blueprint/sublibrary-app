@@ -12,7 +12,13 @@ import license from 'rollup-plugin-license';
 import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
-import {getPackagePath, getBuildInfo, generateTLSConfig, getDistPath, getCopyTargets} from '@dbp-toolkit/dev-utils';
+import {
+    getPackagePath,
+    getBuildInfo,
+    generateTLSConfig,
+    getDistPath,
+    getCopyTargets,
+} from '@dbp-toolkit/dev-utils';
 import {createRequire} from 'node:module';
 
 const require = createRequire(import.meta.url);
