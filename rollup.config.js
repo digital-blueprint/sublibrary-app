@@ -18,6 +18,7 @@ import {
     generateTLSConfig,
     getDistPath,
     getCopyTargets,
+    getUrlOptions,
 } from '@dbp-toolkit/dev-utils';
 import {createRequire} from 'node:module';
 
@@ -236,15 +237,7 @@ Dependencies:
                 include: 'node_modules/**',
             }),
             json(),
-            urlPlugin({
-                limit: 0,
-                include: [
-                    await getPackagePath('suggestions', '**/*.css'),
-                    await getPackagePath('select2', '**/*.css'),
-                ],
-                emitFiles: true,
-                fileName: 'shared/[name].[hash][extname]',
-            }),
+            urlPlugin(await getUrlOptions(pkg.name, 'shared')),
             useTerser ? terser() : false,
             whitelabel &&
                 copy({
