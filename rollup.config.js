@@ -277,22 +277,6 @@ Dependencies:
                             ),
                             dest: 'dist/' + (await getDistPath(pkg.name)),
                         },
-                        {
-                            src: await getPackagePath('datatables.net-dt', 'css'),
-                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/data-table-view')),
-                        },
-                        {
-                            src: await getPackagePath('datatables.net-dt', 'images'),
-                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/data-table-view')),
-                        },
-                        {
-                            src: await getPackagePath('datatables.net-responsive-dt', 'css'),
-                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/data-table-view')),
-                        },
-                        {
-                            src: await getPackagePath('datatables.net-buttons-dt', 'css'),
-                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/data-table-view')),
-                        },
                         ...(await getCopyTargets(pkg.name, 'dist')),
                     ],
                 }),
@@ -337,22 +321,6 @@ Dependencies:
                                 'misc/browser-check.js',
                             ),
                             dest: 'dist/' + (await getDistPath(pkg.name)),
-                        },
-                        {
-                            src: await getPackagePath('datatables.net-dt', 'css'),
-                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/data-table-view')),
-                        },
-                        {
-                            src: await getPackagePath('datatables.net-dt', 'images'),
-                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/data-table-view')),
-                        },
-                        {
-                            src: await getPackagePath('datatables.net-responsive-dt', 'css'),
-                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/data-table-view')),
-                        },
-                        {
-                            src: await getPackagePath('datatables.net-buttons-dt', 'css'),
-                            dest: 'dist/' + (await getDistPath('@dbp-toolkit/data-table-view')),
                         },
                         ...(await getCopyTargets(pkg.name, 'dist')),
                     ],

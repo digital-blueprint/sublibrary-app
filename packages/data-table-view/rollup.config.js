@@ -9,7 +9,7 @@ import urlPlugin from '@rollup/plugin-url';
 import del from 'rollup-plugin-delete';
 import json from '@rollup/plugin-json';
 import emitEJS from 'rollup-plugin-emit-ejs';
-import {getPackagePath, getDistPath} from '@dbp-toolkit/dev-utils';
+import {getDistPath, getCopyTargets, getUrlOptions} from '@dbp-toolkit/dev-utils';
 import config from '../../vendor/toolkit/demo.common.config.js';
 import {createRequire} from 'node:module';
 
@@ -70,35 +70,10 @@ export default (async () => {
             !isRolldown && resolve(),
             !isRolldown && commonjs(),
             !isRolldown && json(),
-            urlPlugin({
-                limit: 0,
-                emitFiles: true,
-                fileName: 'shared/[name].[hash][extname]',
-            }),
+            urlPlugin(await getUrlOptions(pkg.name, 'shared')),
             build !== 'local' && build !== 'test' ? terser() : false,
             copy({
-                targets: [
-                    {
-                        src: await getPackagePath('@dbp-toolkit/common', 'assets/icons/*.svg'),
-                        dest: 'dist/' + (await getDistPath('@dbp-toolkit/common', 'icons')),
-                    },
-                    {
-                        src: await getPackagePath('datatables.net-dt', 'css'),
-                        dest: 'dist/' + (await getDistPath(pkg.name)),
-                    },
-                    {
-                        src: await getPackagePath('datatables.net-dt', 'images'),
-                        dest: 'dist/' + (await getDistPath(pkg.name)),
-                    },
-                    {
-                        src: await getPackagePath('datatables.net-responsive-dt', 'css'),
-                        dest: 'dist/' + (await getDistPath(pkg.name)),
-                    },
-                    {
-                        src: await getPackagePath('datatables.net-buttons-dt', 'css'),
-                        dest: 'dist/' + (await getDistPath(pkg.name)),
-                    },
-                ],
+                targets: [...(await getCopyTargets(pkg.name, 'dist'))],
             }),
             process.env.ROLLUP_WATCH === 'true'
                 ? serve({
