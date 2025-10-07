@@ -240,7 +240,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     }
 
     render() {
-        const suggestionsCSS = commonUtils.getAssetURL(suggestionsCSSPath);
+        const suggestionsCSS = commonUtils.getAbsoluteURL(suggestionsCSSPath);
         const i18n = this._i18n;
 
         return html`
