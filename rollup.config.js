@@ -40,6 +40,7 @@ let customAssetsPath;
 let devPath = 'assets_custom/dbp-sublibrary/assets/';
 // deployment path
 let deploymentPath = '../';
+let isRolldown = process.argv.some((arg) => arg.includes('rolldown'));
 
 // set whitelabel bool according to used environment
 if (
@@ -148,6 +149,9 @@ export default (async () => {
             sourcemap: true,
         },
         treeshake: treeshake,
+        moduleTypes: {
+            '.css': 'js', // work around rolldown handling the CSS import before the URL plugin can
+        },
         plugins: [
             del({
                 targets: 'dist/*',
@@ -198,9 +202,10 @@ export default (async () => {
                         shortName: config.shortName,
                     },
                 }),
-            resolve({
-                browser: true,
-            }),
+            !isRolldown &&
+                resolve({
+                    browser: true,
+                }),
             checkLicenses &&
                 license({
                     banner: {
@@ -233,10 +238,11 @@ Dependencies:
                         },
                     },
                 }),
-            commonjs({
-                include: 'node_modules/**',
-            }),
-            json(),
+            !isRolldown &&
+                commonjs({
+                    include: 'node_modules/**',
+                }),
+            !isRolldown && json(),
             urlPlugin(await getUrlOptions(pkg.name, 'shared')),
             useTerser ? terser() : false,
             whitelabel &&

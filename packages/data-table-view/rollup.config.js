@@ -16,6 +16,7 @@ import {createRequire} from 'node:module';
 const require = createRequire(import.meta.url);
 const build = typeof process.env.BUILD !== 'undefined' ? process.env.BUILD : 'local';
 console.log('build: ' + build);
+let isRolldown = process.argv.some((arg) => arg.includes('rolldown'));
 
 const pkg = require('./package.json');
 const basePath = '/dist/';
@@ -31,7 +32,7 @@ export default (async () => {
         output: {
             dir: 'dist',
             entryFileNames: '[name].js',
-            chunkFileNames: 'shared/[name].[hash].[format].js',
+            chunkFileNames: 'shared/[name].[hash].js',
             format: 'esm',
             sourcemap: true,
         },
@@ -41,6 +42,9 @@ export default (async () => {
                 return;
             }
             warn(warning);
+        },
+        moduleTypes: {
+            '.css': 'js', // work around rolldown handling the CSS import before the URL plugin can
         },
         plugins: [
             del({
@@ -63,9 +67,9 @@ export default (async () => {
                     keyCloakClientId: config.keyCloakClientId,
                 },
             }),
-            resolve(),
-            commonjs(),
-            json(),
+            !isRolldown && resolve(),
+            !isRolldown && commonjs(),
+            !isRolldown && json(),
             urlPlugin({
                 limit: 0,
                 emitFiles: true,
