@@ -9,9 +9,11 @@ import urlPlugin from '@rollup/plugin-url';
 import del from 'rollup-plugin-delete';
 import json from '@rollup/plugin-json';
 import emitEJS from 'rollup-plugin-emit-ejs';
-import {getPackagePath, getDistPath} from '../../vendor/toolkit/rollup.utils.js';
+import {getPackagePath, getDistPath} from '@dbp-toolkit/dev-utils';
 import config from '../../vendor/toolkit/demo.common.config.js';
+import {createRequire} from 'node:module';
 
+const require = createRequire(import.meta.url);
 const build = typeof process.env.BUILD !== 'undefined' ? process.env.BUILD : 'local';
 console.log('build: ' + build);
 
