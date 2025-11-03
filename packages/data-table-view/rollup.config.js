@@ -2,14 +2,12 @@ import {globSync} from 'glob';
 import url from 'url';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import copy from 'rollup-plugin-copy';
 import terser from '@rollup/plugin-terser';
 import serve from 'rollup-plugin-serve';
-import urlPlugin from '@rollup/plugin-url';
 import del from 'rollup-plugin-delete';
 import json from '@rollup/plugin-json';
 import emitEJS from 'rollup-plugin-emit-ejs';
-import {getDistPath, getCopyTargets, getUrlOptions} from '@dbp-toolkit/dev-utils';
+import {getDistPath, assetPlugin} from '@dbp-toolkit/dev-utils';
 import config from '../../vendor/toolkit/demo.common.config.js';
 import {createRequire} from 'node:module';
 
@@ -70,11 +68,8 @@ export default (async () => {
             !isRolldown && resolve(),
             !isRolldown && commonjs(),
             !isRolldown && json(),
-            urlPlugin(await getUrlOptions(pkg.name, 'shared')),
             build !== 'local' && build !== 'test' ? terser() : false,
-            copy({
-                targets: [...(await getCopyTargets(pkg.name, 'dist'))],
-            }),
+            await assetPlugin(pkg.name, 'dist'),
             process.env.ROLLUP_WATCH === 'true'
                 ? serve({
                       contentBase: '.',
