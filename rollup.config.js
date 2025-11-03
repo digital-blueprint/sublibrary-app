@@ -3,7 +3,6 @@ import process from 'node:process';
 import {globSync} from 'node:fs';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 import serve from 'rollup-plugin-serve';
 import license from 'rollup-plugin-license';
@@ -15,7 +14,6 @@ import {
     getBuildInfo,
     generateTLSConfig,
     getDistPath,
-    getUrlOptions,
     assetPlugin,
 } from '@dbp-toolkit/dev-utils';
 import {createRequire} from 'node:module';
@@ -25,7 +23,6 @@ const pkg = require('./package.json');
 const appEnv = typeof process.env.APP_ENV !== 'undefined' ? process.env.APP_ENV : 'local';
 const watch = process.env.ROLLUP_WATCH === 'true';
 const buildFull = (!watch && appEnv !== 'test') || process.env.FORCE_FULL !== undefined;
-let useTerser = buildFull;
 let useBabel = buildFull;
 let checkLicenses = buildFull;
 let treeshake = buildFull;
@@ -145,6 +142,7 @@ export default (async () => {
             chunkFileNames: 'shared/[name].[hash].js',
             format: 'esm',
             sourcemap: true,
+            minify: buildFull,
         },
         treeshake: treeshake,
         moduleTypes: {
@@ -241,7 +239,6 @@ Dependencies:
                     include: 'node_modules/**',
                 }),
             !isRolldown && json(),
-            useTerser ? terser() : false,
             whitelabel &&
                 (await assetPlugin(pkg.name, 'dist', {
                     copyTargets: [

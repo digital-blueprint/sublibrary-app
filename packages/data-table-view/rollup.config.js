@@ -2,7 +2,6 @@ import {globSync} from 'node:fs';
 import url from 'url';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import terser from '@rollup/plugin-terser';
 import serve from 'rollup-plugin-serve';
 import del from 'rollup-plugin-delete';
 import json from '@rollup/plugin-json';
@@ -33,6 +32,7 @@ export default (async () => {
             chunkFileNames: 'shared/[name].[hash].js',
             format: 'esm',
             sourcemap: true,
+            minify: build !== 'local' && build !== 'test',
         },
         onwarn: function (warning, warn) {
             // keycloak bundled code uses eval
@@ -68,7 +68,6 @@ export default (async () => {
             !isRolldown && resolve(),
             !isRolldown && commonjs(),
             !isRolldown && json(),
-            build !== 'local' && build !== 'test' ? terser() : false,
             await assetPlugin(pkg.name, 'dist'),
             process.env.ROLLUP_WATCH === 'true'
                 ? serve({
