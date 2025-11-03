@@ -3,7 +3,6 @@ import url from 'url';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import serve from 'rollup-plugin-serve';
-import del from 'rollup-plugin-delete';
 import json from '@rollup/plugin-json';
 import emitEJS from 'rollup-plugin-emit-ejs';
 import {getDistPath, assetPlugin} from '@dbp-toolkit/dev-utils';
@@ -33,6 +32,7 @@ export default (async () => {
             format: 'esm',
             sourcemap: true,
             minify: build !== 'local' && build !== 'test',
+            cleanDir: true,
         },
         onwarn: function (warning, warn) {
             // keycloak bundled code uses eval
@@ -45,9 +45,6 @@ export default (async () => {
             '.css': 'js', // work around rolldown handling the CSS import before the URL plugin can
         },
         plugins: [
-            del({
-                targets: 'dist/*',
-            }),
             emitEJS({
                 src: 'assets',
                 include: ['**/*.ejs', '**/.*.ejs'],

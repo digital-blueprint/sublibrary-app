@@ -6,7 +6,6 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import serve from 'rollup-plugin-serve';
 import license from 'rollup-plugin-license';
-import del from 'rollup-plugin-delete';
 import emitEJS from 'rollup-plugin-emit-ejs';
 import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 import {
@@ -143,15 +142,13 @@ export default (async () => {
             format: 'esm',
             sourcemap: true,
             minify: buildFull,
+            cleanDir: true,
         },
         treeshake: treeshake,
         moduleTypes: {
             '.css': 'js', // work around rolldown handling the CSS import before the URL plugin can
         },
         plugins: [
-            del({
-                targets: 'dist/*',
-            }),
             whitelabel &&
                 emitEJS({
                     src: 'assets',
