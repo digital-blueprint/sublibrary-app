@@ -1,9 +1,6 @@
 import {globSync} from 'node:fs';
 import url from 'url';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
 import serve from 'rollup-plugin-serve';
-import json from '@rollup/plugin-json';
 import emitEJS from 'rollup-plugin-emit-ejs';
 import {getDistPath, assetPlugin} from '@dbp-toolkit/dev-utils';
 import config from '../../vendor/toolkit/demo.common.config.js';
@@ -12,7 +9,6 @@ import {createRequire} from 'node:module';
 const require = createRequire(import.meta.url);
 const build = typeof process.env.BUILD !== 'undefined' ? process.env.BUILD : 'local';
 console.log('build: ' + build);
-let isRolldown = process.argv.some((arg) => arg.includes('rolldown'));
 
 const pkg = require('./package.json');
 const basePath = '/dist/';
@@ -62,9 +58,6 @@ export default (async () => {
                     keyCloakClientId: config.keyCloakClientId,
                 },
             }),
-            !isRolldown && resolve(),
-            !isRolldown && commonjs(),
-            !isRolldown && json(),
             await assetPlugin(pkg.name, 'dist'),
             process.env.ROLLUP_WATCH === 'true'
                 ? serve({

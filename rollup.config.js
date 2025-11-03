@@ -1,9 +1,6 @@
 import url from 'node:url';
 import process from 'node:process';
 import {globSync} from 'node:fs';
-import resolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import json from '@rollup/plugin-json';
 import serve from 'rollup-plugin-serve';
 import license from 'rollup-plugin-license';
 import emitEJS from 'rollup-plugin-emit-ejs';
@@ -34,7 +31,6 @@ let customAssetsPath;
 let devPath = 'assets_custom/dbp-sublibrary/assets/';
 // deployment path
 let deploymentPath = '../';
-let isRolldown = process.argv.some((arg) => arg.includes('rolldown'));
 
 // set whitelabel bool according to used environment
 if (
@@ -195,10 +191,6 @@ export default (async () => {
                         shortName: config.shortName,
                     },
                 }),
-            !isRolldown &&
-                resolve({
-                    browser: true,
-                }),
             checkLicenses &&
                 license({
                     banner: {
@@ -231,11 +223,6 @@ Dependencies:
                         },
                     },
                 }),
-            !isRolldown &&
-                commonjs({
-                    include: 'node_modules/**',
-                }),
-            !isRolldown && json(),
             whitelabel &&
                 (await assetPlugin(pkg.name, 'dist', {
                     copyTargets: [
