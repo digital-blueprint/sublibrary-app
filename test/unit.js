@@ -43,9 +43,9 @@ suite('dbp-sublibrary-app basics', () => {
 suite('extractEarliestPossibleYearFromPublicationDate', () => {
     test('test various things', () => {
         expect(extractEarliestPossibleYearFromPublicationDate('(1980)')).to.equal(1980);
-        expect(
-            extractEarliestPossibleYearFromPublicationDate('© 2015 [erschienen 2014]'),
-        ).to.equal(2014);
+        expect(extractEarliestPossibleYearFromPublicationDate('© 2015 [erschienen 2014]')).to.equal(
+            2014,
+        );
         expect(extractEarliestPossibleYearFromPublicationDate('1988 [erschienen] 1989')).to.equal(
             1988,
         );
