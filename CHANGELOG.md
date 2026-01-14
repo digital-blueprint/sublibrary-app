@@ -1,8 +1,9 @@
 # Changelog
 
-## Unreleased
+## 2.3.0
 
 - Update PersonSelect from toolkit and adapt: no custom derivation of PersonSelect required anymore
+- New app shell/menu layout
 
 ## 2.2.3
 
