@@ -258,16 +258,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                             that.locationIdentifier === bookOffer.locationIdentifier) &&
                         (that.inventoryYear === '' || that.inventoryYear === inventoryYear)
                     ) {
-                        // We used to return an ISO date string here, but now it returns a freeform date
-                        // string with usually the year only and some other characters like brackets
-                        // or copyrigth symbols. So support both during the transition.
                         let datePublishedString = bookOffer.book.datePublished ?? '';
-
-                        // FIXME: remove this after the transition is done.
-                        const datePublished = new Date(datePublishedString);
-                        if (!isNaN(datePublished.valueOf())) {
-                            datePublishedString = datePublished.getFullYear().toString();
-                        }
 
                         let datePublishedSortValue =
                             extractEarliestPossibleYearFromPublicationDate(datePublishedString);
