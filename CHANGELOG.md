@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.1
+
+- App menu accessibility improvements
+
 ## 2.3.0
 
 - Update PersonSelect from toolkit and adapt: no custom derivation of PersonSelect required anymore
