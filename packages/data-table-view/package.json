@@ -64,7 +64,7 @@
         "datatables.net-responsive": "^2.3.0 <2.4",
         "datatables.net-responsive-dt": "^2.3.0 <2.4",
         "i18next": "^25.0.0",
-        "jquery": "^3.4.1",
+        "jquery": "^4.0.0",
         "jszip": "^3.2.2",
         "lit": "^3.1.0"
     },
