@@ -5,6 +5,7 @@
     "composer": {
         "enabled": false
     },
+    "postUpdateOptions": ["npmDedupe"],
     "cloneSubmodules": true,
     "packageRules": [
         {
