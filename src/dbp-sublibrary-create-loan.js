@@ -139,7 +139,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
         // TODO: check if library of book matches person's functions
         loansLoadingIndicator.style.display = 'block';
-        let result = null;
+        let result;
 
         try {
             // check if there are already loans on this book offer

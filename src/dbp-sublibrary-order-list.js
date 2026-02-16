@@ -305,13 +305,13 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     table_draw() {
         const table = this.shadowRoot.querySelector('#book-books-1');
         table.columnReduce(7, function (a, b) {
-            let a1 = 0;
+            let a1;
             if (typeof a === 'string') {
                 a1 = a.replace(',', '.').replace(' EUR', '') * 1;
             } else {
                 a1 = a * 1;
             }
-            let b1 = 0;
+            let b1;
             if (typeof b === 'string') {
                 b1 = b.replace(',', '.').replace(' EUR', '') * 1;
             } else {
