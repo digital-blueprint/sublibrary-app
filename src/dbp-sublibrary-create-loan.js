@@ -1,7 +1,7 @@
 import {createInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@dbp-toolkit/common';
-import {PersonSelect} from '@dbp-toolkit/person-select';
+import {LibraryUserSelect} from './library-user-select.js';
 import {LibraryElement} from './library-element.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
@@ -32,7 +32,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     static get scopedElements() {
         return {
             'dbp-library-select': LibrarySelect,
-            'dbp-person-select': PersonSelect,
+            'dbp-library-user-select': LibraryUserSelect,
             'dbp-sublibrary-book-offer-select': LibraryBookOfferSelect,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-button': Button,
@@ -305,13 +305,12 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label">${i18n.t('person-select.headline')}</label>
+                    <label class="label">${i18n.t('library-user-select.headline')}</label>
                     <div class="control">
-                        <dbp-person-select
+                        <dbp-library-user-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                             @change=${this.onPersonSelectChanged}
-                            value="${this.personId}"
-                            local-data-attributes='["email"]'></dbp-person-select>
+                            value="${this.personId}"></dbp-library-user-select>
                     </div>
                 </div>
                 <div class="field">

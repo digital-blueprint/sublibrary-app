@@ -368,22 +368,8 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                     let loan = await result.json();
                     const bookName = button.getAttribute('data-book-name');
                     const subject = i18n.t('renew-loan.contact-subject', {bookName: bookName});
-
-                    let personUrl =
-                        this.entryPointUrl +
-                        loan.borrower['@id'] +
-                        '?' +
-                        new URLSearchParams({includeLocal: 'email'}).toString();
-                    let personResult = await fetch(personUrl, {
-                        headers: {
-                            'Content-Type': 'application/ld+json',
-                            Authorization: 'Bearer ' + this.auth.token,
-                        },
-                    });
-                    if (!personResult.ok) throw personResult;
-                    let person = await personResult.json();
-
-                    location.href = `mailto:${person.localData.email}?subject=${subject}`;
+                    let email = loan.borrower.email;
+                    location.href = `mailto:${email}?subject=${subject}`;
                 } catch (error) {
                     this.handleFetchError(error, i18n.t('loan-list.error-load-loan'));
                 } finally {

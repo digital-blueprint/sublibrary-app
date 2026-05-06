@@ -49,6 +49,11 @@
         "headline": "Library book",
         "placeholder": "Please enter a barcode"
     },
+    "library-user-select": {
+        "headline": "Person",
+        "login-required": "Login required",
+        "placeholder": "Please select a person"
+    },
     "loan-list": {
         "book-author": "Author/Publisher",
         "borrower-name": "Borrower",
@@ -87,9 +92,6 @@
     },
     "organization-select": {
         "label": "Institute"
-    },
-    "person-select": {
-        "headline": "Person"
     },
     "renew-loan": {
         "book": "Book",

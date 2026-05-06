@@ -55,7 +55,6 @@
         "@dbp-toolkit/data-table-view": "^0.3.0",
         "@dbp-toolkit/language-select": "^0.3.0",
         "@dbp-toolkit/notification": "^0.3.0",
-        "@dbp-toolkit/person-select": "^0.3.0",
         "@dbp-toolkit/resource-select": "^0.1.0",
         "@fontsource/nunito-sans": "^5.0.0",
         "@tugraz/font-source-sans-pro": "^0.2.4",

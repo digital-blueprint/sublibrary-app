@@ -210,11 +210,6 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         this.borrower = null;
         this.borrowerName = this._i18n.t('return-book.user-name-unknown');
 
-        // this happens if no person was found in LDAP by AlmaUserId
-        if (personId == null) {
-            return;
-        }
-
         const apiUrl = this.entryPointUrl + personId;
 
         // load person

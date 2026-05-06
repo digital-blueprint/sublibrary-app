@@ -11,7 +11,7 @@ import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
 import {getPersonDisplayName, escapeHtml} from './utils.js';
 import {LibrarySelect} from './library-select.js';
-import {PersonSelect} from '@dbp-toolkit/person-select';
+import {LibraryUserSelect} from './library-user-select.js';
 
 class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -30,7 +30,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     static get scopedElements() {
         return {
             'dbp-library-select': LibrarySelect,
-            'dbp-person-select': PersonSelect,
+            'dbp-library-user-select': LibraryUserSelect,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-button': Button,
             'dbp-data-table-view': DataTableView,
@@ -96,7 +96,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
             `;
 
             this._('dbp-data-table-view').setCSSStyle(css);
-            const $personSelect = that.$('dbp-person-select');
+            const $personSelect = that.$('dbp-library-user-select');
             const $renewLoanBlock = that.$('#renew-loan-block');
 
             // show loan list block if person was selected
@@ -296,7 +296,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 */
 
                 // we need to update the book list because of the localization of the "Contact" button
-                this.$('dbp-person-select').change();
+                this.$('dbp-library-user-select').change();
             } else if (propName === 'sublibraryIri') {
                 this.loadTable();
             }
@@ -413,7 +413,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 const subject = i18n.t('renew-loan.contact-subject', {bookName: bookName});
 
                 // open mail client with new mail
-                location.href = `mailto:${this.person.localData.email}?subject=${subject}`;
+                location.href = `mailto:${this.person.email}?subject=${subject}`;
                 break;
             }
         }
@@ -471,19 +471,17 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label">${i18n.t('person-select.headline')}</label>
+                    <label class="label">${i18n.t('library-user-select.headline')}</label>
                     <div class="control">
-                        <dbp-person-select
+                        <dbp-library-user-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                             value="${this.personIri}"
-                            local-data-attributes='["email"]'
-                            sublibrary-iri="${this.sublibraryIri}"
                             show-reload-button
                             reload-button-title="${this.person
                                 ? i18n.t('renew-loan.button-refresh-title', {
                                       personName: getPersonDisplayName(this.person),
                                   })
-                                : ''}"></dbp-person-select>
+                                : ''}"></dbp-library-user-select>
                     </div>
                 </div>
                 <dbp-mini-spinner

@@ -19,11 +19,17 @@ export const findObjectInApiResults = (identifier, results, identifierAttribute 
 };
 
 export function getPersonDisplayName(person) {
-    return `${person.givenName} ${person.familyName}`;
-}
-
-export function getLibraryCodeFromId(id) {
-    return id.includes('-') ? id.split('-')[1] : '';
+    let extra = null;
+    if (person.email) {
+        extra = person.email;
+    } else if (person.identifier !== 'unknown') {
+        extra = person.identifier;
+    }
+    let text = `${person.givenName} ${person.familyName}`;
+    if (extra) {
+        text += ` (${extra})`;
+    }
+    return text;
 }
 
 export function escapeHtml(str) {
