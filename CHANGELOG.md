@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.0
+
+- Adjust for bundle API changes (requires bundle v0.6.0)
+
 ## 2.3.1
 
 - App menu accessibility improvements
