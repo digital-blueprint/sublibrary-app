@@ -74,7 +74,7 @@
         "entryPointURL": "https://api.tugraz.at",
         "keyCloakBaseURL": "https://auth.tugraz.at/auth",
         "keyCloakRealm": "tugraz",
-        "keyCloakClientId": "ibib_tugraz_at-IBIB",
+        "keyCloakClientId": "ibib_tugraz_at",
         "matomoUrl": "https://analytics.tugraz.at/",
         "matomoSiteId": "130",
         "shortName": "TU Graz"
