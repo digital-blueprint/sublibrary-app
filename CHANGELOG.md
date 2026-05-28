@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.1
+
+- Rework use name display and include new idNumber (requires bundle v0.6.1)
+
 ## 2.4.0
 
 - Adjust for bundle API changes (requires bundle v0.6.0)
