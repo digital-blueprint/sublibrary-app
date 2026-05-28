@@ -367,7 +367,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                         summary: i18n.t('renew-loan.error-renew-loan-summary'),
                         body: i18n.t('renew-loan.error-renew-loan-date-in-past'),
                         type: 'warning',
-                        timeout: 5,
+                        timeout: 0,
                     });
 
                     button.stop();
