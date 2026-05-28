@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {findObjectInApiResults} from './utils.js';
+import {findObjectInApiResults, getPersonDisplayName} from './utils.js';
 import select2 from 'select2';
 import select2LangDe from './i18n/de/select2-user.js';
 import select2LangEn from './i18n/en/select2-user.js';
@@ -333,16 +333,7 @@ export class LibraryUserSelect extends LangMixin(
      * @returns {string}
      */
     formatPerson(select, person) {
-        let text = person['givenName'] ?? '';
-        if (person['familyName']) {
-            text += ` ${person['familyName']}`;
-        }
-        if (person['email']) {
-            text += ' (' + person['email'] + ')';
-        } else {
-            text += ' (' + person['identifier'] + ')';
-        }
-        return text;
+        return getPersonDisplayName(person);
     }
 
     update(changedProperties) {

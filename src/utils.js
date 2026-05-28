@@ -19,15 +19,17 @@ export const findObjectInApiResults = (identifier, results, identifierAttribute 
 };
 
 export function getPersonDisplayName(person) {
-    let extra = null;
+    let extra = [];
     if (person.email) {
-        extra = person.email;
-    } else if (person.identifier !== 'unknown') {
-        extra = person.identifier;
+        extra.push(person.email);
+    }
+    if (person.idNumber) {
+        // The example was uppercase, so match it.
+        extra.push(person.idNumber.toUpperCase());
     }
     let text = `${person.givenName} ${person.familyName}`;
-    if (extra) {
-        text += ` (${extra})`;
+    if (extra.length) {
+        text += ` (${extra.join(', ')})`;
     }
     return text;
 }
