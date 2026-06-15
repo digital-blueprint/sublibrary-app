@@ -174,6 +174,8 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                         data['hydra:member'].forEach((item) => {
                             results.push({
                                 id: item['@id'],
+                                // https://github.com/select2/select2/issues/6423#issuecomment-4691206011
+                                _resultId: `result-${item['@id']}`,
                                 text: item['name'],
                             });
                         });
