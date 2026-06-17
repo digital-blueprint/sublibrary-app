@@ -49,11 +49,6 @@
         "headline": "Bibliothek Buch",
         "placeholder": "Bitte geben Sie einen Barcode ein"
     },
-    "library-user-select": {
-        "headline": "Person",
-        "login-required": "Anmeldung erforderlich",
-        "placeholder": "Bitte wählen Sie eine Person aus"
-    },
     "loan-list": {
         "book-author": "Autor/Herausgeber",
         "borrower-name": "Entlehner",
@@ -92,6 +87,10 @@
     },
     "organization-select": {
         "label": "Institut"
+    },
+    "person-select": {
+        "headline": "Person",
+        "placeholder": "Bitte wählen Sie eine Person aus"
     },
     "renew-loan": {
         "book": "Buch",

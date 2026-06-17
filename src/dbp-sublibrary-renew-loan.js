@@ -11,7 +11,8 @@ import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
 import {getPersonDisplayName, escapeHtml} from './utils.js';
 import {LibrarySelect} from './library-select.js';
-import {LibraryUserSelect} from './library-user-select.js';
+import {ReloadButton} from './reload-button.js';
+import {ResourceSelect} from '@dbp-toolkit/resource-select';
 
 class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -30,10 +31,11 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     static get scopedElements() {
         return {
             'dbp-library-select': LibrarySelect,
-            'dbp-library-user-select': LibraryUserSelect,
+            'dbp-resource-select': ResourceSelect,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-button': Button,
             'dbp-data-table-view': DataTableView,
+            'dbp-reload-button': ReloadButton,
         };
     }
 
@@ -66,7 +68,6 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
 
     connectedCallback() {
         super.connectedCallback();
-        const that = this;
 
         this.updateComplete.then(() => {
             // language=css
@@ -96,38 +97,6 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
             `;
 
             this._('dbp-data-table-view').setCSSStyle(css);
-            const $personSelect = that.$('dbp-library-user-select');
-            const $renewLoanBlock = that.$('#renew-loan-block');
-
-            // show loan list block if person was selected
-            $personSelect
-                .change(function () {
-                    that.person = $(this).data('object');
-
-                    if (that.person === undefined) {
-                        return;
-                    }
-
-                    that.personIri = that.person['@id'];
-
-                    // set person-id of the custom element
-                    that.setAttribute('person-id', that.personIri);
-
-                    // fire a change event
-                    that.dispatchEvent(
-                        new CustomEvent('change', {
-                            detail: {
-                                type: 'person-id',
-                                value: that.personIri,
-                            },
-                        }),
-                    );
-
-                    that.loadTable();
-                })
-                .on('unselect', function (e) {
-                    $renewLoanBlock.hide();
-                });
         });
     }
 
@@ -152,12 +121,13 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         const $loansLoadingIndicator = this.$('#loans-loading');
         const $renewLoanBlock = this.$('#renew-loan-block');
 
+        $renewLoanBlock.hide();
+        $noLoansBlock.hide();
+
         if (this.person == null || this.sublibraryIri === '') {
             return;
         }
 
-        $renewLoanBlock.hide();
-        $noLoansBlock.hide();
         $loansLoadingIndicator.show();
 
         commonUtils.pollFunc(
@@ -296,7 +266,9 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                 */
 
                 // we need to update the book list because of the localization of the "Contact" button
-                this.$('dbp-library-user-select').change();
+                if (this.person !== null) {
+                    this.loadTable();
+                }
             } else if (propName === 'sublibraryIri') {
                 this.loadTable();
             }
@@ -441,12 +413,52 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
             #no-loans-block {
                 font-weight: bold;
             }
+
+            .person-select-container {
+                display: flex;
+            }
+
+            .person-select {
+                display: block;
+                flex: 1;
+                margin-right: 4px;
+                width: 100%;
+            }
         `;
     }
 
     onSublibraryChanged(e) {
         this.sublibraryIri = e.detail.value;
         this.sublibrary = e.detail.object;
+    }
+
+    onPersonSelectChanged(e) {
+        const person = e.detail.object;
+        this.personIri = e.detail.value ?? '';
+        this.person = person;
+
+        // set person-id of the custom element
+        this.setAttribute('person-id', this.personIri);
+
+        // fire a change event
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    type: 'person-id',
+                    value: this.personIri,
+                },
+            }),
+        );
+
+        this.loadTable();
+    }
+
+    onPersonReloadButtonClicked(e) {
+        this.loadTable();
+    }
+
+    formatPersonResource(select, person) {
+        return getPersonDisplayName(person);
     }
 
     _onLoginClicked(e) {
@@ -471,17 +483,26 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label">${i18n.t('library-user-select.headline')}</label>
-                    <div class="control">
-                        <dbp-library-user-select
+                    <label class="label">${i18n.t('person-select.headline')}</label>
+                    <div class="control person-select-container">
+                        <dbp-resource-select
+                            class="person-select"
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                            resource-path="sublibrary/users"
+                            fetch-mode="search"
+                            placeholder="${i18n.t('person-select.placeholder')}"
+                            .formatResource=${this.formatPersonResource}
+                            @change=${this.onPersonSelectChanged}
                             value="${this.personIri}"
-                            show-reload-button
-                            reload-button-title="${this.person
+                            no-default></dbp-resource-select>
+                        <dbp-reload-button
+                            ?disabled=${!this.person}
+                            @click=${this.onPersonReloadButtonClicked}
+                            title="${this.person
                                 ? i18n.t('renew-loan.button-refresh-title', {
                                       personName: getPersonDisplayName(this.person),
                                   })
-                                : ''}"></dbp-library-user-select>
+                                : ''}"></dbp-reload-button>
                     </div>
                 </div>
                 <dbp-mini-spinner

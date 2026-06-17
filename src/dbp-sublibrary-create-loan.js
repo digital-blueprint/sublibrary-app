@@ -1,7 +1,6 @@
 import {createInstance, i18nKey} from './i18n.js';
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@dbp-toolkit/common';
-import {LibraryUserSelect} from './library-user-select.js';
 import {LibraryElement} from './library-element.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
@@ -11,6 +10,7 @@ import {classMap} from 'lit/directives/class-map.js';
 import {getPersonDisplayName} from './utils.js';
 import {LibrarySelect} from './library-select.js';
 import {ReloadButton} from './reload-button.js';
+import {ResourceSelect} from '@dbp-toolkit/resource-select';
 
 class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -32,7 +32,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     static get scopedElements() {
         return {
             'dbp-library-select': LibrarySelect,
-            'dbp-library-user-select': LibraryUserSelect,
+            'dbp-resource-select': ResourceSelect,
             'dbp-sublibrary-book-offer-select': LibraryBookOfferSelect,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-button': Button,
@@ -91,6 +91,11 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
 
             .book-offer-select-container {
                 display: flex;
+            }
+
+            .person-select {
+                display: block;
+                width: 100%;
             }
         `;
     }
@@ -187,13 +192,10 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     }
 
     onPersonSelectChanged(e) {
-        const select = e.target;
-        const person = JSON.parse(select.dataset.object);
-        const personId = person['@id'];
-        this.sendButtonDisabled = false;
-
-        this.personId = personId;
+        const person = e.detail.object;
+        this.personId = e.detail.value ?? '';
         this.person = person;
+        this.sendButtonDisabled = person === null;
 
         // fire a change event
         this.dispatchEvent(
@@ -204,6 +206,10 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 },
             }),
         );
+    }
+
+    formatPersonResource(select, person) {
+        return getPersonDisplayName(person);
     }
 
     async onSubmitClicked(e) {
@@ -305,12 +311,17 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label">${i18n.t('library-user-select.headline')}</label>
+                    <label class="label">${i18n.t('person-select.headline')}</label>
                     <div class="control">
-                        <dbp-library-user-select
+                        <dbp-resource-select
+                            class="person-select"
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                            resource-path="sublibrary/users"
+                            fetch-mode="search"
+                            placeholder="${i18n.t('person-select.placeholder')}"
+                            .formatResource=${this.formatPersonResource}
                             @change=${this.onPersonSelectChanged}
-                            value="${this.personId}"></dbp-library-user-select>
+                            value="${this.personId}"></dbp-resource-select>
                     </div>
                 </div>
                 <div class="field">
