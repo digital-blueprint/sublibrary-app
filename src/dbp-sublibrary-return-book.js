@@ -81,6 +81,10 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 .change(function () {
                     that.bookOffer = $(this).data('object');
                     that.bookOfferId = that.bookOffer['@id'];
+                    that.loan = null;
+                    that.loanId = '';
+                    that.status = null;
+                    $returnBookBlock.hide();
                     that.updateSubmitButtonDisabled();
                     const apiUrl = that.entryPointUrl + that.bookOfferId + '/loans';
 
