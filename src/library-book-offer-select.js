@@ -6,7 +6,7 @@ import select2LangEn from './i18n/en/select2-book-offer';
 import {css, html} from 'lit';
 import {ScopedElementsMixin} from '@dbp-toolkit/common';
 import {createInstance} from './i18n.js';
-import {Icon, combineURLs} from '@dbp-toolkit/common';
+import {combineURLs} from '@dbp-toolkit/common';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import select2CSSPath from 'select2/dist/css/select2.min.css';
@@ -27,8 +27,6 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         this.object = null;
         this.ignoreValueUpdate = false;
         this.lastResult = {};
-        this.showReloadButton = false;
-        this.reloadButtonTitle = '';
         this.sublibraryIri = '';
 
         Object.assign(LibraryBookOfferSelect.prototype, errorUtils.errorMixin);
@@ -36,12 +34,6 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         this._onDocumentClicked = this._onDocumentClicked.bind(this);
 
         select2(window, $);
-    }
-
-    static get scopedElements() {
-        return {
-            'dbp-icon': Icon,
-        };
     }
 
     $(selector) {
@@ -55,8 +47,6 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
             value: {type: String},
             object: {type: Object, attribute: false},
-            showReloadButton: {type: Boolean, attribute: 'show-reload-button'},
-            reloadButtonTitle: {type: String, attribute: 'reload-button-title'},
             sublibraryIri: {type: String, attribute: 'sublibrary-iri'},
             auth: {type: Object},
         };
@@ -313,29 +303,11 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
         return this.$select !== null && this.$select.hasClass('select2-hidden-accessible');
     }
 
-    reloadClick() {
-        if (this.object === null) {
-            return;
-        }
-
-        // fire a change event
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: this.value,
-                },
-                bubbles: true,
-            }),
-        );
-    }
-
     static get styles() {
         // language=css
         return css`
             ${commonStyles.getThemeCSS()}
             ${commonStyles.getGeneralCSS()}
-            ${commonStyles.getButtonCSS()}
-            ${commonStyles.getFormAddonsCSS()}
             ${commonStyles.getSelect2CSS()}
 
             .select2-control.control {
@@ -346,22 +318,8 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                 height: 2em;
             }
 
-            .field .button.control {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border: 1px solid var(--dbp-override-muted);
-                -moz-border-radius-topright: var(--dbp-border-radius);
-                -moz-border-radius-bottomright: var(--dbp-border-radius);
-                line-height: 100%;
-            }
-
             .field:not(:last-child) {
                 margin-bottom: 0;
-            }
-
-            .field .button.control dbp-icon {
-                top: 0;
             }
 
             /* https://github.com/select2/select2/issues/5457 */
@@ -391,15 +349,6 @@ export class LibraryBookOfferSelect extends ScopedElementsMixin(AdapterLitElemen
                         <!-- https://select2.org-->
                         <select id="${this.selectId}" name="book-offer" class="select"></select>
                     </div>
-                    <a
-                        class="control button"
-                        id="reload-button"
-                        ?disabled=${this.object === null}
-                        @click="${this.reloadClick}"
-                        style="display: ${this.showReloadButton ? 'flex' : 'none'}"
-                        title="${this.reloadButtonTitle}">
-                        <dbp-icon name="reload"></dbp-icon>
-                    </a>
                 </div>
                 <div id="library-book-offer-select-dropdown"></div>
             </div>

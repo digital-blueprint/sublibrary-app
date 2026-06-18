@@ -231,6 +231,10 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
     }
 
     onReloadButtonClicked(e) {
+        if (!this.bookOffer) {
+            return;
+        }
+
         this.$('dbp-sublibrary-book-offer-select').trigger('change');
     }
 

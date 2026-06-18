@@ -10,6 +10,7 @@ import {classMap} from 'lit/directives/class-map.js';
 import {LibraryBookOfferSelect} from './library-book-offer-select.js';
 import {getPersonDisplayName} from './utils.js';
 import {LibrarySelect} from './library-select.js';
+import {ReloadButton} from './reload-button.js';
 
 class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     constructor() {
@@ -34,6 +35,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
             'dbp-sublibrary-book-offer-select': LibraryBookOfferSelect,
             'dbp-mini-spinner': MiniSpinner,
             'dbp-button': Button,
+            'dbp-reload-button': ReloadButton,
         };
     }
 
@@ -139,7 +141,12 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                         });
                 })
                 .on('unselect', function (e) {
+                    that.bookOffer = null;
+                    that.bookOfferId = '';
+                    that.loan = null;
+                    that.loanId = '';
                     $returnBookBlock.hide();
+                    that.updateSubmitButtonDisabled();
                 });
 
             // update loan status of book loan
@@ -243,11 +250,28 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
             #return-book-block input {
                 width: 100%;
             }
+
+            dbp-sublibrary-book-offer-select {
+                width: 100%;
+                margin-right: 4px;
+            }
+
+            .book-offer-select-container {
+                display: flex;
+            }
         `;
     }
 
     onSublibraryChanged(e) {
         this.sublibraryIri = e.detail.value;
+    }
+
+    onReloadButtonClicked(e) {
+        if (!this.bookOffer) {
+            return;
+        }
+
+        this.$('dbp-sublibrary-book-offer-select').trigger('change');
     }
 
     _onLoginClicked(e) {
@@ -273,19 +297,22 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                 </div>
                 <div class="field">
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
-                    <div class="control">
+                    <div class="control book-offer-select-container">
                         <dbp-sublibrary-book-offer-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
                             @change=${this.onBookSelectChanged}
                             @unselect=${this.onBookSelectChanged}
                             value="${this.bookOfferId}"
-                            sublibrary-iri="${this.sublibraryIri}"
-                            show-reload-button
-                            reload-button-title="${this.bookOffer
+                            sublibrary-iri="${this
+                                .sublibraryIri}"></dbp-sublibrary-book-offer-select>
+                        <dbp-reload-button
+                            ?disabled=${!this.bookOffer}
+                            @click=${this.onReloadButtonClicked}
+                            title="${this.bookOffer
                                 ? i18n.t('return-book.button-refresh-title', {
                                       name: this.bookOffer.name,
                                   })
-                                : ''}"></dbp-sublibrary-book-offer-select>
+                                : ''}"></dbp-reload-button>
                     </div>
                 </div>
 

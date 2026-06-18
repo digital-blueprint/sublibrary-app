@@ -281,6 +281,10 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     }
 
     onReloadButtonClicked(e) {
+        if (!this.bookOffer) {
+            return;
+        }
+
         this.updateCreateLoan();
     }
 
