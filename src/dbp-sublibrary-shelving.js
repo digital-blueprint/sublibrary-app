@@ -67,65 +67,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         const i18n = this._i18n;
 
         this.updateComplete.then(() => {
-            const $bookOfferSelect = that.$('dbp-sublibrary-book-offer-select');
             const $locationIdentifierInput = that.$('#location-identifier');
-            const locationIdentifierInput = that._('#location-identifier');
-            const $locationIdentifierBlock = that.$('#location-identifier-block');
-
-            // show location identifier block if book offer was selected
-            $bookOfferSelect
-                .change(function () {
-                    console.log('change');
-                    console.log($bookOfferSelect.val());
-                    console.log($bookOfferSelect.attr('value'));
-                    console.log($bookOfferSelect.prop('value'));
-                    that.bookOffer = $(this).data('object');
-                    that.bookOfferId = that.bookOffer['@id'];
-                    $locationIdentifierInput
-                        .val(that.bookOffer.locationIdentifier)
-                        .trigger('input');
-
-                    $locationIdentifierBlock.show();
-
-                    const apiUrl = that.entryPointUrl + that.bookOfferId + '/location-identifiers';
-
-                    // set book-offer-id of the custom element
-                    that.setAttribute('book-offer-id', that.bookOfferId);
-
-                    // fire a change event
-                    that.dispatchEvent(
-                        new CustomEvent('change', {
-                            detail: {
-                                type: 'book-offer-id',
-                                value: that.bookOfferId,
-                            },
-                        }),
-                    );
-
-                    // fetch and setup the location identifier suggestions
-                    fetch(apiUrl, {
-                        headers: {
-                            'Content-Type': 'application/ld+json',
-                            Authorization: 'Bearer ' + that.auth.token,
-                        },
-                    })
-                        .then((response) => response.json())
-                        .then((result) => {
-                            let ids = result['hydra:member'].map((item) => {
-                                return item['identifier'];
-                            });
-                            new Suggestions(locationIdentifierInput, ids);
-                        });
-                })
-                .on('unselect', function (e) {
-                    console.log('unselect');
-
-                    that.bookOffer = null;
-                    that.bookOfferId = '';
-                    $(that).attr('book-offer-id', null);
-
-                    $locationIdentifierBlock.hide();
-                });
 
             // enable send button if location identifier was entered
             $locationIdentifierInput.on('input', function () {
@@ -137,10 +79,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 e.preventDefault();
                 console.log('send');
                 const apiUrl =
-                    that.entryPointUrl +
-                    $bookOfferSelect.val() +
-                    '?library=' +
-                    that.getSublibraryCode();
+                    that.entryPointUrl + that.bookOfferId + '?library=' + that.getSublibraryCode();
                 console.log(apiUrl);
                 console.log($locationIdentifierInput);
 
@@ -167,7 +106,7 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                             timeout: 5,
                         });
 
-                        $bookOfferSelect[0].clear();
+                        that.clearBookOfferSelection();
                     },
                     error: (jqXHR, textStatus, errorThrown) => {
                         that.handleXhrError(jqXHR, textStatus, errorThrown);
@@ -178,6 +117,63 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                 });
             });
         });
+    }
+
+    clearBookOfferSelection() {
+        this.bookOffer = null;
+        this.bookOfferId = '';
+        this.removeAttribute('book-offer-id');
+        this._('#location-identifier-block').style.display = 'none';
+
+        const bookOfferSelect = this._('dbp-sublibrary-book-offer-select');
+        if (bookOfferSelect && bookOfferSelect.value !== null && bookOfferSelect.value !== '') {
+            bookOfferSelect.value = null;
+        }
+    }
+
+    async onBookSelectChanged(e) {
+        const bookOffer = e.detail.object;
+        const locationIdentifierInput = this._('#location-identifier');
+        const locationIdentifierBlock = this._('#location-identifier-block');
+
+        if (!bookOffer) {
+            this.clearBookOfferSelection();
+            return;
+        }
+
+        this.bookOffer = bookOffer;
+        this.bookOfferId = bookOffer['@id'];
+        locationIdentifierInput.value = this.bookOffer.locationIdentifier;
+        locationIdentifierInput.dispatchEvent(new Event('input'));
+        locationIdentifierBlock.style.display = 'block';
+
+        const apiUrl = this.entryPointUrl + this.bookOfferId + '/location-identifiers';
+
+        // set book-offer-id of the custom element
+        this.setAttribute('book-offer-id', this.bookOfferId);
+
+        // fire a change event
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    type: 'book-offer-id',
+                    value: this.bookOfferId,
+                },
+            }),
+        );
+
+        // fetch and setup the location identifier suggestions
+        const response = await fetch(apiUrl, {
+            headers: {
+                'Content-Type': 'application/ld+json',
+                Authorization: 'Bearer ' + this.auth.token,
+            },
+        });
+        const result = await response.json();
+        const ids = result['hydra:member'].map((item) => {
+            return item['identifier'];
+        });
+        new Suggestions(locationIdentifierInput, ids);
     }
 
     update(changedProperties) {
@@ -230,12 +226,12 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         this.sublibrary = e.detail.object;
     }
 
-    onReloadButtonClicked(e) {
+    async onReloadButtonClicked(e) {
         if (!this.bookOffer) {
             return;
         }
 
-        this.$('dbp-sublibrary-book-offer-select').trigger('change');
+        await this.onBookSelectChanged({detail: {object: this.bookOffer}});
     }
 
     _onLoginClicked(e) {
@@ -268,6 +264,8 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                     <div class="control book-offer-select-container">
                         <dbp-sublibrary-book-offer-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                            ?disabled=${!this.sublibraryIri}
+                            @change=${this.onBookSelectChanged}
                             value="${this.bookOfferId}"
                             sublibrary-iri="${this
                                 .sublibraryIri}"></dbp-sublibrary-book-offer-select>

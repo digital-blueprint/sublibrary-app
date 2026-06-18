@@ -101,26 +101,21 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     }
 
     async onBookSelectChanged(e) {
-        await this.updateCreateLoan();
+        await this.updateCreateLoan(e.detail.object);
     }
 
-    async updateCreateLoan() {
-        const select = this.shadowRoot.querySelector('dbp-sublibrary-book-offer-select');
-        let bookOffer = select.dataset.object;
+    async updateCreateLoan(bookOffer = this.bookOffer) {
         const createLoanBlock = this.shadowRoot.querySelector('#create-loan-block');
         const loansLoadingIndicator = this.shadowRoot.querySelector('#loans-loading');
 
-        this.status = null;
-
         if (!bookOffer) {
-            this.status = null;
             this.bookOffer = null;
             this.bookOfferId = '';
             createLoanBlock.style.display = 'none';
             return;
         }
 
-        bookOffer = JSON.parse(bookOffer);
+        this.status = null;
 
         const bookOfferId = bookOffer['@id'];
 
@@ -261,7 +256,10 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         if (response.ok) {
             // clear book offer select to hide "loan" button
             const bookOfferSelect = this._('dbp-sublibrary-book-offer-select');
-            bookOfferSelect.clear();
+            bookOfferSelect.value = null;
+            this.bookOffer = null;
+            this.bookOfferId = '';
+            this._('#create-loan-block').style.display = 'none';
 
             this.status = {
                 summary: i18nKey('create-loan.success-summary'),
@@ -332,9 +330,9 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                     <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
                     <div class="control book-offer-select-container">
                         <dbp-sublibrary-book-offer-select
-                            subscribe="auth:auth,lang:lang,entry-point-url:entry-point-url,auth:auth"
+                            subscribe="auth:auth,lang:lang,entry-point-url:entry-point-url"
+                            ?disabled=${!this.sublibraryIri}
                             @change=${this.onBookSelectChanged}
-                            @unselect=${this.onBookSelectChanged}
                             value="${this.bookOfferId}"
                             sublibrary-iri="${this
                                 .sublibraryIri}"></dbp-sublibrary-book-offer-select>

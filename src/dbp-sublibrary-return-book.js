@@ -72,87 +72,6 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         const i18n = this._i18n;
 
         this.updateComplete.then(() => {
-            const $bookOfferSelect = that.$('dbp-sublibrary-book-offer-select');
-            const $returnBookBlock = that.$('#return-book-block');
-            const $loansLoadingIndicator = that.$('#loans-loading');
-
-            // show return book block if book offer was selected
-            $bookOfferSelect
-                .change(function () {
-                    that.bookOffer = $(this).data('object');
-                    that.bookOfferId = that.bookOffer['@id'];
-                    that.loan = null;
-                    that.loanId = '';
-                    that.status = null;
-                    $returnBookBlock.hide();
-                    that.updateSubmitButtonDisabled();
-                    const apiUrl = that.entryPointUrl + that.bookOfferId + '/loans';
-
-                    // set book-offer-id of the custom element
-                    that.setAttribute('book-offer-id', that.bookOfferId);
-
-                    // fire a change event
-                    that.dispatchEvent(
-                        new CustomEvent('change', {
-                            detail: {
-                                type: 'book-offer-id',
-                                value: that.bookOfferId,
-                            },
-                        }),
-                    );
-
-                    $loansLoadingIndicator.show();
-
-                    // check if there are already loans on this book offer
-                    fetch(apiUrl, {
-                        headers: {
-                            'Content-Type': 'application/ld+json',
-                            Authorization: 'Bearer ' + that.auth.token,
-                        },
-                    })
-                        .then((result) => {
-                            $loansLoadingIndicator.hide();
-                            if (!result.ok) throw result;
-                            return result.json();
-                        })
-                        .then((result) => {
-                            const loans = result['hydra:member'];
-
-                            if (loans.length > 0) {
-                                that.loan = loans[0];
-                                that.loanId = that.loan['@id'];
-                                console.log(that.loan);
-                                that.loadBorrower(that.loan.borrower);
-
-                                that.status = {
-                                    summary: i18nKey('return-book.info-existing-loans-summary'),
-                                    body: i18nKey('return-book.info-existing-loans-body'),
-                                };
-
-                                $returnBookBlock.show();
-                            } else {
-                                that.status = {
-                                    summary: i18nKey('return-book.error-no-existing-loans-summary'),
-                                    body: i18nKey('return-book.error-no-existing-loans-body'),
-                                };
-                            }
-                        })
-                        .catch((error) => {
-                            that.handleFetchError(
-                                error,
-                                i18n.t('renew-loan.error-load-loans-summary'),
-                            );
-                        });
-                })
-                .on('unselect', function (e) {
-                    that.bookOffer = null;
-                    that.bookOfferId = '';
-                    that.loan = null;
-                    that.loanId = '';
-                    $returnBookBlock.hide();
-                    that.updateSubmitButtonDisabled();
-                });
-
             // update loan status of book loan
             that.$('#send').click((e) => {
                 e.preventDefault();
@@ -174,7 +93,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                     },
                     data: '{}',
                     success: function (data) {
-                        $bookOfferSelect[0].clear();
+                        that.clearBookOfferSelection();
 
                         that.status = {
                             summary: i18nKey('return-book.success-summary'),
@@ -196,7 +115,96 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     }
 
     async onBookSelectChanged(e) {
+        await this.updateReturnBook(e.detail.object);
+    }
+
+    clearBookOfferSelection() {
+        this.bookOffer = null;
+        this.bookOfferId = '';
+        this.loan = null;
+        this.loanId = '';
+        this._('#return-book-block').style.display = 'none';
+        this.updateSubmitButtonDisabled();
+
+        const bookOfferSelect = this._('dbp-sublibrary-book-offer-select');
+        if (bookOfferSelect && bookOfferSelect.value !== null && bookOfferSelect.value !== '') {
+            bookOfferSelect.value = null;
+        }
+    }
+
+    async updateReturnBook(bookOffer = this.bookOffer) {
+        const returnBookBlock = this._('#return-book-block');
+        const loansLoadingIndicator = this._('#loans-loading');
+
+        if (!bookOffer) {
+            this.clearBookOfferSelection();
+            return;
+        }
+
         this.status = null;
+
+        this.bookOffer = bookOffer;
+        this.bookOfferId = bookOffer['@id'];
+        this.loan = null;
+        this.loanId = '';
+        returnBookBlock.style.display = 'none';
+        this.updateSubmitButtonDisabled();
+
+        const apiUrl = this.entryPointUrl + this.bookOfferId + '/loans';
+
+        // set book-offer-id of the custom element
+        this.setAttribute('book-offer-id', this.bookOfferId);
+
+        // fire a change event
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    type: 'book-offer-id',
+                    value: this.bookOfferId,
+                },
+            }),
+        );
+
+        loansLoadingIndicator.style.display = 'block';
+        let result;
+
+        try {
+            result = await fetch(apiUrl, {
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    Authorization: 'Bearer ' + this.auth.token,
+                },
+            });
+
+            if (!result.ok) throw result;
+
+            result = await result.json();
+        } catch (error) {
+            await this.handleFetchError(error, this._i18n.t('renew-loan.error-load-loans-summary'));
+            return;
+        } finally {
+            loansLoadingIndicator.style.display = 'none';
+        }
+
+        const loans = result['hydra:member'];
+
+        if (loans.length > 0) {
+            this.loan = loans[0];
+            this.loanId = this.loan['@id'];
+            this.loadBorrower(this.loan.borrower);
+
+            this.status = {
+                summary: i18nKey('return-book.info-existing-loans-summary'),
+                body: i18nKey('return-book.info-existing-loans-body'),
+            };
+
+            returnBookBlock.style.display = 'block';
+        } else {
+            this.status = {
+                summary: i18nKey('return-book.error-no-existing-loans-summary'),
+                body: i18nKey('return-book.error-no-existing-loans-body'),
+            };
+        }
     }
 
     updateSubmitButtonDisabled() {
@@ -270,12 +278,12 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         this.sublibraryIri = e.detail.value;
     }
 
-    onReloadButtonClicked(e) {
+    async onReloadButtonClicked(e) {
         if (!this.bookOffer) {
             return;
         }
 
-        this.$('dbp-sublibrary-book-offer-select').trigger('change');
+        await this.updateReturnBook();
     }
 
     _onLoginClicked(e) {
@@ -304,8 +312,8 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                     <div class="control book-offer-select-container">
                         <dbp-sublibrary-book-offer-select
                             subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                            ?disabled=${!this.sublibraryIri}
                             @change=${this.onBookSelectChanged}
-                            @unselect=${this.onBookSelectChanged}
                             value="${this.bookOfferId}"
                             sublibrary-iri="${this
                                 .sublibraryIri}"></dbp-sublibrary-book-offer-select>
