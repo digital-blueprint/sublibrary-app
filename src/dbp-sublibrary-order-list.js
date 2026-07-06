@@ -353,8 +353,9 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                     <!--
                     <div class="field">
                         <label class="label">
-                            <input type="checkbox" .checked=${this.openOnly} @click=${this
-                        .toggleOpenOnly} .disabled=${this.overdueOnly}>
+                            <input type="checkbox" .checked=${this.openOnly} @click=${
+                                this.toggleOpenOnly
+                            } .disabled=${this.overdueOnly}>
                             ${i18n.t('order-list.open-only')}
                         </label>
                     </div>

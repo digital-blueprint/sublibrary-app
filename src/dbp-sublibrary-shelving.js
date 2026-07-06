@@ -267,16 +267,19 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
                             ?disabled=${!this.sublibraryIri}
                             @change=${this.onBookSelectChanged}
                             value="${this.bookOfferId}"
-                            sublibrary-iri="${this
-                                .sublibraryIri}"></dbp-sublibrary-book-offer-select>
+                            sublibrary-iri="${
+                                this.sublibraryIri
+                            }"></dbp-sublibrary-book-offer-select>
                         <dbp-reload-button
                             ?disabled=${!this.bookOffer}
                             @click=${this.onReloadButtonClicked}
-                            title="${this.bookOffer
-                                ? i18n.t('shelving.button-refresh-title', {
-                                      name: this.bookOffer.name,
-                                  })
-                                : ''}"></dbp-reload-button>
+                            title="${
+                                this.bookOffer
+                                    ? i18n.t('shelving.button-refresh-title', {
+                                          name: this.bookOffer.name,
+                                      })
+                                    : ''
+                            }"></dbp-reload-button>
                     </div>
                 </div>
 
