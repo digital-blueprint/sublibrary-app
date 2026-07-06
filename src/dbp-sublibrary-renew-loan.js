@@ -498,11 +498,13 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                         <dbp-reload-button
                             ?disabled=${!this.person}
                             @click=${this.onPersonReloadButtonClicked}
-                            title="${this.person
-                                ? i18n.t('renew-loan.button-refresh-title', {
-                                      personName: getPersonDisplayName(this.person),
-                                  })
-                                : ''}"></dbp-reload-button>
+                            title="${
+                                this.person
+                                    ? i18n.t('renew-loan.button-refresh-title', {
+                                          personName: getPersonDisplayName(this.person),
+                                      })
+                                    : ''
+                            }"></dbp-reload-button>
                     </div>
                 </div>
                 <dbp-mini-spinner

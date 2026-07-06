@@ -315,16 +315,19 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                             ?disabled=${!this.sublibraryIri}
                             @change=${this.onBookSelectChanged}
                             value="${this.bookOfferId}"
-                            sublibrary-iri="${this
-                                .sublibraryIri}"></dbp-sublibrary-book-offer-select>
+                            sublibrary-iri="${
+                                this.sublibraryIri
+                            }"></dbp-sublibrary-book-offer-select>
                         <dbp-reload-button
                             ?disabled=${!this.bookOffer}
                             @click=${this.onReloadButtonClicked}
-                            title="${this.bookOffer
-                                ? i18n.t('return-book.button-refresh-title', {
-                                      name: this.bookOffer.name,
-                                  })
-                                : ''}"></dbp-reload-button>
+                            title="${
+                                this.bookOffer
+                                    ? i18n.t('return-book.button-refresh-title', {
+                                          name: this.bookOffer.name,
+                                      })
+                                    : ''
+                            }"></dbp-reload-button>
                     </div>
                 </div>
 
@@ -348,15 +351,17 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
                     </div>
                 </div>
 
-                ${this.status
-                    ? html`
-                          <br />
-                          <div class="notification is-info">
-                              <h4>${i18n.t(this.status.summary)}</h4>
-                              ${i18n.t(this.status.body)}
-                          </div>
-                      `
-                    : ''}
+                ${
+                    this.status
+                        ? html`
+                              <br />
+                              <div class="notification is-info">
+                                  <h4>${i18n.t(this.status.summary)}</h4>
+                                  ${i18n.t(this.status.body)}
+                              </div>
+                          `
+                        : ''
+                }
             </form>
             <div
                 class="notification is-warning ${classMap({
