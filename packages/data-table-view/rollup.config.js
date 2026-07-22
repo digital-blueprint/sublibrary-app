@@ -2,7 +2,7 @@ import {globSync} from 'node:fs';
 import url from 'url';
 import serve from 'rollup-plugin-serve';
 import emitEJS from 'rollup-plugin-emit-ejs';
-import {getDistPath, assetPlugin} from '@dbp-toolkit/dev-utils';
+import {getDistPath, assetPlugin, getPort, getResolveModules} from '@dbp-toolkit/dev-utils';
 import config from '../../vendor/toolkit/demo.common.config.js';
 import {createRequire} from 'node:module';
 
@@ -29,6 +29,9 @@ export default (async () => {
             sourcemap: true,
             minify: build !== 'local' && build !== 'test',
             cleanDir: true,
+        },
+        resolve: {
+            modules: getResolveModules(),
         },
         onwarn: function (warning, warn) {
             // keycloak bundled code uses eval
@@ -64,7 +67,7 @@ export default (async () => {
                       contentBase: '.',
                       historyApiFallback: basePath + 'index.html',
                       host: '127.0.0.1',
-                      port: 8002,
+                      port: await getPort('127.0.0.1', [8002, 8004]),
                   })
                 : false,
         ],

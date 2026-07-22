@@ -8,9 +8,10 @@ import {getBabelOutputPlugin} from '@rollup/plugin-babel';
 import {
     getPackagePath,
     getBuildInfo,
-    generateTLSConfig,
     getDistPath,
     assetPlugin,
+    getPort,
+    getResolveModules,
 } from '@dbp-toolkit/dev-utils';
 import {createRequire} from 'node:module';
 
@@ -22,7 +23,7 @@ const buildFull = (!watch && appEnv !== 'test') || process.env.FORCE_FULL !== un
 let useBabel = buildFull;
 let checkLicenses = buildFull;
 let treeshake = buildFull;
-let useHTTPS = false;
+
 // if true, app assets and configs are whitelabel
 let whitelabel;
 // path to non whitelabel assets and configs
@@ -140,6 +141,9 @@ export default (async () => {
             sourcemap: true,
             minify: buildFull,
             cleanDir: true,
+        },
+        resolve: {
+            modules: getResolveModules(),
         },
         treeshake: treeshake,
         moduleTypes: {
@@ -324,9 +328,8 @@ Dependencies:
                 ? serve({
                       contentBase: '.',
                       host: '127.0.0.1',
-                      port: 8001,
+                      port: await getPort('127.0.0.1', [8001, 8004]),
                       historyApiFallback: config.basePath + pkg.internalName + '.html',
-                      https: useHTTPS ? await generateTLSConfig() : false,
                       headers: {
                           'Content-Security-Policy': config.CSP,
                       },
