@@ -435,6 +435,10 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             #no-books-block {
                 font-weight: bold;
             }
+
+            .field:not(:last-child) {
+                margin-bottom: 0.75rem;
+            }
         `;
     }
 

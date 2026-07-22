@@ -97,6 +97,10 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
                 display: block;
                 width: 100%;
             }
+
+            .field:not(:last-child) {
+                margin-bottom: 0.75rem;
+            }
         `;
     }
 

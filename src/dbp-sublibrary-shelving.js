@@ -218,6 +218,10 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
             .book-offer-select-container {
                 display: flex;
             }
+
+            .field:not(:last-child) {
+                margin-bottom: 0.75rem;
+            }
         `;
     }
 

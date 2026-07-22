@@ -166,6 +166,10 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
             table th {
                 padding: 8px;
             }
+
+            .field:not(:last-child) {
+                margin-bottom: 0.75rem;
+            }
         `;
     }
 

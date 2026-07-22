@@ -301,6 +301,10 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
             #no-loans-block {
                 font-weight: bold;
             }
+
+            .field:not(:last-child) {
+                margin-bottom: 0.75rem;
+            }
         `;
     }
 
