@@ -94,6 +94,9 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 table.dataTable tbody tr.odd {
                     background-color: var(--dbp-background);
                 }
+                .dataTables_wrapper .dataTables_length select {
+                    padding: 4px 25px 4px 4px !important;
+                }
             `;
 
             this._('dbp-data-table-view').setCSSStyle(css);
