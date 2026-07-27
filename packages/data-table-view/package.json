@@ -42,7 +42,7 @@
         "@dbp-toolkit/dev-utils": "^0.1.1",
         "@esm-bundle/chai": "^4.2.0",
         "@web/test-runner": "^1.0.0",
-        "@web/test-runner-playwright": "^0.11.1",
+        "@web/test-runner-playwright": "^1.0.0",
         "eslint": "^10.0.0",
         "eslint-plugin-jsdoc": "^63.0.0",
         "globals": "^17.0.0",
