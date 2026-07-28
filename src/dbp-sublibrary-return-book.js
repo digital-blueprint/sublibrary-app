@@ -50,7 +50,6 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
             borrowerName: {type: String, attribute: false},
             status: {type: Object, attribute: false},
             sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
-            auth: {type: Object},
         };
     }
 

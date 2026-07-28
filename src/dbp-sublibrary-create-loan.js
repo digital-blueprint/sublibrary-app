@@ -51,7 +51,6 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             status: {type: Object},
             sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
             sendButtonDisabled: {type: Boolean, attribute: false},
-            auth: {type: Object},
         };
     }
 

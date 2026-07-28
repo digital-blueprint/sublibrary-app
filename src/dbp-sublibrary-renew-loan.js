@@ -50,7 +50,6 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
             personIri: {type: String, attribute: 'person-id', reflect: true},
             loans: {type: Object, attribute: false},
             sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
-            auth: {type: Object},
         };
     }
 

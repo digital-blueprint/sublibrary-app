@@ -45,7 +45,6 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
             bookOfferId: {type: String, attribute: 'book-offer-id', reflect: true},
             bookOffer: {type: Object, attribute: false},
             sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
-            auth: {type: Object},
         };
     }
 

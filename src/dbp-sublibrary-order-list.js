@@ -72,7 +72,6 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
             books: {type: Object, attribute: false},
             openOnly: {type: Boolean, attribute: false},
             analyticsUpdateDate: {type: Object, attribute: false},
-            auth: {type: Object},
         };
     }
 

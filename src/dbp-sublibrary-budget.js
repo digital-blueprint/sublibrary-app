@@ -52,7 +52,6 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
             analyticsUpdateDate: {type: Object, attribute: false},
             monetaryAmounts: {type: Array, attribute: false},
             pageStatus: {type: Boolean, attribute: false},
-            auth: {type: Object},
         };
     }
 

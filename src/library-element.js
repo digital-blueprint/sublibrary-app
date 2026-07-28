@@ -1,7 +1,7 @@
-import {AdapterLitElement} from '@dbp-toolkit/common';
+import {AdapterLitElement, AuthMixin} from '@dbp-toolkit/common';
 import * as errorUtils from '@dbp-toolkit/common/error';
 
-export class LibraryElement extends AdapterLitElement {
+export class LibraryElement extends AuthMixin(AdapterLitElement) {
     constructor() {
         super();
         Object.assign(LibraryElement.prototype, errorUtils.errorMixin);
@@ -64,30 +64,13 @@ export class LibraryElement extends AdapterLitElement {
         this._updateLibraryPermissions();
     }
 
-    _updateAuth() {
-        this._loginStatus = this.auth['login-status'];
-        // Every time isLoggedIn()/isLoading() return something different we request a re-render
-        let newLoginState = [this.isLoggedIn(), this.isLoading()];
-        if (this._loginState.toString() !== newLoginState.toString()) {
-            this.requestUpdate();
-        }
-        this._loginState = newLoginState;
-
-        if (this.isLoggedIn() && !this._loginCalled) {
-            this._loginCalled = true;
-            this.loginCallback();
-        }
+    logoutCallback() {
+        // Forget what we know, so it gets looked up again on the next login
+        this._hasLibraryPermissions = null;
+        this._libraryPermissionsRequested = false;
     }
 
     update(changedProperties) {
-        changedProperties.forEach((oldValue, propName) => {
-            switch (propName) {
-                case 'auth':
-                    this._updateAuth();
-                    break;
-            }
-        });
-
         this._maybeUpdateLibraryPermissions();
 
         super.update(changedProperties);
@@ -96,27 +79,16 @@ export class LibraryElement extends AdapterLitElement {
     connectedCallback() {
         super.connectedCallback();
 
-        this._loginStatus = '';
-        this._loginState = [];
-        this._loginCalled = false;
         // null means we don't know yet if the user manages any sublibrary
         this._hasLibraryPermissions = null;
         this._libraryPermissionsRequested = false;
     }
 
-    isLoggedIn() {
-        return this.auth.person !== undefined && this.auth.person !== null;
-    }
-
     isLoading() {
-        if (this._loginStatus === 'logged-out') return false;
-        if (!this.isLoggedIn()) return this.auth.token !== undefined;
+        if (this.isAuthPending()) return true;
+        if (!this.isLoggedIn()) return false;
         // Keep loading until we know if the user manages any sublibrary
         return this._hasLibraryPermissions === null;
-    }
-
-    loginCallback() {
-        // Implement in subclass
     }
 
     getOrganization() {

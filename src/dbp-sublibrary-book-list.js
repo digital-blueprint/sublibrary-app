@@ -72,7 +72,6 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             inventoryYears: {type: Array, attribute: false},
             inventoryYear: {type: String, attribute: false},
             analyticsUpdateDate: {type: Object, attribute: false},
-            auth: {type: Object},
         };
     }
 
