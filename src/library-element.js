@@ -1,6 +1,5 @@
 import {AdapterLitElement} from '@dbp-toolkit/common';
 import * as errorUtils from '@dbp-toolkit/common/error';
-import {getSublibraryCollectionUrl} from './library-select.js';
 
 export class LibraryElement extends AdapterLitElement {
     constructor() {
@@ -32,9 +31,7 @@ export class LibraryElement extends AdapterLitElement {
         let hasPermissions = false;
 
         try {
-            const url = new URL(
-                getSublibraryCollectionUrl(this.entryPointUrl, this.auth['user-id']),
-            );
+            const url = new URL('sublibrary/sublibraries', this.entryPointUrl);
             // We only need to know if there is at least one entry
             url.searchParams.set('perPage', '1');
 
