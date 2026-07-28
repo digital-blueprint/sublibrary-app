@@ -60,60 +60,60 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         return $(this._(selector));
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    async libraryPermissionsCallback() {
         const that = this;
         const i18n = this._i18n;
 
-        this.updateComplete.then(() => {
-            const $locationIdentifierInput = that.$('#location-identifier');
+        // The form only gets rendered once we know that we have permissions
+        await this.updateComplete;
 
-            // enable send button if location identifier was entered
-            $locationIdentifierInput.on('input', function () {
-                that.$('#send').prop('disabled', $(this).val() === '');
-            });
+        const $locationIdentifierInput = that.$('#location-identifier');
 
-            // update the book offer with location identifier
-            that.$('#send').click((e) => {
-                e.preventDefault();
-                console.log('send');
-                const apiUrl =
-                    that.entryPointUrl + that.bookOfferId + '?library=' + that.getSublibraryCode();
-                console.log(apiUrl);
-                console.log($locationIdentifierInput);
+        // enable send button if location identifier was entered
+        $locationIdentifierInput.on('input', function () {
+            that.$('#send').prop('disabled', $(this).val() === '');
+        });
 
-                const data = {
-                    locationIdentifier: $locationIdentifierInput.val(),
-                };
+        // update the book offer with location identifier
+        that.$('#send').click((e) => {
+            e.preventDefault();
+            console.log('send');
+            const apiUrl =
+                that.entryPointUrl + that.bookOfferId + '?library=' + that.getSublibraryCode();
+            console.log(apiUrl);
+            console.log($locationIdentifierInput);
 
-                console.log(data);
-                console.log(JSON.stringify(data));
+            const data = {
+                locationIdentifier: $locationIdentifierInput.val(),
+            };
 
-                $.ajax({
-                    url: apiUrl,
-                    type: 'PATCH',
-                    contentType: 'application/merge-patch+json',
-                    beforeSend: function (jqXHR) {
-                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + that.auth.token);
-                    },
-                    data: JSON.stringify(data),
-                    success: function (data) {
-                        notify({
-                            summary: i18n.t('success-summary'),
-                            body: i18n.t('success-body', {name: that.bookOffer.name || ''}),
-                            type: 'success',
-                            timeout: 5,
-                        });
+            console.log(data);
+            console.log(JSON.stringify(data));
 
-                        that.clearBookOfferSelection();
-                    },
-                    error: (jqXHR, textStatus, errorThrown) => {
-                        that.handleXhrError(jqXHR, textStatus, errorThrown);
-                    },
-                    complete: function (jqXHR, textStatus, errorThrown) {
-                        that._('#send').stop();
-                    },
-                });
+            $.ajax({
+                url: apiUrl,
+                type: 'PATCH',
+                contentType: 'application/merge-patch+json',
+                beforeSend: function (jqXHR) {
+                    jqXHR.setRequestHeader('Authorization', 'Bearer ' + that.auth.token);
+                },
+                data: JSON.stringify(data),
+                success: function (data) {
+                    notify({
+                        summary: i18n.t('success-summary'),
+                        body: i18n.t('success-body', {name: that.bookOffer.name || ''}),
+                        type: 'success',
+                        timeout: 5,
+                    });
+
+                    that.clearBookOfferSelection();
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    that.handleXhrError(jqXHR, textStatus, errorThrown);
+                },
+                complete: function (jqXHR, textStatus, errorThrown) {
+                    that._('#send').stop();
+                },
             });
         });
     }
@@ -249,65 +249,74 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         return html`
             <link rel="stylesheet" href="${suggestionsCSS}" />
 
-            <form
-                class="${classMap({
-                    hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
-                })}">
-                <div class="field">
-                    <label class="label">${i18n.t('organization-select.label')}</label>
-                    <div class="control">
-                        <dbp-library-select
-                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.sublibraryIri}"
-                            @change="${this.onSublibraryChanged}"></dbp-library-select>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
-                    <div class="control book-offer-select-container">
-                        <dbp-sublibrary-book-offer-select
-                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            ?disabled=${!this.sublibraryIri}
-                            @change=${this.onBookSelectChanged}
-                            value="${this.bookOfferId}"
-                            sublibrary-iri="${
-                                this.sublibraryIri
-                            }"></dbp-sublibrary-book-offer-select>
-                        <dbp-reload-button
-                            ?disabled=${!this.bookOffer}
-                            @click=${this.onReloadButtonClicked}
-                            title="${
-                                this.bookOffer
-                                    ? i18n.t('shelving.button-refresh-title', {
-                                          name: this.bookOffer.name,
-                                      })
-                                    : ''
-                            }"></dbp-reload-button>
-                    </div>
-                </div>
+            ${
+                this.hasLibraryPermissions()
+                    ? html`
+                          <form>
+                              <div class="field">
+                                  <label class="label">
+                                      ${i18n.t('organization-select.label')}
+                                  </label>
+                                  <div class="control">
+                                      <dbp-library-select
+                                          subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                          value="${this.sublibraryIri}"
+                                          @change="${this.onSublibraryChanged}"></dbp-library-select>
+                                  </div>
+                              </div>
+                              <div class="field">
+                                  <label class="label">
+                                      ${i18n.t('library-book-offer-select.headline')}
+                                  </label>
+                                  <div class="control book-offer-select-container">
+                                      <dbp-sublibrary-book-offer-select
+                                          subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                          ?disabled=${!this.sublibraryIri}
+                                          @change=${this.onBookSelectChanged}
+                                          value="${this.bookOfferId}"
+                                          sublibrary-iri="${
+                                              this.sublibraryIri
+                                          }"></dbp-sublibrary-book-offer-select>
+                                      <dbp-reload-button
+                                          ?disabled=${!this.bookOffer}
+                                          @click=${this.onReloadButtonClicked}
+                                          title="${
+                                              this.bookOffer
+                                                  ? i18n.t('shelving.button-refresh-title', {
+                                                        name: this.bookOffer.name,
+                                                    })
+                                                  : ''
+                                          }"></dbp-reload-button>
+                                  </div>
+                              </div>
 
-                <div id="location-identifier-block">
-                    <div class="field">
-                        <label class="label">${i18n.t('location-identifier.headline')}</label>
-                        <div class="control">
-                            <input
-                                class="input"
-                                id="location-identifier"
-                                type="text"
-                                placeholder="${i18n.t('location-identifier.placeholder')}" />
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <dbp-button
-                                id="send"
-                                disabled="disabled"
-                                value="${i18n.t('location-identifier.submit')}"
-                                type=""></dbp-button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+                              <div id="location-identifier-block">
+                                  <div class="field">
+                                      <label class="label">
+                                          ${i18n.t('location-identifier.headline')}
+                                      </label>
+                                      <div class="control">
+                                          <input
+                                              class="input"
+                                              id="location-identifier"
+                                              type="text"
+                                              placeholder="${i18n.t('location-identifier.placeholder')}" />
+                                      </div>
+                                  </div>
+                                  <div class="field">
+                                      <div class="control">
+                                          <dbp-button
+                                              id="send"
+                                              disabled="disabled"
+                                              value="${i18n.t('location-identifier.submit')}"
+                                              type=""></dbp-button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      `
+                    : ''
+            }
             <div
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),

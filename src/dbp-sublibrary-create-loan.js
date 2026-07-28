@@ -54,10 +54,6 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         };
     }
 
-    connectedCallback() {
-        super.connectedCallback();
-    }
-
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === 'lang') {
@@ -302,94 +298,101 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
         const i18n = this._i18n;
 
         return html`
-            <form
-                class="${classMap({
-                    hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
-                })}">
-                <div class="field">
-                    <label class="label">${i18n.t('organization-select.label')}</label>
-                    <div class="control">
-                        <dbp-library-select
-                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.sublibraryIri}"
-                            @change="${this.onSublibraryChanged}"></dbp-library-select>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">${i18n.t('person-select.headline')}</label>
-                    <div class="control">
-                        <dbp-resource-select
-                            class="person-select"
-                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            resource-path="sublibrary/users"
-                            fetch-mode="search"
-                            placeholder="${i18n.t('person-select.placeholder')}"
-                            .formatResource=${this.formatPersonResource}
-                            @change=${this.onPersonSelectChanged}
-                            value="${this.personId}"></dbp-resource-select>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
-                    <div class="control book-offer-select-container">
-                        <dbp-sublibrary-book-offer-select
-                            subscribe="auth:auth,lang:lang,entry-point-url:entry-point-url"
-                            ?disabled=${!this.sublibraryIri}
-                            @change=${this.onBookSelectChanged}
-                            value="${this.bookOfferId}"
-                            sublibrary-iri="${
-                                this.sublibraryIri
-                            }"></dbp-sublibrary-book-offer-select>
-                        <dbp-reload-button
-                            ?disabled=${!this.bookOffer}
-                            @click=${this.onReloadButtonClicked}
-                            title="${
-                                this.bookOffer
-                                    ? i18n.t('create-loan.button-refresh-title', {
-                                          name: this.bookOffer.name,
-                                      })
-                                    : ''
-                            }"></dbp-reload-button>
-                    </div>
-                </div>
-
-                <dbp-mini-spinner
-                    id="loans-loading"
-                    text="${i18n.t('create-loan.mini-spinner-text')}"
-                    style="font-size: 2em; display: none;"></dbp-mini-spinner>
-                <div id="create-loan-block">
-                    <div class="field">
-                        <label class="label">${i18n.t('renew-loan.end-date')}</label>
-                        <input
-                            class="input"
-                            type="date"
-                            min="${commonUtils.dateToInputDateString(minDate)}"
-                            value="${commonUtils.dateToInputDateString(loanDate)}" />
-                        <input type="time" class="hidden" value="23:59:59" />
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <dbp-button
-                                id="send"
-                                @click=${this.onSubmitClicked}
-                                value="${i18n.t('create-loan.submit')}"
-                                ?disabled="${this.sendButtonDisabled}"
-                                type=""></dbp-button>
-                        </div>
-                    </div>
-                </div>
-                ${
-                    this.status
-                        ? html`
-                              <br />
-                              <div class="notification is-${this.status.type}">
-                                  <h4>${i18n.t(this.status.summary)}</h4>
-                                  ${i18n.t(this.status.body)}
+            ${
+                this.hasLibraryPermissions()
+                    ? html`
+                          <form>
+                              <div class="field">
+                                  <label class="label">
+                                      ${i18n.t('organization-select.label')}
+                                  </label>
+                                  <div class="control">
+                                      <dbp-library-select
+                                          subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                          value="${this.sublibraryIri}"
+                                          @change="${this.onSublibraryChanged}"></dbp-library-select>
+                                  </div>
                               </div>
-                          `
-                        : ``
-                }
-            </form>
+                              <div class="field">
+                                  <label class="label">${i18n.t('person-select.headline')}</label>
+                                  <div class="control">
+                                      <dbp-resource-select
+                                          class="person-select"
+                                          subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                          resource-path="sublibrary/users"
+                                          fetch-mode="search"
+                                          placeholder="${i18n.t('person-select.placeholder')}"
+                                          .formatResource=${this.formatPersonResource}
+                                          @change=${this.onPersonSelectChanged}
+                                          value="${this.personId}"></dbp-resource-select>
+                                  </div>
+                              </div>
+                              <div class="field">
+                                  <label class="label">
+                                      ${i18n.t('library-book-offer-select.headline')}
+                                  </label>
+                                  <div class="control book-offer-select-container">
+                                      <dbp-sublibrary-book-offer-select
+                                          subscribe="auth:auth,lang:lang,entry-point-url:entry-point-url"
+                                          ?disabled=${!this.sublibraryIri}
+                                          @change=${this.onBookSelectChanged}
+                                          value="${this.bookOfferId}"
+                                          sublibrary-iri="${
+                                              this.sublibraryIri
+                                          }"></dbp-sublibrary-book-offer-select>
+                                      <dbp-reload-button
+                                          ?disabled=${!this.bookOffer}
+                                          @click=${this.onReloadButtonClicked}
+                                          title="${
+                                              this.bookOffer
+                                                  ? i18n.t('create-loan.button-refresh-title', {
+                                                        name: this.bookOffer.name,
+                                                    })
+                                                  : ''
+                                          }"></dbp-reload-button>
+                                  </div>
+                              </div>
+
+                              <dbp-mini-spinner
+                                  id="loans-loading"
+                                  text="${i18n.t('create-loan.mini-spinner-text')}"
+                                  style="font-size: 2em; display: none;"></dbp-mini-spinner>
+                              <div id="create-loan-block">
+                                  <div class="field">
+                                      <label class="label">${i18n.t('renew-loan.end-date')}</label>
+                                      <input
+                                          class="input"
+                                          type="date"
+                                          min="${commonUtils.dateToInputDateString(minDate)}"
+                                          value="${commonUtils.dateToInputDateString(loanDate)}" />
+                                      <input type="time" class="hidden" value="23:59:59" />
+                                  </div>
+                                  <div class="field">
+                                      <div class="control">
+                                          <dbp-button
+                                              id="send"
+                                              @click=${this.onSubmitClicked}
+                                              value="${i18n.t('create-loan.submit')}"
+                                              ?disabled="${this.sendButtonDisabled}"
+                                              type=""></dbp-button>
+                                      </div>
+                                  </div>
+                              </div>
+                              ${
+                                  this.status
+                                      ? html`
+                                            <br />
+                                            <div class="notification is-${this.status.type}">
+                                                <h4>${i18n.t(this.status.summary)}</h4>
+                                                ${i18n.t(this.status.body)}
+                                            </div>
+                                        `
+                                      : ``
+                              }
+                          </form>
+                      `
+                    : ''
+            }
             <div
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),

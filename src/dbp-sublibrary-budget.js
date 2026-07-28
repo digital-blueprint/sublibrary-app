@@ -55,17 +55,11 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
         };
     }
 
-    loginCallback() {
-        super.loginCallback();
+    async libraryPermissionsCallback() {
+        // The form only gets rendered once we know that we have permissions
+        await this.updateComplete;
+
         this.loadBudget();
-    }
-
-    connectedCallback() {
-        super.connectedCallback();
-
-        this.updateComplete.then(() => {
-            this.loadBudget();
-        });
     }
 
     update(changedProperties) {
@@ -89,7 +83,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     }
 
     loadBudget() {
-        if (!this.isLoggedIn() || this.sublibraryIri === '') {
+        if (!this.hasLibraryPermissions() || this.sublibraryIri === '') {
             return;
         }
 
@@ -210,42 +204,49 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
         const i18n = this._i18n;
 
         return html`
-            <div
-                class="${classMap({
-                    hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
-                })}">
-                <div class="field">
-                    ${i18n.t('order-list.current-state')}: ${this.analyticsUpdateDate}
-                </div>
-                <div class="field">
-                    <label class="label">${i18n.t('organization-select.label')}</label>
-                    <div class="control">
-                        <dbp-library-select
-                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.sublibraryIri}"
-                            @change="${this.onSublibraryChanged}"></dbp-library-select>
-                    </div>
-                </div>
-                <dbp-mini-spinner
-                    class="${classMap({hidden: this.pageStatus !== pageStatus.loading})}"
-                    text="${i18n.t('budget.mini-spinner-text')}"
-                    style="font-size: 2em;"></dbp-mini-spinner>
-                <div class="field ${classMap({hidden: this.pageStatus !== pageStatus.showBudget})}">
-                    <label class="label">${i18n.t('budget.budget-key-values')}</label>
-                    <div class="control">
-                        <table>
-                            ${this.getMonetaryAmountRow('taa')}
-                            ${this.getMonetaryAmountRow('taa-tcb')}
-                            ${this.getMonetaryAmountRow('tcb')}
-                            ${this.getMonetaryAmountRow('tcb-tab')}
-                            ${this.getMonetaryAmountRow('tab')}
-                        </table>
-                    </div>
-                </div>
-                <div class="field ${classMap({hidden: this.pageStatus !== pageStatus.noBudget})}">
-                    ${i18n.t('budget.no-budget')}
-                </div>
-            </div>
+            ${
+                this.hasLibraryPermissions()
+                    ? html`
+                          <div>
+                              <div class="field">
+                                  ${i18n.t('order-list.current-state')}: ${this.analyticsUpdateDate}
+                              </div>
+                              <div class="field">
+                                  <label class="label">
+                                      ${i18n.t('organization-select.label')}
+                                  </label>
+                                  <div class="control">
+                                      <dbp-library-select
+                                          subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                          value="${this.sublibraryIri}"
+                                          @change="${this.onSublibraryChanged}"></dbp-library-select>
+                                  </div>
+                              </div>
+                              <dbp-mini-spinner
+                                  class="${classMap({hidden: this.pageStatus !== pageStatus.loading})}"
+                                  text="${i18n.t('budget.mini-spinner-text')}"
+                                  style="font-size: 2em;"></dbp-mini-spinner>
+                              <div
+                                  class="field ${classMap({hidden: this.pageStatus !== pageStatus.showBudget})}">
+                                  <label class="label">${i18n.t('budget.budget-key-values')}</label>
+                                  <div class="control">
+                                      <table>
+                                          ${this.getMonetaryAmountRow('taa')}
+                                          ${this.getMonetaryAmountRow('taa-tcb')}
+                                          ${this.getMonetaryAmountRow('tcb')}
+                                          ${this.getMonetaryAmountRow('tcb-tab')}
+                                          ${this.getMonetaryAmountRow('tab')}
+                                      </table>
+                                  </div>
+                              </div>
+                              <div
+                                  class="field ${classMap({hidden: this.pageStatus !== pageStatus.noBudget})}">
+                                  ${i18n.t('budget.no-budget')}
+                              </div>
+                          </div>
+                      `
+                    : ''
+            }
             <div
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),

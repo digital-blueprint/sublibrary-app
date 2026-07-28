@@ -65,50 +65,50 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         return this.sublibraryIri.includes('-') ? this.sublibraryIri.split('-')[1] : '';
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    async libraryPermissionsCallback() {
         const that = this;
         const i18n = this._i18n;
 
-        this.updateComplete.then(() => {
-            // update loan status of book loan
-            that.$('#send').click((e) => {
-                e.preventDefault();
-                console.log('send');
-                const apiUrl =
-                    that.entryPointUrl +
-                    that.bookOfferId +
-                    '/return' +
-                    '?library=' +
-                    that.getSublibraryCode();
-                console.log('dbp-sublibrary-return-book: #send.click() apiUrl = ' + apiUrl);
+        // The form only gets rendered once we know that we have permissions
+        await this.updateComplete;
 
-                $.ajax({
-                    url: apiUrl,
-                    type: 'POST',
-                    contentType: 'application/ld+json',
-                    beforeSend: function (jqXHR) {
-                        jqXHR.setRequestHeader('Authorization', 'Bearer ' + that.auth.token);
-                    },
-                    data: '{}',
-                    success: function (data) {
-                        that.clearBookOfferSelection();
+        // update loan status of book loan
+        that.$('#send').click((e) => {
+            e.preventDefault();
+            console.log('send');
+            const apiUrl =
+                that.entryPointUrl +
+                that.bookOfferId +
+                '/return' +
+                '?library=' +
+                that.getSublibraryCode();
+            console.log('dbp-sublibrary-return-book: #send.click() apiUrl = ' + apiUrl);
 
-                        that.status = {
-                            summary: i18nKey('return-book.success-summary'),
-                            body: i18n.t('return-book.success-body', {
-                                personName: that.borrowerName,
-                            }),
-                        };
-                    },
-                    error: (jqXHR, textStatus, errorThrown) => {
-                        that.handleXhrError(jqXHR, textStatus, errorThrown);
-                    },
-                    complete: function (jqXHR, textStatus, errorThrown) {
-                        that._('#send').stop();
-                        that.updateSubmitButtonDisabled();
-                    },
-                });
+            $.ajax({
+                url: apiUrl,
+                type: 'POST',
+                contentType: 'application/ld+json',
+                beforeSend: function (jqXHR) {
+                    jqXHR.setRequestHeader('Authorization', 'Bearer ' + that.auth.token);
+                },
+                data: '{}',
+                success: function (data) {
+                    that.clearBookOfferSelection();
+
+                    that.status = {
+                        summary: i18nKey('return-book.success-summary'),
+                        body: i18n.t('return-book.success-body', {
+                            personName: that.borrowerName,
+                        }),
+                    };
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    that.handleXhrError(jqXHR, textStatus, errorThrown);
+                },
+                complete: function (jqXHR, textStatus, errorThrown) {
+                    that._('#send').stop();
+                    that.updateSubmitButtonDisabled();
+                },
             });
         });
     }
@@ -297,75 +297,82 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     render() {
         const i18n = this._i18n;
         return html`
-            <form
-                class="${classMap({
-                    hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
-                })}">
-                <div class="field">
-                    <label class="label">${i18n.t('organization-select.label')}</label>
-                    <div class="control">
-                        <dbp-library-select
-                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.sublibraryIri}"
-                            @change="${this.onSublibraryChanged}"></dbp-library-select>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">${i18n.t('library-book-offer-select.headline')}</label>
-                    <div class="control book-offer-select-container">
-                        <dbp-sublibrary-book-offer-select
-                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            ?disabled=${!this.sublibraryIri}
-                            @change=${this.onBookSelectChanged}
-                            value="${this.bookOfferId}"
-                            sublibrary-iri="${
-                                this.sublibraryIri
-                            }"></dbp-sublibrary-book-offer-select>
-                        <dbp-reload-button
-                            ?disabled=${!this.bookOffer}
-                            @click=${this.onReloadButtonClicked}
-                            title="${
-                                this.bookOffer
-                                    ? i18n.t('return-book.button-refresh-title', {
-                                          name: this.bookOffer.name,
-                                      })
-                                    : ''
-                            }"></dbp-reload-button>
-                    </div>
-                </div>
-
-                <dbp-mini-spinner
-                    id="loans-loading"
-                    text="${i18n.t('return-book.mini-spinner-text')}"
-                    style="font-size: 2em; display: none;"></dbp-mini-spinner>
-                <div id="return-book-block">
-                    <div class="field">
-                        <label class="label">${i18n.t('return-book.borrower')}</label>
-                        <div class="control">${this.borrowerName}</div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <dbp-button
-                                id="send"
-                                disabled="disabled"
-                                value="${i18n.t('return-book.submit')}"
-                                type=""></dbp-button>
-                        </div>
-                    </div>
-                </div>
-
-                ${
-                    this.status
-                        ? html`
-                              <br />
-                              <div class="notification is-info">
-                                  <h4>${i18n.t(this.status.summary)}</h4>
-                                  ${i18n.t(this.status.body)}
+            ${
+                this.hasLibraryPermissions()
+                    ? html`
+                          <form>
+                              <div class="field">
+                                  <label class="label">
+                                      ${i18n.t('organization-select.label')}
+                                  </label>
+                                  <div class="control">
+                                      <dbp-library-select
+                                          subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                          value="${this.sublibraryIri}"
+                                          @change="${this.onSublibraryChanged}"></dbp-library-select>
+                                  </div>
                               </div>
-                          `
-                        : ''
-                }
-            </form>
+                              <div class="field">
+                                  <label class="label">
+                                      ${i18n.t('library-book-offer-select.headline')}
+                                  </label>
+                                  <div class="control book-offer-select-container">
+                                      <dbp-sublibrary-book-offer-select
+                                          subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                          ?disabled=${!this.sublibraryIri}
+                                          @change=${this.onBookSelectChanged}
+                                          value="${this.bookOfferId}"
+                                          sublibrary-iri="${
+                                              this.sublibraryIri
+                                          }"></dbp-sublibrary-book-offer-select>
+                                      <dbp-reload-button
+                                          ?disabled=${!this.bookOffer}
+                                          @click=${this.onReloadButtonClicked}
+                                          title="${
+                                              this.bookOffer
+                                                  ? i18n.t('return-book.button-refresh-title', {
+                                                        name: this.bookOffer.name,
+                                                    })
+                                                  : ''
+                                          }"></dbp-reload-button>
+                                  </div>
+                              </div>
+
+                              <dbp-mini-spinner
+                                  id="loans-loading"
+                                  text="${i18n.t('return-book.mini-spinner-text')}"
+                                  style="font-size: 2em; display: none;"></dbp-mini-spinner>
+                              <div id="return-book-block">
+                                  <div class="field">
+                                      <label class="label">${i18n.t('return-book.borrower')}</label>
+                                      <div class="control">${this.borrowerName}</div>
+                                  </div>
+                                  <div class="field">
+                                      <div class="control">
+                                          <dbp-button
+                                              id="send"
+                                              disabled="disabled"
+                                              value="${i18n.t('return-book.submit')}"
+                                              type=""></dbp-button>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              ${
+                                  this.status
+                                      ? html`
+                                            <br />
+                                            <div class="notification is-info">
+                                                <h4>${i18n.t(this.status.summary)}</h4>
+                                                ${i18n.t(this.status.body)}
+                                            </div>
+                                        `
+                                      : ''
+                              }
+                          </form>
+                      `
+                    : ''
+            }
             <div
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),

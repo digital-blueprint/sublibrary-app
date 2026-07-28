@@ -65,38 +65,37 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         return this.sublibrary.code;
     }
 
-    connectedCallback() {
-        super.connectedCallback();
+    async libraryPermissionsCallback() {
+        // The form only gets rendered once we know that we have permissions
+        await this.updateComplete;
 
-        this.updateComplete.then(() => {
-            // language=css
-            const css = `
-                @media (min-width: 900px) {
-                    td .date-col, td .button-col {
-                        white-space: nowrap;
-                    }
+        // language=css
+        const css = `
+            @media (min-width: 900px) {
+                td .date-col, td .button-col {
+                    white-space: nowrap;
                 }
+            }
 
-                @media (max-width: 900px) {
-                    td .date-col input[type="time"] {
-                        margin-top: 5px;
-                    }
+            @media (max-width: 900px) {
+                td .date-col input[type="time"] {
+                    margin-top: 5px;
                 }
+            }
 
-                table.dataTable thead th, table.dataTable thead td { padding: 10px; }
-                .button-col > dbp-button {
-                    margin-right: 5px;
-                    margin-bottom: 5px;
-                    display: inline-block;
-                }
+            table.dataTable thead th, table.dataTable thead td { padding: 10px; }
+            .button-col > dbp-button {
+                margin-right: 5px;
+                margin-bottom: 5px;
+                display: inline-block;
+            }
 
-                table.dataTable tbody tr.odd {
-                    background-color: var(--dbp-background);
-                }
-            `;
+            table.dataTable tbody tr.odd {
+                background-color: var(--dbp-background);
+            }
+        `;
 
-            this._('dbp-data-table-view').setCSSStyle(css);
-        });
+        this._('dbp-data-table-view').setCSSStyle(css);
     }
 
     loadTable() {
@@ -123,7 +122,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
         $renewLoanBlock.hide();
         $noLoansBlock.hide();
 
-        if (this.person == null || this.sublibraryIri === '') {
+        if (!this.hasLibraryPermissions() || this.person == null || this.sublibraryIri === '') {
             return;
         }
 
@@ -472,65 +471,72 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     render() {
         const i18n = this._i18n;
         return html`
-            <form
-                class="${classMap({
-                    hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
-                })}">
-                <div class="field">
-                    <label class="label">${i18n.t('organization-select.label')}</label>
-                    <div class="control">
-                        <dbp-library-select
-                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.sublibraryIri}"
-                            @change="${this.onSublibraryChanged}"></dbp-library-select>
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">${i18n.t('person-select.headline')}</label>
-                    <div class="control person-select-container">
-                        <dbp-resource-select
-                            class="person-select"
-                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            resource-path="sublibrary/users"
-                            fetch-mode="search"
-                            placeholder="${i18n.t('person-select.placeholder')}"
-                            .formatResource=${this.formatPersonResource}
-                            @change=${this.onPersonSelectChanged}
-                            value="${this.personIri}"
-                            no-default></dbp-resource-select>
-                        <dbp-reload-button
-                            ?disabled=${!this.person}
-                            @click=${this.onPersonReloadButtonClicked}
-                            title="${
-                                this.person
-                                    ? i18n.t('renew-loan.button-refresh-title', {
-                                          personName: getPersonDisplayName(this.person),
-                                      })
-                                    : ''
-                            }"></dbp-reload-button>
-                    </div>
-                </div>
-                <dbp-mini-spinner
-                    id="loans-loading"
-                    text="${i18n.t('renew-loan.mini-spinner-text')}"
-                    style="font-size: 2em; display: none;"></dbp-mini-spinner>
-                <div id="renew-loan-block" class="field">
-                    <label class="label">${i18n.t('renew-loan.loans')}</label>
-                    <div class="control">
-                        <dbp-data-table-view
-                            searching
-                            paging
-                            exportable
-                            export-name="${i18n.t('renew-loan.loans')}"
-                            subscribe="lang:lang"
-                            id="book-loans-1"
-                            @click="${(e) => this.onDataTableClick(e)}"></dbp-data-table-view>
-                    </div>
-                </div>
-                <div id="no-loans-block" style="display: none;">
-                    ${i18n.t('renew-loan.no-loans')}
-                </div>
-            </form>
+            ${
+                this.hasLibraryPermissions()
+                    ? html`
+                          <form>
+                              <div class="field">
+                                  <label class="label">
+                                      ${i18n.t('organization-select.label')}
+                                  </label>
+                                  <div class="control">
+                                      <dbp-library-select
+                                          subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                          value="${this.sublibraryIri}"
+                                          @change="${this.onSublibraryChanged}"></dbp-library-select>
+                                  </div>
+                              </div>
+                              <div class="field">
+                                  <label class="label">${i18n.t('person-select.headline')}</label>
+                                  <div class="control person-select-container">
+                                      <dbp-resource-select
+                                          class="person-select"
+                                          subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                          resource-path="sublibrary/users"
+                                          fetch-mode="search"
+                                          placeholder="${i18n.t('person-select.placeholder')}"
+                                          .formatResource=${this.formatPersonResource}
+                                          @change=${this.onPersonSelectChanged}
+                                          value="${this.personIri}"
+                                          no-default></dbp-resource-select>
+                                      <dbp-reload-button
+                                          ?disabled=${!this.person}
+                                          @click=${this.onPersonReloadButtonClicked}
+                                          title="${
+                                              this.person
+                                                  ? i18n.t('renew-loan.button-refresh-title', {
+                                                        personName: getPersonDisplayName(
+                                                            this.person,
+                                                        ),
+                                                    })
+                                                  : ''
+                                          }"></dbp-reload-button>
+                                  </div>
+                              </div>
+                              <dbp-mini-spinner
+                                  id="loans-loading"
+                                  text="${i18n.t('renew-loan.mini-spinner-text')}"
+                                  style="font-size: 2em; display: none;"></dbp-mini-spinner>
+                              <div id="renew-loan-block" class="field">
+                                  <label class="label">${i18n.t('renew-loan.loans')}</label>
+                                  <div class="control">
+                                      <dbp-data-table-view
+                                          searching
+                                          paging
+                                          exportable
+                                          export-name="${i18n.t('renew-loan.loans')}"
+                                          subscribe="lang:lang"
+                                          id="book-loans-1"
+                                          @click="${(e) => this.onDataTableClick(e)}"></dbp-data-table-view>
+                                  </div>
+                              </div>
+                              <div id="no-loans-block" style="display: none;">
+                                  ${i18n.t('renew-loan.no-loans')}
+                              </div>
+                          </form>
+                      `
+                    : ''
+            }
             <div
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),

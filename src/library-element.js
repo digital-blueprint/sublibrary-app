@@ -41,16 +41,32 @@ export class LibraryElement extends AuthMixin(AdapterLitElement) {
                     Authorization: 'Bearer ' + this.auth.token,
                 },
             });
-            if (!response.ok) throw response;
+            // The API forbids access for everyone who isn't a library officer
+            if (response.status !== 403) {
+                if (!response.ok) throw response;
 
-            const data = await response.json();
-            hasPermissions = (data['hydra:member'] ?? []).length > 0;
+                const data = await response.json();
+                hasPermissions = (data['hydra:member'] ?? []).length > 0;
+            }
         } catch (error) {
             console.error('Failed to fetch the sublibraries of the user', error);
         }
 
         this._hasLibraryPermissions = hasPermissions;
         this.requestUpdate();
+
+        if (hasPermissions) {
+            this.libraryPermissionsCallback();
+        }
+    }
+
+    /**
+     * Called once we know that the logged in user manages at least one sublibrary.
+     * Everything talking to the library API needs to wait for this, since the API
+     * rejects all other users.
+     */
+    libraryPermissionsCallback() {
+        // Implement in subclass
     }
 
     /**

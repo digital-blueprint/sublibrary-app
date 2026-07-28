@@ -75,32 +75,25 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         };
     }
 
-    loginCallback() {
-        super.loginCallback();
+    async libraryPermissionsCallback() {
+        // The form only gets rendered once we know that we have permissions
+        await this.updateComplete;
 
+        this.initLocationIdentifierSelect();
+        this.initInventoryYearSelect();
+
+        // language=css
+        const css = `
+            table.dataTable tbody tr.odd {
+                background-color: var(--dbp-background);
+            }
+            .dataTables_wrapper .dataTables_length select {
+                padding: 4px 25px 4px 4px !important;
+            }
+        `;
+
+        this._('dbp-data-table-view').setCSSStyle(css);
         this.loadTable();
-    }
-
-    connectedCallback() {
-        super.connectedCallback();
-
-        this.updateComplete.then(() => {
-            this.initLocationIdentifierSelect();
-            this.initInventoryYearSelect();
-
-            // language=css
-            const css = `
-                table.dataTable tbody tr.odd {
-                    background-color: var(--dbp-background);
-                }
-                .dataTables_wrapper .dataTables_length select {
-                    padding: 4px 25px 4px 4px !important;
-                }
-            `;
-
-            this._('dbp-data-table-view').setCSSStyle(css);
-            this.loadTable();
-        });
     }
 
     update(changedProperties) {
@@ -159,7 +152,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         $bookListBlock.hide();
         $noBooksBlock.hide();
 
-        if (!this.isLoggedIn()) return;
+        if (!this.hasLibraryPermissions()) return;
 
         if (this.sublibraryIri === '') {
             return;
@@ -472,64 +465,73 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         const i18n = this._i18n;
         return html`
             <link rel="stylesheet" href="${select2CSS}" />
-            <form
-                class="${classMap({
-                    hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
-                })}">
-                <div class="field">
-                    ${i18n.t('book-list.current-state')}: ${this.analyticsUpdateDate}
-                </div>
-                <div class="field">
-                    <label class="label">${i18n.t('organization-select.label')}</label>
-                    <div class="control">
-                        <dbp-library-select
-                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.sublibraryIri}"
-                            @change="${this.onSublibraryChanged}"></dbp-library-select>
-                    </div>
-                </div>
-                <dbp-mini-spinner
-                    id="books-loading"
-                    text="${i18n.t('book-list.mini-spinner-text')}"
-                    style="font-size: 2em; display: none;"></dbp-mini-spinner>
-                <div id="book-list-block">
-                    <div class="field">
-                        <label class="label">${i18n.t('book-list.book-location-identifier')}</label>
-                        <div class="control">
-                            <select id="${this.locationIdentifierSelectId}">
-                                <option value=""></option>
-                                ${locationIdentifierItemTemplates}
-                            </select>
-                            <div id="location-identifier-select-dropdown"></div>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">${i18n.t('book-list.book-inventory-year')}</label>
-                        <div class="control">
-                            <select id="${this.inventoryYearSelectId}">
-                                <option value=""></option>
-                                ${inventoryYearItemTemplates}
-                            </select>
-                            <div id="inventory-year-select-dropdown"></div>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">${i18n.t('book-list.books')}</label>
-                        <div class="control">
-                            <dbp-data-table-view
-                                searching
-                                paging
-                                exportable
-                                export-name="${i18n.t('book-list.export-name', {
-                                    organizationCode: this.getOrganizationCode(),
-                                })}"
-                                subscribe="lang:lang"
-                                id="book-books-1"></dbp-data-table-view>
-                        </div>
-                    </div>
-                </div>
-                <div id="no-books-block">${i18n.t('book-list.no-books')}</div>
-            </form>
+            ${
+                this.hasLibraryPermissions()
+                    ? html`
+                          <form>
+                              <div class="field">
+                                  ${i18n.t('book-list.current-state')}: ${this.analyticsUpdateDate}
+                              </div>
+                              <div class="field">
+                                  <label class="label">
+                                      ${i18n.t('organization-select.label')}
+                                  </label>
+                                  <div class="control">
+                                      <dbp-library-select
+                                          subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                          value="${this.sublibraryIri}"
+                                          @change="${this.onSublibraryChanged}"></dbp-library-select>
+                                  </div>
+                              </div>
+                              <dbp-mini-spinner
+                                  id="books-loading"
+                                  text="${i18n.t('book-list.mini-spinner-text')}"
+                                  style="font-size: 2em; display: none;"></dbp-mini-spinner>
+                              <div id="book-list-block">
+                                  <div class="field">
+                                      <label class="label">
+                                          ${i18n.t('book-list.book-location-identifier')}
+                                      </label>
+                                      <div class="control">
+                                          <select id="${this.locationIdentifierSelectId}">
+                                              <option value=""></option>
+                                              ${locationIdentifierItemTemplates}
+                                          </select>
+                                          <div id="location-identifier-select-dropdown"></div>
+                                      </div>
+                                  </div>
+                                  <div class="field">
+                                      <label class="label">
+                                          ${i18n.t('book-list.book-inventory-year')}
+                                      </label>
+                                      <div class="control">
+                                          <select id="${this.inventoryYearSelectId}">
+                                              <option value=""></option>
+                                              ${inventoryYearItemTemplates}
+                                          </select>
+                                          <div id="inventory-year-select-dropdown"></div>
+                                      </div>
+                                  </div>
+                                  <div class="field">
+                                      <label class="label">${i18n.t('book-list.books')}</label>
+                                      <div class="control">
+                                          <dbp-data-table-view
+                                              searching
+                                              paging
+                                              exportable
+                                              export-name="${i18n.t('book-list.export-name', {
+                                                  organizationCode: this.getOrganizationCode(),
+                                              })}"
+                                              subscribe="lang:lang"
+                                              id="book-books-1"></dbp-data-table-view>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div id="no-books-block">${i18n.t('book-list.no-books')}</div>
+                          </form>
+                      `
+                    : ''
+            }
             <div
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),

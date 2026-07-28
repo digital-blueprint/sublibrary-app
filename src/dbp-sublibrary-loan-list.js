@@ -60,26 +60,19 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         return $(this._(selector));
     }
 
-    loginCallback() {
-        super.loginCallback();
+    async libraryPermissionsCallback() {
+        // The form only gets rendered once we know that we have permissions
+        await this.updateComplete;
 
+        // language=css
+        const css = `
+            table.dataTable tbody tr.odd {
+                background-color: var(--dbp-background);
+            }
+        `;
+
+        this._('dbp-data-table-view').setCSSStyle(css);
         this.loadTable();
-    }
-
-    connectedCallback() {
-        super.connectedCallback();
-
-        this.updateComplete.then(() => {
-            // language=css
-            const css = `
-                table.dataTable tbody tr.odd {
-                    background-color: var(--dbp-background);
-                }
-            `;
-
-            this._('dbp-data-table-view').setCSSStyle(css);
-            this.loadTable();
-        });
     }
 
     update(changedProperties) {
@@ -119,7 +112,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         $loanListBlock.hide();
         $noLoansBlock.hide();
 
-        if (!this.isLoggedIn()) return;
+        if (!this.hasLibraryPermissions()) return;
 
         if (this.sublibraryIri === '') {
             return;
@@ -392,64 +385,69 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         const i18n = this._i18n;
 
         return html`
-            <form
-                class="${classMap({
-                    hidden: !this.isLoggedIn() || !this.hasLibraryPermissions() || this.isLoading(),
-                })}">
-                <div class="field">
-                    ${i18n.t('loan-list.current-state')}: ${this.analyticsUpdateDate}
-                </div>
-                <div class="field">
-                    <label class="label">${i18n.t('organization-select.label')}</label>
-                    <div class="control">
-                        <dbp-library-select
-                            subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
-                            value="${this.sublibraryIri}"
-                            @change="${this.onSublibraryChanged}"></dbp-library-select>
-                    </div>
-                </div>
-                <dbp-mini-spinner
-                    id="loans-loading"
-                    text="${i18n.t('loan-list.mini-spinner-text')}"
-                    style="font-size: 2em; display: none;"></dbp-mini-spinner>
-                <div id="loan-list-block">
-                    <div class="field">
-                        <label class="label">
-                            <input
-                                type="checkbox"
-                                .checked=${this.openOnly}
-                                @click=${this.toggleOpenOnly}
-                                .disabled=${this.overdueOnly} />
-                            ${i18n.t('loan-list.open-only')}
-                        </label>
-                    </div>
-                    <div class="field">
-                        <label class="label">
-                            <input
-                                type="checkbox"
-                                .checked=${this.overdueOnly}
-                                @click=${this.toggleOverdueOnly} />
-                            ${i18n.t('loan-list.overdue-only')}
-                        </label>
-                    </div>
-                    <div class="field">
-                        <label class="label">${i18n.t('loan-list.loans')}</label>
-                        <div class="control">
-                            <dbp-data-table-view
-                                searching
-                                paging
-                                exportable
-                                export-name="${i18n.t('loan-list.export-name', {
-                                    organizationCode: this.getOrganizationCode(),
-                                })}"
-                                subscribe="lang:lang"
-                                id="loan-loans-1"
-                                @click="${(e) => this.onDataTableClick(e)}"></dbp-data-table-view>
-                        </div>
-                    </div>
-                </div>
-                <div id="no-loans-block">${i18n.t('loan-list.no-loans')}</div>
-            </form>
+            ${
+                this.hasLibraryPermissions()
+                    ? html`
+                          <form>
+                              <div class="field">
+                                  ${i18n.t('loan-list.current-state')}: ${this.analyticsUpdateDate}
+                              </div>
+                              <div class="field">
+                                  <label class="label">
+                                      ${i18n.t('organization-select.label')}
+                                  </label>
+                                  <div class="control">
+                                      <dbp-library-select
+                                          subscribe="lang:lang,entry-point-url:entry-point-url,auth:auth"
+                                          value="${this.sublibraryIri}"
+                                          @change="${this.onSublibraryChanged}"></dbp-library-select>
+                                  </div>
+                              </div>
+                              <dbp-mini-spinner
+                                  id="loans-loading"
+                                  text="${i18n.t('loan-list.mini-spinner-text')}"
+                                  style="font-size: 2em; display: none;"></dbp-mini-spinner>
+                              <div id="loan-list-block">
+                                  <div class="field">
+                                      <label class="label">
+                                          <input
+                                              type="checkbox"
+                                              .checked=${this.openOnly}
+                                              @click=${this.toggleOpenOnly}
+                                              .disabled=${this.overdueOnly} />
+                                          ${i18n.t('loan-list.open-only')}
+                                      </label>
+                                  </div>
+                                  <div class="field">
+                                      <label class="label">
+                                          <input
+                                              type="checkbox"
+                                              .checked=${this.overdueOnly}
+                                              @click=${this.toggleOverdueOnly} />
+                                          ${i18n.t('loan-list.overdue-only')}
+                                      </label>
+                                  </div>
+                                  <div class="field">
+                                      <label class="label">${i18n.t('loan-list.loans')}</label>
+                                      <div class="control">
+                                          <dbp-data-table-view
+                                              searching
+                                              paging
+                                              exportable
+                                              export-name="${i18n.t('loan-list.export-name', {
+                                                  organizationCode: this.getOrganizationCode(),
+                                              })}"
+                                              subscribe="lang:lang"
+                                              id="loan-loans-1"
+                                              @click="${(e) => this.onDataTableClick(e)}"></dbp-data-table-view>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div id="no-loans-block">${i18n.t('loan-list.no-loans')}</div>
+                          </form>
+                      `
+                    : ''
+            }
             <div
                 class="notification is-warning ${classMap({
                     hidden: this.isLoggedIn() || this.isLoading(),
