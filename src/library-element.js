@@ -1,5 +1,6 @@
 import {AdapterLitElement} from '@dbp-toolkit/common';
 import * as errorUtils from '@dbp-toolkit/common/error';
+import {getSublibraryCollectionUrl} from './library-select.js';
 
 export class LibraryElement extends AdapterLitElement {
     constructor() {
@@ -13,11 +14,57 @@ export class LibraryElement extends AdapterLitElement {
             : this.shadowRoot.querySelector(selector);
     }
 
+    /**
+     * Whether the user manages at least one sublibrary, i.e. whether the sublibrary
+     * selector has any entries. Returns false as long as this isn't known yet.
+     *
+     * @returns {boolean} true if the user has access to at least one sublibrary
+     */
     hasLibraryPermissions() {
-        if (!this.auth.person || !Array.isArray(this.auth.person.roles)) return false;
+        return this._hasLibraryPermissions === true;
+    }
 
-        let roles = this.auth.person.roles;
-        return roles.indexOf('ROLE_LIBRARY_MANAGER') !== -1;
+    /**
+     * Fetches the sublibraries the user manages, so we know whether the user is
+     * allowed to use the app at all.
+     */
+    async _updateLibraryPermissions() {
+        let hasPermissions = false;
+
+        try {
+            const url = new URL(
+                getSublibraryCollectionUrl(this.entryPointUrl, this.auth['user-id']),
+            );
+            // We only need to know if there is at least one entry
+            url.searchParams.set('perPage', '1');
+
+            const response = await fetch(url.href, {
+                headers: {
+                    'Content-Type': 'application/ld+json',
+                    Authorization: 'Bearer ' + this.auth.token,
+                },
+            });
+            if (!response.ok) throw response;
+
+            const data = await response.json();
+            hasPermissions = (data['hydra:member'] ?? []).length > 0;
+        } catch (error) {
+            console.error('Failed to fetch the sublibraries of the user', error);
+        }
+
+        this._hasLibraryPermissions = hasPermissions;
+        this.requestUpdate();
+    }
+
+    /**
+     * Starts the sublibrary lookup as soon as we are logged in and know the API entry point.
+     */
+    _maybeUpdateLibraryPermissions() {
+        if (this._libraryPermissionsRequested) return;
+        if (!this.isLoggedIn() || !this.entryPointUrl) return;
+
+        this._libraryPermissionsRequested = true;
+        this._updateLibraryPermissions();
     }
 
     _updateAuth() {
@@ -44,6 +91,8 @@ export class LibraryElement extends AdapterLitElement {
             }
         });
 
+        this._maybeUpdateLibraryPermissions();
+
         super.update(changedProperties);
     }
 
@@ -53,6 +102,9 @@ export class LibraryElement extends AdapterLitElement {
         this._loginStatus = '';
         this._loginState = [];
         this._loginCalled = false;
+        // null means we don't know yet if the user manages any sublibrary
+        this._hasLibraryPermissions = null;
+        this._libraryPermissionsRequested = false;
     }
 
     isLoggedIn() {
@@ -61,7 +113,9 @@ export class LibraryElement extends AdapterLitElement {
 
     isLoading() {
         if (this._loginStatus === 'logged-out') return false;
-        return !this.isLoggedIn() && this.auth.token !== undefined;
+        if (!this.isLoggedIn()) return this.auth.token !== undefined;
+        // Keep loading until we know if the user manages any sublibrary
+        return this._hasLibraryPermissions === null;
     }
 
     loginCallback() {
