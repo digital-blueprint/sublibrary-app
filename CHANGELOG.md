@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.4.2
+
+- Various internal cleanups (library selector, person selector ported to the
+  generic selector component)
+- Various dependency updates
+- return-book: hide the result during reload
+- Remove dependency on the ROLE_LIBRARY_MANAGER frontend role
+
 ## 2.4.1
 
 - Rework use name display and include new idNumber (requires bundle v0.6.1)
