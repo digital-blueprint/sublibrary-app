@@ -43,11 +43,9 @@
         "@esm-bundle/chai": "^4.2.0",
         "@web/test-runner": "^1.0.0",
         "@web/test-runner-playwright": "^1.0.0",
-        "eslint": "^10.0.0",
-        "eslint-plugin-jsdoc": "^64.0.0",
-        "globals": "^17.0.0",
         "i18next-cli": "^1.9.0",
         "mocha": "^11.0.0",
+        "oxlint": "^1.79.0",
         "playwright-core": "^1.20.2",
         "prettier": "^3.0.0",
         "rolldown": "^1.0.0-beta.42",
@@ -70,8 +68,8 @@
     },
     "scripts": {
         "clean": "rm -r dist/*",
-        "format": "npm run format:eslint && npm run format:prettier",
-        "format:eslint": "eslint \"**/*.{js,ts}\" --fix",
+        "format": "npm run format:oxlint && npm run format:prettier",
+        "format:oxlint": "oxlint . --fix",
         "format:prettier": "prettier \"**/*.{js,json,ts}\" --write",
         "build": "npm run build-local",
         "build-local": "rolldown -c rolldown.config.js",
@@ -85,6 +83,6 @@
         "watch-local": "rolldown -c rolldown.config.js --watch",
         "watch-dev": "rolldown -c rolldown.config.js --watch --environment BUILD:development",
         "test": "npm run build-test && web-test-runner",
-        "lint": "eslint ."
+        "lint": "oxlint ."
     }
 }
