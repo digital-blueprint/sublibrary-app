@@ -100,7 +100,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
                 case 'lang':
-                    this._i18n.changeLanguage(this.lang);
+                    void this._i18n.changeLanguage(this.lang);
                     this.updateLocationIdentifierSelect();
 
                     // we need to update the column titles
@@ -186,6 +186,8 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
             signal: signal,
         })
             .then((result) => {
+                // The shared error handler reads the response body and status.
+                // oxlint-disable-next-line typescript/only-throw-error
                 if (!result.ok) throw result;
 
                 if (result.headers.has('x-analytics-update-date')) {
@@ -296,14 +298,18 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
         }
 
         if (updateFilterSelects) {
-            this.locationIdentifiers = locationIdentifiers.sort();
+            this.locationIdentifiers = locationIdentifiers.sort((a, b) =>
+                a < b ? -1 : a > b ? 1 : 0,
+            );
             this.locationIdentifier = '';
 
             if (this.$locationIdentifierSelect !== null) {
                 this.$locationIdentifierSelect.val('');
             }
 
-            this.inventoryYears = inventoryYears.sort().reverse();
+            this.inventoryYears = inventoryYears
+                .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+                .reverse();
             this.inventoryYear = '';
 
             if (this.$inventoryYearSelect !== null) {

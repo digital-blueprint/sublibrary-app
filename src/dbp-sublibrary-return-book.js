@@ -213,7 +213,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === 'lang') {
-                this._i18n.changeLanguage(this.lang);
+                void this._i18n.changeLanguage(this.lang);
             }
         });
 
@@ -231,7 +231,7 @@ class LibraryReturnBook extends ScopedElementsMixin(LibraryElement) {
         const apiUrl = this.entryPointUrl + personId;
 
         // load person
-        fetch(apiUrl, {
+        void fetch(apiUrl, {
             headers: {
                 'Content-Type': 'application/ld+json',
                 Authorization: 'Bearer ' + this.auth.token,

@@ -43,6 +43,8 @@ export class LibraryElement extends AuthMixin(AdapterLitElement) {
             });
             // The API forbids access for everyone who isn't a library officer
             if (response.status !== 403) {
+                // The shared error handler reads the response body and status.
+                // oxlint-disable-next-line typescript/only-throw-error
                 if (!response.ok) throw response;
 
                 const data = await response.json();
@@ -56,7 +58,7 @@ export class LibraryElement extends AuthMixin(AdapterLitElement) {
         this.requestUpdate();
 
         if (hasPermissions) {
-            this.libraryPermissionsCallback();
+            void this.libraryPermissionsCallback();
         }
     }
 
@@ -64,9 +66,12 @@ export class LibraryElement extends AuthMixin(AdapterLitElement) {
      * Called once we know that the logged in user manages at least one sublibrary.
      * Everything talking to the library API needs to wait for this, since the API
      * rejects all other users.
+     *
+     * @returns {Promise<void>}
      */
     libraryPermissionsCallback() {
         // Implement in subclass
+        return Promise.resolve();
     }
 
     /**
@@ -77,7 +82,7 @@ export class LibraryElement extends AuthMixin(AdapterLitElement) {
         if (!this.isLoggedIn() || !this.entryPointUrl) return;
 
         this._libraryPermissionsRequested = true;
-        this._updateLibraryPermissions();
+        void this._updateLibraryPermissions();
     }
 
     logoutCallback() {

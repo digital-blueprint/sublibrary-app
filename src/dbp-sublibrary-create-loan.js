@@ -57,7 +57,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === 'lang') {
-                this._i18n.changeLanguage(this.lang);
+                void this._i18n.changeLanguage(this.lang);
             }
         });
 
@@ -282,7 +282,7 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
             return;
         }
 
-        this.updateCreateLoan();
+        void this.updateCreateLoan();
     }
 
     _onLoginClicked(e) {

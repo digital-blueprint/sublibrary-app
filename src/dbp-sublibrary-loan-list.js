@@ -79,7 +79,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
         changedProperties.forEach((oldValue, propName) => {
             switch (propName) {
                 case 'lang':
-                    this._i18n.changeLanguage(this.lang);
+                    void this._i18n.changeLanguage(this.lang);
 
                     // we need to update the column titles
                     this.buildTable();
@@ -147,6 +147,8 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
             signal: signal,
         })
             .then((result) => {
+                // The shared error handler reads the response body and status.
+                // oxlint-disable-next-line typescript/only-throw-error
                 if (!result.ok) throw result;
 
                 if (result.headers.has('x-analytics-update-date')) {
@@ -360,6 +362,8 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                             Authorization: 'Bearer ' + this.auth.token,
                         },
                     });
+                    // The shared error handler reads the response body and status.
+                    // oxlint-disable-next-line typescript/only-throw-error
                     if (!result.ok) throw result;
                     let loan = await result.json();
                     const bookName = button.getAttribute('data-book-name');

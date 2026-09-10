@@ -88,7 +88,9 @@ if (devConfig != undefined && appEnv in devConfig) {
         matomoSiteId: -1,
     };
 } else {
-    console.error(`Unknown build environment: '${appEnv}', use one of '${Object.keys(devConfig)}'`);
+    console.error(
+        `Unknown build environment: '${appEnv}', use one of '${Object.keys(devConfig).join(',')}'`,
+    );
     process.exit(1);
 }
 

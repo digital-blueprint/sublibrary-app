@@ -65,7 +65,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === 'lang') {
-                this._i18n.changeLanguage(this.lang);
+                void this._i18n.changeLanguage(this.lang);
             } else if (propName === 'sublibraryIri') {
                 this.loadBudget();
             }
@@ -113,6 +113,8 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
             signal: signal,
         })
             .then((result) => {
+                // The shared error handler reads the response body and status.
+                // oxlint-disable-next-line typescript/only-throw-error
                 if (!result.ok) throw result;
 
                 if (result.headers.has('x-analytics-update-date')) {

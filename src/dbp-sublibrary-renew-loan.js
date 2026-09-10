@@ -143,6 +143,8 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                     },
                 })
                     .then((result) => {
+                        // The shared error handler reads the response body and status.
+                        // oxlint-disable-next-line typescript/only-throw-error
                         if (!result.ok) throw result;
                         return result.json();
                     })
@@ -248,7 +250,7 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === 'lang') {
-                this._i18n.changeLanguage(this.lang);
+                void this._i18n.changeLanguage(this.lang);
 
                 /*
                 const vdtv1 = this._('#book-loans-1');
@@ -357,6 +359,8 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                     },
                 })
                     .then((result) => {
+                        // The shared error handler reads the response body and status.
+                        // oxlint-disable-next-line typescript/only-throw-error
                         if (!result.ok) throw result;
                         return result.json();
                     })
