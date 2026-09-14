@@ -1,3 +1,5 @@
+/// <reference path="./datatables.d.ts" />
+
 import $ from 'jquery';
 import dt from 'datatables.net';
 import resp from 'datatables.net-responsive';
@@ -9,20 +11,28 @@ import bttnHtml5 from 'datatables.net-buttons/js/buttons.html5.js';
 import bttnPrint from 'datatables.net-buttons/js/buttons.print.js';
 import {createInstance} from './i18n';
 import {css, html} from 'lit';
-import de from '../assets/datatables/i18n/German';
-import en from '../assets/datatables/i18n/English';
+import de from '../assets/datatables/i18n/German.json';
+import en from '../assets/datatables/i18n/English.json';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
 import {name as pkgName} from './../package.json';
 import {AdapterLitElement} from '@dbp-toolkit/common';
 
-dt(window, $);
-resp(window, $);
-resp2(window, $);
-bttn(window, $);
-bttn2(window, $);
-bttnHtml5(window, $, jszip);
-bttnPrint(window, $);
+/**
+ * @typedef {((selector: Element | null) => JQuery) & {
+ *   fn: {dataTable: {Responsive: new (table: unknown, options: {details: boolean}) => unknown}}
+ * }} DataTablesJQuery
+ */
+
+const jquery = /** @type {DataTablesJQuery} */ (/** @type {unknown} */ ($));
+
+/** @type {DataTablesFactory} */ (/** @type {unknown} */ (dt))(window, jquery);
+resp(window, jquery);
+resp2(window, jquery);
+bttn(window, jquery);
+bttn2(window, jquery);
+bttnHtml5(window, jquery, jszip);
+bttnPrint(window, jquery);
 
 export class DataTableView extends AdapterLitElement {
     constructor() {
@@ -78,23 +88,29 @@ export class DataTableView extends AdapterLitElement {
         this.defaultOrder = order;
         return this;
     }
+    getTable() {
+        if (this.table === null) {
+            throw new Error('data table is not initialized');
+        }
+        return this.table;
+    }
     add_row(row) {
         this.data.push(row);
-        this.table.row.add(row);
+        this.getTable().row.add(row);
         return this;
     }
     draw() {
-        this.table.draw();
+        this.getTable().draw();
         return this;
     }
     columnSearch(col, str) {
-        this.table.column(col).search(str).draw();
+        this.getTable().column(col).search(str).draw();
     }
     columnReduce(col, func, init = 0) {
-        return this.table.column(col, {search: 'applied'}).data().reduce(func, init);
+        return this.getTable().column(col, {search: 'applied'}).data().reduce(func, init);
     }
     on(eventName, func) {
-        this.table.on(eventName, func);
+        this.getTable().on(eventName, func);
         return this;
     }
 
@@ -108,7 +124,7 @@ export class DataTableView extends AdapterLitElement {
         }
 
         if (this.columnSearching) {
-            const existing_tfoot = this.shadowRoot.querySelector('table tfoot');
+            const existing_tfoot = this.renderRoot.querySelector('table tfoot');
             if (existing_tfoot === null || !existing_tfoot.hasChildNodes() || languageChange) {
                 if (existing_tfoot !== null) {
                     existing_tfoot.remove();
@@ -137,11 +153,11 @@ export class DataTableView extends AdapterLitElement {
                 });
                 tfoot.appendChild(tr);
                 fragment.appendChild(tfoot);
-                this.shadowRoot.querySelector('table').appendChild(fragment);
+                this.renderRoot.querySelector('table')?.appendChild(fragment);
             }
         }
 
-        this.table = $(this.shadowRoot.querySelector('table')).DataTable({
+        const options = /** @type {DataTableSettings} */ ({
             destroy: true,
             autoWidth: true,
             language: lang_obj,
@@ -176,12 +192,13 @@ export class DataTableView extends AdapterLitElement {
                 },
             ],
         });
+        this.table = jquery(this.renderRoot.querySelector('table')).DataTable(options);
 
         const dataTableLength = sessionStorage.getItem('dbp-data-table-length');
 
         //Retrieve page length from session storage
         if (dataTableLength !== null) {
-            this.table.page.len(dataTableLength);
+            this.table.page.len(Number(dataTableLength));
         }
 
         //Save page length in session storage
@@ -196,7 +213,7 @@ export class DataTableView extends AdapterLitElement {
             this.table.rows.add(this.data);
         }
 
-        new $.fn.dataTable.Responsive(this.table, {
+        new jquery.fn.dataTable.Responsive(this.table, {
             details: true,
         });
 
@@ -209,7 +226,9 @@ export class DataTableView extends AdapterLitElement {
                     (typeof element.visible === 'undefined' || element.visible !== false) &&
                     (typeof element.searchable === 'undefined' || element.searchable !== false)
                 ) {
-                    const input = that.shadowRoot.querySelector('#input-col-' + index);
+                    const input = /** @type {HTMLInputElement | null} */ (
+                        that.renderRoot.querySelector('#input-col-' + index)
+                    );
                     if (input) {
                         ['keyup', 'change', 'clear'].forEach(function (event) {
                             input.addEventListener(event, function () {
@@ -242,9 +261,7 @@ export class DataTableView extends AdapterLitElement {
             }
         });
 
-        this.updateComplete.then(this.set_datatable(this.data, languageChange)).catch((e) => {
-            console.log(e);
-        });
+        this.set_datatable(this.data, languageChange);
         super.update(changedProperties);
     }
 

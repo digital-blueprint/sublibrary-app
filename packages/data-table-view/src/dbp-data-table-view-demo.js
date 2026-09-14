@@ -37,11 +37,13 @@ export class DataTableViewDemo extends ScopedElementsMixin(DBPLitElement) {
         super.connectedCallback();
         const that = this;
 
-        this.updateComplete.then(() => {
+        void this.updateComplete.then(() => {
             /*
                     First Table: with data
              */
-            const vdtv1 = that.shadowRoot.querySelector('#vdtv1');
+            const vdtv1 = /** @type {DataTableView | null} */ (
+                that.renderRoot.querySelector('#vdtv1')
+            );
             if (vdtv1 !== null) {
                 const vdtv1_columnDefs = [
                     {targets: [3], visible: false},
@@ -69,7 +71,9 @@ export class DataTableViewDemo extends ScopedElementsMixin(DBPLitElement) {
             /*
                     Second Table: no data definition only
              */
-            const vdtv2 = that.shadowRoot.querySelector('#vdtv2');
+            const vdtv2 = /** @type {DataTableView | null} */ (
+                that.renderRoot.querySelector('#vdtv2')
+            );
             if (vdtv2 !== null) {
                 const vdtv2_columnDefs = [
                     {targets: [3], visible: false},
@@ -91,7 +95,9 @@ export class DataTableViewDemo extends ScopedElementsMixin(DBPLitElement) {
             /*
                     Third Table: ordering demo
              */
-            const vdtv3 = that.shadowRoot.querySelector('#vdtv3');
+            const vdtv3 = /** @type {DataTableView | null} */ (
+                that.renderRoot.querySelector('#vdtv3')
+            );
             if (vdtv3 !== null) {
                 const vdtv3_columnDefs = [{targets: [0, 1, 2], visible: true}];
                 vdtv3
@@ -114,7 +120,7 @@ export class DataTableViewDemo extends ScopedElementsMixin(DBPLitElement) {
     update(changedProperties) {
         changedProperties.forEach((oldValue, propName) => {
             if (propName === 'lang') {
-                this._i18n.changeLanguage(this.lang);
+                void this._i18n.changeLanguage(this.lang);
             }
         });
 
@@ -139,16 +145,20 @@ export class DataTableViewDemo extends ScopedElementsMixin(DBPLitElement) {
     }
 
     vdtv_draw() {
-        const vdtv1 = this.shadowRoot.querySelector('#vdtv1');
-        const value = vdtv1.columnReduce(1, function (a, b) {
-            return a * 1 + b * 1;
-        });
-        this.shadowRoot.querySelector('#id-sum').value = value;
+        const vdtv1 = /** @type {DataTableView | null} */ (this.renderRoot.querySelector('#vdtv1'));
+        const sumInput = /** @type {HTMLInputElement | null} */ (
+            this.renderRoot.querySelector('#id-sum')
+        );
+        if (vdtv1 !== null && sumInput !== null) {
+            sumInput.value = vdtv1.columnReduce(1, function (a, b) {
+                return a * 1 + b * 1;
+            });
+        }
     }
 
     vdtv2_add_rows() {
         console.log('vdtv2_add_rows() clicked');
-        const vdtv2 = this.shadowRoot.querySelector('#vdtv2');
+        const vdtv2 = /** @type {DataTableView | null} */ (this.renderRoot.querySelector('#vdtv2'));
         if (vdtv2 !== null) {
             const row = this.vdtv_create_row();
             vdtv2.add_row(row).draw();
