@@ -41,6 +41,12 @@
         "success-body": "Das Buch wurde erfolgreich entlehnt.",
         "success-summary": "Buchentlehnung erfolgreich"
     },
+    "data-table-view": {
+        "column-search-placeholder": "Nach {{fieldName}} suchen",
+        "export-csv": "CSV Export",
+        "export-excel": "Excel Export",
+        "print": "Drucken"
+    },
     "error-login-link": "Anmelden",
     "error-login-message": "Bitte melden Sie sich an, um diese Funktion nutzen zu können.",
     "error-permission-message": "Sie müssen Bibliotheksbeauftragte/r sein um diese Funktion nutzen zu können!",

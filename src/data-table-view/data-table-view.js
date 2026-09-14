@@ -9,13 +9,13 @@ import bttn from 'datatables.net-buttons-dt';
 import bttn2 from 'datatables.net-buttons';
 import bttnHtml5 from 'datatables.net-buttons/js/buttons.html5.js';
 import bttnPrint from 'datatables.net-buttons/js/buttons.print.js';
-import {createInstance} from './i18n';
+import {createInstance} from '../i18n.js';
 import {css, html} from 'lit';
-import de from '../assets/datatables/i18n/German.json';
-import en from '../assets/datatables/i18n/English.json';
+import de from './i18n/German.json';
+import en from './i18n/English.json';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import {name as pkgName} from './../package.json';
+import {name as pkgName} from '../../package.json';
 import {AdapterLitElement} from '@dbp-toolkit/common';
 
 /**
@@ -144,7 +144,7 @@ export class DataTableView extends AdapterLitElement {
                         input.type = 'text';
                         input.className = 'column-search-line';
                         input.id = 'input-col-' + index;
-                        input.placeholder = i18n.t('column-search-placeholder', {
+                        input.placeholder = i18n.t('data-table-view.column-search-placeholder', {
                             fieldName: element.title,
                         });
                         th.appendChild(input);
@@ -169,14 +169,14 @@ export class DataTableView extends AdapterLitElement {
             buttons: [
                 {
                     extend: 'excelHtml5',
-                    text: i18n.t('export-excel'),
+                    text: i18n.t('data-table-view.export-excel'),
                     title: this.exportName,
                     filename: this.exportName,
                     className: 'button is-small',
                 },
                 {
                     extend: 'csvHtml5',
-                    text: i18n.t('export-csv'),
+                    text: i18n.t('data-table-view.export-csv'),
                     title: this.exportName,
                     filename: this.exportName,
                     className: 'button is-small',
@@ -186,7 +186,7 @@ export class DataTableView extends AdapterLitElement {
                 },
                 {
                     extend: 'print',
-                    text: i18n.t('print'),
+                    text: i18n.t('data-table-view.print'),
                     title: this.exportName,
                     className: 'button is-small',
                 },

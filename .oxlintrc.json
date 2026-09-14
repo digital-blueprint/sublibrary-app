@@ -13,7 +13,7 @@
         "browser": true,
         "mocha": true
     },
-    "ignorePatterns": ["vendor/", "./*.cjs", "packages/"],
+    "ignorePatterns": ["vendor/", "./*.cjs"],
     "rules": {
         "no-empty": "error",
         "no-fallthrough": "error",

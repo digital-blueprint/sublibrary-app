@@ -5,7 +5,7 @@ import {ScopedElementsMixin} from '@dbp-toolkit/common';
 import {LibraryElement} from './library-element.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import {DataTableView} from '@dbp-toolkit/data-table-view';
+import {DataTableView} from './data-table-view/data-table-view.js';
 import {MiniSpinner} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
 import $ from 'jquery';

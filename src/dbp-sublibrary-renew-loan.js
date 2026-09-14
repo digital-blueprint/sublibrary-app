@@ -6,7 +6,7 @@ import {send as notify} from '@dbp-toolkit/common/notification';
 import {LibraryElement} from './library-element.js';
 import * as commonUtils from '@dbp-toolkit/common/utils';
 import * as commonStyles from '@dbp-toolkit/common/styles';
-import {DataTableView} from '@dbp-toolkit/data-table-view';
+import {DataTableView} from './data-table-view/data-table-view.js';
 import {MiniSpinner, Button} from '@dbp-toolkit/common';
 import {classMap} from 'lit/directives/class-map.js';
 import {getPersonDisplayName, escapeHtml} from './utils.js';
