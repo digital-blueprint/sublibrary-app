@@ -64,6 +64,7 @@ export function extractEarliestPossibleYearFromPublicationDate(publicationDate) 
         return null;
     }
 
+    /** @type {number|null} */
     let earliestYear = null;
     for (const match of matches) {
         const year = Number(match);

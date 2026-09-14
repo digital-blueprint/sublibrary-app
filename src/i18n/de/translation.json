@@ -76,7 +76,6 @@
         "error-load-orders": "Liste der Bestellungen konnte nicht geladen werden",
         "export-name": "Buchbestellungen {{organizationCode}}",
         "mini-spinner-text": "Bestellungen werden geladen...",
-        "open-only": "Nur offene Bestellungen anzeigen",
         "order-date": "Bestelldatum",
         "order-number": "Bestellnummer",
         "order-status": "Status",

@@ -70,8 +70,8 @@ class LibraryShelving extends ScopedElementsMixin(LibraryElement) {
         const $locationIdentifierInput = that.$('#location-identifier');
 
         // enable send button if location identifier was entered
-        $locationIdentifierInput.on('input', function () {
-            that.$('#send').prop('disabled', $(this).val() === '');
+        $locationIdentifierInput.on('input', () => {
+            that.$('#send').prop('disabled', $locationIdentifierInput.val() === '');
         });
 
         // update the book offer with location identifier

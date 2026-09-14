@@ -4,13 +4,19 @@ import * as errorUtils from '@dbp-toolkit/common/error';
 export class LibraryElement extends AuthMixin(AdapterLitElement) {
     constructor() {
         super();
-        Object.assign(LibraryElement.prototype, errorUtils.errorMixin);
+        this.entryPointUrl = '';
     }
 
     _(selector) {
-        return this.shadowRoot === null
-            ? this.querySelector(selector)
-            : this.shadowRoot.querySelector(selector);
+        return this.renderRoot.querySelector(selector);
+    }
+
+    handleXhrError(...args) {
+        return errorUtils.errorMixin.handleXhrError.call(this, ...args);
+    }
+
+    handleFetchError(...args) {
+        return errorUtils.errorMixin.handleFetchError.call(this, ...args);
     }
 
     /**
@@ -31,6 +37,7 @@ export class LibraryElement extends AuthMixin(AdapterLitElement) {
         let hasPermissions = false;
 
         try {
+            const auth = /** @type {{token: string}} */ (this.auth);
             const url = new URL('sublibrary/sublibraries', this.entryPointUrl);
             // We only need to know if there is at least one entry
             url.searchParams.set('perPage', '1');
@@ -38,7 +45,7 @@ export class LibraryElement extends AuthMixin(AdapterLitElement) {
             const response = await fetch(url.href, {
                 headers: {
                     'Content-Type': 'application/ld+json',
-                    Authorization: 'Bearer ' + this.auth.token,
+                    Authorization: 'Bearer ' + auth.token,
                 },
             });
             // The API forbids access for everyone who isn't a library officer

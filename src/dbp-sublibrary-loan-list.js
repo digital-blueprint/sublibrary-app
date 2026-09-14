@@ -151,8 +151,9 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 // oxlint-disable-next-line typescript/only-throw-error
                 if (!result.ok) throw result;
 
-                if (result.headers.has('x-analytics-update-date')) {
-                    const date = new Date(result.headers.get('x-analytics-update-date'));
+                const analyticsUpdateDate = result.headers.get('x-analytics-update-date');
+                if (analyticsUpdateDate !== null) {
+                    const date = new Date(analyticsUpdateDate);
                     this.analyticsUpdateDate =
                         date.toLocaleDateString(this.lang) +
                         ' ' +
@@ -167,7 +168,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                 $loansLoadingIndicator.hide();
             })
             .catch((error) => {
-                that.handleFetchError(error, that._i18n.t('loan-list.error-load-loans'));
+                void that.handleFetchError(error, that._i18n.t('loan-list.error-load-loans'));
                 $loansLoadingIndicator.hide();
             });
     }
@@ -371,7 +372,7 @@ class LibraryLoanList extends ScopedElementsMixin(LibraryElement) {
                     let email = loan.borrower.email;
                     location.href = `mailto:${email}?subject=${subject}`;
                 } catch (error) {
-                    this.handleFetchError(error, i18n.t('loan-list.error-load-loan'));
+                    void this.handleFetchError(error, i18n.t('loan-list.error-load-loan'));
                 } finally {
                     button.stop();
                 }

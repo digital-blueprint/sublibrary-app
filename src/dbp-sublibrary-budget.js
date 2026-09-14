@@ -23,7 +23,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
         this._i18n = createInstance();
         this.lang = this._i18n.language;
         this.entryPointUrl = '';
-        this.monetaryAmounts = [];
+        this.monetaryAmounts = {};
         this.sublibraryIri = '';
         this.abortController = null;
         this.pageStatus = pageStatus.none;
@@ -50,7 +50,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
             entryPointUrl: {type: String, attribute: 'entry-point-url'},
             sublibraryIri: {type: String, attribute: 'sublibrary-iri', reflect: true},
             analyticsUpdateDate: {type: Object, attribute: false},
-            monetaryAmounts: {type: Array, attribute: false},
+            monetaryAmounts: {type: Object, attribute: false},
             pageStatus: {type: Boolean, attribute: false},
         };
     }
@@ -117,8 +117,9 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
                 // oxlint-disable-next-line typescript/only-throw-error
                 if (!result.ok) throw result;
 
-                if (result.headers.has('x-analytics-update-date')) {
-                    const date = new Date(result.headers.get('x-analytics-update-date'));
+                const analyticsUpdateDate = result.headers.get('x-analytics-update-date');
+                if (analyticsUpdateDate !== null) {
+                    const date = new Date(analyticsUpdateDate);
                     this.analyticsUpdateDate =
                         date.toLocaleDateString(this.lang) +
                         ' ' +
@@ -142,7 +143,7 @@ class LibraryBudget extends ScopedElementsMixin(LibraryElement) {
                     that.pageStatus = pageStatus.noBudget;
                 } else {
                     that.pageStatus = pageStatus.none;
-                    that.handleFetchError(error, that._i18n.t('budget.load-error'));
+                    void that.handleFetchError(error, that._i18n.t('budget.load-error'));
                 }
             });
     }

@@ -190,8 +190,9 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 // oxlint-disable-next-line typescript/only-throw-error
                 if (!result.ok) throw result;
 
-                if (result.headers.has('x-analytics-update-date')) {
-                    const date = new Date(result.headers.get('x-analytics-update-date'));
+                const analyticsUpdateDate = result.headers.get('x-analytics-update-date');
+                if (analyticsUpdateDate !== null) {
+                    const date = new Date(analyticsUpdateDate);
                     this.analyticsUpdateDate =
                         date.toLocaleDateString(this.lang) +
                         ' ' +
@@ -206,7 +207,7 @@ class LibraryBookList extends ScopedElementsMixin(LibraryElement) {
                 $booksLoadingIndicator.hide();
             })
             .catch((error) => {
-                that.handleFetchError(error, that._i18n.t('book-list.error-load-books'));
+                void that.handleFetchError(error, that._i18n.t('book-list.error-load-books'));
                 if (this.abortController === null) $booksLoadingIndicator.hide();
             });
     }

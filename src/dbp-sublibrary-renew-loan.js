@@ -236,7 +236,10 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                         $loansLoadingIndicator.hide();
                     })
                     .catch((error) => {
-                        that.handleFetchError(error, i18n.t('renew-loan.error-load-loans-summary'));
+                        void that.handleFetchError(
+                            error,
+                            i18n.t('renew-loan.error-load-loans-summary'),
+                        );
                         $loansLoadingIndicator.hide();
                     });
 
@@ -375,7 +378,10 @@ class LibraryRenewLoan extends ScopedElementsMixin(LibraryElement) {
                         timeSelect.value = commonUtils.dateToInputTimeString(loan.endTime);
                     })
                     .catch((error) => {
-                        this.handleFetchError(error, i18n.t('renew-loan.error-renew-loan-summary'));
+                        void this.handleFetchError(
+                            error,
+                            i18n.t('renew-loan.error-renew-loan-summary'),
+                        );
                     })
                     .finally(() => {
                         button.stop();

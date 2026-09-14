@@ -32,6 +32,11 @@ export class LibraryBookOfferSelect extends ResourceSelect {
         this.value = null;
     }
 
+    /**
+     * @param select
+     * @param {string} searchTerm
+     * @returns {{search?: undefined, barcode: string, sublibrary: string}}
+     */
     getSearchQueryParameters(select, searchTerm) {
         let barcode = searchTerm.trim();
 

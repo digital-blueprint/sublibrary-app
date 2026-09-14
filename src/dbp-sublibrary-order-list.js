@@ -164,8 +164,9 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 // oxlint-disable-next-line typescript/only-throw-error
                 if (!result.ok) throw result;
 
-                if (result.headers.has('x-analytics-update-date')) {
-                    const date = new Date(result.headers.get('x-analytics-update-date'));
+                const analyticsUpdateDate = result.headers.get('x-analytics-update-date');
+                if (analyticsUpdateDate !== null) {
+                    const date = new Date(analyticsUpdateDate);
                     this.analyticsUpdateDate =
                         date.toLocaleDateString(this.lang) +
                         ' ' +
@@ -253,7 +254,7 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                 $booksLoadingIndicator.hide();
             })
             .catch((error) => {
-                that.handleFetchError(error, i18n.t('order-list.error-load-orders'));
+                void that.handleFetchError(error, i18n.t('order-list.error-load-orders'));
                 $booksLoadingIndicator.hide();
             });
     }
@@ -301,19 +302,23 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
     }
 
     table_draw() {
-        const table = this.shadowRoot.querySelector('#book-books-1');
+        const table = this.renderRoot.querySelector('#book-books-1');
+        if (!(table instanceof DataTableView)) {
+            throw new Error('Order table is missing from the render root');
+        }
+
         table.columnReduce(7, function (a, b) {
             let a1;
             if (typeof a === 'string') {
-                a1 = a.replace(',', '.').replace(' EUR', '') * 1;
+                a1 = Number(a.replace(',', '.').replace(' EUR', ''));
             } else {
-                a1 = a * 1;
+                a1 = Number(a);
             }
             let b1;
             if (typeof b === 'string') {
-                b1 = b.replace(',', '.').replace(' EUR', '') * 1;
+                b1 = Number(b.replace(',', '.').replace(' EUR', ''));
             } else {
-                b1 = b * 1;
+                b1 = Number(b);
             }
             return a1 + b1;
         });
@@ -350,16 +355,6 @@ class LibraryOrderList extends ScopedElementsMixin(LibraryElement) {
                                   text="${i18n.t('order-list.mini-spinner-text')}"
                                   style="font-size: 2em; display: none;"></dbp-mini-spinner>
                               <div id="book-list-block">
-                                  <!--
-                    <div class="field">
-                        <label class="label">
-                            <input type="checkbox" .checked=${this.openOnly} @click=${
-                                this.toggleOpenOnly
-                            } .disabled=${this.overdueOnly}>
-                            ${i18n.t('order-list.open-only')}
-                        </label>
-                    </div>
-                    -->
                                   <div class="field">
                                       <label class="label">${i18n.t('book-list.books')}</label>
                                       <div class="control">

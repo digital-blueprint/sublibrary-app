@@ -104,8 +104,15 @@ class LibraryCreateLoan extends ScopedElementsMixin(LibraryElement) {
     }
 
     async updateCreateLoan(bookOffer = this.bookOffer) {
-        const createLoanBlock = this.shadowRoot.querySelector('#create-loan-block');
-        const loansLoadingIndicator = this.shadowRoot.querySelector('#loans-loading');
+        const createLoanBlock = this.renderRoot.querySelector('#create-loan-block');
+        const loansLoadingIndicator = this.renderRoot.querySelector('#loans-loading');
+
+        if (
+            !(createLoanBlock instanceof HTMLElement) ||
+            !(loansLoadingIndicator instanceof HTMLElement)
+        ) {
+            throw new Error('Create-loan elements are missing from the render root');
+        }
 
         if (!bookOffer) {
             this.bookOffer = null;

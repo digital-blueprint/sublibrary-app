@@ -76,7 +76,6 @@
         "error-load-orders": "List of orders could not be loaded",
         "export-name": "Orders {{organizationCode}}",
         "mini-spinner-text": "Loading order...",
-        "open-only": "Show open orders only",
         "order-date": "Order date",
         "order-number": "Order  number",
         "order-status": "Status",
